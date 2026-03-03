@@ -1,0 +1,50 @@
+name: Develeap BDR Job Monitor
+
+on:
+  # Daytime: every 15 min from 8:00-18:59 Israel time (UTC+2 = 6:00-16:59 UTC)
+  # Note: Israel DST (UTC+3) runs late March–late October; adjust if needed
+  schedule:
+    - cron: '*/15 6-16 * * *'   # Daytime (every 15 min, ~8:00-18:59 IST)
+    - cron: '0 17-23,0-5 * * *' # Nighttime (every 60 min, ~19:00-7:59 IST)
+
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job monitor update
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          DASHBOARD_PATH: dashboard/index.html
+        run: python update_jobs.py
+
+      - name: Commit updated dashboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard/index.html
+          git diff --staged --quiet || git commit -m "chore: update job listings $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
+
