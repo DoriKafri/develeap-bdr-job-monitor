@@ -34,7 +34,12 @@
   .top-nav .logo { display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px; }
   .top-nav .logo svg { width:28px; height:28px; }
   .nav-actions { display:flex; align-items:center; gap:16px; }
-  .nav-actions .last-update { font-size:13px; opacity:0.7; }
+  .nav-actions .last-update { font-size:13px; opacity:0.7; display:flex; flex-direction:column; align-items:flex-end; line-height:1.3; }
+  .last-update .freshness-relative { font-size:11px; opacity:0.7; }
+  .new-listings-banner { display:none; background:linear-gradient(135deg,#00CA72,#00A85D); color:white; padding:10px 32px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s; animation:slideDown 0.4s ease; }
+  .new-listings-banner:hover { background:linear-gradient(135deg,#00A85D,#008C4A); }
+  .new-listings-banner.show { display:block; }
+  @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
   .user-info { display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.8; }
   .user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); }
   .btn { padding:8px 20px; border-radius:8px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
@@ -207,6 +212,8 @@
       <button class="btn btn-outline" onclick="signOut()" style="font-size:12px">Sign Out</button>
     </div>
   </div>
+
+  <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
   <div class="stats-bar">
     <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
@@ -1982,7 +1989,71 @@ const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
 function initApp() {
   ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
   updateStats(); renderJobs();
-  document.getElementById('lastUpdate').textContent = 'Updated: '+new Date(LAST_UPDATED).toLocaleDateString('en-IL',{month:'short',day:'numeric',year:'numeric'});
+  updateFreshnessDisplay();
+  setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
+  setInterval(checkForNewListings, 5 * 60 * 1000); // check for updates every 5 min
+}
+
+function updateFreshnessDisplay() {
+  const el = document.getElementById('lastUpdate');
+  const d = new Date(LAST_UPDATED);
+  const abs = d.toLocaleDateString('en-IL',{month:'short',day:'numeric',year:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL',{hour:'2-digit',minute:'2-digit'});
+  const rel = timeAgo(d);
+  el.innerHTML = '<span>' + abs + '</span><span class="freshness-relative">' + rel + '</span>';
+}
+
+function timeAgo(date) {
+  const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (secs < 60) return 'just now';
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(hrs / 24);
+  return days + 'd ago';
+}
+
+let _pendingNewJobs = [];
+async function checkForNewListings() {
+  try {
+    const resp = await fetch(window.location.href + '?_t=' + Date.now(), {cache:'no-store'});
+    const html = await resp.text();
+    // Extract ALL_JOBS from fetched HTML
+    const m = html.match(/let ALL_JOBS\s*=\s*(\[[\s\S]*?\]);\s*\n/);
+    if (!m) return;
+    const remoteJobs = JSON.parse(m[1]);
+    const currentIds = new Set(ALL_JOBS.map(j => j.id));
+    const newOnes = remoteJobs.filter(j => !currentIds.has(j.id));
+    // Also check if timestamp changed (jobs updated even if IDs same)
+    const tm = html.match(/const LAST_UPDATED\s*=\s*"([^"]+)"/);
+    const remoteTs = tm ? tm[1] : null;
+    if (newOnes.length > 0) {
+      _pendingNewJobs = remoteJobs;
+      const banner = document.getElementById('newListingsBanner');
+      banner.textContent = '\u2B06 ' + newOnes.length + ' new listing' + (newOnes.length > 1 ? 's' : '') + ' found — click to refresh';
+      banner.classList.add('show');
+    } else if (remoteTs && remoteTs !== LAST_UPDATED && remoteJobs.length !== ALL_JOBS.length) {
+      _pendingNewJobs = remoteJobs;
+      const diff = Math.abs(remoteJobs.length - ALL_JOBS.length);
+      const banner = document.getElementById('newListingsBanner');
+      banner.textContent = '\u2B06 Listings updated — click to refresh';
+      banner.classList.add('show');
+    }
+  } catch(e) { /* silently ignore fetch errors */ }
+}
+
+function reloadNewListings() {
+  if (_pendingNewJobs.length) {
+    ALL_JOBS = _pendingNewJobs;
+    _pendingNewJobs = [];
+    ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
+    updateStats(); renderJobs();
+  }
+  document.getElementById('newListingsBanner').classList.remove('show');
+  // Also update the timestamp display
+  const tm = document.getElementById('newListingsBanner').dataset.ts;
+  if (tm) { LAST_UPDATED = tm; updateFreshnessDisplay(); }
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function updateStats() {

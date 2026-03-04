@@ -1007,11 +1007,11 @@ def update_dashboard_html(html: str, jobs: list[dict]) -> str:
         html,
         flags=re.DOTALL | re.MULTILINE
     )
-    # Update timestamp
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    # Update LAST_UPDATED constant
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     html = re.sub(
-        r'Last updated:.*?<',
-        f'Last updated: {now}<',
+        r'const LAST_UPDATED\s*=\s*"[^"]*"',
+        lambda _: f'const LAST_UPDATED = "{now_iso}"',
         html
     )
     return html
