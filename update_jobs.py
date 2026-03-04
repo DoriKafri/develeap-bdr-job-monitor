@@ -1046,7 +1046,7 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         "type": "context",
         "elements": [{
             "type": "mrkdwn",
-            "text": ":bar_chart: <https://develeap-bdr-jobs.netlify.app|Open Full Dashboard>  |  Powered by Develeap BDR Monitor"
+            "text": ":bar_chart: <https://dorikafri.github.io/develeap-bdr-job-monitor/|Open Full Dashboard>  |  Powered by Develeap BDR Monitor"
         }]
     })
 
@@ -1112,7 +1112,12 @@ def main():
     updated_html = update_dashboard_html(html, merged)
     with open(DASHBOARD_PATH, "w", encoding="utf-8") as f:
         f.write(updated_html)
-    log.info("Dashboard HTML updated")
+    # Also write to docs/ for GitHub Pages
+    docs_path = os.path.join(os.path.dirname(DASHBOARD_PATH), "..", "docs", "index.html")
+    os.makedirs(os.path.dirname(docs_path), exist_ok=True)
+    with open(docs_path, "w", encoding="utf-8") as f:
+        f.write(updated_html)
+    log.info("Dashboard HTML updated (dashboard/ + docs/)")
 
     # 6. Deploy to Netlify
     if deploy_to_netlify(updated_html):
