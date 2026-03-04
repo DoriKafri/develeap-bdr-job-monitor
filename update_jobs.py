@@ -154,6 +154,128 @@ def search_jobs(query: str) -> list[dict]:
     return results
 
 
+# ── Date Extraction ───────────────────────────────────────────────────────
+
+def extract_posting_date(url: str) -> str:
+    """Try to scrape the real posting date from a job listing page.
+    Returns ISO date string (YYYY-MM-DD) or empty string if not found."""
+    if not url:
+        return ""
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+        resp = requests.get(url, headers=headers, timeout=10, allow_redirects=True)
+        if resp.status_code != 200:
+            return ""
+        text = resp.text[:50000]  # Limit to first 50KB
+
+        # 1. JSON-LD structured data (most reliable — used by LinkedIn, many career sites)
+        ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
+        for ld_raw in ld_matches:
+            try:
+                ld = json.loads(ld_raw)
+                # Handle both single object and array
+                items = ld if isinstance(ld, list) else [ld]
+                for item in items:
+                    # JobPosting schema
+                    if item.get("@type") == "JobPosting":
+                        date_posted = item.get("datePosted", "")
+                        if date_posted:
+                            return _normalize_date(date_posted)
+                    # Check nested items
+                    if isinstance(item.get("@graph"), list):
+                        for g in item["@graph"]:
+                            if g.get("@type") == "JobPosting":
+                                date_posted = g.get("datePosted", "")
+                                if date_posted:
+                                    return _normalize_date(date_posted)
+            except (json.JSONDecodeError, TypeError, KeyError):
+                continue
+
+        # 2. "datePosted" anywhere in page (inline JSON, JS variables, etc.)
+        m = re.search(r'"datePosted"\s*:\s*"(\d{4}-\d{2}-\d{2})', text)
+        if m:
+            return m.group(1)
+
+        # 2b. Meta tags (og:article:published_time, datePublished, etc.)
+        meta_patterns = [
+            r'<meta[^>]*(?:property|name)=["\'](?:article:published_time|datePublished|date)["\'][^>]*content=["\']([^"\']+)["\']',
+            r'<meta[^>]*content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:article:published_time|datePublished|date)["\']',
+        ]
+        for pat in meta_patterns:
+            m = re.search(pat, text, re.IGNORECASE)
+            if m:
+                return _normalize_date(m.group(1))
+
+        # 2c. Any JSON field with "date" in key and ISO date value
+        date_json = re.findall(r'"(?:date_?(?:posted|published|created|listed)?)"\s*:\s*"(\d{4}-\d{2}-\d{2}[T\s]?[^"]*)"', text, re.IGNORECASE)
+        if date_json:
+            return _normalize_date(date_json[0])
+
+        # 2d. ISO dates near posting-related keywords in raw HTML/JS
+        posting_date_ctx = re.findall(
+            r'(?:post|publish|list|creat|updat)(?:ed|_at|At|Date|Time|_date|_time).{0,30}?(\d{4}-\d{2}-\d{2})',
+            text, re.IGNORECASE
+        )
+        if posting_date_ctx:
+            return posting_date_ctx[0]
+
+        # 3. Relative date patterns in visible text ("Posted 3 days ago", "2 weeks ago")
+        relative_patterns = [
+            (r'(?:posted|published|listed)\s+(\d+)\s+day', "days"),
+            (r'(?:posted|published|listed)\s+(\d+)\s+week', "weeks"),
+            (r'(?:posted|published|listed)\s+(\d+)\s+month', "months"),
+            (r'(?:posted|published|listed)\s+(\d+)\s+hour', "hours"),
+            (r'(\d+)\s+days?\s+ago', "days"),
+            (r'(\d+)\s+weeks?\s+ago', "weeks"),
+            (r'(\d+)\s+months?\s+ago', "months"),
+            (r'(\d+)\s+hours?\s+ago', "hours"),
+        ]
+        from datetime import timedelta
+        for pat, unit in relative_patterns:
+            m = re.search(pat, text, re.IGNORECASE)
+            if m:
+                n = int(m.group(1))
+                now = datetime.now(timezone.utc)
+                if unit == "hours":
+                    dt = now - timedelta(hours=n)
+                elif unit == "days":
+                    dt = now - timedelta(days=n)
+                elif unit == "weeks":
+                    dt = now - timedelta(weeks=n)
+                elif unit == "months":
+                    dt = now - timedelta(days=n * 30)
+                return dt.strftime("%Y-%m-%d")
+
+    except Exception as e:
+        log.debug(f"Date extraction failed for {url[:60]}: {e}")
+    return ""
+
+
+def _normalize_date(raw: str) -> str:
+    """Normalize various date formats to YYYY-MM-DD."""
+    raw = raw.strip()
+    # Already ISO format: 2026-03-01 or 2026-03-01T...
+    m = re.match(r'(\d{4}-\d{2}-\d{2})', raw)
+    if m:
+        return m.group(1)
+    # Formats like "March 1, 2026" or "1 March 2026"
+    try:
+        from datetime import datetime as dt_cls
+        for fmt in ("%B %d, %Y", "%d %B %Y", "%b %d, %Y", "%d %b %Y",
+                    "%m/%d/%Y", "%d/%m/%Y", "%Y/%m/%d"):
+            try:
+                return dt_cls.strptime(raw, fmt).strftime("%Y-%m-%d")
+            except ValueError:
+                continue
+    except Exception:
+        pass
+    return ""
+
+
 # ── Parsing Functions ──────────────────────────────────────────────────────
 
 def detect_source(url: str) -> str:
@@ -432,12 +554,25 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "source": source,
             "sourceUrl": url,
             "category": category,
-            "posted": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "posted": "",  # Will be filled by date extraction
             "isNew": True,
             "isDeveleapCustomer": is_develeap_customer(company),
             "description": snippet[:120] if snippet else title,
             "skills": [],
         })
+
+    # Fetch real posting dates from job pages (with rate limiting)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    for j in jobs:
+        url = j.get("sourceUrl", "")
+        if url:
+            real_date = extract_posting_date(url)
+            if real_date:
+                j["posted"] = real_date
+                log.info(f"  Date extracted: {real_date} for {j['title'][:40]}")
+            else:
+                j["posted"] = today  # Fallback to today
+            time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
     return jobs
 
