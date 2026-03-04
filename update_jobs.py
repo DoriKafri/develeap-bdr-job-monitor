@@ -211,8 +211,21 @@ def _is_job_title(text: str) -> bool:
     # Check if the entire text matches a known non-company phrase
     known_locations = {"tel aviv", "ramat gan", "herzliya", "haifa", "jerusalem",
                        "beer sheva", "netanya", "petah tikva", "ra'anana", "hod hasharon",
-                       "israel", "remote", "hybrid"}
+                       "israel", "remote", "hybrid", "tel aviv district", "tel aviv yaffo il",
+                       "tel aviv yaffo", "il", "new", "2025", "2026", "2027"}
     if t in known_locations:
+        return True
+
+    # Contains Hebrew characters → not a valid company name for our purposes
+    if re.search(r'[\u0590-\u05FF]', t):
+        return True
+
+    # Looks like a parenthetical description, not a company
+    if t.startswith("(") or t.startswith("["):
+        return True
+
+    # Just a number/year
+    if re.match(r'^\d+$', t):
         return True
 
     words = set(re.split(r"[\s/\-\.]+", t))
@@ -228,18 +241,32 @@ def _is_job_title(text: str) -> bool:
 def extract_company(title: str, snippet: str, url: str = "") -> str:
     """Try to extract company name from search result."""
 
+    # Helper: clean up company name casing
+    def _fix_casing(name: str) -> str:
+        """Fix common casing issues in extracted company names."""
+        # Known abbreviations that should stay uppercase
+        abbrev = {"ai", "it", "bmc", "ibm", "sap", "hp", "aws", "gcp", "nso"}
+        words = name.split()
+        fixed = []
+        for w in words:
+            if w.lower() in abbrev:
+                fixed.append(w.upper())
+            else:
+                fixed.append(w)
+        return " ".join(fixed)
+
     # 1. LinkedIn URL pattern: .../TITLE-at-COMPANY-1234567
     if "linkedin.com" in url:
         m = re.search(r"/jobs/view/.*?-at-(.+?)-\d{5,}", url)
         if m:
-            company = m.group(1).replace("-", " ").title()
+            company = _fix_casing(m.group(1).replace("-", " ").title())
             if not _is_job_title(company):
                 return company
 
     # 1b. Known career site URL patterns: careers.COMPANY.com, jobs.COMPANY.com
     m = re.search(r"https?://(?:careers|jobs)\.([a-z0-9\-]+)\.", url)
     if m:
-        domain_company = m.group(1).replace("-", " ").title()
+        domain_company = _fix_casing(m.group(1).replace("-", " ").title())
         if len(domain_company) > 2 and domain_company.lower() not in {"secret", "lhh"}:
             return domain_company
 
@@ -251,7 +278,10 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         job_boards = {
             "builtin", "startup", "glassdoor", "indeed", "alljobs", "drushim",
             "facebook", "google", "jobify360", "machinelearning", "aidevtlv",
-            "linkedin", "secrettelaviv", "aijobs",
+            "linkedin", "secrettelaviv", "aijobs", "efinancialcareers",
+            "monster", "ziprecruiter", "dice", "stackoverflow", "hired",
+            "angel", "wellfound", "lever", "greenhouse", "workday",
+            "jobify360", "goozali", "lhh",
         }
         if len(domain_company) > 2 and domain_company.lower() not in job_boards:
             # Verify the URL looks like a career/job page, not a random page
