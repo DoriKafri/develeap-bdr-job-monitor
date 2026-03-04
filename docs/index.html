@@ -415,7 +415,7 @@ function handleCredentialResponse(r) {
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 
 // ===== DATA =====
-const LAST_UPDATED = "2026-03-04T14:40:28Z";
+let LAST_UPDATED = "2026-03-04T14:40:28Z";
 const DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","AppsFlyer","Aqua","Armo","Ascending","Autodesk","Automarky","BYON","Beacon Security","Blink Aid","Bluespine","Bond","BridgeOver","Cal","Carebox","Cellebrite","Cellosign","Checkin Travels","Checkmarx","Checkpoint","Cibus","CitrusX","Civ Robotics","Cloudzone","Cruise","Ctera","Curated-ai","CurveTech","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","Elmodis","Empathy","Evogene","Ezbob","Fireblocks","Flexor","Foretellix","Gloat","Grain Finance","Harmonic","Hexagon","Honeywell","Hyp","Imagry","Infinpoint","InfluenceAI","Inuitive","Isracard","JFrog","Jedify","Knostic","LedderTech","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","monday.com","N2WS","NSO","NeoTech","Ness","NetNut","Networx","Nintex","Nuvo cares","Odysight","OwlDuet","OwnPlay","Per-me","Philips","Pillar Security","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","RSI","RapidAPI","Rapyd","Redis","Redwood","Revelator","Scytale","Sentrycs","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verbit","Verifood","Vorlon","WalkMe","XMCyber","Zafran","Zerto","Zimark","eXLGx","mPrest","Ness Technologies"];
 
 let ALL_JOBS = [
@@ -4307,17 +4307,19 @@ async function checkForNewListings() {
     const currentIds = new Set(ALL_JOBS.map(j => j.id));
     const newOnes = remoteJobs.filter(j => !currentIds.has(j.id));
     // Also check if timestamp changed (jobs updated even if IDs same)
-    const tm = html.match(/const LAST_UPDATED\s*=\s*"([^"]+)"/);
+    const tm = html.match(/(?:const|let)\s+LAST_UPDATED\s*=\s*"([^"]+)"/);
     const remoteTs = tm ? tm[1] : null;
     if (newOnes.length > 0) {
       _pendingNewJobs = remoteJobs;
       const banner = document.getElementById('newListingsBanner');
       banner.textContent = '\u2B06 ' + newOnes.length + ' new listing' + (newOnes.length > 1 ? 's' : '') + ' found — click to refresh';
+      if (remoteTs) banner.dataset.ts = remoteTs;
       banner.classList.add('show');
-    } else if (remoteTs && remoteTs !== LAST_UPDATED || remoteJobs.length !== ALL_JOBS.length) {
+    } else if (remoteTs && (remoteTs !== LAST_UPDATED || remoteJobs.length !== ALL_JOBS.length)) {
       _pendingNewJobs = remoteJobs;
       const banner = document.getElementById('newListingsBanner');
       banner.textContent = '\u2B06 Listings updated — click to refresh';
+      banner.dataset.ts = remoteTs;
       banner.classList.add('show');
     }
   } catch(e) { console.warn('Auto-refresh error:', e.message); }
@@ -4438,6 +4440,8 @@ function sortBy(col) {
 function getFilteredJobs() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   return ALL_JOBS.filter(j => {
+    // Skip jobs with empty/broken URLs
+    if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
     // Hidden companies filter
     if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
     if (currentView==='develeap'&&!j.isDeveleapCustomer) return false;

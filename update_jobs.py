@@ -811,7 +811,36 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
                 fixed.append(w)
         return " ".join(fixed)
 
-    # 0. Hebrew LinkedIn title pattern: "COMPANY גיוס עובדים ROLE"
+    # Known ATS slug → clean company name mapping
+    ATS_SLUG_MAP = {
+        "unity3d": "Unity",
+        "pagayais": "Pagaya",
+        "nextinsurance66": "Next Insurance",
+        "catonetworks": "Cato Networks",
+        "jobgether": "Jobgether",
+    }
+
+    # 0. ATS URL patterns — HIGHEST PRIORITY (most reliable source of company name)
+    # Greenhouse / Lever / Ashby / Comeet URLs embed the company slug
+    for ats_pat in [
+        r"greenhouse\.io/([a-z0-9\-]+)/jobs",
+        r"boards\.greenhouse\.io/([a-z0-9\-]+)",
+        r"job-boards\.greenhouse\.io/([a-z0-9\-]+)",
+        r"lever\.co/([a-z0-9\-]+)",
+        r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
+        r"jobs\.lever\.co/([a-z0-9\-]+)",
+        r"comeet\.com/jobs/([a-z0-9\-]+)",
+    ]:
+        m = re.search(ats_pat, url, re.IGNORECASE)
+        if m:
+            slug = m.group(1).lower()
+            if slug in ATS_SLUG_MAP:
+                return ATS_SLUG_MAP[slug]
+            clean = slug.replace("-", " ").title()
+            if len(clean) > 1:
+                return _fix_casing(clean)
+
+    # 0b. Hebrew LinkedIn title pattern: "COMPANY גיוס עובדים ROLE"
     heb_match = re.match(r'^([A-Za-z0-9\.\-\s&]+?)\s+גיוס\s+עובדים', title)
     if heb_match:
         company = heb_match.group(1).strip()
@@ -825,22 +854,6 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             company = _fix_casing(m.group(1).replace("-", " ").title())
             if not _is_job_title(company):
                 return company
-
-    # 1b. Greenhouse / Lever / Ashby URL patterns: greenhouse.io/COMPANY/jobs/...
-    for ats_pat in [
-        r"greenhouse\.io/([a-z0-9\-]+)/jobs",
-        r"boards\.greenhouse\.io/([a-z0-9\-]+)",
-        r"job-boards\.greenhouse\.io/([a-z0-9\-]+)",
-        r"lever\.co/([a-z0-9\-]+)",
-        r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
-        r"jobs\.lever\.co/([a-z0-9\-]+)",
-        r"comeet\.com/jobs/([a-z0-9\-]+)",
-    ]:
-        m = re.search(ats_pat, url, re.IGNORECASE)
-        if m:
-            slug = m.group(1).replace("-", " ").title()
-            if len(slug) > 1:
-                return _fix_casing(slug)
 
     # 1c. Known career site URL patterns: careers.COMPANY.com, jobs.COMPANY.com
     m = re.search(r"https?://(?:careers|jobs)\.([a-z0-9\-]+)\.", url)
@@ -1247,6 +1260,12 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_agg != len(existing):
         log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
 
+    # Remove jobs with empty or broken URLs
+    before_url = len(existing)
+    existing = [j for j in existing if j.get("sourceUrl", "").startswith("http")]
+    if before_url != len(existing):
+        log.info(f"  Removed {before_url - len(existing)} jobs with empty/broken URLs")
+
     # Remove SPA career sites where location can't be verified server-side
     # (e.g. jobs.apple.com /en-il/ shows jobs from all countries, not just Israel)
     spa_unverifiable = ["jobs.apple.com", "careers.google.com", "careers.microsoft.com"]
@@ -1530,14 +1549,32 @@ def main():
         log.error(f"Dashboard not found at {DASHBOARD_PATH}")
         return
 
-    # 3b. Clean existing jobs: fix entries where company looks like a job title
+    # 3b. Clean existing jobs: re-extract company from ATS URLs (most reliable)
+    #     and fix entries where company looks like a job title
+    ats_url_patterns = [
+        r"greenhouse\.io/", r"lever\.co/", r"ashbyhq\.com/", r"comeet\.com/jobs/",
+    ]
     for j in existing:
-        if _is_job_title(j.get("company", "")):
-            # Try to re-extract from title/snippet/url
-            fixed = extract_company(j.get("title", ""), j.get("description", ""), j.get("sourceUrl", ""))
-            log.info(f"  Fixed company: '{j['company']}' → '{fixed}'")
+        url = j.get("sourceUrl", "")
+        old_company = j.get("company", "")
+        needs_fix = False
+
+        # Always re-extract from ATS URLs (they embed the real company slug)
+        if any(re.search(p, url) for p in ats_url_patterns):
+            fixed = extract_company("", "", url)  # URL-only extraction
+            if fixed != "Unknown" and fixed.lower() != old_company.lower():
+                needs_fix = True
+        # Also fix entries where company looks like a job title
+        elif _is_job_title(old_company) or old_company in ("Unknown", ""):
+            fixed = extract_company(j.get("title", ""), j.get("description", ""), url)
+            if fixed != old_company:
+                needs_fix = True
+
+        if needs_fix:
+            log.info(f"  Fixed company: '{old_company}' → '{fixed}'")
             j["company"] = fixed
             j["isDeveleapCustomer"] = is_develeap_customer(fixed)
+            j["stakeholders"] = _get_stakeholders(fixed)
 
     # 4. Merge and identify new listings
     merged, truly_new = merge_jobs(existing, new_jobs)
