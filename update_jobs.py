@@ -824,6 +824,30 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
     existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
 
+    # Re-check existing LinkedIn listings — remove closed/stale ones
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    cleaned = []
+    for j in existing:
+        url = j.get("sourceUrl", "")
+        if "linkedin.com" in url:
+            page_data = scrape_job_page(url)
+            if page_data.get("closed"):
+                log.info(f"  Removing stale closed listing: {j.get('title', '')[:50]}")
+                continue
+            # If we now got a real date but the listing had "today", update it
+            if page_data.get("date") and j.get("posted") == today:
+                j["posted"] = page_data["date"]
+                log.info(f"  Updated date for existing: {j.get('title', '')[:40]} → {page_data['date']}")
+            # If no JSON-LD and no date, skip (likely old/closed)
+            if not page_data.get("_has_job_ld") and not page_data.get("date"):
+                log.info(f"  Removing stale LinkedIn (no JSON-LD): {j.get('title', '')[:50]}")
+                continue
+            time.sleep(random.uniform(0.3, 0.8))
+        cleaned.append(j)
+
+    log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} stale)")
+    existing = cleaned
+
     # Index existing by URL and company+title
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
