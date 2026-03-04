@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Develeap BDR - Job Listings Monitor</title>
+<link rel="icon" type="image/x-icon" href="https://www.develeap.com/favicon.ico">
+<link rel="shortcut icon" href="https://www.develeap.com/favicon.ico">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root {
+    --primary: #6161FF; --primary-dark: #4B4BCC; --primary-light: #E8E8FF;
+    --success: #00CA72; --warning: #FDAB3D; --danger: #E44258; --info: #579BFC;
+    --bg: #F6F7FB; --text: #323338; --text-light: #676879; --text-lighter: #C5C7D0;
+    --border: #E6E9EF; --develeap-flag: #FF3D57; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* AUTH */
+  #auth-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#1C1F3B 0%,#2B2F5C 50%,#6161FF 100%); color:white; }
+  .auth-card { background:white; border-radius:16px; padding:48px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-width:420px; width:90%; }
+  .auth-card .logo-area { margin-bottom:24px; }
+  .auth-card .logo-area svg { width:56px; height:56px; }
+  .auth-card h1 { color:var(--text); font-size:22px; margin-bottom:8px; }
+  .auth-card p { color:var(--text-light); font-size:14px; margin-bottom:32px; line-height:1.5; }
+  .auth-card .domain-note { font-size:12px; color:var(--text-lighter); margin-top:16px; }
+  .auth-error { background:#FFF0F0; color:var(--danger); padding:12px 16px; border-radius:8px; font-size:13px; margin-top:16px; display:none; }
+  #google-signin-btn { display:flex; justify-content:center; }
+
+  /* APP */
+  #app { display:none; }
+  .top-nav { background:linear-gradient(135deg,#1C1F3B 0%,#2B2F5C 100%); color:white; padding:0 32px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+  .top-nav .logo { display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px; }
+  .top-nav .logo svg { width:28px; height:28px; }
+  .nav-actions { display:flex; align-items:center; gap:16px; }
+  .nav-actions .last-update { font-size:13px; opacity:0.7; }
+  .user-info { display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.8; }
+  .user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); }
+  .btn { padding:8px 20px; border-radius:8px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
+  .btn-primary { background:var(--primary); color:white; }
+  .btn-primary:hover { background:var(--primary-dark); }
+  .btn-outline { background:transparent; color:white; border:1px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { background:rgba(255,255,255,0.1); }
+  .view-tabs { display:flex; gap:0; margin-left:24px; }
+  .view-tab { padding:8px 20px; font-size:13px; font-weight:600; border:none; background:transparent; color:rgba(255,255,255,0.6); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
+  .view-tab:hover { color:white; }
+  .view-tab.active { color:white; border-bottom-color:var(--primary); }
+
+  .stats-bar { display:flex; gap:16px; padding:20px 32px; background:white; border-bottom:1px solid var(--border); }
+  .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); }
+  .stat-card.develeap { border-left-color:var(--develeap-flag); }
+  .stat-card.new { border-left-color:var(--success); }
+  .stat-card.ai { border-left-color:var(--info); }
+  .stat-card.devops { border-left-color:var(--warning); }
+  .stat-number { font-size:28px; font-weight:800; line-height:1; }
+  .stat-label { font-size:13px; color:var(--text-light); margin-top:4px; }
+
+  .filters-bar { display:flex; align-items:center; gap:12px; padding:16px 32px; background:white; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .search-box { flex:1; min-width:250px; position:relative; }
+  .search-box input { width:100%; padding:10px 16px 10px 40px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; }
+  .search-box input:focus { border-color:var(--primary); }
+  .search-box svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-lighter); }
+  .filter-chip { padding:8px 16px; border-radius:20px; border:1px solid var(--border); background:white; font-size:13px; cursor:pointer; transition:all 0.2s; user-select:none; }
+  .filter-chip:hover { border-color:var(--primary); color:var(--primary); }
+  .filter-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
+  .filter-chip.develeap-filter.active { background:var(--develeap-flag); border-color:var(--develeap-flag); }
+
+  .table-container { margin:20px 32px 32px; background:white; border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
+  .table-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
+  .table-header h2 { font-size:16px; font-weight:700; }
+
+  .table-scroll { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; }
+
+  /* Column headers with sort + filter */
+  th {
+    text-align:left; padding:0; font-size:12px; font-weight:600; color:var(--text-light);
+    text-transform:uppercase; letter-spacing:0.5px; background:#FAFBFC;
+    border-bottom:1px solid var(--border); position:relative; user-select:none;
+    vertical-align:middle;
+  }
+  .th-wrap {
+    display:flex; align-items:center; padding:10px 16px; gap:2px; white-space:nowrap;
+  }
+  .th-inner {
+    display:flex; align-items:center; gap:4px;
+    cursor:pointer; flex:1;
+  }
+  .th-inner:hover { color:var(--primary); }
+  .sort-icon { font-size:10px; opacity:0.4; transition:opacity 0.2s; }
+  .th-inner:hover .sort-icon { opacity:0.8; }
+  .th-inner.sort-asc .sort-icon, .th-inner.sort-desc .sort-icon { opacity:1; color:var(--primary); }
+  .filter-icon { font-size:14px; cursor:pointer; padding:2px 4px; border-radius:4px; opacity:0.4; position:relative; flex-shrink:0; }
+  .filter-icon:hover { opacity:1; background:#E8E8FF; }
+  .filter-icon.active-filter { opacity:1; color:var(--primary); }
+
+  /* Column filter dropdown */
+  .col-filter-dropdown {
+    display:none; position:absolute; top:100%; left:0; min-width:220px; max-height:320px;
+    background:white; border:1px solid var(--border); border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:50; overflow:hidden;
+  }
+  .col-filter-dropdown.open { display:block; }
+  .col-filter-search { padding:8px; border-bottom:1px solid var(--border); }
+  .col-filter-search input {
+    width:100%; padding:6px 10px; border:1px solid var(--border); border-radius:6px;
+    font-size:12px; outline:none;
+  }
+  .col-filter-search input:focus { border-color:var(--primary); }
+  .col-filter-options { max-height:220px; overflow-y:auto; padding:4px 0; }
+  .col-filter-option {
+    display:flex; align-items:center; gap:8px; padding:6px 12px; font-size:12px;
+    cursor:pointer; transition:background 0.15s;
+  }
+  .col-filter-option:hover { background:var(--bg); }
+  .col-filter-option input[type=checkbox] { accent-color:var(--primary); cursor:pointer; }
+  .col-filter-actions { display:flex; gap:8px; padding:8px; border-top:1px solid var(--border); }
+  .col-filter-actions button {
+    flex:1; padding:6px; border-radius:6px; font-size:12px; font-weight:600;
+    cursor:pointer; border:1px solid var(--border); background:white; transition:all 0.15s;
+  }
+  .col-filter-actions button:hover { background:var(--bg); }
+  .col-filter-actions button.apply-btn { background:var(--primary); color:white; border-color:var(--primary); }
+  .col-filter-actions button.apply-btn:hover { background:var(--primary-dark); }
+
+  td { padding:14px 16px; font-size:14px; border-bottom:1px solid #F0F1F3; vertical-align:middle; }
+  tr:hover td { background:#F8F9FD; }
+  tr.develeap-customer td { background:#FFF5F7; }
+  tr.develeap-customer:hover td { background:#FFE8EC; }
+
+  .badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+  .badge-develeap { background:#FFE5E9; color:var(--develeap-flag); }
+  .badge-develeap::before { content:"\2605"; font-size:10px; }
+  .badge-new { background:#E5F9EE; color:#00854D; }
+  .badge-linkedin { background:#E8F4FE; color:#0A66C2; }
+  .badge-alljobs { background:#FFF3E0; color:#E65100; }
+  .badge-drushim { background:#E8F5E9; color:#2E7D32; }
+  .badge-glassdoor { background:#E0F7FA; color:#00838F; }
+  .badge-facebook { background:#E3F2FD; color:#1877F2; }
+  .badge-telegram { background:#E8F5F9; color:#0088CC; }
+  .badge-builtin { background:#F3E5F5; color:#7B1FA2; }
+  .badge-goozali { background:#FFF8E1; color:#F57F17; }
+
+  .job-title-cell { display:flex; flex-direction:column; gap:2px; }
+  .job-title { font-weight:600; color:var(--text); }
+  .job-title a { color:inherit; text-decoration:none; }
+  .job-title a:hover { color:var(--primary); text-decoration:underline; }
+  .job-subtitle { font-size:12px; color:var(--text-light); }
+  .company-cell { display:flex; align-items:center; gap:10px; }
+  .company-logo { width:36px; height:36px; border-radius:8px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; }
+  .company-info { display:flex; flex-direction:column; }
+  .company-name { font-weight:600; font-size:14px; }
+  .company-industry { font-size:12px; color:var(--text-light); }
+  .location-cell { display:flex; align-items:center; gap:4px; font-size:13px; color:var(--text-light); }
+  .date-cell { font-size:13px; color:var(--text-light); }
+  .date-cell.today { color:var(--success); font-weight:600; }
+  .empty-state { text-align:center; padding:60px 20px; color:var(--text-light); }
+  .empty-state h3 { font-size:18px; margin-bottom:8px; color:var(--text); }
+
+  .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; }
+  .sidebar-overlay.active { display:block; }
+  .sidebar { position:fixed; right:0; top:0; bottom:0; width:480px; background:white; box-shadow:-4px 0 20px rgba(0,0,0,0.15); z-index:201; overflow-y:auto; transform:translateX(100%); transition:transform 0.3s ease; }
+  .sidebar-overlay.active .sidebar { transform:translateX(0); }
+  .sidebar-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:white; z-index:1; }
+  .sidebar-close { width:32px; height:32px; border-radius:8px; border:none; background:var(--bg); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; }
+  .sidebar-body { padding:24px; }
+  .detail-section { margin-bottom:24px; }
+  .detail-label { font-size:12px; color:var(--text-light); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .detail-value { font-size:14px; line-height:1.6; }
+
+  /* Active column filter count badge */
+  .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+  @media (max-width:1024px) { .stats-bar{flex-wrap:wrap} .stat-card{min-width:calc(50% - 8px)} .table-container{margin:12px} .filters-bar{padding:12px} }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="logo-area"><svg viewBox="0 0 56 56" fill="none"><rect width="56" height="56" rx="12" fill="#6161FF"/><path d="M16 20h8v8h-8zM32 20h8v8h-8zM16 32h8v8h-8zM32 32h8v8h-8z" fill="white" opacity="0.9"/><path d="M24 16h8v8h-8z" fill="white"/></svg></div>
+    <h1>Develeap Job Monitor</h1>
+    <p>Sign in with your Develeap Google account to access the BDR job listings dashboard.</p>
+    <div id="google-signin-btn"></div>
+    <div class="auth-error" id="authError"></div>
+    <p class="domain-note">Access restricted to @develeap.com accounts</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="top-nav">
+    <div style="display:flex;align-items:center">
+      <div class="logo"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#6161FF"/><path d="M8 10h4v4H8zM16 10h4v4h-4zM8 16h4v4H8zM16 16h4v4h-4z" fill="white" opacity="0.9"/><path d="M12 8h4v4h-4z" fill="white"/></svg> Develeap Job Monitor</div>
+      <div class="view-tabs">
+        <button class="view-tab active" onclick="setView('all')">All Listings</button>
+        <button class="view-tab" onclick="setView('develeap')">Develeap Customers</button>
+        <button class="view-tab" onclick="setView('new')">New Today</button>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div class="user-info" id="userInfo"></div>
+      <span class="last-update" id="lastUpdate"></span>
+      <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
+      <button class="btn btn-outline" onclick="signOut()" style="font-size:12px">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
+    <div class="stat-card new"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
+    <div class="stat-card develeap"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
+    <div class="stat-card devops"><div class="stat-number" id="statDevOps" style="color:var(--warning)">0</div><div class="stat-label">DevOps Listings</div></div>
+    <div class="stat-card ai"><div class="stat-number" id="statAI" style="color:var(--info)">0</div><div class="stat-label">AI / Agentic Listings</div></div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters()">
+    </div>
+    <div class="filter-chip active" data-filter="all" onclick="toggleFilter(this)">All</div>
+    <div class="filter-chip" data-filter="devops" onclick="toggleFilter(this)">DevOps</div>
+    <div class="filter-chip" data-filter="ai" onclick="toggleFilter(this)">AI Engineering</div>
+    <div class="filter-chip" data-filter="agentic" onclick="toggleFilter(this)">Agentic / LLM</div>
+    <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h2 id="tableTitle">All Job Listings</h2>
+      <span style="font-size:13px;color:var(--text-light)" id="resultCount"></span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr>
+          <th style="width:30px"><div class="th-wrap"><div class="th-inner" style="cursor:default"></div></div></th>
+          <th style="width:280px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-title"></div></th>
+          <th style="width:200px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-company"></div></th>
+          <th style="width:130px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-location"></div></th>
+          <th style="width:100px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-source"></div></th>
+          <th style="width:100px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-category"></div></th>
+          <th style="width:100px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
+          <th style="width:100px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('isDeveleapCustomer')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-status"></div></th>
+        </tr></thead>
+        <tbody id="jobsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar(event)">
+  <div class="sidebar" onclick="event.stopPropagation()">
+    <div class="sidebar-header"><h3 id="sidebarTitle">Job Details</h3><button class="sidebar-close" onclick="closeSidebar()">&times;</button></div>
+    <div class="sidebar-body" id="sidebarBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== AUTH =====
+const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
+const ALLOWED_DOMAIN = 'develeap.com';
+const AUTH_ENABLED = GOOGLE_CLIENT_ID !== 'YOUR_CLIENT_ID.apps.googleusercontent.com';
+
+function initGoogleAuth() {
+  if (!AUTH_ENABLED) { document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block'; initApp(); return; }
+  google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleCredentialResponse, hosted_domain:ALLOWED_DOMAIN, auto_select:true });
+  google.accounts.id.renderButton(document.getElementById('google-signin-btn'),{theme:'outline',size:'large',width:300,text:'signin_with',shape:'rectangular'});
+  google.accounts.id.prompt();
+}
+function handleCredentialResponse(r) {
+  const p=JSON.parse(atob(r.credential.split('.')[1]));
+  if((p.email||'').split('@')[1]!==ALLOWED_DOMAIN){const e=document.getElementById('authError');e.textContent='Access restricted to @develeap.com. You signed in with '+p.email;e.style.display='block';return;}
+  document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block';
+  document.getElementById('userInfo').innerHTML=(p.picture?'<img src="'+p.picture+'" class="user-avatar">':'')+'<span>'+p.name+'</span>';
+  initApp();
+}
+function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+
+// ===== DATA =====
+const LAST_UPDATED = "2026-03-03T19:00:00+02:00";
+const DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","AppsFlyer","Aqua","Armo","Ascending","Autodesk","Automarky","BYON","Beacon Security","Blink Aid","Bluespine","Bond","BridgeOver","Cal","Carebox","Cellebrite","Cellosign","Checkin Travels","Checkmarx","Checkpoint","Cibus","CitrusX","Civ Robotics","Cloudzone","Cruise","Ctera","Curated-ai","CurveTech","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","Elmodis","Empathy","Evogene","Ezbob","Fireblocks","Flexor","Foretellix","Gloat","Grain Finance","Harmonic","Hexagon","Honeywell","Hyp","Imagry","Infinpoint","InfluenceAI","Inuitive","Isracard","JFrog","Jedify","Knostic","LedderTech","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","monday.com","N2WS","NSO","NeoTech","Ness","NetNut","Networx","Nintex","Nuvo cares","Odysight","OwlDuet","OwnPlay","Per-me","Philips","Pillar Security","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","RSI","RapidAPI","Rapyd","Redis","Redwood","Revelator","Scytale","Sentrycs","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verbit","Verifood","Vorlon","WalkMe","XMCyber","Zafran","Zerto","Zimark","eXLGx","mPrest","Ness Technologies"];
+
+let ALL_JOBS = [
+  {
+    "id": "0e15a0ac",
+    "title": "DevOps Engineer in Israel (No Remote)",
+    "subtitle": "We are looking for a DevOps Engineer with 3–4 years of hands",
+    "company": "Leidos",
+    "companyIndustry": "",
+    "location": "Remote",
+    "locationSlug": "remote",
+    "source": "other",
+    "sourceUrl": "https://careers.leidos.com/jobs/17400614-devops-engineer",
+    "category": "devops",
+    "posted": "2026-03-04",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "We are looking for a DevOps Engineer with 3–4 years of hands-on experience to work on an interesting classified project!",
+    "skills": []
+  },
+  {
+    "id": "d0fdf6d7",
+    "title": "Generative AI Engineer",
+    "subtitle": "We are seeking an experienced Generative AI Engineer to join",
+    "company": "KPMG",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://kpmg.co.il/technologyconsulting/he/vacancies/technology-consulting/generative-ai-engineer",
+    "category": "ai",
+    "posted": "2026-03-04",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "We are seeking an experienced Generative AI Engineer to join our AI squad at KPMG. This is a unique opportunity to wear ",
+    "skills": []
+  },
+  {
+    "id": "3431b233",
+    "title": "Software Engineer (Agentic AI), AI & Data Platforms ( AiDP)",
+    "subtitle": "Developer experience platform team is looking for an extraor",
+    "company": "Apple",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://jobs.apple.com/en-il/details/200624824-0157/software-engineer-agentic-ai-ai-data-platforms-aidp?team=MLAI",
+    "category": "agentic",
+    "posted": "2026-03-04",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "Developer experience platform team is looking for an extraordinary Software engineer to join our team. You will help des",
+    "skills": []
+  },
+  {
+    "id": "0bfab042",
+    "title": "SENIOR BACKEND SOFTWARE DEVELOPER",
+    "subtitle": "Experience in developing Agentic AI/LLM based applications ·",
+    "company": "BMC",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://jobs.bmc.com/oldcareersportal/JobDetail/Sr-Innovator-Israel-No-1-ISR/45969",
+    "category": "agentic",
+    "posted": "2026-03-04",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "Experience in developing Agentic AI/LLM based applications · Design of APIs or microservices that integrate AI Agents or",
+    "skills": []
+  },
+  {
+    "id": "cead7442",
+    "title": "Senior Backend Developer - (Agentic AI, Data Innovation Team)",
+    "subtitle": "We're looking for a Senior Backend Developer to join our Dat",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://jobs.lhh.co.il/companies/bmc-software/jobs/67915188-senior-backend-developer-agentic-ai-data-innovation-team",
+    "category": "agentic",
+    "posted": "2026-03-04",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "We're looking for a Senior Backend Developer to join our Data Innovation Team, building the next-generation Agentic AI O",
+    "skills": []
+  },
+  {
+    "id": "d52dedda",
+    "title": "DualBird גיוס עובדים DevOps Engineer | Tel Aviv District, ...",
+    "subtitle": "Design, build, and maintain AWS infrastructure using Terrafo",
+    "company": "DualBird",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/devops-engineer-at-dualbird-4361784722",
+    "category": "devops",
+    "posted": "2026-02-08",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "description": "Design, build, and maintain AWS infrastructure using Terraform or CloudFormation. · Build and manage CI/CD Pipelines for",
+    "skills": []
+  },
+  {
+    "id": "ca0fdee4",
+    "title": "Classiq גיוס עובדים DevOps Engineer - Israel | Tel Aviv-Yafo ...",
+    "subtitle": "2+ years of cloud experience, preferably AWS. 2+ years of ha",
+    "company": "Classiq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/devops-engineer-israel-at-classiq-4358348652",
+    "category": "devops",
+    "posted": "2026-01-07",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "2+ years of cloud experience, preferably AWS. 2+ years of hands-on Infrastructure as Code experience, preferably Terrafo",
+    "skills": []
+  },
+  {
+    "id": "9155aeb6",
+    "title": "Sr. Technical Developer – Agentic AI (Hybrid, Israel) - U.P.PRO",
+    "subtitle": "In this position, you will design, develop, and implement en",
+    "company": "U.P.PRO",
+    "companyIndustry": "",
+    "location": "Hybrid",
+    "locationSlug": "hybrid",
+    "source": "builtin",
+    "sourceUrl": "https://builtin.com/job/sr-technical-developer-agentic-ai-hybrid-israel/7863041",
+    "category": "agentic",
+    "posted": "2025-12-03",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "description": "In this position, you will design, develop, and implement end-to-end Agentic AI solutions. You will work closely with an",
+    "skills": []
+  }
+];
+// ===== SORTING & COLUMN FILTERING STATE =====
+let currentFilter = 'all', currentView = 'all';
+let sortCol = 'posted', sortDir = 'desc';
+let columnFilters = {}; // { colName: Set of selected values }
+let openFilterCol = null;
+
+const SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali'};
+const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic'};
+const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
+
+function initApp() {
+  ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
+  updateStats(); renderJobs();
+  document.getElementById('lastUpdate').textContent = 'Updated: '+new Date(LAST_UPDATED).toLocaleDateString('en-IL',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = ALL_JOBS.length;
+  document.getElementById('statNew').textContent = ALL_JOBS.filter(j=>j.isNew).length;
+  document.getElementById('statDeveleap').textContent = ALL_JOBS.filter(j=>j.isDeveleapCustomer).length;
+  document.getElementById('statDevOps').textContent = ALL_JOBS.filter(j=>j.category==='devops').length;
+  document.getElementById('statAI').textContent = ALL_JOBS.filter(j=>j.category==='ai'||j.category==='agentic').length;
+}
+
+// ===== COLUMN FILTER LOGIC =====
+function getUniqueValues(col) {
+  const vals = new Set();
+  ALL_JOBS.forEach(j => {
+    if (col==='title') vals.add(j.title);
+    else if (col==='company') vals.add(j.company);
+    else if (col==='location') vals.add(j.location);
+    else if (col==='source') vals.add(SOURCE_LABELS[j.source]||j.source);
+    else if (col==='category') vals.add(CAT_LABELS[j.category]||j.category);
+    else if (col==='status') { vals.add('Develeap Customer'); vals.add('Other'); }
+  });
+  return [...vals].sort();
+}
+
+function toggleColFilter(col, iconEl) {
+  const dropdown = document.getElementById('filter-'+col);
+  // Close any other open dropdown
+  document.querySelectorAll('.col-filter-dropdown.open').forEach(d => { if(d!==dropdown) d.classList.remove('open'); });
+  if (dropdown.classList.contains('open')) { dropdown.classList.remove('open'); openFilterCol=null; return; }
+  openFilterCol = col;
+  const values = getUniqueValues(col);
+  const selected = columnFilters[col] || new Set(values);
+  dropdown.innerHTML = `
+    <div class="col-filter-search"><input type="text" placeholder="Search..." oninput="filterColOptions('${col}',this.value)"></div>
+    <div class="col-filter-options" id="opts-${col}">
+      ${values.map(v => `<label class="col-filter-option" data-val="${v}"><input type="checkbox" ${selected.has(v)?'checked':''} onchange="updateColFilterPreview('${col}')"> ${v}</label>`).join('')}
+    </div>
+    <div class="col-filter-actions">
+      <button onclick="clearColFilter('${col}')">Clear</button>
+      <button onclick="selectAllColFilter('${col}')">Select All</button>
+      <button class="apply-btn" onclick="applyColFilter('${col}')">Apply</button>
+    </div>`;
+  dropdown.classList.add('open');
+}
+
+function filterColOptions(col, query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('#opts-'+col+' .col-filter-option').forEach(opt => {
+    opt.style.display = opt.dataset.val.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function clearColFilter(col) {
+  document.querySelectorAll('#opts-'+col+' input[type=checkbox]').forEach(cb => cb.checked=false);
+}
+function selectAllColFilter(col) {
+  document.querySelectorAll('#opts-'+col+' input[type=checkbox]').forEach(cb => cb.checked=true);
+}
+
+function applyColFilter(col) {
+  const selected = new Set();
+  document.querySelectorAll('#opts-'+col+' input[type=checkbox]:checked').forEach(cb => {
+    selected.add(cb.parentElement.dataset.val);
+  });
+  const allVals = getUniqueValues(col);
+  if (selected.size === allVals.length || selected.size === 0) {
+    delete columnFilters[col];
+  } else {
+    columnFilters[col] = selected;
+  }
+  // Update filter icon state
+  document.querySelectorAll(`th[data-col="${col}"] .filter-icon`).forEach(icon => {
+    icon.classList.toggle('active-filter', !!columnFilters[col]);
+  });
+  document.getElementById('filter-'+col).classList.remove('open');
+  applyAllFilters();
+}
+
+function getColValue(job, col) {
+  if (col==='title') return job.title;
+  if (col==='company') return job.company;
+  if (col==='location') return job.location;
+  if (col==='source') return SOURCE_LABELS[job.source]||job.source;
+  if (col==='category') return CAT_LABELS[job.category]||job.category;
+  if (col==='status') return job.isDeveleapCustomer ? 'Develeap Customer' : 'Other';
+  return '';
+}
+
+// ===== SORTING =====
+function sortBy(col) {
+  if (sortCol === col) { sortDir = sortDir==='asc'?'desc':'asc'; }
+  else { sortCol = col; sortDir = (col==='posted'||col==='isDeveleapCustomer') ? 'desc' : 'asc'; }
+  // Update UI indicators
+  document.querySelectorAll('.th-inner').forEach(th => th.classList.remove('sort-asc','sort-desc'));
+  const activeHeader = document.querySelector(`th[data-col="${col}"] .th-inner`);
+  if (activeHeader) activeHeader.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
+  applyAllFilters();
+}
+
+// ===== COMBINED FILTER + SORT =====
+function getFilteredJobs() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  return ALL_JOBS.filter(j => {
+    if (currentView==='develeap'&&!j.isDeveleapCustomer) return false;
+    if (currentView==='new'&&!j.isNew) return false;
+    if (currentFilter!=='all') {
+      if (currentFilter==='develeap'&&!j.isDeveleapCustomer) return false;
+      if (currentFilter!=='develeap'&&currentFilter!==j.category) return false;
+    }
+    // Column filters
+    for (const [col, vals] of Object.entries(columnFilters)) {
+      if (!vals.has(getColValue(j, col))) return false;
+    }
+    if (search && ![j.title,j.company,j.subtitle,j.location,...(j.skills||[])].join(' ').toLowerCase().includes(search)) return false;
+    return true;
+  });
+}
+
+function applyAllFilters() { renderJobs(); }
+
+function renderJobs() {
+  const jobs = getFilteredJobs();
+  const tbody = document.getElementById('jobsTable');
+  document.getElementById('resultCount').textContent = jobs.length+' listings';
+  if (!jobs.length) { tbody.innerHTML='<tr><td colspan="8"><div class="empty-state"><h3>No listings match your filters</h3><p>Try adjusting your search or column filters</p></div></td></tr>'; return; }
+
+  // Sort
+  jobs.sort((a,b) => {
+    let va, vb;
+    if (sortCol==='posted') { va=a.posted; vb=b.posted; }
+    else if (sortCol==='isDeveleapCustomer') { va=a.isDeveleapCustomer?1:0; vb=b.isDeveleapCustomer?1:0; }
+    else { va=(getColValue(a,sortCol)||'').toLowerCase(); vb=(getColValue(b,sortCol)||'').toLowerCase(); }
+    if (va<vb) return sortDir==='asc'?-1:1;
+    if (va>vb) return sortDir==='asc'?1:-1;
+    return 0;
+  });
+
+  tbody.innerHTML = jobs.map(j=>`
+    <tr class="${j.isDeveleapCustomer?'develeap-customer':''}" onclick="openDetail('${j.id}')" style="cursor:pointer">
+      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':'')}</td>
+      <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
+      <td><div class="company-cell"><div class="company-logo">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div></td>
+      <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
+      <td><span class="badge badge-${j.source}">${SOURCE_LABELS[j.source]||j.source}</span></td>
+      <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
+      <td>${formatDate(j.posted)}</td>
+      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">Customer</span>':'<span style="color:var(--text-lighter);font-size:12px">\u2014</span>'}</td>
+    </tr>`).join('');
+}
+
+function formatDate(d){const diff=(new Date().setHours(0,0,0,0)-new Date(d).setHours(0,0,0,0))/864e5;if(diff===0)return'<span class="date-cell today">Today</span>';if(diff===1)return'<span class="date-cell">Yesterday</span>';if(diff<7)return'<span class="date-cell">'+Math.floor(diff)+'d ago</span>';return'<span class="date-cell">'+new Date(d).toLocaleDateString('en-IL',{month:'short',day:'numeric'})+'</span>';}
+
+function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;applyAllFilters();}
+function setView(v){currentView=v;document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.view-tab').forEach(t=>{if((v==='all'&&t.textContent==='All Listings')||(v==='develeap'&&t.textContent==='Develeap Customers')||(v==='new'&&t.textContent==='New Today'))t.classList.add('active');});applyAllFilters();}
+
+function openDetail(id){
+  const j=ALL_JOBS.find(x=>x.id===id);if(!j)return;
+  document.getElementById('sidebarTitle').textContent=j.title;
+  document.getElementById('sidebarBody').innerHTML=`
+    <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':''}</div>
+    <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
+    <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
+    <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
+    <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>`;
+  document.getElementById('sidebarOverlay').classList.add('active');
+}
+function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverlay'))return;document.getElementById('sidebarOverlay').classList.remove('active');}
+
+function exportCSV(){
+  const jobs=getFilteredJobs();
+  const h=['Title','Company','Industry','Location','Source','Category','Posted','Develeap Customer','Description','Skills','URL'];
+  const rows=jobs.map(j=>[j.title,j.company,j.companyIndustry,j.location,j.source,j.category,j.posted,j.isDeveleapCustomer?'Yes':'No',j.description,(j.skills||[]).join('; '),j.sourceUrl]);
+  const csv=[h,...rows].map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='develeap-jobs-'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.col-filter-dropdown') && !e.target.closest('.filter-icon')) {
+    document.querySelectorAll('.col-filter-dropdown.open').forEach(d=>d.classList.remove('open'));
+  }
+  if (e.key==='Escape') closeSidebar();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
+
+window.onload = initGoogleAuth;
+</script>
+</body>
+</html>
