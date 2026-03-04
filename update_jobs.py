@@ -1904,9 +1904,10 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         continue
                 except ValueError:
                     pass
-            # If page has no date AND stored date looks like it was auto-assigned today, remove
-            if not page_data.get("date") and j.get("posted") == today:
-                log.info(f"  Removing existing LinkedIn listing with no real date: {j.get('title', '')[:50]}")
+            # If page has no date, the listing is likely stale — LinkedIn strips
+            # metadata from old/closed listings. Remove regardless of stored date.
+            if not page_data.get("date"):
+                log.info(f"  Removing existing LinkedIn listing with no verifiable date: {j.get('title', '')[:50]}")
                 continue
 
             # Check location country
