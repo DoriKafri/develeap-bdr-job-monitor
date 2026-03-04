@@ -74,9 +74,23 @@
   .filter-chip:hover { border-color:var(--primary); color:var(--primary); }
   .filter-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
   .filter-chip.develeap-filter.active { background:var(--develeap-flag); border-color:var(--develeap-flag); }
-  .filter-chip.source-filter { gap:4px; display:inline-flex; align-items:center; }
-  .filter-chip.source-filter.active { background:var(--primary); color:white; border-color:var(--primary); }
-  .filter-chip.source-filter.active img { filter:brightness(0) invert(1); }
+  .source-dropdown-wrap { position:relative; display:inline-block; vertical-align:middle; }
+  .source-dropdown-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:white; font-size:13px; cursor:pointer; color:var(--text); font-weight:500; transition:all .15s; }
+  .source-dropdown-btn:hover { border-color:var(--primary); color:var(--primary); }
+  .source-dropdown-btn.has-selection { background:var(--primary); color:white; border-color:var(--primary); }
+  .source-dropdown-btn .arrow { font-size:10px; opacity:0.6; transition:transform .2s; }
+  .source-dropdown-btn.open .arrow { transform:rotate(180deg); }
+  .source-dropdown-panel { display:none; position:absolute; top:calc(100% + 6px); left:0; background:white; border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:220px; z-index:200; padding:8px 0; }
+  .source-dropdown-panel.open { display:block; }
+  .source-dropdown-item { display:flex; align-items:center; gap:10px; padding:8px 16px; cursor:pointer; font-size:13px; color:var(--text); transition:background .1s; }
+  .source-dropdown-item:hover { background:var(--bg); }
+  .source-dropdown-item input[type="checkbox"] { accent-color:var(--primary); width:16px; height:16px; cursor:pointer; flex-shrink:0; }
+  .source-dropdown-item img { width:16px; height:16px; border-radius:3px; flex-shrink:0; }
+  .source-dropdown-item .src-label { flex:1; }
+  .source-dropdown-item .src-count { font-size:11px; color:var(--text-lighter); min-width:20px; text-align:right; }
+  .source-dropdown-footer { border-top:1px solid var(--border); margin-top:4px; padding:8px 16px 4px; }
+  .source-dropdown-footer button { background:none; border:none; color:var(--primary); font-size:12px; cursor:pointer; padding:4px 0; }
+  .source-dropdown-footer button:hover { text-decoration:underline; }
 
   .table-container { margin:20px 32px 32px; background:white; border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
   .table-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
@@ -369,14 +383,14 @@
     <div class="filter-chip" data-filter="ai" onclick="toggleFilter(this)">AI Engineering</div>
     <div class="filter-chip" data-filter="agentic" onclick="toggleFilter(this)">Agentic / LLM</div>
     <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
-    <span style="display:inline-block;width:1px;height:20px;background:var(--border);margin:0 4px;vertical-align:middle"></span>
-    <div class="filter-chip source-filter" data-filter="src:linkedin" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=linkedin.com&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> LinkedIn</div>
-    <div class="filter-chip source-filter" data-filter="src:greenhouse" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=greenhouse.io&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Greenhouse</div>
-    <div class="filter-chip source-filter" data-filter="src:comeet" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=comeet.com&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Comeet</div>
-    <div class="filter-chip source-filter" data-filter="src:lever" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=lever.co&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Lever</div>
-    <div class="filter-chip source-filter" data-filter="src:ashby" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=ashbyhq.com&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Ashby</div>
-    <div class="filter-chip source-filter" data-filter="src:workday" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=workday.com&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Workday</div>
-    <div class="filter-chip source-filter" data-filter="src:glassdoor" onclick="toggleSourceFilter(this)"><img src="https://www.google.com/s2/favicons?domain=glassdoor.com&sz=32" style="width:14px;height:14px;border-radius:2px;vertical-align:-2px"> Glassdoor</div>
+    <div class="source-dropdown-wrap" id="sourceDropdownWrap">
+      <button class="source-dropdown-btn" id="sourceDropdownBtn" onclick="toggleSourceDropdown(event)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <span id="sourceDropdownLabel">Sources</span>
+        <span class="arrow">&#9660;</span>
+      </button>
+      <div class="source-dropdown-panel" id="sourceDropdownPanel"></div>
+    </div>
     <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
   </div>
 
@@ -5382,6 +5396,7 @@ const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
 function initApp() {
   ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
   updateHiddenUI();
+  buildSourceDropdown();
   updateStats(); renderJobs();
   updateFreshnessDisplay();
   setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
@@ -5610,8 +5625,77 @@ function renderJobs() {
 function formatDate(d){const diff=(new Date().setHours(0,0,0,0)-new Date(d).setHours(0,0,0,0))/864e5;if(diff===0)return'<span class="date-cell today">Today</span>';if(diff===1)return'<span class="date-cell">Yesterday</span>';if(diff<7)return'<span class="date-cell">'+Math.floor(diff)+'d ago</span>';return'<span class="date-cell">'+new Date(d).toLocaleDateString('en-IL',{month:'short',day:'numeric'})+'</span>';}
 
 let activeSourceFilters = new Set();
-function toggleFilter(el){document.querySelectorAll('.filter-chip:not(.source-filter)').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;applyAllFilters();}
-function toggleSourceFilter(el){el.classList.toggle('active');const src=el.dataset.filter.replace('src:','');if(activeSourceFilters.has(src)){activeSourceFilters.delete(src);}else{activeSourceFilters.add(src);}applyAllFilters();}
+function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;applyAllFilters();}
+
+// ── Source Dropdown ──────────────────────────────────────────────────────
+function buildSourceDropdown() {
+  const counts = {};
+  ALL_JOBS.forEach(j => { const s = j.source || 'other'; counts[s] = (counts[s]||0) + 1; });
+  const sources = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  const panel = document.getElementById('sourceDropdownPanel');
+  panel.innerHTML = sources.map(([src, count]) => {
+    const label = SOURCE_LABELS[src] || src;
+    const domain = SOURCE_DOMAINS[src] || '';
+    const icon = domain ? '<img src="https://www.google.com/s2/favicons?domain=' + domain + '&sz=32" alt="">' : '<span style="display:inline-block;width:16px"></span>';
+    return '<label class="source-dropdown-item" onclick="event.stopPropagation()">' +
+      '<input type="checkbox" data-source="' + src + '" onchange="onSourceCheckChange()">' +
+      icon +
+      '<span class="src-label">' + label + '</span>' +
+      '<span class="src-count">' + count + '</span></label>';
+  }).join('') + '<div class="source-dropdown-footer"><button onclick="clearSourceFilters()">Clear all</button></div>';
+}
+
+function toggleSourceDropdown(e) {
+  e.stopPropagation();
+  const btn = document.getElementById('sourceDropdownBtn');
+  const panel = document.getElementById('sourceDropdownPanel');
+  const isOpen = panel.classList.contains('open');
+  // Close any other open dropdowns
+  document.querySelectorAll('.col-filter-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (isOpen) { panel.classList.remove('open'); btn.classList.remove('open'); }
+  else { panel.classList.add('open'); btn.classList.add('open'); }
+}
+
+function onSourceCheckChange() {
+  activeSourceFilters.clear();
+  document.querySelectorAll('#sourceDropdownPanel input[type="checkbox"]:checked').forEach(cb => {
+    activeSourceFilters.add(cb.dataset.source);
+  });
+  updateSourceBtnLabel();
+  applyAllFilters();
+}
+
+function clearSourceFilters() {
+  activeSourceFilters.clear();
+  document.querySelectorAll('#sourceDropdownPanel input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+  updateSourceBtnLabel();
+  applyAllFilters();
+}
+
+function updateSourceBtnLabel() {
+  const btn = document.getElementById('sourceDropdownBtn');
+  const label = document.getElementById('sourceDropdownLabel');
+  if (activeSourceFilters.size === 0) {
+    label.textContent = 'Sources';
+    btn.classList.remove('has-selection');
+  } else if (activeSourceFilters.size === 1) {
+    const src = [...activeSourceFilters][0];
+    label.textContent = SOURCE_LABELS[src] || src;
+    btn.classList.add('has-selection');
+  } else {
+    label.textContent = activeSourceFilters.size + ' Sources';
+    btn.classList.add('has-selection');
+  }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('sourceDropdownWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('sourceDropdownPanel').classList.remove('open');
+    document.getElementById('sourceDropdownBtn').classList.remove('open');
+  }
+});
 function setView(v){currentView=v;document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.view-tab').forEach(t=>{if((v==='all'&&t.textContent==='All Listings')||(v==='develeap'&&t.textContent==='Develeap Customers')||(v==='new'&&t.textContent==='New Today'))t.classList.add('active');});applyAllFilters();}
 
 function openDetail(id){
