@@ -1722,6 +1722,8 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         j["stakeholders"] = new_stakeholders
         # Update logo
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
+        # Re-classify source from URL (picks up newly added SOURCE_MAP entries)
+        j["source"] = detect_source(j.get("sourceUrl", ""))
 
     truly_new = []
     for j in new_jobs:
