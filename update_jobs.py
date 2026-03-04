@@ -469,6 +469,50 @@ COMPANY_STAKEHOLDERS = {
     "marvin": [
         {"name": "Hila Qu", "title": "CEO", "linkedin": "https://www.linkedin.com/in/hilaqu/", "source": "LinkedIn", "email": "hila@marvin.com"},
     ],
+    "aqua security": [
+        {"name": "Dror Davidoff", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/drordavidoff/", "source": "LinkedIn", "email": "dror@aquasec.com"},
+        {"name": "Amir Jerbi", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/amirjerbi/", "source": "LinkedIn", "email": "amir@aquasec.com"},
+    ],
+    "oligo security": [
+        {"name": "Gal Elbaz", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/gal-elbaz-2b70b214/", "source": "LinkedIn", "email": "gal@oligo.security"},
+        {"name": "Nadav Czerninski", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/nadavcz/", "source": "CTech", "email": "nadav@oligo.security"},
+    ],
+    "quantum machines": [
+        {"name": "Itamar Sivan", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/itamarsivan/", "source": "LinkedIn", "email": "itamar@quantum-machines.co"},
+        {"name": "Yonatan Cohen", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yonatan-cohen-05684411/", "source": "Calcalist", "email": "yonatan@quantum-machines.co"},
+    ],
+    "mastercard": [
+        {"name": "Jorn Lambert", "title": "Chief Digital Officer", "linkedin": "https://www.linkedin.com/in/jornlambert/", "source": "LinkedIn", "email": ""},
+    ],
+    "salesforce": [
+        {"name": "Michal Ronen-Harel", "title": "VP Engineering, Israel R&D Center", "linkedin": "https://www.linkedin.com/in/michalrh/", "source": "LinkedIn", "email": ""},
+    ],
+    "blink ops": [
+        {"name": "Gil Barak", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/gilbarak/", "source": "LinkedIn", "email": "gil@blinkops.com"},
+        {"name": "Ofer Smadari", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/ofersmadari/", "source": "LinkedIn", "email": "ofer@blinkops.com"},
+    ],
+    "chaos labs": [
+        {"name": "Omer Goldberg", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/omer-goldberg/", "source": "LinkedIn", "email": "omer@chaoslabs.xyz"},
+    ],
+    "tavily": [
+        {"name": "Lior Gross", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/liorgross/", "source": "LinkedIn", "email": "lior@tavily.com"},
+    ],
+    "quanthealth": [
+        {"name": "Orr Inbar", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/orrinbar/", "source": "LinkedIn", "email": "orr@quanthealth.com"},
+    ],
+    "cato networks": [
+        {"name": "Shlomo Kramer", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/shlomokramer/", "source": "Globes", "email": ""},
+        {"name": "Eyal Heiman", "title": "CTO", "linkedin": "https://www.linkedin.com/in/eyal-heiman-99233a98/", "source": "LinkedIn", "email": ""},
+    ],
+    "global payments": [
+        {"name": "Josh Whipple", "title": "SVP Technology", "linkedin": "https://www.linkedin.com/in/joshwhipple/", "source": "LinkedIn", "email": ""},
+    ],
+    "yael group": [
+        {"name": "Ohad Zeira", "title": "CEO", "linkedin": "https://www.linkedin.com/in/ohad-zeira/", "source": "LinkedIn", "email": "ohad@yaelgroup.com"},
+    ],
+    "terasky": [
+        {"name": "Or Yaacov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/oryaacov/", "source": "LinkedIn", "email": "or@terasky.com"},
+    ],
 }
 
 SEARCH_QUERIES = [

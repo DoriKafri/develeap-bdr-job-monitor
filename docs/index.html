@@ -6865,8 +6865,13 @@ function renderJobs() {
   document.getElementById('resultCount').textContent = jobs.length+' listings';
   if (!jobs.length) { tbody.innerHTML='<tr><td colspan="8"><div class="empty-state"><h3>No listings match your filters</h3><p>Try adjusting your search or column filters</p></div></td></tr>'; return; }
 
-  // Sort
+  // Sort — "NEW" listings always pinned to the top
   jobs.sort((a,b) => {
+    // New listings first
+    const aNew = a.isNew ? 1 : 0;
+    const bNew = b.isNew ? 1 : 0;
+    if (aNew !== bNew) return bNew - aNew;
+    // Then normal sort
     let va, vb;
     if (sortCol==='posted') { va=a.posted; vb=b.posted; }
     else if (sortCol==='isDeveleapCustomer') { va=a.isDeveleapCustomer?1:0; vb=b.isDeveleapCustomer?1:0; }
