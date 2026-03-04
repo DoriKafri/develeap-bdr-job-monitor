@@ -60,7 +60,9 @@
   .view-tab.active { color:white; border-bottom-color:var(--accent); }
 
   .stats-bar { display:flex; gap:16px; padding:20px 32px; background:white; border-bottom:1px solid var(--border); }
-  .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); }
+  .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+  .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+  .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
   .stat-card.develeap { border-left-color:var(--accent); }
   .stat-card.new { border-left-color:var(--success); }
   .stat-card.ai { border-left-color:var(--teal); }
@@ -375,12 +377,12 @@
   <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
   <div class="stats-bar">
-    <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
-    <div class="stat-card new"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
-    <div class="stat-card develeap"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
-    <div class="stat-card devops"><div class="stat-number" id="statDevOps" style="color:var(--warning)">0</div><div class="stat-label">DevOps Listings</div></div>
-    <div class="stat-card ai"><div class="stat-number" id="statAI" style="color:var(--info)">0</div><div class="stat-label">AI / Agentic Listings</div></div>
-    <div class="stat-card finops"><div class="stat-number" id="statFinOps" style="color:#00897B">0</div><div class="stat-label">FinOps Listings</div></div>
+    <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
+    <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
+    <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
+    <div class="stat-card devops" data-stat="devops" onclick="filterByStat(this)"><div class="stat-number" id="statDevOps" style="color:var(--warning)">0</div><div class="stat-label">DevOps Listings</div></div>
+    <div class="stat-card ai" data-stat="ai_agentic" onclick="filterByStat(this)"><div class="stat-number" id="statAI" style="color:var(--info)">0</div><div class="stat-label">AI / Agentic Listings</div></div>
+    <div class="stat-card finops" data-stat="finops" onclick="filterByStat(this)"><div class="stat-number" id="statFinOps" style="color:#00897B">0</div><div class="stat-label">FinOps Listings</div></div>
   </div>
 
   <div class="filters-bar">
@@ -6930,7 +6932,9 @@ function getFilteredJobs() {
     if (currentView==='new'&&!j.isNew) return false;
     if (currentFilter!=='all') {
       if (currentFilter==='develeap'&&!j.isDeveleapCustomer) return false;
-      if (currentFilter!=='develeap'&&currentFilter!==j.category) return false;
+      else if (currentFilter==='new'&&!j.isNew) return false;
+      else if (currentFilter==='ai_agentic'&&j.category!=='ai'&&j.category!=='agentic') return false;
+      else if (currentFilter!=='develeap'&&currentFilter!=='new'&&currentFilter!=='ai_agentic'&&currentFilter!==j.category) return false;
     }
     // Column filters
     for (const [col, vals] of Object.entries(columnFilters)) {
@@ -6983,7 +6987,38 @@ function renderJobs() {
 function formatDate(d){const diff=(new Date().setHours(0,0,0,0)-new Date(d).setHours(0,0,0,0))/864e5;if(diff===0)return'<span class="date-cell today">Today</span>';if(diff===1)return'<span class="date-cell">Yesterday</span>';if(diff<7)return'<span class="date-cell">'+Math.floor(diff)+'d ago</span>';return'<span class="date-cell">'+new Date(d).toLocaleDateString('en-IL',{month:'short',day:'numeric'})+'</span>';}
 
 let activeSourceFilters = new Set();
-function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;applyAllFilters();}
+function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;syncStatCardHighlight();applyAllFilters();}
+
+function filterByStat(el){
+  const stat=el.dataset.stat;
+  // Map stat card to the appropriate currentFilter value
+  let filterVal='all';
+  if(stat==='devops')filterVal='devops';
+  else if(stat==='ai_agentic')filterVal='ai_agentic';
+  else if(stat==='finops')filterVal='finops';
+  else if(stat==='develeap')filterVal='develeap';
+  else if(stat==='new')filterVal='new';
+  else filterVal='all';
+  currentFilter=filterVal;
+  // Sync filter chips — clear all, activate matching or 'All'
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  const matchChip=document.querySelector('.filter-chip[data-filter="'+filterVal+'"]');
+  if(matchChip)matchChip.classList.add('active');
+  else document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
+  syncStatCardHighlight();
+  applyAllFilters();
+}
+
+function syncStatCardHighlight(){
+  document.querySelectorAll('.stat-card').forEach(c=>c.classList.remove('stat-active'));
+  // Map currentFilter to stat card data-stat
+  let statVal=currentFilter;
+  if(currentFilter==='ai'||currentFilter==='agentic')statVal='ai_agentic';
+  if(currentFilter==='all')statVal='all';
+  const card=document.querySelector('.stat-card[data-stat="'+statVal+'"]');
+  if(card)card.classList.add('stat-active');
+  else document.querySelector('.stat-card[data-stat="all"]').classList.add('stat-active');
+}
 
 // ── Source Dropdown ──────────────────────────────────────────────────────
 function buildSourceDropdown() {
