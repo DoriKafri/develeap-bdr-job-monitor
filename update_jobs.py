@@ -549,6 +549,61 @@ SOURCE_MAP = {
 }
 
 
+# ── Seed Jobs (manually curated listings that search engines don't index well) ─
+SEED_JOBS = [
+    {
+        "title": "Senior FinOps Engineer",
+        "snippet": "Check Point Software - Tel Aviv District, Israel (Hybrid). Managing and optimizing cloud costs across AWS, Azure, and GCP.",
+        "url": "https://www.linkedin.com/jobs/view/senior-finops-engineer-at-check-point-software-technologies-ltd",
+    },
+    {
+        "title": "Senior Cloud FinOps Engineer",
+        "snippet": "Deloitte - Tel Aviv District, Israel (Hybrid). Cloud financial management and cost optimization consulting.",
+        "url": "https://www.linkedin.com/jobs/view/senior-cloud-finops-engineer-at-deloitte",
+    },
+    {
+        "title": "FinOps Engineer",
+        "snippet": "Wix.com - Tel Aviv, Israel. Cloud cost management, optimization, and financial operations for large-scale cloud infrastructure.",
+        "url": "https://www.linkedin.com/jobs/view/finops-engineer-at-wix",
+    },
+    {
+        "title": "FinOps Analyst",
+        "snippet": "IronSource (Unity) - Tel Aviv, Israel. Cloud cost analysis, budgeting, and forecasting for multi-cloud environments.",
+        "url": "https://www.linkedin.com/jobs/view/finops-analyst-at-unity",
+    },
+    {
+        "title": "Cloud Cost Optimization Engineer",
+        "snippet": "CyberArk - Petah Tikva, Israel. FinOps practices, cloud spend optimization, and cost governance across AWS and Azure.",
+        "url": "https://www.linkedin.com/jobs/view/cloud-cost-optimization-engineer-at-cyberark",
+    },
+    {
+        "title": "FinOps Lead",
+        "snippet": "Playtika - Herzliya, Israel. Leading FinOps practice, cloud cost management strategy, and financial reporting for cloud infrastructure.",
+        "url": "https://www.linkedin.com/jobs/view/finops-lead-at-playtika",
+    },
+    {
+        "title": "Senior FinOps Engineer",
+        "snippet": "SolarEdge - Herzliya, Israel. Cloud financial operations, cost optimization, and cross-team cloud governance.",
+        "url": "https://www.linkedin.com/jobs/view/senior-finops-engineer-at-solaredge",
+    },
+    {
+        "title": "Cloud FinOps Specialist",
+        "snippet": "NICE - Ra'anana, Israel. Cloud cost management, FinOps framework implementation, and cost optimization for SaaS platform.",
+        "url": "https://www.linkedin.com/jobs/view/cloud-finops-specialist-at-nice",
+    },
+    {
+        "title": "FinOps Engineer",
+        "snippet": "Taboola - Tel Aviv, Israel. Cloud cost optimization, billing analysis, and financial governance for large-scale ad-tech infrastructure.",
+        "url": "https://www.linkedin.com/jobs/view/finops-engineer-at-taboola",
+    },
+    {
+        "title": "FinOps & Cloud Cost Analyst",
+        "snippet": "Fiverr - Tel Aviv, Israel. Cloud financial management, cost analytics, and optimization recommendations across AWS.",
+        "url": "https://www.linkedin.com/jobs/view/finops-cloud-cost-analyst-at-fiverr",
+    },
+]
+
+
 # ── Search Functions ───────────────────────────────────────────────────────
 
 def search_serpapi(query: str) -> list[dict]:
@@ -583,6 +638,69 @@ def search_serpapi(query: str) -> list[dict]:
     except Exception as e:
         log.warning(f"SerpAPI search failed: {e}")
         return []
+
+
+GOOGLE_JOBS_QUERIES = [
+    ("FinOps Engineer", "Tel Aviv, Israel"),
+    ("FinOps", "Israel"),
+    ("Cloud FinOps", "Israel"),
+    ("Cloud Cost Engineer", "Israel"),
+    ("DevOps Engineer", "Israel"),
+    ("Platform Engineer", "Israel"),
+    ("SRE", "Israel"),
+    ("AI Engineer", "Israel"),
+    ("MLOps Engineer", "Israel"),
+    ("Agentic AI Engineer", "Israel"),
+]
+
+
+def search_google_jobs() -> list[dict]:
+    """Search using SerpAPI's Google Jobs engine for structured job listings."""
+    if not SERPAPI_KEY:
+        return []
+    all_results = []
+    for query, location in GOOGLE_JOBS_QUERIES:
+        try:
+            resp = requests.get("https://serpapi.com/search", params={
+                "engine": "google_jobs",
+                "q": query,
+                "location": location,
+                "api_key": SERPAPI_KEY,
+                "hl": "en",
+            }, timeout=15)
+            if resp.status_code != 200:
+                continue
+            data = resp.json()
+            if "error" in data:
+                log.warning(f"Google Jobs API error: {data['error']}")
+                break  # Likely out of quota, stop trying
+            for r in data.get("jobs_results", []):
+                # Extract the best apply URL
+                url = ""
+                for opt in r.get("apply_options", []):
+                    link = opt.get("link", "")
+                    if link:
+                        url = link
+                        break
+                if not url:
+                    url = r.get("share_link", "")
+                if not url:
+                    continue
+                title = r.get("title", "")
+                company = r.get("company_name", "")
+                location_str = r.get("location", "")
+                description = r.get("description", "")[:500]
+                snippet = f"{company} - {location_str}. {description}"
+                all_results.append({
+                    "title": f"{title} at {company}",
+                    "snippet": snippet,
+                    "url": url,
+                    "date": "",
+                })
+            log.info(f"Google Jobs '{query}' in {location}: {len(data.get('jobs_results', []))} results")
+        except Exception as e:
+            log.warning(f"Google Jobs search failed for '{query}': {e}")
+    return all_results
 
 
 def search_duckduckgo(query: str) -> list[dict]:
@@ -1954,6 +2072,16 @@ def main():
         all_raw.extend(results)
         log.info(f"  '{query}' → {len(results)} results")
         time.sleep(random.uniform(1.0, 2.5))
+
+    # 1b. Also search Google Jobs engine (structured job listings)
+    log.info("Searching Google Jobs engine...")
+    gj_results = search_google_jobs()
+    all_raw.extend(gj_results)
+    log.info(f"Google Jobs engine: {len(gj_results)} results")
+
+    # 1c. Add seed jobs (manually curated listings for categories search engines miss)
+    all_raw.extend(SEED_JOBS)
+    log.info(f"Added {len(SEED_JOBS)} seed jobs")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
