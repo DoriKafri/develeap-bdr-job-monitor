@@ -52,20 +52,31 @@ DEVELEAP_CUSTOMERS = [
 SEARCH_QUERIES = [
     # LinkedIn individual job listings (highest quality)
     "site:linkedin.com/jobs/view DevOps Engineer Israel",
+    "site:linkedin.com/jobs/view Senior DevOps Engineer Israel",
     "site:linkedin.com/jobs/view AI Engineer Israel",
+    "site:linkedin.com/jobs/view Machine Learning Engineer Israel",
     "site:linkedin.com/jobs/view Platform Engineer Israel",
     "site:linkedin.com/jobs/view MLOps Engineer Israel",
     "site:linkedin.com/jobs/view SRE Israel",
     "site:linkedin.com/jobs/view Cloud Engineer Israel",
     "site:linkedin.com/jobs/view Agentic AI Israel",
     "site:linkedin.com/jobs/view DevSecOps Israel",
+    "site:linkedin.com/jobs/view Infrastructure Engineer Israel",
+    "site:linkedin.com/jobs/view Data Engineer Israel",
+    "site:linkedin.com/jobs/view Backend Engineer Israel",
+    # Career sites and job boards
+    "DevOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
+    "AI Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
+    "DevOps Engineer Israel site:apple.com OR site:microsoft.com OR site:google.com",
     # General web searches
     "DevOps Engineer Israel hiring 2026",
     "AI Engineer Israel job 2026",
     "Agentic Developer Israel job",
     "Platform Engineer Israel hiring",
-    "MLOps Engineer Israel",
-    "SRE Israel job",
+    "MLOps Engineer Israel job",
+    "SRE Israel job 2026",
+    "Cloud Engineer Israel job 2026",
+    "Infrastructure Engineer Israel hiring",
 ]
 
 CATEGORY_KEYWORDS = {
@@ -294,17 +305,15 @@ def scrape_job_page(url: str) -> dict:
                 log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
                 break
 
-        # LinkedIn-specific closed detection: active listings have JSON-LD,
-        # closed/expired listings lose their JSON-LD block.
-        if not result["closed"] and "linkedin.com" in url:
+        # LinkedIn: check for JSON-LD (indicates active listing)
+        if "linkedin.com" in url:
             has_job_ld = bool(re.search(
                 r'<script[^>]*type="application/ld\+json"[^>]*>.*?"@type"\s*:\s*"JobPosting"',
                 text, re.DOTALL
             ))
             result["_has_job_ld"] = has_job_ld  # pass this info downstream
-            if not has_job_ld and len(text) > 2000:  # Page loaded but no JSON-LD
-                result["closed"] = True
-                log.info(f"  CLOSED (no JSON-LD, {len(text)} chars): {url[:60]}")
+            # Note: missing JSON-LD alone doesn't mean closed — LinkedIn often
+            # blocks JSON-LD from data center IPs. Only explicit closed phrases count.
 
         # ── Extract company name (especially from LinkedIn) ──
         # LinkedIn: "companyName" in inline JSON
@@ -780,11 +789,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if page_data.get("date"):
                 j["posted"] = page_data["date"]
                 log.info(f"  Date: {page_data['date']} for {j['title'][:40]}")
-            elif "linkedin.com" in url and not page_data.get("_has_job_ld"):
-                # LinkedIn page without JSON-LD and no date — likely old/closed
-                log.info(f"  Skipping LinkedIn listing with no date/JSON-LD: {j['title'][:50]}")
-                continue
             else:
+                # No date found — default to today for new search results
+                # (Google indexed it recently, so it's likely still active)
                 j["posted"] = today
 
             # Fix company if still Unknown
@@ -861,7 +868,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_agg != len(existing):
         log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
 
-    # Re-check existing LinkedIn listings — remove closed/stale ones
+    # Re-check existing LinkedIn listings — only remove explicitly closed ones
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
     for j in existing:
@@ -869,20 +876,17 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if "linkedin.com" in url:
             page_data = scrape_job_page(url)
             if page_data.get("closed"):
-                log.info(f"  Removing stale closed listing: {j.get('title', '')[:50]}")
+                log.info(f"  Removing closed listing: {j.get('title', '')[:50]}")
                 continue
-            # If we now got a real date but the listing had "today", update it
-            if page_data.get("date") and j.get("posted") == today:
-                j["posted"] = page_data["date"]
-                log.info(f"  Updated date for existing: {j.get('title', '')[:40]} → {page_data['date']}")
-            # If no JSON-LD and no date, skip (likely old/closed)
-            if not page_data.get("_has_job_ld") and not page_data.get("date"):
-                log.info(f"  Removing stale LinkedIn (no JSON-LD): {j.get('title', '')[:50]}")
-                continue
+            # If we now got a real date, update it
+            if page_data.get("date"):
+                if j.get("posted") != page_data["date"]:
+                    log.info(f"  Updated date: {j.get('title', '')[:40]} → {page_data['date']}")
+                    j["posted"] = page_data["date"]
             time.sleep(random.uniform(0.3, 0.8))
         cleaned.append(j)
 
-    log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} stale)")
+    log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} closed)")
     existing = cleaned
 
     # Index existing by URL and company+title
