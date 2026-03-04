@@ -293,6 +293,17 @@ def scrape_job_page(url: str) -> dict:
                 log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
                 break
 
+        # LinkedIn-specific closed detection: active listings have JSON-LD,
+        # closed/expired listings lose their JSON-LD block.
+        if not result["closed"] and "linkedin.com" in url:
+            has_job_ld = bool(re.search(
+                r'<script[^>]*type="application/ld\+json"[^>]*>.*?"@type"\s*:\s*"JobPosting"',
+                text, re.DOTALL
+            ))
+            if not has_job_ld and len(text) > 10000:  # Page loaded but no JSON-LD
+                result["closed"] = True
+                log.info(f"  CLOSED (no JSON-LD): {url[:60]}")
+
         # ── Extract company name (especially from LinkedIn) ──
         # LinkedIn: "companyName" in inline JSON
         cm = re.search(r'"companyName"\s*:\s*"([^"]{2,60})"', text)
@@ -395,7 +406,7 @@ def scrape_job_page(url: str) -> dict:
             if posting_date_ctx:
                 result["date"] = posting_date_ctx[0]
 
-        # 3. Relative date patterns
+        # 3. Relative date patterns (prefer "posted/published X ago" over raw "X ago")
         if not result["date"]:
             from datetime import timedelta
             relative_patterns = [
