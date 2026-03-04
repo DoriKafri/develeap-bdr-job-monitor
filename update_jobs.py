@@ -832,6 +832,30 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
     existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
 
+    # Remove aggregator/index pages from existing jobs
+    def _is_aggregator(j):
+        t = j.get("title", "").lower()
+        u = j.get("sourceUrl", "").lower()
+        # Title patterns: "X jobs in Israel", "jobs (N)", "Archives", "jobs wanted"
+        if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', t):
+            return True
+        if any(kw in t for kw in ["jobs in israel", "apply now", "remote jobs in",
+                                   "archives", "משרות דרושים בתחום", "jobs wanted"]):
+            return True
+        # URL patterns for known aggregators
+        agg_domains = ["remoterocketship.com", "devjobs.co.il", "simplyhired.com",
+                       "jooble.", "talent.com", "jobrapido.", "careerjet.",
+                       "secrettelaviv.com", "efinancialcareers.com",
+                       "aidevtlv.com", "machinelearning.co.il", "gotfriends.co.il"]
+        if any(d in u for d in agg_domains):
+            return True
+        return False
+
+    before_agg = len(existing)
+    existing = [j for j in existing if not _is_aggregator(j)]
+    if before_agg != len(existing):
+        log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
+
     # Re-check existing LinkedIn listings — remove closed/stale ones
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
