@@ -840,13 +840,15 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', t):
             return True
         if any(kw in t for kw in ["jobs in israel", "apply now", "remote jobs in",
-                                   "archives", "משרות דרושים בתחום", "jobs wanted"]):
+                                   "archives", "משרות דרושים", "jobs wanted",
+                                   "as a service for startups"]):
             return True
         # URL patterns for known aggregators
         agg_domains = ["remoterocketship.com", "devjobs.co.il", "simplyhired.com",
                        "jooble.", "talent.com", "jobrapido.", "careerjet.",
                        "secrettelaviv.com", "efinancialcareers.com",
-                       "aidevtlv.com", "machinelearning.co.il", "gotfriends.co.il"]
+                       "aidevtlv.com", "machinelearning.co.il", "gotfriends.co.il",
+                       "whist.ai", "startup.jobs"]
         if any(d in u for d in agg_domains):
             return True
         return False
