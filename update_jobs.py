@@ -513,6 +513,54 @@ COMPANY_STAKEHOLDERS = {
     "terasky": [
         {"name": "Or Yaacov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/oryaacov/", "source": "LinkedIn", "email": "or@terasky.com"},
     ],
+    "torq": [
+        {"name": "Leonid Belkind", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/leonidbelkind/", "source": "LinkedIn", "email": ""},
+        {"name": "Ofer Smadari", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/ofersmadari/", "source": "LinkedIn", "email": ""},
+    ],
+    "axonius": [
+        {"name": "Ofri Shur", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/ofri-shur-3683a13b/", "source": "LinkedIn", "email": ""},
+        {"name": "Dean Sysman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/deansysman/", "source": "LinkedIn", "email": ""},
+    ],
+    "freightos": [
+        {"name": "Michi Kossowsky", "title": "VP R&D", "linkedin": "https://www.linkedin.com/in/michikossowsky/", "source": "LinkedIn", "email": ""},
+    ],
+    "linearb": [
+        {"name": "Yishai Beeri", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yishaibeeri/", "source": "LinkedIn", "email": ""},
+        {"name": "Ori Keren", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/ori-keren-8254965/", "source": "LinkedIn", "email": ""},
+    ],
+    "upstream": [
+        {"name": "Yonatan Appel", "title": "CTO", "linkedin": "https://www.linkedin.com/in/yonatan-appel-5895223/", "source": "LinkedIn", "email": ""},
+        {"name": "Yoav Levy", "title": "CEO", "linkedin": "https://www.linkedin.com/in/yoav-levy-117b2b1/", "source": "LinkedIn", "email": ""},
+    ],
+    "armis": [
+        {"name": "Nadir Izrael", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/nadiriz/", "source": "LinkedIn", "email": ""},
+        {"name": "Yevgeny Dibrov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yevgenydibrov/", "source": "LinkedIn", "email": ""},
+    ],
+    "armissecurity": [
+        {"name": "Nadir Izrael", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/nadiriz/", "source": "LinkedIn", "email": ""},
+        {"name": "Yevgeny Dibrov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yevgenydibrov/", "source": "LinkedIn", "email": ""},
+    ],
+    "deloitte": [
+        {"name": "Ronen Sigal", "title": "Managing Partner, Israel", "linkedin": "https://www.linkedin.com/in/ronensigal/", "source": "LinkedIn", "email": ""},
+    ],
+    "motorolasolutions": [
+        {"name": "Ran Bar-Mashiah", "title": "VP R&D Israel", "linkedin": "https://www.linkedin.com/in/ran-bar-mashiah-7b0b7a1/", "source": "LinkedIn", "email": ""},
+    ],
+    "motorola solutions": [
+        {"name": "Ran Bar-Mashiah", "title": "VP R&D Israel", "linkedin": "https://www.linkedin.com/in/ran-bar-mashiah-7b0b7a1/", "source": "LinkedIn", "email": ""},
+    ],
+    "ness technologies": [
+        {"name": "Roni Kass", "title": "CEO Israel", "linkedin": "https://www.linkedin.com/in/ronikass/", "source": "LinkedIn", "email": ""},
+    ],
+    "samsung": [
+        {"name": "Ilan Elias", "title": "VP & Head of Samsung Israel R&D Center", "linkedin": "https://www.linkedin.com/in/ilan-elias-6766b54/", "source": "LinkedIn", "email": ""},
+    ],
+    "sqlink": [
+        {"name": "Lior Zamir", "title": "CEO", "linkedin": "https://www.linkedin.com/in/liorzamir/", "source": "LinkedIn", "email": ""},
+    ],
+    "comm it": [
+        {"name": "Ilan Sokolov", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ilan-sokolov/", "source": "LinkedIn", "email": ""},
+    ],
 }
 
 SEARCH_QUERIES = [
