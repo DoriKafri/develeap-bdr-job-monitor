@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Develeap BDR Job Monitor â Automated Update Script
+Develeap BDR Job Monitor — Automated Update Script
 Searches Israeli job boards, updates the HTML dashboard, deploys to Netlify,
 and posts new listings to Slack #bdr-updates.
 """
@@ -20,7 +20,7 @@ from urllib.parse import quote_plus, urljoin
 import requests
 from bs4 import BeautifulSoup
 
-# ââ Configuration ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Configuration ──────────────────────────────────────────────────────────
 NETLIFY_SITE_ID = os.environ.get("NETLIFY_SITE_ID", "9533027e-5008-40ca-924c-dede933f0473")
 NETLIFY_TOKEN = os.environ.get("NETLIFY_TOKEN", "")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
@@ -30,7 +30,7 @@ DASHBOARD_PATH = os.environ.get("DASHBOARD_PATH", "dashboard/index.html")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
-# ââ Develeap customers (case-insensitive partial match) ââââââââââââââââââââ
+# ── Develeap customers (case-insensitive partial match) ────────────────────
 DEVELEAP_CUSTOMERS = [
     "Akamai","Alzai","Amsalem Tours","Apester","AppsFlyer","Aqua","Armo","Ascending",
     "Autodesk","Automarky","BYON","Beacon Security","Blink Aid","Bluespine","Bond",
@@ -84,7 +84,7 @@ SOURCE_MAP = {
 }
 
 
-# ââ Search Functions âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Search Functions ───────────────────────────────────────────────────────
 
 def search_serpapi(query: str) -> list[dict]:
     """Search using SerpAPI (free tier: 100/month)."""
@@ -154,7 +154,7 @@ def search_jobs(query: str) -> list[dict]:
     return results
 
 
-# ââ Parsing Functions ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Parsing Functions ──────────────────────────────────────────────────────
 
 def detect_source(url: str) -> str:
     """Detect job board source from URL."""
@@ -191,8 +191,8 @@ def extract_company(title: str, snippet: str) -> str:
     """Try to extract company name from search result."""
     # Common patterns: "Role at Company", "Company - Role", "Company is hiring"
     patterns = [
-        r"(?:at|@)\s+([A-Z][A-Za-z0-9\.\-\s]{1,30}?)(?:\s*[-â|,]|\s+is\s+|\s+in\s+|$)",
-        r"^([A-Z][A-Za-z0-9\.\-\s]{1,25}?)\s*[-â|]\s*",
+        r"(?:at|@)\s+([A-Z][A-Za-z0-9\.\-\s]{1,30}?)(?:\s*[-–|,]|\s+is\s+|\s+in\s+|$)",
+        r"^([A-Z][A-Za-z0-9\.\-\s]{1,25}?)\s*[-–|]\s*",
         r"([A-Z][A-Za-z0-9\.\-]{1,25}?)\s+(?:is hiring|careers|jobs)",
     ]
     for text in [title, snippet]:
@@ -274,7 +274,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
     return jobs
 
 
-# ââ Dashboard Update âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Dashboard Update ───────────────────────────────────────────────────────
 
 def load_existing_jobs(html: str) -> list[dict]:
     """Extract existing ALL_JOBS from dashboard HTML."""
@@ -284,7 +284,7 @@ def load_existing_jobs(html: str) -> list[dict]:
         try:
             return json.loads(raw)
         except json.JSONDecodeError:
-            # JS objects may have unquoted keys â add quotes
+            # JS objects may have unquoted keys — add quotes
             try:
                 fixed = re.sub(r'(?<=[{,])\s*(\w+)\s*:', r' "\1":', raw)
                 # Remove trailing commas before } or ]
@@ -342,7 +342,7 @@ def update_dashboard_html(html: str, jobs: list[dict]) -> str:
     return html
 
 
-# ââ Netlify Deploy âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Netlify Deploy ─────────────────────────────────────────────────────────
 
 def deploy_to_netlify(html: str) -> bool:
     """Deploy dashboard HTML to Netlify."""
@@ -353,6 +353,8 @@ def deploy_to_netlify(html: str) -> bool:
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("index.html", html)
+        # Netlify _headers file to ensure correct Content-Type
+        zf.writestr("_headers", "/\n  Content-Type: text/html; charset=UTF-8\n/index.html\n  Content-Type: text/html; charset=UTF-8\n")
     buf.seek(0)
 
     try:
@@ -374,7 +376,7 @@ def deploy_to_netlify(html: str) -> bool:
         return False
 
 
-# ââ Slack Notification âââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Slack Notification ─────────────────────────────────────────────────────
 
 def notify_slack(new_jobs: list[dict]) -> bool:
     """Post new listings to Slack #bdr-updates via incoming webhook."""
@@ -425,7 +427,7 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         for j in new_jobs:
             cat = cat_labels.get(j.get("category", ""), "DevOps")
             star = " :star:" if j.get("isDeveleapCustomer") else ""
-            lines.append(f"â¢ *{j['title']}* at *{j['company']}* ({cat}){star}")
+            lines.append(f"• *{j['title']}* at *{j['company']}* ({cat}){star}")
 
         payload = {
             "blocks": [
@@ -454,7 +456,7 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         return False
 
 
-# ââ Main âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# ── Main ───────────────────────────────────────────────────────────────────
 
 def main():
     log.info("=== Develeap BDR Job Monitor Update ===")
@@ -465,7 +467,7 @@ def main():
     for query in SEARCH_QUERIES:
         results = search_jobs(query)
         all_raw.extend(results)
-        log.info(f"  '{query}' â {len(results)} results")
+        log.info(f"  '{query}' → {len(results)} results")
         time.sleep(random.uniform(1.0, 2.5))
 
     log.info(f"Total raw results: {len(all_raw)}")
@@ -489,7 +491,7 @@ def main():
     log.info(f"After merge: {len(merged)} total, {len(truly_new)} new")
     customer_new = [j for j in truly_new if j.get("isDeveleapCustomer")]
     if customer_new:
-        log.info(f"  ð {len(customer_new)} new listings from Develeap customers!")
+        log.info(f"  🌟 {len(customer_new)} new listings from Develeap customers!")
 
     # 5. Update dashboard HTML
     updated_html = update_dashboard_html(html, merged)
@@ -499,15 +501,15 @@ def main():
 
     # 6. Deploy to Netlify
     if deploy_to_netlify(updated_html):
-        log.info("â Netlify deploy successful")
+        log.info("✅ Netlify deploy successful")
     else:
-        log.warning("â ï¸  Netlify deploy failed")
+        log.warning("⚠️  Netlify deploy failed")
 
     # 7. Notify Slack
     if truly_new:
         notify_slack(truly_new)
     else:
-        log.info("No new listings â skipping Slack notification")
+        log.info("No new listings — skipping Slack notification")
 
     log.info("=== Update complete ===")
 
