@@ -4709,6 +4709,7 @@ const OUTREACH_TEMPLATES = [
     name: "Value Bomb",
     emoji: "\uD83D\uDCA3",
     forConnected: true,
+    subject: "2 weeks to 45-min deploys — {company}'s next move?",
     body: `Hey {contact_name},
 
 Saw you're hiring a {role} at {company} — which tells me you're scaling fast and need serious DevOps firepower.
@@ -4725,6 +4726,7 @@ Worth a 15-min chat? Here's what we do: https://www.develeap.com/devops-consulti
     name: "Pain Agitator",
     emoji: "\uD83C\uDFAF",
     forConnected: true,
+    subject: "That open {role} role — still searching?",
     body: `{contact_name}, quick question:
 
 That open {role} position at {company} — how long has it been open?
@@ -4745,6 +4747,7 @@ Dori Kafri | CEO, Develeap`
     name: "Free Audit",
     emoji: "\uD83C\uDF81",
     forConnected: true,
+    subject: "Free CI/CD audit for {company} — no strings",
     body: `{contact_name},
 
 I'll make this stupidly simple:
@@ -4764,6 +4767,7 @@ https://www.develeap.com/devops-consulting/`
     name: "Case Study",
     emoji: "\uD83D\uDCCA",
     forConnected: true,
+    subject: "How a team like {company} cut 3 hires to 1 (and shipped daily)",
     body: `{contact_name},
 
 Quick story:
@@ -4787,6 +4791,7 @@ Dori Kafri | Develeap`
     name: "Connect Note",
     emoji: "\uD83E\uDD1D",
     forConnected: false,
+    subject: "Re: {company}'s {role} growth — quick intro",
     body: `Hey {contact_name}, I noticed {company} is hiring a {role} — exciting growth!
 
 I'm Dori, CEO of Develeap (https://www.develeap.com). We help 100+ Israeli tech companies scale their DevOps & AI infrastructure.
@@ -4797,6 +4802,7 @@ Would love to connect and share how we've helped similar teams ship faster. Open
     name: "Direct Ask",
     emoji: "\u26A1",
     forConnected: true,
+    subject: "{contact_name}, 50+ senior DevOps engineers ready for {company}",
     body: `{contact_name},
 
 Straight to it:
@@ -4849,7 +4855,7 @@ function buildOutreachSection(job) {
         }
       }
       if (hasEmail) {
-        actionBtns += `<a href="mailto:${s.email}" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none;background:#EA4335">${MAIL_ICON} ${s.email}</a>`;
+        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
       }
       actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
 
@@ -4991,10 +4997,10 @@ function sendEmail() {
   const stakeholders = job.stakeholders || [];
   const s = stakeholders[_activeStakeholderIdx || 0];
   if (s && s.email && s.email.includes('@')) {
-    const msg = document.getElementById('templatePreview').textContent;
-    const subj = encodeURIComponent('Quick question about ' + job.company + ' DevOps');
-    const body = encodeURIComponent(msg);
-    window.open('mailto:' + s.email + '?subject=' + subj + '&body=' + body, '_blank');
+    const tpl = OUTREACH_TEMPLATES[_activeTemplateIdx || 0];
+    const body = fillTemplate(tpl.body, job, s);
+    const subj = fillTemplate(tpl.subject || 'Quick question re: {company}', job, s);
+    window.open('mailto:' + s.email + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body), '_blank');
   } else {
     alert('No email found for this contact. Try LinkedIn instead.');
   }
