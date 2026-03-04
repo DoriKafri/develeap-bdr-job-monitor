@@ -846,10 +846,11 @@ def update_dashboard_html(html: str, jobs: list[dict]) -> str:
     """Replace ALL_JOBS array and timestamp in dashboard HTML."""
     # Format jobs as JS array
     jobs_json = json.dumps(jobs, ensure_ascii=False, indent=2)
-    # Replace ALL_JOBS
+    # Replace ALL_JOBS — use lambda to avoid re.sub interpreting backslashes in replacement
+    replacement = f'let ALL_JOBS = {jobs_json};'
     html = re.sub(
         r'let ALL_JOBS\s*=\s*\[.*?\];\s*$',
-        f'let ALL_JOBS = {jobs_json};',
+        lambda _: replacement,
         html,
         flags=re.DOTALL | re.MULTILINE
     )
