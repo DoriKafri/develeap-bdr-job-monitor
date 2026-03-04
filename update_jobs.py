@@ -52,96 +52,124 @@ DEVELEAP_CUSTOMERS = [
 # ── Company Stakeholders for Outreach ──────────────────────────────────────
 # Key decision-makers at target companies for BDR outreach
 # Sources: LinkedIn, Crunchbase, company websites, Startup Nation, GeekTime,
-#          Calcalist, Globes, CTech, F6S, PitchBook, GitHub, Twitter/X
+#          Calcalist, Globes, CTech, F6S, PitchBook, GitHub, Twitter/X, ZoomInfo
+# Each contact: name, title, linkedin, source, email (work email guess)
 COMPANY_STAKEHOLDERS = {
     "zenity": [
-        {"name": "Michael Bargury", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/michaelbargury/", "source": "LinkedIn"},
-        {"name": "Gal Malka", "title": "VP Software Engineering", "linkedin": "https://www.linkedin.com/in/gal-malka-b1363469/", "source": "LinkedIn"},
-        {"name": "Ben Kliger", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/benkliger/", "source": "Crunchbase"},
+        {"name": "Michael Bargury", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/michaelbargury/", "source": "LinkedIn", "email": "michael@zenity.io"},
+        {"name": "Ronen Yaari", "title": "VP Engineering", "linkedin": "https://www.linkedin.com/in/ronen-yaari-79a1ba4/", "source": "LinkedIn", "email": "ronen@zenity.io"},
+        {"name": "Shay Haluba", "title": "Director of Engineering & Innovation", "linkedin": "https://www.linkedin.com/in/shay-haluba/", "source": "LinkedIn", "email": "shay@zenity.io"},
+        {"name": "Ben Kliger", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/benkliger/", "source": "Crunchbase", "email": "ben@zenity.io"},
     ],
     "surecomp": [
-        {"name": "Benny Savinik", "title": "VP Technology", "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/", "source": "LinkedIn"},
-        {"name": "Tsafrir Atar", "title": "VP Digitization", "linkedin": "https://il.linkedin.com/in/tsafriratar", "source": "LinkedIn"},
+        {"name": "Benny Savinik", "title": "VP Technology", "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/", "source": "LinkedIn", "email": "benny.savinik@surecomp.com"},
+        {"name": "Tsafrir Atar", "title": "VP Digitization", "linkedin": "https://il.linkedin.com/in/tsafriratar", "source": "LinkedIn", "email": "tsafrir.atar@surecomp.com"},
+        {"name": "Eyal Hareuveny", "title": "President", "linkedin": "", "source": "Company Website", "email": "eyal.hareuveny@surecomp.com"},
     ],
     "vast data": [
-        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase"},
+        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase", "email": "renen.hallak@vastdata.com"},
+        {"name": "Jeff Denworth", "title": "Co-Founder & CMO", "linkedin": "https://www.linkedin.com/in/jeffreydenworth/", "source": "LinkedIn", "email": "jeff.denworth@vastdata.com"},
     ],
     "vastdata": [
-        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase"},
+        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase", "email": "renen.hallak@vastdata.com"},
+        {"name": "Jeff Denworth", "title": "Co-Founder & CMO", "linkedin": "https://www.linkedin.com/in/jeffreydenworth/", "source": "LinkedIn", "email": "jeff.denworth@vastdata.com"},
     ],
     "check point": [
-        {"name": "Jonathan Zanger", "title": "CTO", "linkedin": "https://il.linkedin.com/in/jonathan-zanger", "source": "LinkedIn"},
-        {"name": "Nataly Kremer", "title": "Chief Product Officer & Head of R&D", "linkedin": "https://www.linkedin.com/in/natalyk/", "source": "Company Website"},
+        {"name": "Nataly Kremer", "title": "CPO & Head of R&D", "linkedin": "https://www.linkedin.com/in/natalyk/", "source": "Company Website", "email": ""},
+        {"name": "Tomer Lev", "title": "Engineering Director", "linkedin": "https://www.linkedin.com/in/tomerlev/", "source": "LinkedIn", "email": ""},
+        {"name": "Ofir Israel", "title": "Engineering Director", "linkedin": "https://www.linkedin.com/in/ofirisrael/", "source": "LinkedIn", "email": ""},
+        {"name": "Alex Spokoiny", "title": "Chief Information Officer", "linkedin": "", "source": "Company Website", "email": ""},
     ],
     "sentra": [
-        {"name": "Ron Reiter", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/ronreiter/", "source": "LinkedIn"},
-        {"name": "Asaf Kochan", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/asafkochan/", "source": "Crunchbase"},
+        {"name": "Ron Reiter", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/ronreiter/", "source": "LinkedIn", "email": "ron@sentra.io"},
+        {"name": "Asaf Kochan", "title": "Co-Founder & President", "linkedin": "https://www.linkedin.com/in/asafkochan/", "source": "Crunchbase", "email": "asaf@sentra.io"},
+        {"name": "Yoav Regev", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yoav-regev-31718a1/", "source": "LinkedIn", "email": "yoav@sentra.io"},
+        {"name": "Yair Cohen", "title": "Co-Founder & VP Product", "linkedin": "https://www.linkedin.com/in/yair-cohen-pm/", "source": "LinkedIn", "email": "yair@sentra.io"},
     ],
     "port": [
-        {"name": "Yonatan Boguslavski", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125", "source": "LinkedIn"},
-        {"name": "Zohar Einy", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/zohar-einy/", "source": "CTech"},
+        {"name": "Yonatan Boguslavski", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125", "source": "LinkedIn", "email": "yonatan@getport.io"},
+        {"name": "Zohar Einy", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/zohar-einy/", "source": "CTech", "email": "zohar@getport.io"},
     ],
     "earnix": [
-        {"name": "Erez Barak", "title": "CTO", "linkedin": "https://www.linkedin.com/in/erezbarak/", "source": "LinkedIn"},
+        {"name": "Erez Barak", "title": "CTO", "linkedin": "https://www.linkedin.com/in/erezbarak/", "source": "LinkedIn", "email": "erez@earnix.com"},
+        {"name": "Yaakov Cohen", "title": "VP Engineering, AI Platform", "linkedin": "https://www.linkedin.com/in/yaakovcohen/", "source": "LinkedIn", "email": "yaakov@earnix.com"},
+        {"name": "Robin Gilthorpe", "title": "CEO", "linkedin": "https://www.linkedin.com/in/robingilthorpe/", "source": "LinkedIn", "email": "robin@earnix.com"},
     ],
     "nvidia": [
-        {"name": "Michael Kagan", "title": "CTO", "linkedin": "https://il.linkedin.com/in/mikagan", "source": "LinkedIn"},
-        {"name": "Yaron Goldberg", "title": "Sr Director Engineering", "linkedin": "https://www.linkedin.com/in/yarongoldberg/", "source": "LinkedIn"},
+        {"name": "Amit Krig", "title": "SVP Software Engineering & Israel Site Leader", "linkedin": "https://www.linkedin.com/in/amit-krig-7492981/", "source": "LinkedIn", "email": ""},
+        {"name": "Gideon Rosenberg", "title": "VP HR Israel", "linkedin": "https://www.linkedin.com/in/gideon-rosenberg-894787/", "source": "LinkedIn", "email": ""},
+        {"name": "Michael Kagan", "title": "CTO", "linkedin": "https://il.linkedin.com/in/mikagan", "source": "LinkedIn", "email": ""},
+        {"name": "Yaron Goldberg", "title": "Sr Director Engineering", "linkedin": "https://www.linkedin.com/in/yarongoldberg/", "source": "LinkedIn", "email": ""},
     ],
     "elbit": [
-        {"name": "Yehoshua Yehuda", "title": "EVP Strategy & CTO", "linkedin": "https://il.linkedin.com/in/yehoshua-shuki-yehuda-0245701", "source": "LinkedIn"},
+        {"name": "Yehoshua Yehuda", "title": "EVP Strategy & CTO", "linkedin": "https://il.linkedin.com/in/yehoshua-shuki-yehuda-0245701", "source": "LinkedIn", "email": ""},
+        {"name": "Cindy James", "title": "Sr Director Talent Acquisition", "linkedin": "https://www.linkedin.com/in/cindy-james-3115a68/", "source": "LinkedIn", "email": ""},
     ],
     "classiq": [
-        {"name": "Yehuda Naveh", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yehuda-naveh/", "source": "Crunchbase"},
-        {"name": "Nir Minerbi", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/nir-minerbi/", "source": "Startup Nation"},
+        {"name": "Yehuda Naveh", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yehuda-naveh/", "source": "Crunchbase", "email": "yehuda@classiq.io"},
+        {"name": "Nir Minerbi", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/nir-minerbi/", "source": "Startup Nation", "email": "nir@classiq.io"},
+        {"name": "Amir Naveh", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/amir-naveh-li/", "source": "LinkedIn", "email": "amir@classiq.io"},
     ],
     "tikal": [
-        {"name": "Lior Kanfi", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/liorkanfi/", "source": "LinkedIn"},
+        {"name": "Lior Kanfi", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/liorkanfi/", "source": "LinkedIn", "email": "lior@tikalk.com"},
+        {"name": "Amir Misgav", "title": "DevOps Tech Leader", "linkedin": "https://www.linkedin.com/in/amir-misgav/", "source": "LinkedIn", "email": "amir@tikalk.com"},
+        {"name": "Tamir Tausi", "title": "Head of Sales", "linkedin": "https://il.linkedin.com/in/tamirtausi", "source": "LinkedIn", "email": "tamir@tikalk.com"},
     ],
     "hio": [
-        {"name": "Ido Soen", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/idosoen/", "source": "LinkedIn"},
+        {"name": "Golan Agmon", "title": "Founder", "linkedin": "https://www.linkedin.com/in/golan-agmon-27484b6/", "source": "CTech", "email": ""},
     ],
     "augury": [
-        {"name": "Gal Shaul", "title": "Co-Founder & CPTO", "linkedin": "https://il.linkedin.com/in/gal-shaul-427a5a38", "source": "LinkedIn"},
-        {"name": "Saar Yoskovitz", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/saaryoskovitz/", "source": "GeekTime"},
+        {"name": "Gal Shaul", "title": "Co-Founder & CPTO", "linkedin": "https://il.linkedin.com/in/gal-shaul-427a5a38", "source": "LinkedIn", "email": "gshaul@augury.com"},
+        {"name": "Saar Yoskovitz", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/saaryoskovitz/", "source": "GeekTime", "email": "syoskovitz@augury.com"},
     ],
     "pagaya": [
-        {"name": "Avital Pardo", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avital-pardo-257408b7/", "source": "Calcalist"},
+        {"name": "Shmulik Fronman", "title": "VP R&D", "linkedin": "https://www.linkedin.com/in/shmulik-fronman-69267767/", "source": "LinkedIn", "email": "shmulik.fronman@pagaya.com"},
+        {"name": "Avital Pardo", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avital-pardo-257408b7/", "source": "Calcalist", "email": "avital.pardo@pagaya.com"},
+        {"name": "Dina Leventol Nimrodi", "title": "Director of Research Engineering", "linkedin": "https://www.linkedin.com/in/dina-leventol-nimrodi-309a8395/", "source": "LinkedIn", "email": ""},
     ],
     "forter": [
-        {"name": "Eran Vanounou", "title": "CTO", "linkedin": "https://www.linkedin.com/in/eran-vanounou-983684a/", "source": "LinkedIn"},
-        {"name": "Oren Ellenbogen", "title": "SVP Engineering", "linkedin": "https://il.linkedin.com/in/orenellenbogen", "source": "GitHub"},
+        {"name": "Eran Vanounou", "title": "CTO", "linkedin": "https://www.linkedin.com/in/eran-vanounou-983684a/", "source": "LinkedIn", "email": "eran.vanounou@forter.com"},
+        {"name": "Oren Ellenbogen", "title": "SVP Engineering", "linkedin": "https://il.linkedin.com/in/orenellenbogen", "source": "GitHub", "email": "oren.ellenbogen@forter.com"},
+        {"name": "Jonathan Long", "title": "Sr Director Talent Acquisition", "linkedin": "https://www.linkedin.com/in/jonathan-long-23215693/", "source": "LinkedIn", "email": "jonathan.long@forter.com"},
+        {"name": "Michael Reitblat", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/reitblat/", "source": "LinkedIn", "email": ""},
     ],
     "lightricks": [
-        {"name": "Yaron Inger", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yaroninger/", "source": "Crunchbase"},
+        {"name": "Yaron Inger", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yaroninger/", "source": "Crunchbase", "email": "yaron@lightricks.com"},
+        {"name": "Alon Roth", "title": "Engineering Manager", "linkedin": "https://www.linkedin.com/in/alonroth/", "source": "LinkedIn", "email": "alon@lightricks.com"},
+        {"name": "Noa Lichtenstein", "title": "Engineering Manager, AI Photo Tools", "linkedin": "https://www.linkedin.com/in/noa-licht/", "source": "LinkedIn", "email": "noa@lightricks.com"},
     ],
     "cloudinary": [
-        {"name": "Tal Lev-Ami", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/tallevami", "source": "LinkedIn"},
+        {"name": "Tal Lev-Ami", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/tallevami", "source": "LinkedIn", "email": "tal.levami@cloudinary.com"},
+        {"name": "Itai Lahan", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/itail/", "source": "LinkedIn", "email": "itai.lahan@cloudinary.com"},
+        {"name": "Nadav Soferman", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/nadavsoferman/", "source": "LinkedIn", "email": "nadav.soferman@cloudinary.com"},
     ],
     "guidde": [
-        {"name": "Asaf David", "title": "VP R&D", "linkedin": "https://il.linkedin.com/in/asaf-david-b3227775", "source": "LinkedIn"},
+        {"name": "Yoav Einav", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yoav-einav-58354323/", "source": "LinkedIn", "email": "yoav.einav@guidde.com"},
+        {"name": "Dan Sahar", "title": "CPO & Co-Founder", "linkedin": "https://www.linkedin.com/in/dansahar/", "source": "LinkedIn", "email": "dan.sahar@guidde.com"},
     ],
     "unframe": [
-        {"name": "Shay Levi", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/shaylevi2", "source": "Globes"},
-        {"name": "Adi Azarya", "title": "Co-Founder & VP R&D", "linkedin": "https://il.linkedin.com/in/adiazarya", "source": "LinkedIn"},
+        {"name": "Shay Levi", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/shaylevi2", "source": "Globes", "email": "shay.levi@unframe.ai"},
+        {"name": "Adi Azarya", "title": "Co-Founder & VP R&D", "linkedin": "https://il.linkedin.com/in/adiazarya", "source": "LinkedIn", "email": "adi.azarya@unframe.ai"},
+        {"name": "Larissa Schneider", "title": "COO & Co-Founder", "linkedin": "https://www.linkedin.com/in/schneiderlarissa/", "source": "LinkedIn", "email": "larissa.schneider@unframe.ai"},
     ],
     "fundamental": [
-        {"name": "Jeremy Fraenkel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/jeremy-fraenkel/", "source": "PitchBook"},
+        {"name": "Jeremy Fraenkel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/jeremy-fraenkel/", "source": "CTech", "email": ""},
     ],
     "bmc": [
-        {"name": "Ram Chakravarti", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ramchak/", "source": "Company Website"},
+        {"name": "Ram Chakravarti", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ramchak/", "source": "Company Website", "email": ""},
     ],
     "leidos": [
-        {"name": "Joel Adler", "title": "VP Engineering Israel", "linkedin": "https://www.linkedin.com/in/joeladler/", "source": "LinkedIn"},
+        {"name": "Jim Carlini", "title": "CTO", "linkedin": "", "source": "Company Website", "email": ""},
     ],
     "matia": [
-        {"name": "Eitan Yanovsky", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/eitanyanovsky/", "source": "F6S"},
-    ],
-    "nextta": [
-        {"name": "Haim Peretz", "title": "CEO", "linkedin": "https://www.linkedin.com/in/haim-peretz/", "source": "LinkedIn"},
+        {"name": "Benjamin Segal", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/benjamin-segal/", "source": "LinkedIn", "email": "benjamin@matia.io"},
+        {"name": "Geva Segal", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/gevasegal/", "source": "LinkedIn", "email": "geva@matia.io"},
     ],
     "kpmg": [
-        {"name": "Ziv Katzir", "title": "Partner & Head of Technology", "linkedin": "https://www.linkedin.com/in/zivkatzir/", "source": "Company Website"},
+        {"name": "Dina Pasca-Raz", "title": "Partner, Head of Technology", "linkedin": "", "source": "Company Website", "email": ""},
+    ],
+    "somekhchaikin": [
+        {"name": "Dina Pasca-Raz", "title": "Partner, Head of Technology", "linkedin": "", "source": "Company Website", "email": ""},
     ],
 }
 

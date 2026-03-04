@@ -3449,12 +3449,17 @@ let columnFilters = {}; // { colName: Set of selected values }
 let openFilterCol = null;
 let _activeTemplateIdx = 0;
 let _activeJobForOutreach = null;
+let _activeStakeholderIdx = 0;
+// Track connected status in localStorage
+let _connectedContacts = new Set(JSON.parse(localStorage.getItem('connectedContacts') || '[]'));
+function _saveConnected() { localStorage.setItem('connectedContacts', JSON.stringify([..._connectedContacts])); }
 
 // ===== OUTREACH MESSAGE TEMPLATES (Russell Brunson / Alex Hormozi style) =====
 const OUTREACH_TEMPLATES = [
   {
     name: "Value Bomb",
-    emoji: "💣",
+    emoji: "\uD83D\uDCA3",
+    forConnected: true,
     body: `Hey {contact_name},
 
 Saw you're hiring a {role} at {company} — which tells me you're scaling fast and need serious DevOps firepower.
@@ -3465,11 +3470,12 @@ I'm Dori from Develeap. We've trained and embedded DevOps teams at 100+ Israeli 
 
 What if instead of waiting 3-6 months to find + onboard the right hire... you had a senior DevOps squad plugged in within 2 weeks?
 
-Worth a 15-min chat?`
+Worth a 15-min chat? Here's what we do: https://www.develeap.com/devops-consulting/`
   },
   {
     name: "Pain Agitator",
-    emoji: "🎯",
+    emoji: "\uD83C\uDFAF",
+    forConnected: true,
     body: `{contact_name}, quick question:
 
 That open {role} position at {company} — how long has it been open?
@@ -3482,11 +3488,14 @@ I run Develeap — we're Israel's #1 DevOps consulting firm. We don't just fill 
 
 The ROI math is simple: hire us for 1 month, get 6 months of infrastructure progress.
 
-Can I show you how?`
+Can I show you how? Check us out: https://www.develeap.com/
+
+Dori Kafri | CEO, Develeap`
   },
   {
-    name: "Irresistible Offer",
-    emoji: "🎁",
+    name: "Free Audit",
+    emoji: "\uD83C\uDF81",
+    forConnected: true,
     body: `{contact_name},
 
 I'll make this stupidly simple:
@@ -3495,15 +3504,17 @@ Let my team audit your CI/CD pipeline and infrastructure for FREE. No strings. W
 
 Why free? Because once you see what 15 years of DevOps expertise looks like, you'll want us on speed dial.
 
-We do this for companies like {company} all the time. 100+ companies trust Develeap to scale their DevOps.
+We do this for companies like {company} all the time. 100+ companies trust Develeap.
 
 Interested? Just say "yes" and I'll set it up.
 
-Dori Kafri, CEO @ Develeap`
+Dori Kafri, CEO @ Develeap
+https://www.develeap.com/devops-consulting/`
   },
   {
     name: "Case Study",
-    emoji: "📊",
+    emoji: "\uD83D\uDCCA",
+    forConnected: true,
     body: `{contact_name},
 
 Quick story:
@@ -3511,36 +3522,32 @@ Quick story:
 A company similar to {company} came to us with 3 open DevOps positions they couldn't fill. Their releases were stuck at bi-weekly. Their team was burning out.
 
 In 6 weeks, we:
-→ Set up a full GitOps pipeline
-→ Automated their entire deployment
-→ Trained their team to own it
+- Set up a full GitOps pipeline
+- Automated their entire deployment
+- Trained their team to own it
 
 Result: Daily deployments. Zero downtime. And they ended up needing 1 DevOps hire instead of 3.
 
 I see you're hiring a {role}. What if there's a faster, smarter path?
 
-15 minutes — I'll show you exactly how.
+15 minutes — I'll show you exactly how: https://www.develeap.com/success-stories/
 
-Dori, Develeap`
+Dori Kafri | Develeap`
   },
   {
-    name: "Mutual Network",
-    emoji: "🤝",
-    body: `Hey {contact_name},
+    name: "Connect Note",
+    emoji: "\uD83E\uDD1D",
+    forConnected: false,
+    body: `Hey {contact_name}, I noticed {company} is hiring a {role} — exciting growth!
 
-We're both in the Israeli tech ecosystem, and I've been following what {company} is building — impressive stuff.
+I'm Dori, CEO of Develeap (https://www.develeap.com). We help 100+ Israeli tech companies scale their DevOps & AI infrastructure.
 
-I run Develeap. We're the team behind the DevOps infrastructure at companies like CyberArk, JFrog, Monday.com, and 100+ others.
-
-I noticed you're growing the engineering team ({role} and more). Would love to connect and see if there's a way we can help each other — whether it's DevOps consulting, team training, or just swapping notes.
-
-Coffee? ☕
-
-Dori`
+Would love to connect and share how we've helped similar teams ship faster. Open to a quick chat?`
   },
   {
     name: "Direct Ask",
-    emoji: "⚡",
+    emoji: "\u26A1",
+    forConnected: true,
     body: `{contact_name},
 
 Straight to it:
@@ -3557,9 +3564,16 @@ Develeap = Israel's largest DevOps consulting firm. 100+ companies. 15 years. Fr
 Which one interests you? Let's talk.
 
 Dori Kafri
-CEO, Develeap`
+CEO, Develeap
+https://www.develeap.com/contact/`
   }
 ];
+
+const LI_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+const MSG_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
+const MAIL_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+
+function _contactKey(s) { return (s.name + '|' + s.linkedin).toLowerCase(); }
 
 function buildOutreachSection(job) {
   const stakeholders = job.stakeholders || [];
@@ -3567,26 +3581,48 @@ function buildOutreachSection(job) {
 
   let stakeholderHTML = '';
   if (hasStakeholders) {
-    stakeholderHTML = '<div class="stakeholder-list">' + stakeholders.map((s, i) => `
-      <div class="stakeholder-card">
+    stakeholderHTML = '<div class="stakeholder-list">' + stakeholders.map((s, i) => {
+      const key = _contactKey(s);
+      const connected = _connectedContacts.has(key);
+      const hasLI = s.linkedin && s.linkedin.startsWith('http');
+      const hasEmail = s.email && s.email.includes('@');
+      const connBadge = connected
+        ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#E8F5E9;color:#2E7D32;font-weight:600;margin-left:4px">Connected</span>'
+        : '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600;margin-left:4px">Not Connected</span>';
+
+      // Action buttons differ based on connected status
+      let actionBtns = '';
+      if (hasLI) {
+        if (connected) {
+          actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-msg" onclick="event.stopPropagation()" style="text-decoration:none">${MSG_ICON} Message</a>`;
+        } else {
+          actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${LI_ICON} Connect</a>`;
+        }
+      }
+      if (hasEmail) {
+        actionBtns += `<a href="mailto:${s.email}" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none;background:#EA4335">${MAIL_ICON} ${s.email}</a>`;
+      }
+      actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
+
+      // Toggle connected status button
+      const toggleBtn = hasLI
+        ? `<button onclick="event.stopPropagation();toggleConnected('${key.replace(/'/g,"\\'")}',${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--text-lighter);padding:2px 4px;margin-top:2px" title="${connected?'Mark as not connected':'Mark as connected'}">${connected?'✓ mark not connected':'+ mark connected'}</button>`
+        : '';
+
+      return `
+      <div class="stakeholder-card" data-idx="${i}">
         <div class="stakeholder-avatar">${s.name.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
         <div class="stakeholder-info">
-          <div class="stakeholder-name">${s.name}</div>
+          <div class="stakeholder-name">${s.name} ${connBadge}</div>
           <div class="stakeholder-role">${s.title}</div>
-          <span class="stakeholder-source">${s.source}</span>
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px">
+            <span class="stakeholder-source">${s.source}</span>
+            ${toggleBtn}
+          </div>
         </div>
-        <div class="stakeholder-actions">
-          <a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            Profile
-          </a>
-          <button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            Message
-          </button>
-        </div>
-      </div>
-    `).join('') + '</div>';
+        <div class="stakeholder-actions">${actionBtns}</div>
+      </div>`;
+    }).join('') + '</div>';
   } else {
     stakeholderHTML = `<div class="no-stakeholders">
       <p>No contacts found yet for ${job.company}</p>
@@ -3594,9 +3630,13 @@ function buildOutreachSection(job) {
     </div>`;
   }
 
-  const templateTabs = OUTREACH_TEMPLATES.map((t, i) =>
-    `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchTemplate(${i})">${t.emoji} ${t.name}</button>`
-  ).join('');
+  // Filter templates based on first stakeholder's connected status
+  const firstKey = stakeholders[0] ? _contactKey(stakeholders[0]) : '';
+  const isConn = _connectedContacts.has(firstKey);
+  const templateTabs = OUTREACH_TEMPLATES.map((t, i) => {
+    const match = t.forConnected === undefined || t.forConnected === isConn || (!isConn && !t.forConnected);
+    return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchTemplate(${i})" ${!match?'style="opacity:0.5"':''}>${t.emoji} ${t.name}</button>`;
+  }).join('');
 
   const firstMsg = fillTemplate(OUTREACH_TEMPLATES[0].body, job, stakeholders[0]);
 
@@ -3604,7 +3644,7 @@ function buildOutreachSection(job) {
     <div class="outreach-section">
       <div class="outreach-title">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
-        Outreach
+        Outreach (${stakeholders.length} contacts)
       </div>
       ${stakeholderHTML}
       <div class="template-picker">
@@ -3612,12 +3652,14 @@ function buildOutreachSection(job) {
         <div class="template-tabs">${templateTabs}</div>
         <div class="template-preview" id="templatePreview">${firstMsg}</div>
         <div class="template-actions">
-          <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            Open LinkedIn Message
+          <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2" id="btnLinkedInAction">
+            ${LI_ICON} ${isConn ? 'Send Message' : 'Connect on LinkedIn'}
           </button>
-          <button class="btn btn-outline" onclick="event.stopPropagation();copyTemplate()" style="flex:0.6">
-            📋 Copy
+          <button class="btn btn-outline" onclick="event.stopPropagation();sendEmail()" style="flex:0.5" id="btnEmailAction">
+            ${MAIL_ICON} Email
+          </button>
+          <button class="btn btn-outline" onclick="event.stopPropagation();copyTemplate()" style="flex:0.4">
+            \uD83D\uDCCB Copy
           </button>
         </div>
       </div>
@@ -3627,7 +3669,7 @@ function buildOutreachSection(job) {
 function fillTemplate(tpl, job, stakeholder) {
   const name = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
   const title = stakeholder ? stakeholder.title : 'leader';
-  const role = job.title.replace(/at\s+.*$/i, '').replace(/[-–—].*$/, '').trim();
+  const role = job.title.replace(/at\s+.*$/i, '').replace(/[-\u2013\u2014].*$/, '').replace(/\|.*$/, '').trim();
   return tpl
     .replace(/\{contact_name\}/g, name)
     .replace(/\{contact_title\}/g, title)
@@ -3646,7 +3688,6 @@ function switchTemplate(idx) {
   document.getElementById('templatePreview').textContent = msg;
 }
 
-let _activeStakeholderIdx = 0;
 function selectStakeholderForMsg(idx) {
   _activeStakeholderIdx = idx;
   const job = _activeJobForOutreach;
@@ -3654,8 +3695,33 @@ function selectStakeholderForMsg(idx) {
   const stakeholder = (job.stakeholders || [])[idx];
   const msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, stakeholder);
   document.getElementById('templatePreview').textContent = msg;
-  // Scroll to template
+  // Update button labels based on connected status
+  if (stakeholder) {
+    const isConn = _connectedContacts.has(_contactKey(stakeholder));
+    const btn = document.getElementById('btnLinkedInAction');
+    if (btn) btn.innerHTML = LI_ICON + (isConn ? ' Send Message' : ' Connect on LinkedIn');
+    // Highlight selected card
+    document.querySelectorAll('.stakeholder-card').forEach((c,i) => {
+      c.style.borderColor = i===idx ? 'var(--primary)' : '';
+      c.style.background = i===idx ? 'var(--primary-light)' : '';
+    });
+  }
   document.querySelector('.template-picker').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function toggleConnected(key, idx) {
+  if (_connectedContacts.has(key)) {
+    _connectedContacts.delete(key);
+  } else {
+    _connectedContacts.add(key);
+  }
+  _saveConnected();
+  // Re-render outreach section
+  const job = _activeJobForOutreach;
+  if (job) {
+    const outreach = document.querySelector('.outreach-section');
+    if (outreach) outreach.outerHTML = buildOutreachSection(job);
+  }
 }
 
 function sendOnLinkedIn() {
@@ -3663,21 +3729,35 @@ function sendOnLinkedIn() {
   if (!job) return;
   const stakeholders = job.stakeholders || [];
   const s = stakeholders[_activeStakeholderIdx || 0];
-  if (s && s.linkedin) {
-    // Open LinkedIn profile — user can click "Message" from there
+  if (s && s.linkedin && s.linkedin.startsWith('http')) {
     window.open(s.linkedin, '_blank');
   } else {
-    // Search for the company on LinkedIn
     window.open('https://www.linkedin.com/search/results/people/?keywords=' + encodeURIComponent(job.company + ' CTO VP Engineering'), '_blank');
+  }
+}
+
+function sendEmail() {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const stakeholders = job.stakeholders || [];
+  const s = stakeholders[_activeStakeholderIdx || 0];
+  if (s && s.email && s.email.includes('@')) {
+    const msg = document.getElementById('templatePreview').textContent;
+    const subj = encodeURIComponent('Quick question about ' + job.company + ' DevOps');
+    const body = encodeURIComponent(msg);
+    window.open('mailto:' + s.email + '?subject=' + subj + '&body=' + body, '_blank');
+  } else {
+    alert('No email found for this contact. Try LinkedIn instead.');
   }
 }
 
 function copyTemplate() {
   const text = document.getElementById('templatePreview').textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.template-actions .btn-outline');
+    const btn = document.querySelector('.template-actions .btn-outline:last-child');
+    if (!btn) return;
     const orig = btn.innerHTML;
-    btn.innerHTML = '✓ Copied!';
+    btn.innerHTML = '\u2713 Copied!';
     btn.style.color = 'var(--success)';
     setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
   });
