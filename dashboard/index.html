@@ -199,6 +199,37 @@
   /* Active column filter count badge */
   .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
+  /* ── Outreach Section ── */
+  .outreach-section { margin-top:28px; padding-top:24px; border-top:2px solid var(--primary-light); }
+  .outreach-title { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .outreach-title svg { flex-shrink:0; }
+  .stakeholder-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .stakeholder-card { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); transition:all 0.15s; }
+  .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(97,97,255,0.1); }
+  .stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; }
+  .stakeholder-info { flex:1; min-width:0; }
+  .stakeholder-name { font-weight:600; font-size:14px; color:var(--text); }
+  .stakeholder-role { font-size:12px; color:var(--text-light); }
+  .stakeholder-source { font-size:10px; padding:2px 6px; border-radius:4px; background:#E8E8FF; color:var(--primary); font-weight:600; margin-top:3px; display:inline-block; }
+  .stakeholder-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+  .btn-linkedin { background:#0A66C2; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; text-decoration:none; transition:background 0.15s; }
+  .btn-linkedin:hover { background:#004182; }
+  .btn-msg { background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; transition:background 0.15s; }
+  .btn-msg:hover { background:var(--primary-dark); }
+
+  .template-picker { margin-top:16px; }
+  .template-picker-label { font-size:12px; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+  .template-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .template-tab { padding:6px 12px; border-radius:16px; border:1px solid var(--border); background:white; font-size:12px; cursor:pointer; transition:all 0.15s; color:var(--text-light); font-weight:500; }
+  .template-tab:hover { border-color:var(--primary); color:var(--primary); }
+  .template-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+  .template-preview { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; font-size:13px; line-height:1.7; color:var(--text); white-space:pre-wrap; min-height:100px; max-height:240px; overflow-y:auto; }
+  .template-actions { display:flex; gap:8px; margin-top:12px; }
+  .template-actions .btn { flex:1; justify-content:center; font-size:13px; }
+  .no-stakeholders { background:#FFF8E1; border:1px solid #FFE082; border-radius:10px; padding:16px; text-align:center; }
+  .no-stakeholders p { font-size:13px; color:#F57F17; margin:0 0 8px; }
+  .no-stakeholders small { font-size:11px; color:var(--text-light); }
+
   /* Tablet */
   @media (max-width:1024px) {
     .stats-bar { flex-wrap:wrap; padding:16px; gap:12px; }
@@ -2774,6 +2805,241 @@ let currentFilter = 'all', currentView = 'all';
 let sortCol = 'posted', sortDir = 'desc';
 let columnFilters = {}; // { colName: Set of selected values }
 let openFilterCol = null;
+let _activeTemplateIdx = 0;
+let _activeJobForOutreach = null;
+
+// ===== OUTREACH MESSAGE TEMPLATES (Russell Brunson / Alex Hormozi style) =====
+const OUTREACH_TEMPLATES = [
+  {
+    name: "Value Bomb",
+    emoji: "💣",
+    body: `Hey {contact_name},
+
+Saw you're hiring a {role} at {company} — which tells me you're scaling fast and need serious DevOps firepower.
+
+Here's the thing: We just helped a company your size cut their deployment cycle from 2 weeks to 45 minutes. No fluff. Real results.
+
+I'm Dori from Develeap. We've trained and embedded DevOps teams at 100+ Israeli tech companies (CyberArk, Monday.com, JFrog — the works).
+
+What if instead of waiting 3-6 months to find + onboard the right hire... you had a senior DevOps squad plugged in within 2 weeks?
+
+Worth a 15-min chat?`
+  },
+  {
+    name: "Pain Agitator",
+    emoji: "🎯",
+    body: `{contact_name}, quick question:
+
+That open {role} position at {company} — how long has it been open?
+
+Here's what I see with most scaling teams: The role stays open 90+ days. Meanwhile your existing engineers are drowning in infra work they shouldn't be doing. Releases slow down. Tech debt piles up.
+
+Sound familiar?
+
+I run Develeap — we're Israel's #1 DevOps consulting firm. We don't just fill the gap, we build the machine: CI/CD pipelines, K8s, IaC, the whole stack.
+
+The ROI math is simple: hire us for 1 month, get 6 months of infrastructure progress.
+
+Can I show you how?`
+  },
+  {
+    name: "Irresistible Offer",
+    emoji: "🎁",
+    body: `{contact_name},
+
+I'll make this stupidly simple:
+
+Let my team audit your CI/CD pipeline and infrastructure for FREE. No strings. We'll deliver a report showing exactly where you're losing time and money — and a roadmap to fix it.
+
+Why free? Because once you see what 15 years of DevOps expertise looks like, you'll want us on speed dial.
+
+We do this for companies like {company} all the time. 100+ companies trust Develeap to scale their DevOps.
+
+Interested? Just say "yes" and I'll set it up.
+
+Dori Kafri, CEO @ Develeap`
+  },
+  {
+    name: "Case Study",
+    emoji: "📊",
+    body: `{contact_name},
+
+Quick story:
+
+A company similar to {company} came to us with 3 open DevOps positions they couldn't fill. Their releases were stuck at bi-weekly. Their team was burning out.
+
+In 6 weeks, we:
+→ Set up a full GitOps pipeline
+→ Automated their entire deployment
+→ Trained their team to own it
+
+Result: Daily deployments. Zero downtime. And they ended up needing 1 DevOps hire instead of 3.
+
+I see you're hiring a {role}. What if there's a faster, smarter path?
+
+15 minutes — I'll show you exactly how.
+
+Dori, Develeap`
+  },
+  {
+    name: "Mutual Network",
+    emoji: "🤝",
+    body: `Hey {contact_name},
+
+We're both in the Israeli tech ecosystem, and I've been following what {company} is building — impressive stuff.
+
+I run Develeap. We're the team behind the DevOps infrastructure at companies like CyberArk, JFrog, Monday.com, and 100+ others.
+
+I noticed you're growing the engineering team ({role} and more). Would love to connect and see if there's a way we can help each other — whether it's DevOps consulting, team training, or just swapping notes.
+
+Coffee? ☕
+
+Dori`
+  },
+  {
+    name: "Direct Ask",
+    emoji: "⚡",
+    body: `{contact_name},
+
+Straight to it:
+
+You need a {role}. I have 50+ senior DevOps engineers ready to deliver.
+
+Develeap = Israel's largest DevOps consulting firm. 100+ companies. 15 years. From CI/CD to K8s to AI infra — we've done it all.
+
+3 options:
+1. Staff augmentation — senior engineers embedded in your team, this month
+2. Project-based — we build your infra, train your team, hand it off
+3. Ongoing consulting — fractional DevOps leadership
+
+Which one interests you? Let's talk.
+
+Dori Kafri
+CEO, Develeap`
+  }
+];
+
+function buildOutreachSection(job) {
+  const stakeholders = job.stakeholders || [];
+  const hasStakeholders = stakeholders.length > 0;
+
+  let stakeholderHTML = '';
+  if (hasStakeholders) {
+    stakeholderHTML = '<div class="stakeholder-list">' + stakeholders.map((s, i) => `
+      <div class="stakeholder-card">
+        <div class="stakeholder-avatar">${s.name.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
+        <div class="stakeholder-info">
+          <div class="stakeholder-name">${s.name}</div>
+          <div class="stakeholder-role">${s.title}</div>
+          <span class="stakeholder-source">${s.source}</span>
+        </div>
+        <div class="stakeholder-actions">
+          <a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Profile
+          </a>
+          <button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Message
+          </button>
+        </div>
+      </div>
+    `).join('') + '</div>';
+  } else {
+    stakeholderHTML = `<div class="no-stakeholders">
+      <p>No contacts found yet for ${job.company}</p>
+      <small>Try searching LinkedIn for "${job.company} CTO" or "VP Engineering"</small>
+    </div>`;
+  }
+
+  const templateTabs = OUTREACH_TEMPLATES.map((t, i) =>
+    `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchTemplate(${i})">${t.emoji} ${t.name}</button>`
+  ).join('');
+
+  const firstMsg = fillTemplate(OUTREACH_TEMPLATES[0].body, job, stakeholders[0]);
+
+  return `
+    <div class="outreach-section">
+      <div class="outreach-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+        Outreach
+      </div>
+      ${stakeholderHTML}
+      <div class="template-picker">
+        <div class="template-picker-label">Message Templates</div>
+        <div class="template-tabs">${templateTabs}</div>
+        <div class="template-preview" id="templatePreview">${firstMsg}</div>
+        <div class="template-actions">
+          <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Open LinkedIn Message
+          </button>
+          <button class="btn btn-outline" onclick="event.stopPropagation();copyTemplate()" style="flex:0.6">
+            📋 Copy
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function fillTemplate(tpl, job, stakeholder) {
+  const name = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
+  const title = stakeholder ? stakeholder.title : 'leader';
+  const role = job.title.replace(/at\s+.*$/i, '').replace(/[-–—].*$/, '').trim();
+  return tpl
+    .replace(/\{contact_name\}/g, name)
+    .replace(/\{contact_title\}/g, title)
+    .replace(/\{company\}/g, job.company)
+    .replace(/\{role\}/g, role);
+}
+
+function switchTemplate(idx) {
+  _activeTemplateIdx = idx;
+  document.querySelectorAll('.template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const stakeholders = job.stakeholders || [];
+  const stakeholder = stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
+  const msg = fillTemplate(OUTREACH_TEMPLATES[idx].body, job, stakeholder);
+  document.getElementById('templatePreview').textContent = msg;
+}
+
+let _activeStakeholderIdx = 0;
+function selectStakeholderForMsg(idx) {
+  _activeStakeholderIdx = idx;
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const stakeholder = (job.stakeholders || [])[idx];
+  const msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, stakeholder);
+  document.getElementById('templatePreview').textContent = msg;
+  // Scroll to template
+  document.querySelector('.template-picker').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function sendOnLinkedIn() {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const stakeholders = job.stakeholders || [];
+  const s = stakeholders[_activeStakeholderIdx || 0];
+  if (s && s.linkedin) {
+    // Open LinkedIn profile — user can click "Message" from there
+    window.open(s.linkedin, '_blank');
+  } else {
+    // Search for the company on LinkedIn
+    window.open('https://www.linkedin.com/search/results/people/?keywords=' + encodeURIComponent(job.company + ' CTO VP Engineering'), '_blank');
+  }
+}
+
+function copyTemplate() {
+  const text = document.getElementById('templatePreview').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.template-actions .btn-outline');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ Copied!';
+    btn.style.color = 'var(--success)';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+  });
+}
 
 // ===== HIDDEN COMPANIES =====
 let hiddenCompanies = new Set(JSON.parse(localStorage.getItem('hiddenCompanies') || '[]'));
@@ -2846,11 +3112,13 @@ function timeAgo(date) {
 let _pendingNewJobs = [];
 async function checkForNewListings() {
   try {
-    const resp = await fetch(window.location.href + '?_t=' + Date.now(), {cache:'no-store'});
+    const freshUrl = window.location.origin + window.location.pathname + '?_t=' + Date.now();
+    const resp = await fetch(freshUrl, {cache:'no-store'});
+    if (!resp.ok) { console.warn('Auto-refresh fetch failed:', resp.status); return; }
     const html = await resp.text();
     // Extract ALL_JOBS from fetched HTML
     const m = html.match(/let ALL_JOBS\s*=\s*(\[[\s\S]*?\]);\s*\n/);
-    if (!m) return;
+    if (!m) { console.warn('Auto-refresh: could not parse ALL_JOBS from fetched HTML'); return; }
     const remoteJobs = JSON.parse(m[1]);
     const currentIds = new Set(ALL_JOBS.map(j => j.id));
     const newOnes = remoteJobs.filter(j => !currentIds.has(j.id));
@@ -2862,14 +3130,13 @@ async function checkForNewListings() {
       const banner = document.getElementById('newListingsBanner');
       banner.textContent = '\u2B06 ' + newOnes.length + ' new listing' + (newOnes.length > 1 ? 's' : '') + ' found — click to refresh';
       banner.classList.add('show');
-    } else if (remoteTs && remoteTs !== LAST_UPDATED && remoteJobs.length !== ALL_JOBS.length) {
+    } else if (remoteTs && remoteTs !== LAST_UPDATED || remoteJobs.length !== ALL_JOBS.length) {
       _pendingNewJobs = remoteJobs;
-      const diff = Math.abs(remoteJobs.length - ALL_JOBS.length);
       const banner = document.getElementById('newListingsBanner');
       banner.textContent = '\u2B06 Listings updated — click to refresh';
       banner.classList.add('show');
     }
-  } catch(e) { /* silently ignore fetch errors */ }
+  } catch(e) { console.warn('Auto-refresh error:', e.message); }
 }
 
 function reloadNewListings() {
@@ -3043,13 +3310,17 @@ function setView(v){currentView=v;document.querySelectorAll('.view-tab').forEach
 
 function openDetail(id){
   const j=ALL_JOBS.find(x=>x.id===id);if(!j)return;
+  _activeJobForOutreach = j;
+  _activeTemplateIdx = 0;
+  _activeStakeholderIdx = 0;
   document.getElementById('sidebarTitle').textContent=j.title;
   document.getElementById('sidebarBody').innerHTML=`
     <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':''}</div>
     <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
-    <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>`;
+    <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
+    ${buildOutreachSection(j)}`;
   document.getElementById('sidebarOverlay').classList.add('active');
 }
 function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverlay'))return;document.getElementById('sidebarOverlay').classList.remove('active');}

@@ -49,6 +49,102 @@ DEVELEAP_CUSTOMERS = [
     "mPrest","Ness Technologies"
 ]
 
+# ── Company Stakeholders for Outreach ──────────────────────────────────────
+# Key decision-makers at target companies for BDR outreach
+# Sources: LinkedIn, Crunchbase, company websites, Startup Nation, GeekTime,
+#          Calcalist, Globes, CTech, F6S, PitchBook, GitHub, Twitter/X
+COMPANY_STAKEHOLDERS = {
+    "zenity": [
+        {"name": "Michael Bargury", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/michaelbargury/", "source": "LinkedIn"},
+        {"name": "Gal Malka", "title": "VP Software Engineering", "linkedin": "https://www.linkedin.com/in/gal-malka-b1363469/", "source": "LinkedIn"},
+        {"name": "Ben Kliger", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/benkliger/", "source": "Crunchbase"},
+    ],
+    "surecomp": [
+        {"name": "Benny Savinik", "title": "VP Technology", "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/", "source": "LinkedIn"},
+        {"name": "Tsafrir Atar", "title": "VP Digitization", "linkedin": "https://il.linkedin.com/in/tsafriratar", "source": "LinkedIn"},
+    ],
+    "vast data": [
+        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase"},
+    ],
+    "vastdata": [
+        {"name": "Renen Hallak", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/renenh/", "source": "Crunchbase"},
+    ],
+    "check point": [
+        {"name": "Jonathan Zanger", "title": "CTO", "linkedin": "https://il.linkedin.com/in/jonathan-zanger", "source": "LinkedIn"},
+        {"name": "Nataly Kremer", "title": "Chief Product Officer & Head of R&D", "linkedin": "https://www.linkedin.com/in/natalyk/", "source": "Company Website"},
+    ],
+    "sentra": [
+        {"name": "Ron Reiter", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/ronreiter/", "source": "LinkedIn"},
+        {"name": "Asaf Kochan", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/asafkochan/", "source": "Crunchbase"},
+    ],
+    "port": [
+        {"name": "Yonatan Boguslavski", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125", "source": "LinkedIn"},
+        {"name": "Zohar Einy", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/zohar-einy/", "source": "CTech"},
+    ],
+    "earnix": [
+        {"name": "Erez Barak", "title": "CTO", "linkedin": "https://www.linkedin.com/in/erezbarak/", "source": "LinkedIn"},
+    ],
+    "nvidia": [
+        {"name": "Michael Kagan", "title": "CTO", "linkedin": "https://il.linkedin.com/in/mikagan", "source": "LinkedIn"},
+        {"name": "Yaron Goldberg", "title": "Sr Director Engineering", "linkedin": "https://www.linkedin.com/in/yarongoldberg/", "source": "LinkedIn"},
+    ],
+    "elbit": [
+        {"name": "Yehoshua Yehuda", "title": "EVP Strategy & CTO", "linkedin": "https://il.linkedin.com/in/yehoshua-shuki-yehuda-0245701", "source": "LinkedIn"},
+    ],
+    "classiq": [
+        {"name": "Yehuda Naveh", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yehuda-naveh/", "source": "Crunchbase"},
+        {"name": "Nir Minerbi", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/nir-minerbi/", "source": "Startup Nation"},
+    ],
+    "tikal": [
+        {"name": "Lior Kanfi", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/liorkanfi/", "source": "LinkedIn"},
+    ],
+    "hio": [
+        {"name": "Ido Soen", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/idosoen/", "source": "LinkedIn"},
+    ],
+    "augury": [
+        {"name": "Gal Shaul", "title": "Co-Founder & CPTO", "linkedin": "https://il.linkedin.com/in/gal-shaul-427a5a38", "source": "LinkedIn"},
+        {"name": "Saar Yoskovitz", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/saaryoskovitz/", "source": "GeekTime"},
+    ],
+    "pagaya": [
+        {"name": "Avital Pardo", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avital-pardo-257408b7/", "source": "Calcalist"},
+    ],
+    "forter": [
+        {"name": "Eran Vanounou", "title": "CTO", "linkedin": "https://www.linkedin.com/in/eran-vanounou-983684a/", "source": "LinkedIn"},
+        {"name": "Oren Ellenbogen", "title": "SVP Engineering", "linkedin": "https://il.linkedin.com/in/orenellenbogen", "source": "GitHub"},
+    ],
+    "lightricks": [
+        {"name": "Yaron Inger", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yaroninger/", "source": "Crunchbase"},
+    ],
+    "cloudinary": [
+        {"name": "Tal Lev-Ami", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/tallevami", "source": "LinkedIn"},
+    ],
+    "guidde": [
+        {"name": "Asaf David", "title": "VP R&D", "linkedin": "https://il.linkedin.com/in/asaf-david-b3227775", "source": "LinkedIn"},
+    ],
+    "unframe": [
+        {"name": "Shay Levi", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/shaylevi2", "source": "Globes"},
+        {"name": "Adi Azarya", "title": "Co-Founder & VP R&D", "linkedin": "https://il.linkedin.com/in/adiazarya", "source": "LinkedIn"},
+    ],
+    "fundamental": [
+        {"name": "Jeremy Fraenkel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/jeremy-fraenkel/", "source": "PitchBook"},
+    ],
+    "bmc": [
+        {"name": "Ram Chakravarti", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ramchak/", "source": "Company Website"},
+    ],
+    "leidos": [
+        {"name": "Joel Adler", "title": "VP Engineering Israel", "linkedin": "https://www.linkedin.com/in/joeladler/", "source": "LinkedIn"},
+    ],
+    "matia": [
+        {"name": "Eitan Yanovsky", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/eitanyanovsky/", "source": "F6S"},
+    ],
+    "nextta": [
+        {"name": "Haim Peretz", "title": "CEO", "linkedin": "https://www.linkedin.com/in/haim-peretz/", "source": "LinkedIn"},
+    ],
+    "kpmg": [
+        {"name": "Ziv Katzir", "title": "Partner & Head of Technology", "linkedin": "https://www.linkedin.com/in/zivkatzir/", "source": "Company Website"},
+    ],
+}
+
 SEARCH_QUERIES = [
     # LinkedIn individual job listings (highest quality)
     "site:linkedin.com/jobs/view DevOps Engineer Israel",
@@ -590,6 +686,21 @@ def detect_category(title: str, snippet: str) -> str:
     return "devops"  # Default
 
 
+def _get_stakeholders(company: str) -> list:
+    """Look up stakeholders for a company from the COMPANY_STAKEHOLDERS dict."""
+    if not company:
+        return []
+    company_lower = company.lower().strip()
+    # Direct match
+    if company_lower in COMPANY_STAKEHOLDERS:
+        return COMPANY_STAKEHOLDERS[company_lower]
+    # Partial match (e.g. "Check Point Software" matches "check point")
+    for key, contacts in COMPANY_STAKEHOLDERS.items():
+        if key in company_lower or company_lower in key:
+            return contacts
+    return []
+
+
 def is_develeap_customer(company: str) -> bool:
     """Check if company is a Develeap customer."""
     company_lower = company.lower()
@@ -892,6 +1003,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "_snippet": snippet,  # Keep full snippet for closed/date detection
             "description": snippet[:120] if snippet else title,
             "skills": [],
+            "stakeholders": _get_stakeholders(company),
         })
 
     # Fetch real posting dates, company names, and closed status
@@ -1186,9 +1298,10 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
 
-    # Mark existing jobs as not new
+    # Mark existing jobs as not new; update stakeholders
     for j in existing:
         j["isNew"] = False
+        j["stakeholders"] = _get_stakeholders(j.get("company", ""))
 
     truly_new = []
     for j in new_jobs:
