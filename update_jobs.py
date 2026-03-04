@@ -683,13 +683,18 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         skip_keywords = ["how to", "salary", "resume", "interview tips", "career advice",
                          "blog", "article", "guide", "tutorial", "top 10", "best companies",
                          "average salary", "job description template", "what is a",
-                         "conference", "meetup", "event", "webinar", "course"]
+                         "conference", "meetup", "event", "webinar", "course",
+                         "jobs in israel", "apply now", "remote jobs in"]
         if any(kw in title_lower for kw in skip_keywords):
             continue
 
         # Skip Hebrew aggregator pages ("we found N job offers", "jobs wanted")
         hebrew_skip = ["מצאנו", "הצעות עבודה", "משרות אחרונות", "חיפוש משרות"]
         if any(kw in title for kw in hebrew_skip):
+            continue
+
+        # Skip aggregator titles like "DevOps Engineer Jobs..." or "5 AI Engineer jobs..."
+        if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', title_lower):
             continue
 
         # Skip search/aggregator pages — only allow individual job listing URLs
@@ -723,6 +728,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             r"/list/", r"startup\.jobs/",
             r"secrettelaviv\.com", r"efinancialcareers\.com",
             r"aidevtlv\.com", r"machinelearning\.co\.il",
+            r"remoterocketship\.com", r"devjobs\.co\.il",
+            r"simplyhired\.com", r"jooble\.", r"talent\.com",
+            r"jobrapido\.", r"careerjet\.",
         ]
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
