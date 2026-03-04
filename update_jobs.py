@@ -572,6 +572,14 @@ def _is_job_title(text: str) -> bool:
     # Starts with common title prefixes
     if re.match(r"^(sr\.?|jr\.?|senior|junior|lead|staff|principal|head of|chief|director)\b", t):
         return True
+    # Ends with a job-role word — strong signal it's a title, not a company
+    role_endings = {"engineer", "developer", "architect", "analyst", "consultant",
+                    "specialist", "manager", "director", "coordinator", "administrator",
+                    "technician", "intern", "designer", "scientist", "researcher",
+                    "lead", "officer", "evangelist"}
+    last_word = t.split()[-1] if t.split() else ""
+    if last_word in role_endings:
+        return True
     return False
 
 
@@ -607,7 +615,22 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             if not _is_job_title(company):
                 return company
 
-    # 1b. Known career site URL patterns: careers.COMPANY.com, jobs.COMPANY.com
+    # 1b. Greenhouse / Lever / Ashby URL patterns: greenhouse.io/COMPANY/jobs/...
+    for ats_pat in [
+        r"greenhouse\.io/([a-z0-9\-]+)/jobs",
+        r"boards\.greenhouse\.io/([a-z0-9\-]+)",
+        r"job-boards\.greenhouse\.io/([a-z0-9\-]+)",
+        r"lever\.co/([a-z0-9\-]+)",
+        r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
+        r"jobs\.lever\.co/([a-z0-9\-]+)",
+    ]:
+        m = re.search(ats_pat, url, re.IGNORECASE)
+        if m:
+            slug = m.group(1).replace("-", " ").title()
+            if len(slug) > 1:
+                return _fix_casing(slug)
+
+    # 1c. Known career site URL patterns: careers.COMPANY.com, jobs.COMPANY.com
     m = re.search(r"https?://(?:careers|jobs)\.([a-z0-9\-]+)\.", url)
     if m:
         domain_company = _fix_casing(m.group(1).replace("-", " ").title())
