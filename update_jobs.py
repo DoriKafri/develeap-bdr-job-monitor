@@ -446,24 +446,9 @@ def scrape_job_page(url: str) -> dict:
                 result["date"] = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
                 log.info(f"  LinkedIn listedAt: {result['date']} for {url[:60]}")
 
-        # 0b. LinkedIn <time datetime="YYYY-MM-DD"> — only use if it's NOT in a job-card (recommendations)
-        if "linkedin.com" in url and not result["date"]:
-            # Find <time> tags that are NOT in main-job-card or aside-job-card (those are recommendations)
-            for tm in re.finditer(r'<time[^>]*class="([^"]*)"[^>]*datetime="(\d{4}-\d{2}-\d{2})"', text):
-                cls = tm.group(1)
-                if "job-card" not in cls:
-                    result["date"] = tm.group(2)
-                    log.info(f"  LinkedIn <time> tag (class={cls[:30]}): {result['date']} for {url[:60]}")
-                    break
-            # Also try <time> tags without class attribute (topcard date)
-            if not result["date"]:
-                for tm in re.finditer(r'<time(?:\s[^>]*)?\s*datetime="(\d{4}-\d{2}-\d{2})"', text):
-                    # Check this isn't preceded by "job-card" class
-                    preceding = text[max(0, tm.start()-200):tm.start()]
-                    if "job-card" not in preceding:
-                        result["date"] = tm.group(1)
-                        log.info(f"  LinkedIn <time> tag (no class): {result['date']} for {url[:60]}")
-                        break
+        # NOTE: LinkedIn <time> tags are NOT reliable for posting dates.
+        # They often belong to recommendation cards, sidebar content, etc.
+        # Only listedAt JSON timestamp (extracted above) is reliable for LinkedIn.
 
         # 1. JSON-LD datePosted (most reliable for non-LinkedIn)
         if not result["date"]:
