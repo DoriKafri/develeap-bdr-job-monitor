@@ -275,6 +275,7 @@ def scrape_job_page(url: str) -> dict:
         if resp.status_code != 200:
             return result
         text = resp.text[:50000]  # Limit to first 50KB
+        log.info(f"  Scrape {url[:60]}: status={resp.status_code}, size={len(resp.text)}, truncated={len(text)}")
 
         # ── Check if listing is closed ──
         closed_phrases = [
@@ -300,9 +301,10 @@ def scrape_job_page(url: str) -> dict:
                 r'<script[^>]*type="application/ld\+json"[^>]*>.*?"@type"\s*:\s*"JobPosting"',
                 text, re.DOTALL
             ))
-            if not has_job_ld and len(text) > 10000:  # Page loaded but no JSON-LD
+            result["_has_job_ld"] = has_job_ld  # pass this info downstream
+            if not has_job_ld and len(text) > 2000:  # Page loaded but no JSON-LD
                 result["closed"] = True
-                log.info(f"  CLOSED (no JSON-LD): {url[:60]}")
+                log.info(f"  CLOSED (no JSON-LD, {len(text)} chars): {url[:60]}")
 
         # ── Extract company name (especially from LinkedIn) ──
         # LinkedIn: "companyName" in inline JSON
@@ -767,6 +769,10 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if page_data.get("date"):
                 j["posted"] = page_data["date"]
                 log.info(f"  Date: {page_data['date']} for {j['title'][:40]}")
+            elif "linkedin.com" in url and not page_data.get("_has_job_ld"):
+                # LinkedIn page without JSON-LD and no date — likely old/closed
+                log.info(f"  Skipping LinkedIn listing with no date/JSON-LD: {j['title'][:50]}")
+                continue
             else:
                 j["posted"] = today
 
