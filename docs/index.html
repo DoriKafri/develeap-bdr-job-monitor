@@ -177,7 +177,72 @@
   /* Active column filter count badge */
   .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
-  @media (max-width:1024px) { .stats-bar{flex-wrap:wrap} .stat-card{min-width:calc(50% - 8px)} .table-container{margin:12px} .filters-bar{padding:12px} }
+  /* Tablet */
+  @media (max-width:1024px) {
+    .stats-bar { flex-wrap:wrap; padding:16px; gap:12px; }
+    .stat-card { min-width:calc(50% - 6px); padding:12px 16px; }
+    .table-container { margin:12px; }
+    .filters-bar { padding:12px; }
+    .top-nav { padding:0 16px; }
+    .view-tabs { margin-left:12px; }
+  }
+
+  /* Mobile */
+  @media (max-width:640px) {
+    .top-nav { height:auto; padding:10px 16px; flex-wrap:wrap; gap:8px; }
+    .top-nav .logo { font-size:15px; gap:8px; }
+    .top-nav .logo svg { width:22px; height:22px; }
+    .view-tabs { margin-left:0; order:3; width:100%; }
+    .view-tab { padding:6px 12px; font-size:12px; }
+    .nav-actions { gap:8px; }
+    .nav-actions .last-update { font-size:11px; }
+    .nav-actions .btn-outline { padding:6px 12px; font-size:12px; }
+    .nav-actions .btn-outline svg { display:none; }
+    .user-info { display:none; }
+    .new-listings-banner { padding:8px 16px; font-size:13px; }
+
+    .stats-bar { padding:12px; gap:8px; flex-wrap:wrap; }
+    .stat-card { min-width:calc(50% - 4px); padding:10px 12px; }
+    .stat-number { font-size:22px; }
+    .stat-label { font-size:11px; }
+
+    .filters-bar { padding:10px 12px; gap:8px; }
+    .search-box { min-width:100%; }
+    .search-box input { padding:8px 12px 8px 36px; font-size:13px; }
+    .filter-chip { padding:6px 12px; font-size:12px; }
+
+    .table-container { margin:8px; border-radius:10px; }
+    .table-header { padding:12px 14px; }
+    .table-header h2 { font-size:14px; }
+
+    /* Card layout for mobile */
+    table, thead, tbody, th, tr, td { display:block; }
+    thead { display:none; }
+    tr { margin-bottom:8px; border-bottom:2px solid var(--border); padding:12px 14px; position:relative; cursor:pointer; }
+    tr:hover td { background:transparent; }
+    tr.develeap-customer { background:#FFF5F7; border-left:3px solid var(--develeap-flag); }
+    td { padding:2px 0; border:none; font-size:13px; }
+    td:nth-child(1) { position:absolute; top:12px; right:14px; }
+    td:nth-child(2) { padding-right:60px; }
+    td:nth-child(2) .job-title { font-size:14px; }
+    td:nth-child(2) .job-subtitle { display:none; }
+    td:nth-child(3) { padding-top:4px; }
+    td:nth-child(3) .company-logo { width:24px; height:24px; font-size:11px; border-radius:6px; }
+    td:nth-child(3) .company-name { font-size:13px; }
+    td:nth-child(4) { display:inline-block; }
+    td:nth-child(4) .location-cell { font-size:12px; }
+    td:nth-child(5) { display:inline-block; margin-left:8px; }
+    td:nth-child(6) { display:inline-block; margin-left:8px; }
+    td:nth-child(7) { display:inline-block; margin-left:8px; }
+    td:nth-child(7) .date-cell { font-size:12px; }
+    td:nth-child(8) { display:none; }
+
+    .sidebar { width:100%; }
+    .sidebar-body { padding:16px; }
+    .sidebar-header { padding:16px; }
+
+    .col-filter-dropdown { left:auto; right:0; }
+  }
 </style>
 </head>
 <body>
