@@ -872,53 +872,43 @@ def detect_category(title: str, snippet: str) -> str:
     return "devops"  # Default
 
 
-def _fetch_linkedin_photo(linkedin_url: str) -> str:
-    """Fetch LinkedIn profile photo and return as base64 data URI."""
-    if not linkedin_url or "linkedin.com/in/" not in linkedin_url:
+def _fetch_linkedin_photo(name: str, company: str, linkedin_url: str) -> str:
+    """Find LinkedIn profile photo URL via SerpAPI Google Images.
+
+    Returns a direct LinkedIn CDN URL (media.licdn.com) for the profile photo,
+    or empty string if not found.
+    """
+    if not SERPAPI_KEY:
+        return ""
+    if not name:
         return ""
     try:
-        resp = requests.get(linkedin_url, headers={
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-            "Accept": "text/html",
-        }, timeout=8, allow_redirects=True)
+        # Search Google Images for the person's LinkedIn profile photo
+        query = f'{name} {company} LinkedIn profile photo'
+        resp = requests.get("https://serpapi.com/search.json", params={
+            "engine": "google_images",
+            "q": query,
+            "api_key": SERPAPI_KEY,
+            "num": 3,
+        }, timeout=15)
         if resp.status_code != 200:
             return ""
-        og = re.search(r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\'](.*?)["\']', resp.text)
-        if not og:
-            return ""
-        img_url = html_mod.unescape(og.group(1))
-        # Skip default silhouette avatar
-        if "static.licdn.com" in img_url:
-            return ""
-        if "media.licdn.com/dms/image" not in img_url:
-            return ""
-        # Strip query params to avoid 403 from LinkedIn CDN
-        if "?" in img_url:
-            img_url = img_url.split("?")[0]
-        # Download the photo
-        img_resp = requests.get(img_url, timeout=8)
-        if img_resp.status_code != 200 or len(img_resp.content) < 500:
-            return ""
-        if len(img_resp.content) > 50_000:  # Skip unusually large images
-            return ""
-        ct = img_resp.headers.get("content-type", "image/jpeg")
-        b64 = base64.b64encode(img_resp.content).decode()
-        return f"data:{ct};base64,{b64}"
-    except Exception as e:
-        log.debug(f"Photo fetch failed for {linkedin_url[:40]}: {e}")
+        data = resp.json()
+        # Look through image results for a LinkedIn CDN photo
+        for r in data.get("images_results", [])[:5]:
+            original = r.get("original", "")
+            title = r.get("title", "").lower()
+            # Must be from LinkedIn CDN and match the person
+            if "media.licdn.com/dms/image" in original and "profile" in original:
+                # Verify the title contains the person's name (first or last)
+                name_parts = name.lower().split()
+                if any(part in title for part in name_parts if len(part) > 2):
+                    log.info(f"  Found photo for {name} via SerpAPI")
+                    return original
         return ""
-
-
-def _enrich_stakeholder_photos(stakeholders: list) -> list:
-    """Add photo field to stakeholders by fetching LinkedIn profile photos."""
-    for s in stakeholders:
-        if s.get("photo"):  # Already has a photo
-            continue
-        photo = _fetch_linkedin_photo(s.get("linkedin", ""))
-        if photo:
-            s["photo"] = photo
-            log.info(f"  Got photo for {s['name']}")
-    return stakeholders
+    except Exception as e:
+        log.debug(f"Photo search failed for {name}: {e}")
+        return ""
 
 
 def _get_stakeholders(company: str) -> list:
@@ -1835,34 +1825,38 @@ def main():
     # Second pass: fetch missing photos (deduplicated by LinkedIn URL)
     photo_count = 0
     fetch_count = 0
-    max_fetches = 120  # Rate limit: max LinkedIn profile fetches per run
+    max_fetches = 80  # Rate limit: max SerpAPI image searches per run
     for j in merged:
+        company = j.get("company", "")
         for s in j.get("stakeholders", []):
+            name = s.get("name", "")
             li = s.get("linkedin", "")
-            if not li:
+            cache_key = li or name  # Use LinkedIn URL as key, or name if no URL
+            if not cache_key:
                 continue
-            if li in photo_cache:
-                if photo_cache[li]:
-                    s["photo"] = photo_cache[li]
+            if cache_key in photo_cache:
+                if photo_cache[cache_key]:
+                    s["photo"] = photo_cache[cache_key]
                 continue
             if fetch_count >= max_fetches:
-                photo_cache[li] = ""
+                photo_cache[cache_key] = ""
                 continue
-            photo = _fetch_linkedin_photo(li)
-            photo_cache[li] = photo
+            photo = _fetch_linkedin_photo(name, company, li)
+            photo_cache[cache_key] = photo
             fetch_count += 1
             if photo:
                 s["photo"] = photo
                 photo_count += 1
-                log.info(f"  Got photo for {s.get('name', '?')} ({j.get('company', '?')})")
-            time.sleep(random.uniform(0.5, 1.5))  # Be polite to LinkedIn
-    # Third pass: apply cached photos to any remaining duplicates
+            time.sleep(random.uniform(0.3, 0.8))  # Brief pause between SerpAPI calls
+    # Apply cached photos to any remaining duplicates
     for j in merged:
         for s in j.get("stakeholders", []):
             li = s.get("linkedin", "")
-            if li and not s.get("photo") and photo_cache.get(li):
-                s["photo"] = photo_cache[li]
-    log.info(f"  Fetched {photo_count} new photos ({fetch_count} LinkedIn requests)")
+            name = s.get("name", "")
+            cache_key = li or name
+            if cache_key and not s.get("photo") and photo_cache.get(cache_key):
+                s["photo"] = photo_cache[cache_key]
+    log.info(f"  Fetched {photo_count} new photos ({fetch_count} SerpAPI requests)")
 
     # 5. Update dashboard HTML
     updated_html = update_dashboard_html(html, merged)

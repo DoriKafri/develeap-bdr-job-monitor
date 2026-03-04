@@ -4975,8 +4975,8 @@ function _contactKey(s) { return (s.name + '|' + s.linkedin).toLowerCase(); }
 function _stakeholderAvatar(s) {
   const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2);
   // Use base64 photo from Python enrichment if available
-  if (s.photo && s.photo.startsWith('data:')) {
-    return `<img src="${s.photo}" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
+  if (s.photo) {
+    return `<img src="${s.photo}" alt="${initials}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
   }
   // Fallback to initials
   return initials;
