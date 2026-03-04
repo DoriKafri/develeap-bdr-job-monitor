@@ -288,9 +288,9 @@ def extract_posting_date(url: str) -> str:
 
 
 def scrape_job_page(url: str) -> dict:
-    """Scrape a job listing page for date, company name, and closed status.
-    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool}."""
-    result = {"date": "", "company": "", "closed": False}
+    """Scrape a job listing page for date, company name, closed status, and location.
+    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": ""}."""
+    result = {"date": "", "company": "", "closed": False, "location_country": ""}
     if not url:
         return result
     try:
@@ -366,6 +366,55 @@ def scrape_job_page(url: str) -> dict:
                         break
                 except (json.JSONDecodeError, TypeError, KeyError):
                     continue
+
+        # ── Extract location/country from page (for non-Israel filtering) ──
+        # JSON-LD jobLocation → addressCountry
+        ld_matches_loc = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
+        for ld_raw in ld_matches_loc:
+            try:
+                ld = json.loads(ld_raw)
+                items = ld if isinstance(ld, list) else [ld]
+                for item in items:
+                    jp = None
+                    if item.get("@type") == "JobPosting":
+                        jp = item
+                    elif isinstance(item.get("@graph"), list):
+                        for g in item["@graph"]:
+                            if g.get("@type") == "JobPosting":
+                                jp = g
+                                break
+                    if jp:
+                        loc = jp.get("jobLocation", {})
+                        if isinstance(loc, list):
+                            loc = loc[0] if loc else {}
+                        if isinstance(loc, dict):
+                            addr = loc.get("address", {})
+                            if isinstance(addr, dict):
+                                country = addr.get("addressCountry", "")
+                                if isinstance(country, dict):
+                                    country = country.get("name", "")
+                                if country:
+                                    result["location_country"] = country.strip()
+                                    log.info(f"  Location country: {result['location_country']} for {url[:60]}")
+            except (json.JSONDecodeError, TypeError, KeyError):
+                continue
+
+        # LinkedIn: look for country in the page text
+        if not result["location_country"] and "linkedin.com" in url:
+            # LinkedIn often has "Location: City, Country" or "addressCountry":"XX"
+            country_match = re.search(r'"addressCountry"\s*:\s*"([^"]+)"', text)
+            if country_match:
+                result["location_country"] = country_match.group(1).strip()
+                log.info(f"  LinkedIn addressCountry: {result['location_country']} for {url[:60]}")
+
+        # Apple careers: look for location in page
+        if not result["location_country"] and "apple.com" in url:
+            # Apple career pages often have location details
+            loc_match = re.search(r'"location(?:Name)?"\s*:\s*"([^"]+)"', text, re.IGNORECASE)
+            if loc_match:
+                loc_text = loc_match.group(1)
+                result["location_country"] = loc_text.strip()
+                log.info(f"  Apple location: {result['location_country']} for {url[:60]}")
 
         # ── Extract posting date ──
         # 0. Comeet "time_updated" in POSITION_DATA
@@ -936,6 +985,47 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 j["isDeveleapCustomer"] = is_develeap_customer(page_data["company"])
                 log.info(f"  Company from page: {page_data['company']}")
 
+            # ── 5. Skip listings that are NOT in Israel ──
+            loc_country = page_data.get("location_country", "").lower()
+            if loc_country:
+                # List of Israel indicators
+                israel_indicators = ["israel", "il", "tel aviv", "herzliya", "haifa",
+                                     "jerusalem", "ramat gan", "ra'anana", "raanana",
+                                     "petah tikva", "netanya", "beer sheva", "hod hasharon",
+                                     "rehovot", "rishon lezion", "kfar saba", "bnei brak",
+                                     "modi'in", "yokneam", "caesarea"]
+                is_israel = any(ind in loc_country for ind in israel_indicators)
+                # Also check if it's a known non-Israel country
+                non_israel_countries = ["india", "united states", "usa", "uk", "united kingdom",
+                                        "germany", "france", "china", "japan", "canada",
+                                        "australia", "brazil", "singapore", "ireland",
+                                        "netherlands", "spain", "italy", "sweden", "poland",
+                                        "romania", "czech", "hungary", "ukraine", "turkey",
+                                        "south korea", "mexico", "argentina", "chile",
+                                        "bangalore", "hyderabad", "mumbai", "delhi", "pune",
+                                        "chennai", "kolkata", "noida", "gurgaon", "gurugram",
+                                        "san francisco", "new york", "london", "berlin",
+                                        "paris", "amsterdam", "toronto", "sydney", "tokyo",
+                                        "shanghai", "dublin", "austin", "seattle", "boston",
+                                        "cupertino", "mountain view", "palo alto"]
+                is_non_israel = any(ind in loc_country for ind in non_israel_countries)
+                if is_non_israel and not is_israel:
+                    log.info(f"  Skipping non-Israel listing ({loc_country}): {j['title'][:50]}")
+                    continue
+
+            # ── 6. Skip very old listings from page date (>180 days) ──
+            page_date_for_age = page_data.get("date", "")
+            if page_date_for_age and not snippet_date:
+                try:
+                    from datetime import datetime as dt_cls2
+                    post_dt2 = dt_cls2.strptime(page_date_for_age, "%Y-%m-%d")
+                    age_days2 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt2).days
+                    if age_days2 > 180:
+                        log.info(f"  Skipping old listing from page date ({age_days2} days, {page_date_for_age}): {j['title'][:50]}")
+                        continue
+                except ValueError:
+                    pass
+
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
         j["posted"] = snippet_date if snippet_date else today
@@ -1007,11 +1097,25 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_agg != len(existing):
         log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
 
-    # Re-check existing LinkedIn listings — only remove explicitly closed ones
+    # Re-check existing listings — remove closed, stale (>180d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
     for j in existing:
         url = j.get("sourceUrl", "")
+
+        # ── Age-check existing jobs by their stored date ──
+        posted = j.get("posted", "")
+        if posted:
+            try:
+                from datetime import datetime as dt_cls3
+                post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
+                age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
+                if age_days3 > 180:
+                    log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
+                    continue
+            except ValueError:
+                pass
+
         if "linkedin.com" in url:
             page_data = scrape_job_page(url)
             if page_data.get("closed"):
@@ -1022,6 +1126,33 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 if j.get("posted") != page_data["date"]:
                     log.info(f"  Updated date: {j.get('title', '')[:40]} → {page_data['date']}")
                     j["posted"] = page_data["date"]
+                # Re-check age with the updated date
+                try:
+                    from datetime import datetime as dt_cls4
+                    post_dt4 = dt_cls4.strptime(page_data["date"], "%Y-%m-%d")
+                    age_days4 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt4).days
+                    if age_days4 > 180:
+                        log.info(f"  Removing stale listing after date update ({age_days4} days): {j.get('title', '')[:50]}")
+                        continue
+                except ValueError:
+                    pass
+            # Check location country
+            loc_country = page_data.get("location_country", "").lower()
+            if loc_country:
+                israel_indicators = ["israel", "il", "tel aviv", "herzliya", "haifa",
+                                     "jerusalem", "ramat gan", "ra'anana", "raanana",
+                                     "petah tikva", "netanya", "beer sheva"]
+                non_israel_countries = ["india", "united states", "usa", "uk", "united kingdom",
+                                        "germany", "france", "china", "japan", "canada",
+                                        "australia", "brazil", "singapore", "ireland",
+                                        "bangalore", "hyderabad", "mumbai", "delhi", "pune",
+                                        "cupertino", "mountain view", "palo alto",
+                                        "san francisco", "new york", "london", "berlin"]
+                is_israel = any(ind in loc_country for ind in israel_indicators)
+                is_non_israel = any(ind in loc_country for ind in non_israel_countries)
+                if is_non_israel and not is_israel:
+                    log.info(f"  Removing non-Israel existing listing ({loc_country}): {j.get('title', '')[:50]}")
+                    continue
             time.sleep(random.uniform(0.3, 0.8))
         cleaned.append(j)
 
