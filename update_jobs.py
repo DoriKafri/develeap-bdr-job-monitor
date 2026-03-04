@@ -544,10 +544,10 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Ronen Sigal", "title": "Managing Partner, Israel", "linkedin": "https://www.linkedin.com/in/ronensigal/", "source": "LinkedIn", "email": ""},
     ],
     "motorolasolutions": [
-        {"name": "Ran Bar-Mashiah", "title": "VP R&D Israel", "linkedin": "https://www.linkedin.com/in/ran-bar-mashiah-7b0b7a1/", "source": "LinkedIn", "email": ""},
+        {"name": "Benny Dvir", "title": "Sr. Director Solutions & Services, Israel", "linkedin": "https://www.linkedin.com/in/bennydvir/", "source": "LinkedIn", "email": ""},
     ],
     "motorola solutions": [
-        {"name": "Ran Bar-Mashiah", "title": "VP R&D Israel", "linkedin": "https://www.linkedin.com/in/ran-bar-mashiah-7b0b7a1/", "source": "LinkedIn", "email": ""},
+        {"name": "Benny Dvir", "title": "Sr. Director Solutions & Services, Israel", "linkedin": "https://www.linkedin.com/in/bennydvir/", "source": "LinkedIn", "email": ""},
     ],
     "ness technologies": [
         {"name": "Roni Kass", "title": "CEO Israel", "linkedin": "https://www.linkedin.com/in/ronikass/", "source": "LinkedIn", "email": ""},
