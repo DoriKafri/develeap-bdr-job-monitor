@@ -153,7 +153,8 @@
   .job-title a:hover { color:var(--primary); text-decoration:underline; }
   .job-subtitle { font-size:12px; color:var(--text-light); }
   .company-cell { display:flex; align-items:center; gap:10px; }
-  .company-logo { width:36px; height:36px; border-radius:8px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; }
+  .company-logo { width:36px; height:36px; border-radius:8px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; overflow:hidden; }
+  .company-logo img { width:100%; height:100%; object-fit:contain; }
   .company-info { display:flex; flex-direction:column; }
   .company-name { font-weight:600; font-size:14px; }
   .company-industry { font-size:12px; color:var(--text-light); }
@@ -5425,7 +5426,7 @@ function renderJobs() {
     <tr class="${j.isDeveleapCustomer?'develeap-customer':''}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':'')}</td>
       <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
-      <td><div class="company-cell"><div class="company-logo">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div><button class="company-hide-btn" onclick="hideCompany('${j.company.replace(/'/g,"\\'")}',event)" title="Hide all listings from ${j.company}">&#10005; hide</button></div></td>
+      <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div><button class="company-hide-btn" onclick="hideCompany('${j.company.replace(/'/g,"\\'")}',event)" title="Hide all listings from ${j.company}">&#10005; hide</button></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td><span class="badge badge-${j.source}">${SOURCE_LABELS[j.source]||j.source}</span></td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
@@ -5446,7 +5447,7 @@ function openDetail(id){
   _activeStakeholderIdx = 0;
   document.getElementById('sidebarTitle').textContent=j.title;
   document.getElementById('sidebarBody').innerHTML=`
-    <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':''}</div>
+    <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" style="width:100%;height:100%;object-fit:contain;border-radius:8px" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':''}</div>
     <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>

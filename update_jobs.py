@@ -51,6 +51,142 @@ DEVELEAP_CUSTOMERS = [
     "mPrest","Ness Technologies"
 ]
 
+# ── Company Domains for Logo Lookup ───────────────────────────────────────
+# Maps company name (lowercase) → domain for Clearbit Logo API
+COMPANY_DOMAINS = {
+    "allcloud": "allcloud.io",
+    "appcharge": "appcharge.com",
+    "applied materials": "appliedmaterials.com",
+    "applied materials - israel": "appliedmaterials.com",
+    "aqua security": "aquasec.com",
+    "armissecurity": "armis.com",
+    "arpeely": "arpeely.com",
+    "attil": "attil.io",
+    "au10tix": "au10tix.com",
+    "audiocodes": "audiocodes.com",
+    "augury": "augury.com",
+    "biocatch": "biocatch.com",
+    "blink ops": "blinkops.com",
+    "bmc": "bmc.com",
+    "cato networks": "catonetworks.com",
+    "chaos labs": "chaoslabs.xyz",
+    "check point software": "checkpoint.com",
+    "classiq": "classiq.io",
+    "cloudinary": "cloudinary.com",
+    "codevalue": "codevalue.net",
+    "cyberark": "cyberark.com",
+    "cymulate": "cymulate.com",
+    "datadog": "datadoghq.com",
+    "doit": "doit.com",
+    "dualbird": "dualbird.com",
+    "earnix": "earnix.com",
+    "elbit systems israel": "elbitsystems.com",
+    "factored": "factored.ai",
+    "fetcherr": "fetcherr.io",
+    "fireblocks": "fireblocks.com",
+    "forter": "forter.com",
+    "fundamental": "fundamental.cc",
+    "global payments inc.": "globalpayments.com",
+    "globallogic": "globallogic.com",
+    "guidde": "guidde.com",
+    "harmonya": "harmonya.com",
+    "hio": "hio.store",
+    "hivestack": "hivestack.com",
+    "imagen": "imagen-ai.com",
+    "jobgether": "jobgether.com",
+    "kpmg": "kpmg.com",
+    "leidos": "leidos.com",
+    "lightricks": "lightricks.com",
+    "majestic labs": "majesticlabs.io",
+    "marvin": "marvin.com",
+    "mastercard": "mastercard.com",
+    "matia": "matia.io",
+    "metalbear": "metalbear.co",
+    "minimus": "minimumsec.com",
+    "mobileye": "mobileye.com",
+    "nvidia": "nvidia.com",
+    "next insurance": "nextinsurance.com",
+    "nextta": "nextta.com",
+    "oligo security": "oligo.security",
+    "pagaya": "pagaya.com",
+    "pango": "pango.co.il",
+    "paragon": "useparagon.com",
+    "pentera": "pentera.io",
+    "phasev": "phasev.ai",
+    "plainid": "plainid.com",
+    "port": "getport.io",
+    "quanthealth": "quanthealth.com",
+    "quantum machines": "quantum-machines.co",
+    "remedio": "gytpol.com",
+    "remedio formerly gytpol": "gytpol.com",
+    "salesforce": "salesforce.com",
+    "sentra": "sentra.io",
+    "silverfort": "silverfort.com",
+    "similarweb": "similarweb.com",
+    "surecomp": "surecomp.com",
+    "taboola": "taboola.com",
+    "tavily": "tavily.com",
+    "team8": "team8.vc",
+    "techaviv": "techaviv.com",
+    "terasky": "terasky.com",
+    "tikal": "tikalk.com",
+    "tikalk": "tikalk.com",
+    "unframe": "unframe.com",
+    "unity": "unity.com",
+    "vastdata": "vastdata.com",
+    "voyantis": "voyantis.ai",
+    "wavelbl": "wavelbl.com",
+    "wiz": "wiz.io",
+    "yael group": "yaelgroup.com",
+    "zenity": "zenity.io",
+    "zscaler": "zscaler.com",
+}
+
+def _get_company_logo(company: str, source_url: str = "") -> str:
+    """Get company logo URL via Google Favicon API.
+
+    Uses COMPANY_DOMAINS mapping first, then tries to derive domain from ATS URL.
+    Returns a Google Favicon URL or empty string.
+    """
+    if not company or company == "Unknown":
+        return ""
+    company_lower = company.lower().strip()
+
+    # 1. Direct lookup
+    domain = COMPANY_DOMAINS.get(company_lower, "")
+
+    # 2. Try partial match
+    if not domain:
+        for key, d in COMPANY_DOMAINS.items():
+            if key in company_lower or company_lower in key:
+                domain = d
+                break
+
+    # 3. Try deriving from ATS URL slug
+    if not domain and source_url:
+        for ats_pat in [
+            r"(?:boards?\.)?(?:job-boards?\.)?(?:eu\.)?greenhouse\.io/([a-z0-9\-]+)",
+            r"jobs?\.lever\.co/([a-z0-9\-]+)",
+            r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
+            r"([a-z0-9\-]+)\.wd\d+\.myworkdayjobs\.com",
+        ]:
+            m = re.search(ats_pat, source_url)
+            if m:
+                slug = m.group(1)
+                domain = slug + ".com"  # Default to .com for ATS slugs
+                break
+
+    # 4. Try company name as domain (common pattern)
+    if not domain:
+        clean = re.sub(r'[^a-z0-9]', '', company_lower)
+        if clean:
+            domain = clean + ".com"
+
+    if domain:
+        return f"https://www.google.com/s2/favicons?domain={domain}&sz=128"
+    return ""
+
+
 # ── Company Stakeholders for Outreach ──────────────────────────────────────
 # Key decision-makers at target companies for BDR outreach
 # Sources: LinkedIn, Crunchbase, company websites, Startup Nation, GeekTime,
@@ -1266,6 +1402,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "description": snippet[:120] if snippet else title,
             "skills": [],
             "stakeholders": _get_stakeholders(company),
+            "logo": _get_company_logo(company, url),
         })
 
     # Fetch real posting dates, company names, and closed status
@@ -1578,6 +1715,8 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             if li and li in old_photos:
                 s["photo"] = old_photos[li]
         j["stakeholders"] = new_stakeholders
+        # Update logo
+        j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
 
     truly_new = []
     for j in new_jobs:
@@ -1805,6 +1944,7 @@ def main():
             j["company"] = fixed
             j["isDeveleapCustomer"] = is_develeap_customer(fixed)
             j["stakeholders"] = _get_stakeholders(fixed)
+            j["logo"] = _get_company_logo(fixed, url)
 
     # 4. Merge and identify new listings
     merged, truly_new = merge_jobs(existing, new_jobs)
