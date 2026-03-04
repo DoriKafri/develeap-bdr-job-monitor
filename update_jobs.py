@@ -446,13 +446,24 @@ def scrape_job_page(url: str) -> dict:
                 result["date"] = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
                 log.info(f"  LinkedIn listedAt: {result['date']} for {url[:60]}")
 
-        # 0b. LinkedIn <time datetime="YYYY-MM-DD"> in topcard (very reliable, always in raw HTML)
+        # 0b. LinkedIn <time datetime="YYYY-MM-DD"> — only use if it's NOT in a job-card (recommendations)
         if "linkedin.com" in url and not result["date"]:
-            # The first <time> tag near the topcard contains the posting date
-            time_tags = re.findall(r'<time[^>]*datetime="(\d{4}-\d{2}-\d{2})"', text)
-            if time_tags:
-                result["date"] = time_tags[0]  # first <time> is the posting date
-                log.info(f"  LinkedIn <time> tag: {result['date']} for {url[:60]}")
+            # Find <time> tags that are NOT in main-job-card or aside-job-card (those are recommendations)
+            for tm in re.finditer(r'<time[^>]*class="([^"]*)"[^>]*datetime="(\d{4}-\d{2}-\d{2})"', text):
+                cls = tm.group(1)
+                if "job-card" not in cls:
+                    result["date"] = tm.group(2)
+                    log.info(f"  LinkedIn <time> tag (class={cls[:30]}): {result['date']} for {url[:60]}")
+                    break
+            # Also try <time> tags without class attribute (topcard date)
+            if not result["date"]:
+                for tm in re.finditer(r'<time(?:\s[^>]*)?\s*datetime="(\d{4}-\d{2}-\d{2})"', text):
+                    # Check this isn't preceded by "job-card" class
+                    preceding = text[max(0, tm.start()-200):tm.start()]
+                    if "job-card" not in preceding:
+                        result["date"] = tm.group(1)
+                        log.info(f"  LinkedIn <time> tag (no class): {result['date']} for {url[:60]}")
+                        break
 
         # 1. JSON-LD datePosted (most reliable for non-LinkedIn)
         if not result["date"]:
@@ -1033,6 +1044,13 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 except ValueError:
                     pass
 
+            # ── 7. LinkedIn with no date = likely stale, skip ──
+            # If neither snippet nor page scrape found a date for a LinkedIn listing,
+            # it's very likely old/closed (LinkedIn strips metadata from old listings)
+            if "linkedin.com" in url and not snippet_date and not page_data.get("date"):
+                log.info(f"  Skipping LinkedIn listing with no date (likely stale): {j['title'][:50]}")
+                continue
+
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
         j["posted"] = snippet_date if snippet_date else today
@@ -1151,6 +1169,11 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         continue
                 except ValueError:
                     pass
+            # If page has no date AND stored date looks like it was auto-assigned today, remove
+            if not page_data.get("date") and j.get("posted") == today:
+                log.info(f"  Removing existing LinkedIn listing with no real date: {j.get('title', '')[:50]}")
+                continue
+
             # Check location country
             loc_country = page_data.get("location_country", "").lower()
             if loc_country:
