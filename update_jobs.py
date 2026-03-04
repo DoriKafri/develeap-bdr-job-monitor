@@ -68,6 +68,12 @@ SEARCH_QUERIES = [
     "DevOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "AI Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "DevOps Engineer Israel site:apple.com OR site:microsoft.com OR site:google.com",
+    # Comeet (Israeli ATS with structured data)
+    "site:comeet.com/jobs DevOps Engineer Israel",
+    "site:comeet.com/jobs AI Engineer Israel",
+    "site:comeet.com/jobs Cloud Engineer Israel",
+    "site:comeet.com/jobs SRE Israel",
+    "site:comeet.com/jobs Infrastructure Engineer Israel",
     # General web searches
     "DevOps Engineer Israel hiring 2026",
     "AI Engineer Israel job 2026",
@@ -362,7 +368,26 @@ def scrape_job_page(url: str) -> dict:
                     continue
 
         # ── Extract posting date ──
-        # 0. LinkedIn "listedAt" Unix timestamp in milliseconds (most precise for LinkedIn)
+        # 0. Comeet "time_updated" in POSITION_DATA
+        if "comeet.com" in url:
+            cm = re.search(r'"time_updated"\s*:\s*"(\d{4}-\d{2}-\d{2})', text)
+            if cm:
+                result["date"] = cm.group(1)
+                log.info(f"  Comeet time_updated: {result['date']} for {url[:60]}")
+            # Company from POSITION_DATA
+            if not result["company"]:
+                pos_data = re.search(r'POSITION_DATA\s*=\s*(\{[^;]+)', text)
+                if pos_data:
+                    try:
+                        pd = json.loads(pos_data.group(1))
+                        # Company from the URL slug
+                        cslug = re.search(r'comeet\.com/jobs/([^/]+)', url)
+                        if cslug:
+                            result["company"] = cslug.group(1).replace('-', ' ').title()
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+
+        # 0a. LinkedIn "listedAt" Unix timestamp in milliseconds (most precise for LinkedIn)
         if "linkedin.com" in url:
             listed_at = re.search(r'"listedAt"\s*:\s*(\d{13})', text)
             if listed_at:
@@ -623,6 +648,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         r"lever\.co/([a-z0-9\-]+)",
         r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
         r"jobs\.lever\.co/([a-z0-9\-]+)",
+        r"comeet\.com/jobs/([a-z0-9\-]+)",
     ]:
         m = re.search(ats_pat, url, re.IGNORECASE)
         if m:
