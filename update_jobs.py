@@ -260,9 +260,9 @@ def extract_posting_date(url: str) -> str:
 
 
 def scrape_job_page(url: str) -> dict:
-    """Scrape a job listing page for date and company name.
-    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or ""}."""
-    result = {"date": "", "company": ""}
+    """Scrape a job listing page for date, company name, and closed status.
+    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool}."""
+    result = {"date": "", "company": "", "closed": False}
     if not url:
         return result
     try:
@@ -275,6 +275,23 @@ def scrape_job_page(url: str) -> dict:
         if resp.status_code != 200:
             return result
         text = resp.text[:50000]  # Limit to first 50KB
+
+        # ── Check if listing is closed ──
+        closed_phrases = [
+            "no longer accepting applications",
+            "this job is no longer available",
+            "this position has been filled",
+            "this job has expired",
+            "job closed",
+            "listing has been removed",
+            "application closed",
+        ]
+        text_lower_check = text.lower()
+        for phrase in closed_phrases:
+            if phrase in text_lower_check:
+                result["closed"] = True
+                log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
+                break
 
         # ── Extract company name (especially from LinkedIn) ──
         # LinkedIn: "companyName" in inline JSON
@@ -312,29 +329,38 @@ def scrape_job_page(url: str) -> dict:
                     continue
 
         # ── Extract posting date ──
-        # 1. JSON-LD datePosted (most reliable)
-        ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
-        for ld_raw in ld_matches:
-            try:
-                ld = json.loads(ld_raw)
-                items = ld if isinstance(ld, list) else [ld]
-                for item in items:
-                    if item.get("@type") == "JobPosting":
-                        date_posted = item.get("datePosted", "")
-                        if date_posted:
-                            result["date"] = _normalize_date(date_posted)
-                            break
-                    if isinstance(item.get("@graph"), list):
-                        for g in item["@graph"]:
-                            if g.get("@type") == "JobPosting":
-                                date_posted = g.get("datePosted", "")
-                                if date_posted:
-                                    result["date"] = _normalize_date(date_posted)
-                                    break
-                if result["date"]:
-                    break
-            except (json.JSONDecodeError, TypeError, KeyError):
-                continue
+        # 0. LinkedIn "listedAt" Unix timestamp in milliseconds (most precise for LinkedIn)
+        if "linkedin.com" in url:
+            listed_at = re.search(r'"listedAt"\s*:\s*(\d{13})', text)
+            if listed_at:
+                ts_ms = int(listed_at.group(1))
+                result["date"] = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
+                log.info(f"  LinkedIn listedAt: {result['date']} for {url[:60]}")
+
+        # 1. JSON-LD datePosted (most reliable for non-LinkedIn)
+        if not result["date"]:
+            ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
+            for ld_raw in ld_matches:
+                try:
+                    ld = json.loads(ld_raw)
+                    items = ld if isinstance(ld, list) else [ld]
+                    for item in items:
+                        if item.get("@type") == "JobPosting":
+                            date_posted = item.get("datePosted", "")
+                            if date_posted:
+                                result["date"] = _normalize_date(date_posted)
+                                break
+                        if isinstance(item.get("@graph"), list):
+                            for g in item["@graph"]:
+                                if g.get("@type") == "JobPosting":
+                                    date_posted = g.get("datePosted", "")
+                                    if date_posted:
+                                        result["date"] = _normalize_date(date_posted)
+                                        break
+                    if result["date"]:
+                        break
+                except (json.JSONDecodeError, TypeError, KeyError):
+                    continue
 
         # 2. "datePosted" anywhere in page (inline JSON / JS)
         if not result["date"]:
@@ -714,25 +740,42 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "skills": [],
         })
 
-    # Fetch real posting dates and fix company names from job pages (with rate limiting)
+    # Fetch real posting dates, company names, and closed status from job pages
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    active_jobs = []
     for j in jobs:
         url = j.get("sourceUrl", "")
         if url:
             page_data = scrape_job_page(url)
+
+            # Skip closed listings ("No longer accepting applications", etc.)
+            if page_data.get("closed"):
+                log.info(f"  Skipping closed listing: {j['title'][:50]}")
+                continue
+
             if page_data.get("date"):
                 j["posted"] = page_data["date"]
                 log.info(f"  Date: {page_data['date']} for {j['title'][:40]}")
             else:
                 j["posted"] = today
+
             # Fix company if still Unknown
             if j["company"] == "Unknown" and page_data.get("company"):
                 j["company"] = page_data["company"]
                 j["isDeveleapCustomer"] = is_develeap_customer(page_data["company"])
                 log.info(f"  Company from page: {page_data['company']}")
+
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
-    return jobs
+        # Skip Develeap's own listings
+        if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
+            log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
+            continue
+
+        active_jobs.append(j)
+
+    log.info(f"  Filtered: {len(jobs)} → {len(active_jobs)} (removed {len(jobs) - len(active_jobs)} closed/Develeap)")
+    return active_jobs
 
 
 # ── Dashboard Update ───────────────────────────────────────────────────────
@@ -758,6 +801,10 @@ def load_existing_jobs(html: str) -> list[dict]:
 
 def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """Merge new jobs with existing, return (merged, only_new)."""
+    # Filter out Develeap's own listings from existing jobs too
+    develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
+    existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
+
     # Index existing by URL and company+title
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
