@@ -799,9 +799,11 @@ def load_existing_jobs(html: str) -> list[dict]:
         try:
             return json.loads(raw)
         except json.JSONDecodeError:
-            # JS objects may have unquoted keys — add quotes
             try:
-                fixed = re.sub(r'(?<=[{,])\s*(\w+)\s*:', r' "\1":', raw)
+                # Fix invalid backslash escapes (e.g. "DataOps \ MLOps")
+                fixed = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', raw)
+                # Fix unquoted keys
+                fixed = re.sub(r'(?<=[{,])\s*(\w+)\s*:', r' "\1":', fixed)
                 # Remove trailing commas before } or ]
                 fixed = re.sub(r',\s*([}\]])', r'\1', fixed)
                 return json.loads(fixed)
