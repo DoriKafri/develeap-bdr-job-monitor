@@ -16,7 +16,7 @@ import io
 import html as html_mod
 import base64
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus, urljoin
 
 import requests
@@ -1942,10 +1942,22 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             truly_new.append(j)
 
     merged = existing + truly_new
+
+    # ── Freshness cutoff: remove anything older than 14 days ──
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).strftime("%Y-%m-%d")
+    before_count = len(merged)
+    merged = [j for j in merged if (j.get("posted") or "9999") >= cutoff]
+    dropped = before_count - len(merged)
+    if dropped:
+        log.info(f"  Freshness filter: dropped {dropped} listings older than {cutoff}")
+
     # Sort by date descending
     merged.sort(key=lambda x: x.get("posted", ""), reverse=True)
     # Keep max 200 listings
     merged = merged[:200]
+
+    # Also filter truly_new to only include fresh listings
+    truly_new = [j for j in truly_new if (j.get("posted") or "9999") >= cutoff]
 
     return merged, truly_new
 
