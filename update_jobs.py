@@ -498,6 +498,15 @@ SEARCH_QUERIES = [
     "site:comeet.com/jobs Cloud Engineer Israel",
     "site:comeet.com/jobs SRE Israel",
     "site:comeet.com/jobs Infrastructure Engineer Israel",
+    # FinOps roles
+    "site:linkedin.com/jobs/view FinOps Engineer Israel",
+    "site:linkedin.com/jobs/view FinOps Analyst Israel",
+    "site:linkedin.com/jobs/view Cloud Cost Engineer Israel",
+    "site:linkedin.com/jobs/view Cloud Financial Engineer Israel",
+    "site:linkedin.com/jobs/view Cloud Cost Optimization Israel",
+    "FinOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
+    "FinOps Israel site:comeet.com/jobs",
+    "FinOps Israel site:workday.com OR site:myworkdayjobs.com",
     # General web searches
     "DevOps Engineer Israel hiring 2026",
     "AI Engineer Israel job 2026",
@@ -507,12 +516,18 @@ SEARCH_QUERIES = [
     "SRE Israel job 2026",
     "Cloud Engineer Israel job 2026",
     "Infrastructure Engineer Israel hiring",
+    "FinOps Engineer Israel hiring 2026",
+    "Cloud Cost Optimization Engineer Israel job",
+    "Cloud Financial Management Israel job",
 ]
 
 CATEGORY_KEYWORDS = {
     "agentic": ["agentic", "agent", "llm agent", "autonomous agent", "ai agent", "sales agent"],
     "ai": ["ai engineer", "machine learning", "ml engineer", "mlops", "data scientist",
             "deep learning", "nlp", "llm", "generative ai", "genai", "artificial intelligence"],
+    "finops": ["finops", "fin ops", "cloud cost", "cloud financial", "cost optimization",
+               "cloud economics", "cloud spend", "cost management", "cloud billing",
+               "cost engineer", "cloud finance", "cost analyst"],
     "devops": ["devops", "sre", "site reliability", "platform engineer", "cloud engineer",
                "infrastructure", "ci/cd", "kubernetes", "terraform", "devsecops"],
 }
@@ -1004,10 +1019,13 @@ def detect_source(url: str) -> str:
 def detect_category(title: str, snippet: str) -> str:
     """Detect job category from title and snippet."""
     text = f"{title} {snippet}".lower()
-    # Check agentic first (more specific)
+    # Check most specific categories first
     for kw in CATEGORY_KEYWORDS["agentic"]:
         if kw in text:
             return "agentic"
+    for kw in CATEGORY_KEYWORDS["finops"]:
+        if kw in text:
+            return "finops"
     for kw in CATEGORY_KEYWORDS["ai"]:
         if kw in text:
             return "ai"
@@ -1837,8 +1855,8 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         log.info("No new jobs to notify about")
         return True
 
-    cat_emoji = {"devops": ":gear:", "ai": ":robot_face:", "agentic": ":zap:"}
-    cat_labels = {"devops": "DevOps", "ai": "AI/ML", "agentic": "Agentic"}
+    cat_emoji = {"devops": ":gear:", "ai": ":robot_face:", "agentic": ":zap:", "finops": ":moneybag:"}
+    cat_labels = {"devops": "DevOps", "ai": "AI/ML", "agentic": "Agentic", "finops": "FinOps"}
 
     # Separate Develeap customer listings
     customer_jobs = [j for j in new_jobs if j.get("isDeveleapCustomer")]

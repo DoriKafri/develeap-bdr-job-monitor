@@ -65,6 +65,7 @@
   .stat-card.new { border-left-color:var(--success); }
   .stat-card.ai { border-left-color:var(--teal); }
   .stat-card.devops { border-left-color:var(--warning); }
+  .stat-card.finops { border-left-color:#00897B; }
   .stat-number { font-size:28px; font-weight:800; line-height:1; }
   .stat-label { font-size:13px; color:var(--text-light); margin-top:4px; }
 
@@ -379,6 +380,7 @@
     <div class="stat-card develeap"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
     <div class="stat-card devops"><div class="stat-number" id="statDevOps" style="color:var(--warning)">0</div><div class="stat-label">DevOps Listings</div></div>
     <div class="stat-card ai"><div class="stat-number" id="statAI" style="color:var(--info)">0</div><div class="stat-label">AI / Agentic Listings</div></div>
+    <div class="stat-card finops"><div class="stat-number" id="statFinOps" style="color:#00897B">0</div><div class="stat-label">FinOps Listings</div></div>
   </div>
 
   <div class="filters-bar">
@@ -390,6 +392,7 @@
     <div class="filter-chip" data-filter="devops" onclick="toggleFilter(this)">DevOps</div>
     <div class="filter-chip" data-filter="ai" onclick="toggleFilter(this)">AI Engineering</div>
     <div class="filter-chip" data-filter="agentic" onclick="toggleFilter(this)">Agentic / LLM</div>
+    <div class="filter-chip" data-filter="finops" onclick="toggleFilter(this)">FinOps</div>
     <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
     <div class="source-dropdown-wrap" id="sourceDropdownWrap">
       <button class="source-dropdown-btn" id="sourceDropdownBtn" onclick="toggleSourceDropdown(event)">
@@ -5179,43 +5182,91 @@ let _activeStakeholderIdx = 0;
 let _connectedContacts = new Set(JSON.parse(localStorage.getItem('connectedContacts') || '[]'));
 function _saveConnected() { localStorage.setItem('connectedContacts', JSON.stringify([..._connectedContacts])); }
 
-// ===== OUTREACH MESSAGE TEMPLATES (Russell Brunson / Alex Hormozi style) =====
+// ===== FAMOUS DEVELEAP CUSTOMERS (for outreach social proof) =====
+const FAMOUS_CUSTOMERS = ["CyberArk","Monday.com","JFrog","Mobileye","AppsFlyer","Autodesk","Fireblocks","WalkMe","Checkmarx","Cellebrite","Plus500","Honeywell","RapidAPI","Rapyd","Aqua"];
+
+function _pickCustomers(company, count) {
+  // Pick random famous customers, excluding the target company
+  const pool = FAMOUS_CUSTOMERS.filter(c => c.toLowerCase() !== company.toLowerCase());
+  const shuffled = pool.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+// ===== CATEGORY-SPECIFIC VALUE PROPS =====
+const CAT_VALUE_PROPS = {
+  devops: {
+    pain: "your existing engineers are drowning in infra work they shouldn't be doing. Releases slow down. Tech debt piles up.",
+    result: "cut deployment cycles from 2 weeks to 45 minutes",
+    offer: "CI/CD pipelines, Kubernetes, Terraform, IaC — the whole stack",
+    audit: "CI/CD pipeline and infrastructure",
+    expertise: "DevOps",
+    link: "https://www.develeap.com/devops-consulting/"
+  },
+  ai: {
+    pain: "your team is stuck building ML infrastructure from scratch instead of shipping models. Training pipelines break. GPU costs spiral.",
+    result: "cut model-to-production time from months to days with production-grade MLOps",
+    offer: "ML pipelines, model serving, GPU optimization, and end-to-end MLOps",
+    audit: "ML infrastructure and model deployment pipeline",
+    expertise: "AI/ML infrastructure",
+    link: "https://www.develeap.com/"
+  },
+  agentic: {
+    pain: "building reliable AI agents is harder than it looks — hallucinations, orchestration failures, and scaling issues slow everything down.",
+    result: "helped teams deploy production-grade AI agents with proper guardrails in under 4 weeks",
+    offer: "agent orchestration, LLM pipelines, RAG systems, and production guardrails",
+    audit: "AI agent architecture and LLM pipeline",
+    expertise: "Agentic AI",
+    link: "https://www.develeap.com/"
+  },
+  finops: {
+    pain: "cloud spend is growing faster than revenue. Nobody owns cost optimization, and engineers keep spinning up resources without visibility.",
+    result: "helped teams cut cloud spend by 30-40% while maintaining performance",
+    offer: "cloud cost optimization, FinOps frameworks, showback/chargeback models, and automated cost governance",
+    audit: "cloud spending and cost optimization opportunities",
+    expertise: "FinOps & Cloud Cost",
+    link: "https://www.develeap.com/"
+  }
+};
+
+// ===== OUTREACH MESSAGE TEMPLATES =====
 const OUTREACH_TEMPLATES = [
   {
     name: "Value Bomb",
     emoji: "\uD83D\uDCA3",
     forConnected: true,
-    subject: "2 weeks to 45-min deploys — {company}'s next move?",
+    subject: "{company}'s {role} opening — we {cat_result_short}",
     body: `Hey {contact_name},
 
-Saw you're hiring a {role} at {company} — which tells me you're scaling fast and need serious DevOps firepower.
+Saw {company} is hiring a {role} — that tells me {cat_expertise} is a priority right now.
 
-Here's the thing: We just helped a company your size cut their deployment cycle from 2 weeks to 45 minutes. No fluff. Real results.
+Here's what we just did for a company your size: {cat_result}. No fluff. Real results.
 
-I'm Dori from Develeap. We've trained and embedded DevOps teams at 100+ Israeli tech companies (CyberArk, Monday.com, JFrog — the works).
+I'm Dori from Develeap. We've built and embedded {cat_expertise} teams at 100+ Israeli tech companies — {customers} and more.
 
-What if instead of waiting 3-6 months to find + onboard the right hire... you had a senior DevOps squad plugged in within 2 weeks?
+What if instead of waiting 3-6 months to find + onboard the right {role}... you had a senior squad plugged in within 2 weeks, delivering {cat_offer}?
 
-Worth a 15-min chat? Here's what we do: https://www.develeap.com/devops-consulting/`
+Worth a 15-min chat? {cat_link}
+
+Dori Kafri | CEO, Develeap`
   },
   {
     name: "Pain Agitator",
     emoji: "\uD83C\uDFAF",
     forConnected: true,
-    subject: "That open {role} role — still searching?",
+    subject: "That {role} role at {company} — still open?",
     body: `{contact_name}, quick question:
 
-That open {role} position at {company} — how long has it been open?
+That {role} position at {company} — how long has it been open?
 
-Here's what I see with most scaling teams: The role stays open 90+ days. Meanwhile your existing engineers are drowning in infra work they shouldn't be doing. Releases slow down. Tech debt piles up.
+Here's what I see every time: The role stays open 90+ days. Meanwhile, {cat_pain}
 
 Sound familiar?
 
-I run Develeap — we're Israel's #1 DevOps consulting firm. We don't just fill the gap, we build the machine: CI/CD pipelines, K8s, IaC, the whole stack.
+I run Develeap. We've helped {customers} and 100+ other companies solve exactly this. We don't just fill the gap — we deliver {cat_offer}.
 
-The ROI math is simple: hire us for 1 month, get 6 months of infrastructure progress.
+The ROI math is simple: hire us for 1 month, get 6 months of {cat_expertise} progress.
 
-Can I show you how? Check us out: https://www.develeap.com/
+Can I show you how? {cat_link}
 
 Dori Kafri | CEO, Develeap`
   },
@@ -5223,43 +5274,40 @@ Dori Kafri | CEO, Develeap`
     name: "Free Audit",
     emoji: "\uD83C\uDF81",
     forConnected: true,
-    subject: "Free CI/CD audit for {company} — no strings",
+    subject: "Free {cat_expertise} audit for {company} — no strings",
     body: `{contact_name},
 
-I'll make this stupidly simple:
+I'll make this simple:
 
-Let my team audit your CI/CD pipeline and infrastructure for FREE. No strings. We'll deliver a report showing exactly where you're losing time and money — and a roadmap to fix it.
+I see {company} is looking for a {role}. Let my team audit your {cat_audit} for FREE — no strings. We'll deliver a report showing exactly where you're losing time and money, plus a roadmap to fix it.
 
-Why free? Because once you see what 15 years of DevOps expertise looks like, you'll want us on speed dial.
-
-We do this for companies like {company} all the time. 100+ companies trust Develeap.
+Why free? Because once you see what 15 years of expertise looks like (we've done this for {customers}), you'll want us on speed dial.
 
 Interested? Just say "yes" and I'll set it up.
 
 Dori Kafri, CEO @ Develeap
-https://www.develeap.com/devops-consulting/`
+{cat_link}`
   },
   {
     name: "Case Study",
     emoji: "\uD83D\uDCCA",
     forConnected: true,
-    subject: "How a team like {company} cut 3 hires to 1 (and shipped daily)",
+    subject: "How a team like {company} {cat_result_short} with Develeap",
     body: `{contact_name},
 
 Quick story:
 
-A company similar to {company} came to us with 3 open DevOps positions they couldn't fill. Their releases were stuck at bi-weekly. Their team was burning out.
+A company similar to {company} came to us struggling with exactly what that {role} role is meant to solve. They needed serious {cat_expertise} help — fast.
 
-In 6 weeks, we:
-- Set up a full GitOps pipeline
-- Automated their entire deployment
-- Trained their team to own it
+In 6 weeks, we delivered {cat_offer} — end to end.
 
-Result: Daily deployments. Zero downtime. And they ended up needing 1 DevOps hire instead of 3.
+Result: they {cat_result}. And they got there without the 3-6 month hiring cycle.
 
-I see you're hiring a {role}. What if there's a faster, smarter path?
+We've done the same for {customers} and dozens more.
 
-15 minutes — I'll show you exactly how: https://www.develeap.com/success-stories/
+I see {company} is hiring for this. What if there's a faster, smarter path?
+
+15 minutes — I'll show you how: {cat_link}
 
 Dori Kafri | Develeap`
   },
@@ -5267,32 +5315,32 @@ Dori Kafri | Develeap`
     name: "Connect Note",
     emoji: "\uD83E\uDD1D",
     forConnected: false,
-    subject: "Re: {company}'s {role} growth — quick intro",
-    body: `Hey {contact_name}, I noticed {company} is hiring a {role} — exciting growth!
+    subject: "{company}'s {role} hire — quick intro",
+    body: `Hey {contact_name}, noticed {company} is looking for a {role} — exciting!
 
-I'm Dori, CEO of Develeap (https://www.develeap.com). We help 100+ Israeli tech companies scale their DevOps & AI infrastructure.
+I'm Dori, CEO of Develeap (https://www.develeap.com). We help companies like {customers} scale their {cat_expertise} capabilities — 100+ Israeli tech companies and counting.
 
-Would love to connect and share how we've helped similar teams ship faster. Open to a quick chat?`
+Since {company} is investing in {cat_expertise}, I'd love to share how we've helped similar teams move 3x faster. Open to connecting?`
   },
   {
     name: "Direct Ask",
     emoji: "\u26A1",
     forConnected: true,
-    subject: "{contact_name}, 50+ senior DevOps engineers ready for {company}",
+    subject: "{contact_name}, senior {cat_expertise} talent ready for {company}",
     body: `{contact_name},
 
 Straight to it:
 
-You need a {role}. I have 50+ senior DevOps engineers ready to deliver.
+{company} needs a {role}. I have 50+ senior engineers who specialize in exactly this — {cat_offer}.
 
-Develeap = Israel's largest DevOps consulting firm. 100+ companies. 15 years. From CI/CD to K8s to AI infra — we've done it all.
+Develeap = Israel's largest DevOps & Cloud consulting firm. {customers} and 100+ companies trust us. 15 years deep.
 
 3 options:
-1. Staff augmentation — senior engineers embedded in your team, this month
-2. Project-based — we build your infra, train your team, hand it off
-3. Ongoing consulting — fractional DevOps leadership
+1. Staff augmentation — senior {cat_expertise} engineers in your team, this month
+2. Project-based — we deliver {cat_offer}, train your team, hand it off
+3. Ongoing consulting — fractional {cat_expertise} leadership
 
-Which one interests you? Let's talk.
+Which one fits {company} best? Let's talk.
 
 Dori Kafri
 CEO, Develeap
@@ -5411,11 +5459,23 @@ function fillTemplate(tpl, job, stakeholder) {
   const name = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
   const title = stakeholder ? stakeholder.title : 'leader';
   const role = job.title.replace(/at\s+.*$/i, '').replace(/[-\u2013\u2014].*$/, '').replace(/\|.*$/, '').trim();
+  const cat = job.category || 'devops';
+  const vp = CAT_VALUE_PROPS[cat] || CAT_VALUE_PROPS.devops;
+  const custs = _pickCustomers(job.company, 3).join(', ');
+  const resultShort = vp.result.length > 50 ? vp.result.substring(0, 50).replace(/\s\S*$/, '...') : vp.result;
   return tpl
     .replace(/\{contact_name\}/g, name)
     .replace(/\{contact_title\}/g, title)
     .replace(/\{company\}/g, job.company)
-    .replace(/\{role\}/g, role);
+    .replace(/\{role\}/g, role)
+    .replace(/\{customers\}/g, custs)
+    .replace(/\{cat_pain\}/g, vp.pain)
+    .replace(/\{cat_result\}/g, vp.result)
+    .replace(/\{cat_result_short\}/g, resultShort)
+    .replace(/\{cat_offer\}/g, vp.offer)
+    .replace(/\{cat_audit\}/g, vp.audit)
+    .replace(/\{cat_expertise\}/g, vp.expertise)
+    .replace(/\{cat_link\}/g, vp.link);
 }
 
 function switchTemplate(idx) {
@@ -5543,8 +5603,8 @@ function closeHiddenPanel() {
 const SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',other:'Other'};
 const SOURCE_DOMAINS = {linkedin:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org'};
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
-const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic'};
-const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
+const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps'};
+const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC',finops:'#00897B'};
 
 function _companyMatches(company, list) {
   const cl = company.toLowerCase().trim();
@@ -5639,6 +5699,7 @@ function updateStats() {
   document.getElementById('statDeveleap').textContent = ALL_JOBS.filter(j=>j.isDeveleapCustomer).length;
   document.getElementById('statDevOps').textContent = ALL_JOBS.filter(j=>j.category==='devops').length;
   document.getElementById('statAI').textContent = ALL_JOBS.filter(j=>j.category==='ai'||j.category==='agentic').length;
+  document.getElementById('statFinOps').textContent = ALL_JOBS.filter(j=>j.category==='finops').length;
 }
 
 // ===== COLUMN FILTER LOGIC =====
