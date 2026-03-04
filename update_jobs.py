@@ -684,7 +684,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                          "blog", "article", "guide", "tutorial", "top 10", "best companies",
                          "average salary", "job description template", "what is a",
                          "conference", "meetup", "event", "webinar", "course",
-                         "jobs in israel", "apply now", "remote jobs in"]
+                         "jobs in israel", "apply now", "remote jobs in",
+                         "archives", "משרות דרושים", "as a service for startups"]
         if any(kw in title_lower for kw in skip_keywords):
             continue
 
@@ -731,6 +732,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             r"remoterocketship\.com", r"devjobs\.co\.il",
             r"simplyhired\.com", r"jooble\.", r"talent\.com",
             r"jobrapido\.", r"careerjet\.",
+            r"gotfriends\.co\.il", r"whist\.co\.il", r"medulla\.co\.il",
+            r"jobify360\.co\.il",
         ]
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
