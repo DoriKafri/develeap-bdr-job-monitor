@@ -522,6 +522,11 @@ SOURCE_MAP = {
     "facebook.com": "facebook",
     "t.me": "telegram",
     "goozali": "goozali",
+    "greenhouse.io": "greenhouse",
+    "lever.co": "lever",
+    "ashbyhq.com": "ashby",
+    "comeet.com": "comeet",
+    "myworkdayjobs.com": "workday",
 }
 
 
