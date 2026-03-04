@@ -34,21 +34,25 @@ log = logging.getLogger(__name__)
 
 # ── Develeap customers (case-insensitive partial match) ────────────────────
 DEVELEAP_CUSTOMERS = [
-    "Akamai","Alzai","Amsalem Tours","Apester","AppsFlyer","Aqua","Armo","Ascending",
-    "Autodesk","Automarky","BYON","Beacon Security","Blink Aid","Bluespine","Bond",
-    "BridgeOver","Cal","Carebox","Cellebrite","Cellosign","Checkin Travels","Checkmarx",
-    "Checkpoint","Cibus","CitrusX","Civ Robotics","Cloudzone","Cruise","Ctera","Curated-ai",
-    "CurveTech","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","Elmodis","Empathy",
-    "Evogene","Ezbob","Fireblocks","Flexor","Foretellix","Gloat","Grain Finance","Harmonic",
-    "Hexagon","Honeywell","Hyp","Imagry","Infinpoint","InfluenceAI","Inuitive","Isracard",
-    "JFrog","Jedify","Knostic","LedderTech","Legion","Linx security","Matrix","Megureit",
-    "Mobileye","Monday.com","monday.com","N2WS","NSO","NeoTech","Ness","NetNut","Networx",
-    "Nintex","Nuvo cares","Odysight","OwlDuet","OwnPlay","Per-me","Philips","Pillar Security",
-    "Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems",
-    "RSI","RapidAPI","Rapyd","Redis","Redwood","Revelator","Scytale","Sentrycs","Sightec",
-    "Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita",
-    "Verbit","Verifood","Vorlon","WalkMe","XMCyber","Zafran","Zerto","Zimark","eXLGx",
-    "mPrest","Ness Technologies"
+    "Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky",
+    "Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign",
+    "Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai",
+    "CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor",
+    "Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard",
+    "Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com",
+    "N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me",
+    "Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft",
+    "R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash",
+    "Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood",
+    "Vorlon","XMCyber","Zafran","Zerto","Zimark",
+]
+
+DEVELEAP_PAST_CUSTOMERS = [
+    "AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx",
+    "Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat",
+    "Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech",
+    "mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI",
+    "Rapyd","Revelator","Sentrycs","Verbit","WalkMe",
 ]
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
@@ -1073,10 +1077,30 @@ def _get_stakeholders(company: str) -> list:
     return []
 
 
+def _company_matches(company: str, customer_list: list) -> bool:
+    """Check if company name matches any entry in customer list (word-boundary aware)."""
+    company_lower = company.lower().strip()
+    for c in customer_list:
+        c_lower = c.lower()
+        if c_lower == company_lower:
+            return True
+        # Word-boundary match: "Aqua" matches "Aqua Security" but not "AquaFence"
+        pattern = r'(?:^|[\s\-_])' + re.escape(c_lower) + r'(?:$|[\s\-_,.])'
+        if re.search(pattern, company_lower):
+            return True
+    return False
+
+
 def is_develeap_customer(company: str) -> bool:
-    """Check if company is a Develeap customer."""
-    company_lower = company.lower()
-    return any(c.lower() in company_lower for c in DEVELEAP_CUSTOMERS)
+    """Check if company is a current Develeap customer."""
+    return _company_matches(company, DEVELEAP_CUSTOMERS)
+
+
+def is_develeap_past_customer(company: str) -> bool:
+    """Check if company is a past Develeap customer."""
+    if is_develeap_customer(company):
+        return False  # Active takes precedence
+    return _company_matches(company, DEVELEAP_PAST_CUSTOMERS)
 
 
 def _is_job_title(text: str) -> bool:
@@ -1403,6 +1427,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "posted": "",  # Will be filled by date extraction
             "isNew": True,
             "isDeveleapCustomer": is_develeap_customer(company),
+            "isPastCustomer": is_develeap_past_customer(company),
             "_snippet": snippet,  # Keep full snippet for closed/date detection
             "description": snippet[:120] if snippet else title,
             "skills": [],
@@ -1724,6 +1749,10 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
         # Re-classify source from URL (picks up newly added SOURCE_MAP entries)
         j["source"] = detect_source(j.get("sourceUrl", ""))
+        # Re-classify customer status
+        company = j.get("company", "")
+        j["isDeveleapCustomer"] = is_develeap_customer(company)
+        j["isPastCustomer"] = is_develeap_past_customer(company)
 
     truly_new = []
     for j in new_jobs:
@@ -1950,6 +1979,7 @@ def main():
             log.info(f"  Fixed company: '{old_company}' → '{fixed}'")
             j["company"] = fixed
             j["isDeveleapCustomer"] = is_develeap_customer(fixed)
+            j["isPastCustomer"] = is_develeap_past_customer(fixed)
             j["stakeholders"] = _get_stakeholders(fixed)
             j["logo"] = _get_company_logo(fixed, url)
 

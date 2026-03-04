@@ -158,6 +158,10 @@
   .badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; }
   .badge-develeap { background:#FFE5E9; color:var(--develeap-flag); }
   .badge-develeap::before { content:"\2605"; font-size:10px; }
+  tr.past-customer td { background:#F5F5FF; }
+  tr.past-customer:hover td { background:#EBEBFF; }
+  .badge-past { background:#EDE7F6; color:#7B1FA2; font-size:11px; }
+  .badge-past::before { content:"\25CB"; font-size:10px; margin-right:2px; }
   .badge-new { background:#E5F9EE; color:#00854D; }
   .badge-linkedin { background:#E8F4FE; color:#0A66C2; }
   .badge-alljobs { background:#FFF3E0; color:#E65100; }
@@ -304,6 +308,7 @@
     tr { margin-bottom:8px; border-bottom:2px solid var(--border); padding:12px 14px; position:relative; cursor:pointer; }
     tr:hover td { background:transparent; }
     tr.develeap-customer { background:#FFF5F7; border-left:3px solid var(--develeap-flag); }
+    tr.past-customer { background:#F5F5FF; border-left:3px solid #B39DDB; }
     td { padding:2px 0; border:none; font-size:13px; }
     td:nth-child(1) { position:absolute; top:12px; right:14px; }
     td:nth-child(2) { padding-right:60px; }
@@ -456,7 +461,8 @@ function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();docume
 
 // ===== DATA =====
 let LAST_UPDATED = "2026-03-04T19:02:57Z";
-const DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","AppsFlyer","Aqua","Armo","Ascending","Autodesk","Automarky","BYON","Beacon Security","Blink Aid","Bluespine","Bond","BridgeOver","Cal","Carebox","Cellebrite","Cellosign","Checkin Travels","Checkmarx","Checkpoint","Cibus","CitrusX","Civ Robotics","Cloudzone","Cruise","Ctera","Curated-ai","CurveTech","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","Elmodis","Empathy","Evogene","Ezbob","Fireblocks","Flexor","Foretellix","Gloat","Grain Finance","Harmonic","Hexagon","Honeywell","Hyp","Imagry","Infinpoint","InfluenceAI","Inuitive","Isracard","JFrog","Jedify","Knostic","LedderTech","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","monday.com","N2WS","NSO","NeoTech","Ness","NetNut","Networx","Nintex","Nuvo cares","Odysight","OwlDuet","OwnPlay","Per-me","Philips","Pillar Security","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","RSI","RapidAPI","Rapyd","Redis","Redwood","Revelator","Scytale","Sentrycs","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verbit","Verifood","Vorlon","WalkMe","XMCyber","Zafran","Zerto","Zimark","eXLGx","mPrest","Ness Technologies"];
+const DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
+const DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
   {
@@ -5393,8 +5399,20 @@ function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="http
 const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic'};
 const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
 
+function _companyMatches(company, list) {
+  const cl = company.toLowerCase().trim();
+  return list.some(c => {
+    const lo = c.toLowerCase();
+    if (cl === lo) return true;
+    const re = new RegExp('(?:^|[\\s\\-_])' + lo.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '(?:$|[\\s\\-_,.])', 'i');
+    return re.test(cl);
+  });
+}
 function initApp() {
-  ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
+  ALL_JOBS.forEach(j => {
+    j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
+    j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);
+  });
   updateHiddenUI();
   buildSourceDropdown();
   updateStats(); renderJobs();
@@ -5458,7 +5476,7 @@ function reloadNewListings() {
   if (_pendingNewJobs.length) {
     ALL_JOBS = _pendingNewJobs;
     _pendingNewJobs = [];
-    ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
+    ALL_JOBS.forEach(j => { j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS); j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS); });
     updateStats(); renderJobs();
   }
   document.getElementById('newListingsBanner').classList.remove('show');
@@ -5610,15 +5628,15 @@ function renderJobs() {
   });
 
   tbody.innerHTML = jobs.map(j=>`
-    <tr class="${j.isDeveleapCustomer?'develeap-customer':''}" onclick="openDetail('${j.id}')" style="cursor:pointer">
-      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':'')}</td>
+    <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
+      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':''))}</td>
       <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
       <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td><span class="badge badge-${j.source} source-badge">${sourceIcon(j.source)}${SOURCE_LABELS[j.source]||j.source}</span></td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
       <td>${formatDate(j.posted)}</td>
-      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">Customer</span>':'<span style="color:var(--text-lighter);font-size:12px">\u2014</span>'}</td>
+      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">Customer</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':'<span style="color:var(--text-lighter);font-size:12px">\u2014</span>')}</td>
     </tr>`).join('');
 }
 
@@ -5705,7 +5723,7 @@ function openDetail(id){
   _activeStakeholderIdx = 0;
   document.getElementById('sidebarTitle').textContent=j.title;
   document.getElementById('sidebarBody').innerHTML=`
-    <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" style="width:100%;height:100%;object-fit:contain;border-radius:8px" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':''}</div>
+    <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" style="width:100%;height:100%;object-fit:contain;border-radius:8px" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':(j.isPastCustomer?'<span class="badge badge-past" style="display:inline-flex">Past Customer</span>':'')}</div>
     <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
@@ -5719,7 +5737,7 @@ function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverla
 function exportCSV(){
   const jobs=getFilteredJobs();
   const h=['Title','Company','Industry','Location','Source','Category','Posted','Develeap Customer','Description','Skills','URL'];
-  const rows=jobs.map(j=>[j.title,j.company,j.companyIndustry,j.location,j.source,j.category,j.posted,j.isDeveleapCustomer?'Yes':'No',j.description,(j.skills||[]).join('; '),j.sourceUrl]);
+  const rows=jobs.map(j=>[j.title,j.company,j.companyIndustry,j.location,j.source,j.category,j.posted,j.isDeveleapCustomer?'Yes':(j.isPastCustomer?'Past':'No'),j.description,(j.skills||[]).join('; '),j.sourceUrl]);
   const csv=[h,...rows].map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='develeap-jobs-'+new Date().toISOString().split('T')[0]+'.csv';a.click();
 }
