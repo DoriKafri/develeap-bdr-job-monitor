@@ -50,18 +50,22 @@ DEVELEAP_CUSTOMERS = [
 ]
 
 SEARCH_QUERIES = [
-    "DevOps Engineer Israel hiring",
-    "AI Engineer Israel job",
+    # LinkedIn individual job listings (highest quality)
+    "site:linkedin.com/jobs/view DevOps Engineer Israel",
+    "site:linkedin.com/jobs/view AI Engineer Israel",
+    "site:linkedin.com/jobs/view Platform Engineer Israel",
+    "site:linkedin.com/jobs/view MLOps Engineer Israel",
+    "site:linkedin.com/jobs/view SRE Israel",
+    "site:linkedin.com/jobs/view Cloud Engineer Israel",
+    "site:linkedin.com/jobs/view Agentic AI Israel",
+    "site:linkedin.com/jobs/view DevSecOps Israel",
+    # General web searches
+    "DevOps Engineer Israel hiring 2026",
+    "AI Engineer Israel job 2026",
     "Agentic Developer Israel job",
     "Platform Engineer Israel hiring",
     "MLOps Engineer Israel",
-    "Cloud Engineer Israel DevOps",
     "SRE Israel job",
-    "site:linkedin.com/jobs DevOps Israel",
-    "site:linkedin.com/jobs AI Engineer Israel",
-    'site:alljobs.co.il "DevOps"',
-    'site:drushim.co.il "DevOps" OR "AI Engineer"',
-    "site:glassdoor.com DevOps Engineer Israel",
 ]
 
 CATEGORY_KEYWORDS = {
@@ -255,6 +259,150 @@ def extract_posting_date(url: str) -> str:
     return ""
 
 
+def scrape_job_page(url: str) -> dict:
+    """Scrape a job listing page for date and company name.
+    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or ""}."""
+    result = {"date": "", "company": ""}
+    if not url:
+        return result
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+        resp = requests.get(url, headers=headers, timeout=10, allow_redirects=True)
+        if resp.status_code != 200:
+            return result
+        text = resp.text[:50000]  # Limit to first 50KB
+
+        # ── Extract company name (especially from LinkedIn) ──
+        # LinkedIn: "companyName" in inline JSON
+        cm = re.search(r'"companyName"\s*:\s*"([^"]{2,60})"', text)
+        if cm:
+            result["company"] = cm.group(1).strip()
+        # LinkedIn: topcard org name
+        if not result["company"]:
+            cm = re.search(r'class="topcard__org-name[^"]*"[^>]*>([^<]{2,60})', text)
+            if cm:
+                result["company"] = cm.group(1).strip()
+        # JSON-LD hiringOrganization
+        if not result["company"]:
+            ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
+            for ld_raw in ld_matches:
+                try:
+                    ld = json.loads(ld_raw)
+                    items = ld if isinstance(ld, list) else [ld]
+                    for item in items:
+                        if item.get("@type") == "JobPosting":
+                            org = item.get("hiringOrganization", {})
+                            if isinstance(org, dict) and org.get("name"):
+                                result["company"] = org["name"].strip()
+                                break
+                        if isinstance(item.get("@graph"), list):
+                            for g in item["@graph"]:
+                                if g.get("@type") == "JobPosting":
+                                    org = g.get("hiringOrganization", {})
+                                    if isinstance(org, dict) and org.get("name"):
+                                        result["company"] = org["name"].strip()
+                                        break
+                    if result["company"]:
+                        break
+                except (json.JSONDecodeError, TypeError, KeyError):
+                    continue
+
+        # ── Extract posting date ──
+        # 1. JSON-LD datePosted (most reliable)
+        ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
+        for ld_raw in ld_matches:
+            try:
+                ld = json.loads(ld_raw)
+                items = ld if isinstance(ld, list) else [ld]
+                for item in items:
+                    if item.get("@type") == "JobPosting":
+                        date_posted = item.get("datePosted", "")
+                        if date_posted:
+                            result["date"] = _normalize_date(date_posted)
+                            break
+                    if isinstance(item.get("@graph"), list):
+                        for g in item["@graph"]:
+                            if g.get("@type") == "JobPosting":
+                                date_posted = g.get("datePosted", "")
+                                if date_posted:
+                                    result["date"] = _normalize_date(date_posted)
+                                    break
+                if result["date"]:
+                    break
+            except (json.JSONDecodeError, TypeError, KeyError):
+                continue
+
+        # 2. "datePosted" anywhere in page (inline JSON / JS)
+        if not result["date"]:
+            m = re.search(r'"datePosted"\s*:\s*"(\d{4}-\d{2}-\d{2})', text)
+            if m:
+                result["date"] = m.group(1)
+
+        # 2b. Meta tags
+        if not result["date"]:
+            meta_patterns = [
+                r'<meta[^>]*(?:property|name)=["\'](?:article:published_time|datePublished|date)["\'][^>]*content=["\']([^"\']+)["\']',
+                r'<meta[^>]*content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:article:published_time|datePublished|date)["\']',
+            ]
+            for pat in meta_patterns:
+                m = re.search(pat, text, re.IGNORECASE)
+                if m:
+                    result["date"] = _normalize_date(m.group(1))
+                    break
+
+        # 2c. Any JSON "date*" field with ISO date value
+        if not result["date"]:
+            date_json = re.findall(r'"(?:date_?(?:posted|published|created|listed)?)"\s*:\s*"(\d{4}-\d{2}-\d{2}[T\s]?[^"]*)"', text, re.IGNORECASE)
+            if date_json:
+                result["date"] = _normalize_date(date_json[0])
+
+        # 2d. ISO dates near posting keywords
+        if not result["date"]:
+            posting_date_ctx = re.findall(
+                r'(?:post|publish|list|creat|updat)(?:ed|_at|At|Date|Time|_date|_time).{0,30}?(\d{4}-\d{2}-\d{2})',
+                text, re.IGNORECASE
+            )
+            if posting_date_ctx:
+                result["date"] = posting_date_ctx[0]
+
+        # 3. Relative date patterns
+        if not result["date"]:
+            from datetime import timedelta
+            relative_patterns = [
+                (r'(?:posted|published|listed)\s+(\d+)\s+day', "days"),
+                (r'(?:posted|published|listed)\s+(\d+)\s+week', "weeks"),
+                (r'(?:posted|published|listed)\s+(\d+)\s+month', "months"),
+                (r'(?:posted|published|listed)\s+(\d+)\s+hour', "hours"),
+                (r'(\d+)\s+days?\s+ago', "days"),
+                (r'(\d+)\s+weeks?\s+ago', "weeks"),
+                (r'(\d+)\s+months?\s+ago', "months"),
+                (r'(\d+)\s+hours?\s+ago', "hours"),
+            ]
+            for pat, unit in relative_patterns:
+                m = re.search(pat, text, re.IGNORECASE)
+                if m:
+                    n = int(m.group(1))
+                    now = datetime.now(timezone.utc)
+                    if unit == "hours":
+                        dt = now - timedelta(hours=n)
+                    elif unit == "days":
+                        dt = now - timedelta(days=n)
+                    elif unit == "weeks":
+                        dt = now - timedelta(weeks=n)
+                    elif unit == "months":
+                        dt = now - timedelta(days=n * 30)
+                    result["date"] = dt.strftime("%Y-%m-%d")
+                    break
+
+    except Exception as e:
+        log.debug(f"Page scrape failed for {url[:60]}: {e}")
+    return result
+
+
 def _normalize_date(raw: str) -> str:
     """Normalize various date formats to YYYY-MM-DD."""
     raw = raw.strip()
@@ -322,7 +470,7 @@ def _is_job_title(text: str) -> bool:
         "backend", "frontend", "fullstack", "full-stack", "full stack",
         "technical", "tech", "site reliability", "security", "devsecops",
         "solution", "solutions", "product", "project", "program", "qa", "test",
-        "automation", "release", "build", "deployment", "systems", "network",
+        "automation", "release", "build", "deployment", "network",
         "database", "dba", "linux", "windows", "python", "java", "golang",
         "kubernetes", "terraform", "aws", "azure", "gcp", "remote", "hybrid",
         "israel", "tel aviv", "tel-aviv", "ramat gan", "herzliya", "haifa",
@@ -377,6 +525,13 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
                 fixed.append(w)
         return " ".join(fixed)
 
+    # 0. Hebrew LinkedIn title pattern: "COMPANY גיוס עובדים ROLE"
+    heb_match = re.match(r'^([A-Za-z0-9\.\-\s&]+?)\s+גיוס\s+עובדים', title)
+    if heb_match:
+        company = heb_match.group(1).strip()
+        if company and not _is_job_title(company):
+            return _fix_casing(company)
+
     # 1. LinkedIn URL pattern: .../TITLE-at-COMPANY-1234567
     if "linkedin.com" in url:
         m = re.search(r"/jobs/view/.*?-at-(.+?)-\d{5,}", url)
@@ -412,12 +567,10 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             if re.search(r"/(careers|jobs|position|openings|join|hiring|vacancy)", url, re.IGNORECASE):
                 return _fix_casing(domain_company)
 
-    # 2. "Role at Company" pattern — use the LAST "at" in the title (strongest signal)
-    m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title)
-    # If there are multiple "at" matches, prefer the last one
-    all_at_matches = list(re.finditer(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title))
-    if all_at_matches:
-        m = all_at_matches[-1]
+    # 2. "Role at Company" or "Role @ Company" pattern — use the LAST match
+    at_pattern = r"(?:\bat|@)\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)"
+    all_at_matches = list(re.finditer(at_pattern, title))
+    m = all_at_matches[-1] if all_at_matches else None
     if m:
         company = m.group(1).strip()
         if not _is_job_title(company):
@@ -444,8 +597,8 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         if not _is_job_title(company):
             return company
 
-    # 5. Try snippet with "at Company" pattern
-    m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,\.]|\s+in\s+|\s+is\s+|\s*$)", snippet)
+    # 5. Try snippet with "at/@ Company" pattern
+    m = re.search(r"(?:\bat|@)\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,\.]|\s+in\s+|\s+is\s+|\s*$)", snippet)
     if m:
         company = m.group(1).strip()
         if not _is_job_title(company):
@@ -561,17 +714,22 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "skills": [],
         })
 
-    # Fetch real posting dates from job pages (with rate limiting)
+    # Fetch real posting dates and fix company names from job pages (with rate limiting)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     for j in jobs:
         url = j.get("sourceUrl", "")
         if url:
-            real_date = extract_posting_date(url)
-            if real_date:
-                j["posted"] = real_date
-                log.info(f"  Date extracted: {real_date} for {j['title'][:40]}")
+            page_data = scrape_job_page(url)
+            if page_data.get("date"):
+                j["posted"] = page_data["date"]
+                log.info(f"  Date: {page_data['date']} for {j['title'][:40]}")
             else:
-                j["posted"] = today  # Fallback to today
+                j["posted"] = today
+            # Fix company if still Unknown
+            if j["company"] == "Unknown" and page_data.get("company"):
+                j["company"] = page_data["company"]
+                j["isDeveleapCustomer"] = is_develeap_customer(page_data["company"])
+                log.info(f"  Company from page: {page_data['company']}")
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
     return jobs
@@ -690,64 +848,81 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         log.info("No new jobs to notify about")
         return True
 
+    cat_emoji = {"devops": ":gear:", "ai": ":robot_face:", "agentic": ":zap:"}
     cat_labels = {"devops": "DevOps", "ai": "AI/ML", "agentic": "Agentic"}
-    source_labels = {
-        "linkedin": "LinkedIn", "glassdoor": "Glassdoor", "alljobs": "AllJobs",
-        "drushim": "Drushim", "builtin": "BuiltIn", "facebook": "Facebook",
-        "telegram": "Telegram", "goozali": "Goozali", "other": "Web",
-    }
 
-    if len(new_jobs) <= 5:
-        # Individual messages for each job
-        blocks = []
-        for j in new_jobs:
+    # Separate Develeap customer listings
+    customer_jobs = [j for j in new_jobs if j.get("isDeveleapCustomer")]
+    other_jobs = [j for j in new_jobs if not j.get("isDeveleapCustomer")]
+
+    blocks = []
+
+    # Header
+    blocks.append({
+        "type": "header",
+        "text": {"type": "plain_text", "text": f":newspaper:  {len(new_jobs)} New Job Listings Found", "emoji": True}
+    })
+
+    # Develeap customer alerts first (individual cards)
+    if customer_jobs:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": ":rotating_light: *Develeap Customer Listings*"}
+        })
+        for j in customer_jobs:
             cat = cat_labels.get(j.get("category", ""), "DevOps")
-            src = source_labels.get(j.get("source", ""), "Web")
-            star = " :star:" if j.get("isDeveleapCustomer") else ""
-            customer_line = ":rotating_light: *DEVELEAP CUSTOMER*\n" if j.get("isDeveleapCustomer") else ""
-
+            emoji = cat_emoji.get(j.get("category", ""), ":briefcase:")
+            url = j.get("sourceUrl", "")
             blocks.append({
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
                     "text": (
-                        f"{customer_line}"
-                        f":briefcase: *New {cat} Listing*\n"
-                        f"*{j['title']}* at *{j['company']}*{star}\n"
-                        f":round_pushpin: {j.get('location', 'Israel')} | :link: {src}\n"
-                        f"{j.get('description', '')[:100]}\n"
-                        f"<{j.get('sourceUrl', '')}|View Original> | "
-                        f"<https://develeap-bdr-jobs.netlify.app|View Dashboard>"
+                        f":star: *<{url}|{j['title'][:60]}>*\n"
+                        f"Company: *{j['company']}*  |  {emoji} {cat}  |  :round_pushpin: {j.get('location', 'Israel')}"
                     )
                 }
             })
-            blocks.append({"type": "divider"})
+        blocks.append({"type": "divider"})
 
-        payload = {"blocks": blocks}
-    else:
-        # Batch summary for many listings
-        lines = []
-        for j in new_jobs:
-            cat = cat_labels.get(j.get("category", ""), "DevOps")
-            star = " :star:" if j.get("isDeveleapCustomer") else ""
-            lines.append(f"• *{j['title']}* at *{j['company']}* ({cat}){star}")
+    # All other listings as a compact table
+    if other_jobs:
+        if customer_jobs:
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": ":briefcase: *Other New Listings*"}
+            })
 
-        payload = {
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": (
-                            f":newspaper: *{len(new_jobs)} New Job Listings Found*\n\n"
-                            + "\n".join(lines[:20])
-                            + ("\n..." if len(lines) > 20 else "")
-                            + f"\n\n<https://develeap-bdr-jobs.netlify.app|Open Full Dashboard>"
-                        )
-                    }
-                }
-            ]
-        }
+        # Group into chunks to stay within Slack's text limit
+        chunk_size = 10
+        for i in range(0, len(other_jobs), chunk_size):
+            chunk = other_jobs[i:i + chunk_size]
+            lines = []
+            for j in chunk:
+                cat = cat_labels.get(j.get("category", ""), "DevOps")
+                emoji = cat_emoji.get(j.get("category", ""), ":briefcase:")
+                url = j.get("sourceUrl", "")
+                company = j["company"] if j["company"] != "Unknown" else "_Unknown_"
+                lines.append(
+                    f"{emoji}  <{url}|*{j['title'][:55]}*>\n"
+                    f"      {company}  ·  {j.get('location', 'Israel')}"
+                )
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": "\n\n".join(lines[:chunk_size])}
+            })
+
+    # Footer with dashboard link
+    blocks.append({"type": "divider"})
+    blocks.append({
+        "type": "context",
+        "elements": [{
+            "type": "mrkdwn",
+            "text": ":bar_chart: <https://develeap-bdr-jobs.netlify.app|Open Full Dashboard>  |  Powered by Develeap BDR Monitor"
+        }]
+    })
+
+    payload = {"blocks": blocks}
 
     try:
         resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=10)
