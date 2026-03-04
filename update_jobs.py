@@ -267,8 +267,10 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
     m = re.search(r"https?://(?:careers|jobs)\.([a-z0-9\-]+)\.", url)
     if m:
         domain_company = _fix_casing(m.group(1).replace("-", " ").title())
-        if len(domain_company) > 2 and domain_company.lower() not in {"secret", "lhh"}:
-            return domain_company
+        if len(domain_company) > 2 and domain_company.lower() not in {
+            "secret", "lhh", "secrettelaviv", "efinancial",
+        }:
+            return _fix_casing(domain_company)
 
     # 1c. COMPANY.com/careers or similar career page patterns
     m = re.search(r"https?://(?:www\.)?([a-z0-9\-]+)\.(?:com|io|co\.il|ai)/.+", url)
@@ -286,7 +288,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         if len(domain_company) > 2 and domain_company.lower() not in job_boards:
             # Verify the URL looks like a career/job page, not a random page
             if re.search(r"/(careers|jobs|position|openings|join|hiring|vacancy)", url, re.IGNORECASE):
-                return domain_company
+                return _fix_casing(domain_company)
 
     # 2. "Role at Company" pattern — use the LAST "at" in the title (strongest signal)
     m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title)
@@ -405,6 +407,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             r"/jobs/?\?", r"/location/", r"/locations/", r"/category/",
             r"/job-location-category/", r"/jobs/mena/",
             r"/list/", r"startup\.jobs/",
+            r"secrettelaviv\.com", r"efinancialcareers\.com",
+            r"aidevtlv\.com", r"machinelearning\.co\.il",
         ]
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
