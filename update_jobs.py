@@ -196,7 +196,7 @@ def extract_posting_date(url: str) -> str:
         resp = requests.get(url, headers=headers, timeout=10, allow_redirects=True)
         if resp.status_code != 200:
             return ""
-        text = resp.text[:50000]  # Limit to first 50KB
+        text = resp.text[:100000]  # Limit to first 100KB
 
         # 1. JSON-LD structured data (most reliable — used by LinkedIn, many career sites)
         ld_matches = re.findall(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.DOTALL)
@@ -296,7 +296,7 @@ def scrape_job_page(url: str) -> dict:
         resp = requests.get(url, headers=headers, timeout=10, allow_redirects=True)
         if resp.status_code != 200:
             return result
-        text = resp.text[:50000]  # Limit to first 50KB
+        text = resp.text[:100000]  # Limit to first 100KB
         log.info(f"  Scrape {url[:60]}: status={resp.status_code}, size={len(resp.text)}, truncated={len(text)}")
 
         # ── Check if listing is closed ──
