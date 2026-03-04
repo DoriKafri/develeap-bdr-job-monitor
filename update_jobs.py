@@ -882,6 +882,12 @@ def _get_stakeholders(company: str) -> list:
     for key, contacts in COMPANY_STAKEHOLDERS.items():
         if key in company_lower or company_lower in key:
             return contacts
+    # Fuzzy match: remove spaces/hyphens and compare (e.g. "blinkops" matches "Blink Ops")
+    company_squished = company_lower.replace(" ", "").replace("-", "")
+    for key, contacts in COMPANY_STAKEHOLDERS.items():
+        key_squished = key.replace(" ", "").replace("-", "")
+        if key_squished in company_squished or company_squished in key_squished:
+            return contacts
     return []
 
 
