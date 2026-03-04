@@ -9,16 +9,19 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root {
-    --primary: #6161FF; --primary-dark: #4B4BCC; --primary-light: #E8E8FF;
-    --success: #00CA72; --warning: #FDAB3D; --danger: #E44258; --info: #579BFC;
+    --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
+    --accent: #FFB100; --accent-dark: #E09D00; --accent-light: #FFF3D6;
+    --teal: #32BBD7; --teal-light: #E0F7FA;
+    --success: #00CA72; --warning: #FDAB3D; --danger: #E44258; --info: #32BBD7;
     --bg: #F6F7FB; --text: #323338; --text-light: #676879; --text-lighter: #C5C7D0;
-    --border: #E6E9EF; --develeap-flag: #FF3D57; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --border: #E6E9EF; --develeap-flag: #FFB100; --shadow: 0 2px 12px rgba(0,0,0,0.08);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
   /* AUTH */
-  #auth-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#1C1F3B 0%,#2B2F5C 50%,#6161FF 100%); color:white; }
+  #auth-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#032229 0%,#05323C 50%,#32BBD7 100%); color:white; }
   .auth-card { background:white; border-radius:16px; padding:48px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-width:420px; width:90%; }
   .auth-card .logo-area { margin-bottom:24px; }
   .auth-card .logo-area svg { width:56px; height:56px; }
@@ -30,14 +33,14 @@
 
   /* APP */
   #app { display:none; }
-  .top-nav { background:linear-gradient(135deg,#1C1F3B 0%,#2B2F5C 100%); color:white; padding:0 32px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+  .top-nav { background:#05323C; color:white; padding:0 32px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(5,50,60,0.3); }
   .top-nav .logo { display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px; }
   .top-nav .logo svg { width:28px; height:28px; }
   .nav-actions { display:flex; align-items:center; gap:16px; }
   .nav-actions .last-update { font-size:13px; opacity:0.7; display:flex; flex-direction:column; align-items:flex-end; line-height:1.3; }
   .last-update .freshness-relative { font-size:11px; opacity:0.7; }
-  .new-listings-banner { display:none; background:linear-gradient(135deg,#00CA72,#00A85D); color:white; padding:10px 32px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s; animation:slideDown 0.4s ease; }
-  .new-listings-banner:hover { background:linear-gradient(135deg,#00A85D,#008C4A); }
+  .new-listings-banner { display:none; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:var(--primary); padding:10px 32px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s; animation:slideDown 0.4s ease; }
+  .new-listings-banner:hover { background:linear-gradient(135deg,var(--accent-dark),#C68A00); }
   .new-listings-banner.show { display:block; }
   @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
   .user-info { display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.8; }
@@ -47,20 +50,20 @@
   .btn-primary:hover { background:var(--primary-dark); }
   .btn-outline { background:transparent; color:white; border:1px solid rgba(255,255,255,0.3); }
   .btn-outline:hover { background:rgba(255,255,255,0.1); }
-  .btn-run { background:var(--success); color:white; border:none; position:relative; }
-  .btn-run:hover:not(:disabled) { background:#2E7D32; }
+  .btn-run { background:var(--accent); color:var(--primary); border:none; position:relative; font-weight:700; }
+  .btn-run:hover:not(:disabled) { background:var(--accent-dark); }
   .btn-run:disabled { opacity:0.5; cursor:not-allowed; }
   .btn-run .countdown { font-weight:400; font-size:11px; opacity:0.85; margin-left:2px; }
   .view-tabs { display:flex; gap:0; margin-left:24px; }
   .view-tab { padding:8px 20px; font-size:13px; font-weight:600; border:none; background:transparent; color:rgba(255,255,255,0.6); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
   .view-tab:hover { color:white; }
-  .view-tab.active { color:white; border-bottom-color:var(--primary); }
+  .view-tab.active { color:white; border-bottom-color:var(--accent); }
 
   .stats-bar { display:flex; gap:16px; padding:20px 32px; background:white; border-bottom:1px solid var(--border); }
   .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); }
-  .stat-card.develeap { border-left-color:var(--develeap-flag); }
+  .stat-card.develeap { border-left-color:var(--accent); }
   .stat-card.new { border-left-color:var(--success); }
-  .stat-card.ai { border-left-color:var(--info); }
+  .stat-card.ai { border-left-color:var(--teal); }
   .stat-card.devops { border-left-color:var(--warning); }
   .stat-number { font-size:28px; font-weight:800; line-height:1; }
   .stat-label { font-size:13px; color:var(--text-light); margin-top:4px; }
@@ -118,7 +121,7 @@
   .th-inner:hover .sort-icon { opacity:0.8; }
   .th-inner.sort-asc .sort-icon, .th-inner.sort-desc .sort-icon { opacity:1; color:var(--primary); }
   .filter-icon { font-size:14px; cursor:pointer; padding:2px 4px; border-radius:4px; opacity:0.4; position:relative; flex-shrink:0; }
-  .filter-icon:hover { opacity:1; background:#E8E8FF; }
+  .filter-icon:hover { opacity:1; background:var(--primary-light); }
   .filter-icon.active-filter { opacity:1; color:var(--primary); }
 
   /* Column filter dropdown */
@@ -152,11 +155,11 @@
 
   td { padding:14px 16px; font-size:14px; border-bottom:1px solid #F0F1F3; vertical-align:middle; }
   tr:hover td { background:#F8F9FD; }
-  tr.develeap-customer td { background:#FFF5F7; }
-  tr.develeap-customer:hover td { background:#FFE8EC; }
+  tr.develeap-customer td { background:#FFFAF0; }
+  tr.develeap-customer:hover td { background:#FFF3D6; }
 
   .badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; }
-  .badge-develeap { background:#FFE5E9; color:var(--develeap-flag); }
+  .badge-develeap { background:var(--accent-light); color:#B37A00; }
   .badge-develeap::before { content:"\2605"; font-size:10px; }
   tr.past-customer td { background:#F5F5FF; }
   tr.past-customer:hover td { background:#EBEBFF; }
@@ -186,7 +189,7 @@
   .job-title a:hover { color:var(--primary); text-decoration:underline; }
   .job-subtitle { font-size:12px; color:var(--text-light); }
   .company-cell { display:flex; align-items:center; gap:10px; }
-  .company-logo { width:36px; height:36px; border-radius:8px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; overflow:hidden; }
+  .company-logo { width:36px; height:36px; border-radius:8px; background:var(--teal-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; overflow:hidden; }
   .company-logo img { width:100%; height:100%; object-fit:contain; }
   .company-info { display:flex; flex-direction:column; }
   .company-name { font-weight:600; font-size:14px; }
@@ -233,18 +236,18 @@
   .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
   /* ── Outreach Section ── */
-  .outreach-section { margin-top:28px; padding-top:24px; border-top:2px solid var(--primary-light); }
-  .outreach-title { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .outreach-section { margin-top:28px; padding-top:24px; border-top:2px solid var(--teal-light); }
+  .outreach-title { font-size:15px; font-weight:700; color:var(--teal); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
   .outreach-title svg { flex-shrink:0; }
   .stakeholder-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
   .stakeholder-card { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); transition:all 0.15s; }
-  .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(97,97,255,0.1); }
+  .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(5,50,60,0.1); }
   .stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; overflow:hidden; }
   .stakeholder-avatar img { width:100%; height:100%; object-fit:cover; }
   .stakeholder-info { flex:1; min-width:0; }
   .stakeholder-name { font-weight:600; font-size:14px; color:var(--text); }
   .stakeholder-role { font-size:12px; color:var(--text-light); }
-  .stakeholder-source { font-size:10px; padding:2px 6px; border-radius:4px; background:#E8E8FF; color:var(--primary); font-weight:600; margin-top:3px; display:inline-block; }
+  .stakeholder-source { font-size:10px; padding:2px 6px; border-radius:4px; background:var(--primary-light); color:var(--primary); font-weight:600; margin-top:3px; display:inline-block; }
   .stakeholder-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
   .btn-linkedin { background:#0A66C2; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; text-decoration:none; transition:background 0.15s; }
   .btn-linkedin:hover { background:#004182; }
@@ -307,7 +310,7 @@
     thead { display:none; }
     tr { margin-bottom:8px; border-bottom:2px solid var(--border); padding:12px 14px; position:relative; cursor:pointer; }
     tr:hover td { background:transparent; }
-    tr.develeap-customer { background:#FFF5F7; border-left:3px solid var(--develeap-flag); }
+    tr.develeap-customer { background:#FFFAF0; border-left:3px solid var(--accent); }
     tr.past-customer { background:#F5F5FF; border-left:3px solid #B39DDB; }
     td { padding:2px 0; border:none; font-size:13px; }
     td:nth-child(1) { position:absolute; top:12px; right:14px; }
@@ -339,7 +342,7 @@
 <!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-card">
-    <div class="logo-area"><svg viewBox="0 0 56 56" fill="none"><rect width="56" height="56" rx="12" fill="#6161FF"/><path d="M16 20h8v8h-8zM32 20h8v8h-8zM16 32h8v8h-8zM32 32h8v8h-8z" fill="white" opacity="0.9"/><path d="M24 16h8v8h-8z" fill="white"/></svg></div>
+    <div class="logo-area"><img src="https://www.develeap.com/wp-content/uploads/2025/12/develeap-logo.svg" alt="Develeap" style="height:48px;width:auto"></div>
     <h1>Develeap Job Monitor</h1>
     <p>Sign in with your Develeap Google account to access the BDR job listings dashboard.</p>
     <div id="google-signin-btn"></div>
@@ -352,7 +355,7 @@
 <div id="app">
   <div class="top-nav">
     <div style="display:flex;align-items:center">
-      <div class="logo"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#6161FF"/><path d="M8 10h4v4H8zM16 10h4v4h-4zM8 16h4v4H8zM16 16h4v4h-4z" fill="white" opacity="0.9"/><path d="M12 8h4v4h-4z" fill="white"/></svg> Develeap Job Monitor</div>
+      <div class="logo"><img src="https://www.develeap.com/wp-content/uploads/2025/12/develeap-logo.svg" alt="Develeap" style="height:24px;width:auto;filter:brightness(0) invert(1)"> Job Monitor</div>
       <div class="view-tabs">
         <button class="view-tab active" onclick="setView('all')">All Listings</button>
         <button class="view-tab" onclick="setView('develeap')">Develeap Customers</button>
