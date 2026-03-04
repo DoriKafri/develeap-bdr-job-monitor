@@ -522,7 +522,7 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Dean Sysman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/deansysman/", "source": "LinkedIn", "email": ""},
     ],
     "freightos": [
-        {"name": "Moshe Yakobovich", "title": "Sr. Director R&D", "linkedin": "https://www.linkedin.com/in/moshe-yakobovich/", "source": "LinkedIn", "email": ""},
+        {"name": "Enric Alventosa", "title": "CTO", "linkedin": "https://www.linkedin.com/in/enric-alventosa-04469180/", "source": "LinkedIn", "email": ""},
     ],
     "linearb": [
         {"name": "Yishai Beeri", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yishaibeeri/", "source": "LinkedIn", "email": ""},
@@ -1295,6 +1295,49 @@ def _fetch_linkedin_photo(name: str, company: str, linkedin_url: str) -> str:
     except Exception as e:
         log.debug(f"Photo search failed for {name}: {e}")
         return ""
+
+
+def _validate_linkedin_urls(jobs: list) -> list:
+    """Validate stakeholder LinkedIn URLs by checking for 404s.
+    Returns the jobs list with broken LinkedIn URLs cleared out."""
+    checked = {}  # url → True (valid) / False (broken)
+    broken_count = 0
+    check_count = 0
+    max_checks = 50  # Rate-limit to avoid hammering LinkedIn
+
+    for j in jobs:
+        for s in j.get("stakeholders", []):
+            url = s.get("linkedin", "")
+            if not url:
+                continue
+            if url in checked:
+                if not checked[url]:
+                    s["linkedin"] = ""
+                continue
+            if check_count >= max_checks:
+                continue
+            check_count += 1
+            try:
+                resp = requests.head(
+                    url,
+                    headers={"User-Agent": "Mozilla/5.0 (compatible; JobMonitorBot/1.0)"},
+                    allow_redirects=True,
+                    timeout=10,
+                )
+                # LinkedIn returns 404 or redirects to /404/ for broken profiles
+                is_valid = resp.status_code == 200 and "/404" not in resp.url
+                checked[url] = is_valid
+                if not is_valid:
+                    log.warning(f"  BROKEN LinkedIn: {s.get('name','')} → {url} (HTTP {resp.status_code}, final: {resp.url[:80]})")
+                    s["linkedin"] = ""
+                    broken_count += 1
+            except Exception as e:
+                log.debug(f"  LinkedIn check failed for {url}: {e}")
+                checked[url] = True  # Assume valid on network error
+            time.sleep(random.uniform(0.5, 1.5))
+
+    log.info(f"  LinkedIn validation: checked {check_count} URLs, {broken_count} broken")
+    return jobs
 
 
 def _get_stakeholders(company: str) -> list:
@@ -2308,6 +2351,10 @@ def main():
             if cache_key and not s.get("photo") and photo_cache.get(cache_key):
                 s["photo"] = photo_cache[cache_key]
     log.info(f"  Fetched {photo_count} new photos ({fetch_count} SerpAPI requests)")
+
+    # 4c. Validate stakeholder LinkedIn URLs (catch broken/404 profiles)
+    log.info("Validating stakeholder LinkedIn URLs...")
+    merged = _validate_linkedin_urls(merged)
 
     # 5. Update dashboard HTML
     updated_html = update_dashboard_html(html, merged)
