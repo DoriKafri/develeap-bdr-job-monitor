@@ -174,6 +174,28 @@
   .detail-label { font-size:12px; color:var(--text-light); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
   .detail-value { font-size:14px; line-height:1.6; }
 
+  /* Company hide button */
+  .company-hide-btn { display:none; background:none; border:none; color:var(--text-lighter); cursor:pointer; font-size:11px; padding:2px 6px; border-radius:4px; white-space:nowrap; }
+  .company-hide-btn:hover { color:var(--danger); background:#FFF0F0; }
+  .company-cell:hover .company-hide-btn { display:inline-flex; align-items:center; gap:2px; }
+  .hidden-companies-chip { position:relative; }
+  .hidden-companies-chip .hidden-count { background:var(--danger); color:white; font-size:10px; padding:1px 5px; border-radius:8px; margin-left:4px; }
+  .hidden-panel { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:300; width:400px; max-width:90vw; max-height:70vh; overflow:hidden; }
+  .hidden-panel.open { display:block; }
+  .hidden-panel-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:299; }
+  .hidden-panel-backdrop.open { display:block; }
+  .hidden-panel-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .hidden-panel-header h3 { font-size:16px; font-weight:700; }
+  .hidden-panel-body { padding:12px 20px; max-height:50vh; overflow-y:auto; }
+  .hidden-company-item { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #F0F1F3; }
+  .hidden-company-item:last-child { border-bottom:none; }
+  .hidden-company-name { font-size:14px; font-weight:500; }
+  .unhide-btn { background:none; border:1px solid var(--border); color:var(--primary); padding:4px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; }
+  .unhide-btn:hover { background:var(--primary-light); }
+  .hidden-panel-footer { padding:12px 20px; border-top:1px solid var(--border); text-align:right; }
+  .hidden-panel-footer button { background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+  .hidden-panel-footer button:hover { opacity:0.9; }
+
   /* Active column filter count badge */
   .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
@@ -298,6 +320,7 @@
     <div class="filter-chip" data-filter="ai" onclick="toggleFilter(this)">AI Engineering</div>
     <div class="filter-chip" data-filter="agentic" onclick="toggleFilter(this)">Agentic / LLM</div>
     <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
+    <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
   </div>
 
   <div class="table-container">
@@ -329,6 +352,14 @@
     <div class="sidebar-header"><h3 id="sidebarTitle">Job Details</h3><button class="sidebar-close" onclick="closeSidebar()">&times;</button></div>
     <div class="sidebar-body" id="sidebarBody"></div>
   </div>
+</div>
+
+<!-- Hidden Companies Panel -->
+<div class="hidden-panel-backdrop" id="hiddenBackdrop" onclick="closeHiddenPanel()"></div>
+<div class="hidden-panel" id="hiddenPanel">
+  <div class="hidden-panel-header"><h3>Hidden Companies</h3><button class="sidebar-close" onclick="closeHiddenPanel()">&times;</button></div>
+  <div class="hidden-panel-body" id="hiddenPanelBody"></div>
+  <div class="hidden-panel-footer"><button onclick="unhideAll()">Unhide All</button></div>
 </div>
 
 <script>
@@ -2047,12 +2078,49 @@ let sortCol = 'posted', sortDir = 'desc';
 let columnFilters = {}; // { colName: Set of selected values }
 let openFilterCol = null;
 
+// ===== HIDDEN COMPANIES =====
+let hiddenCompanies = new Set(JSON.parse(localStorage.getItem('hiddenCompanies') || '[]'));
+function saveHidden() { localStorage.setItem('hiddenCompanies', JSON.stringify([...hiddenCompanies])); }
+function hideCompany(name, e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  hiddenCompanies.add(name.toLowerCase());
+  saveHidden(); updateHiddenUI(); applyAllFilters();
+}
+function unhideCompany(name) {
+  hiddenCompanies.delete(name.toLowerCase());
+  saveHidden(); updateHiddenUI(); applyAllFilters();
+}
+function unhideAll() {
+  hiddenCompanies.clear();
+  saveHidden(); updateHiddenUI(); closeHiddenPanel(); applyAllFilters();
+}
+function updateHiddenUI() {
+  const chip = document.getElementById('hiddenChip');
+  const count = document.getElementById('hiddenCount');
+  if (hiddenCompanies.size > 0) { chip.style.display = ''; count.textContent = hiddenCompanies.size; }
+  else { chip.style.display = 'none'; }
+}
+function openHiddenPanel() {
+  const body = document.getElementById('hiddenPanelBody');
+  const names = [...hiddenCompanies].sort();
+  body.innerHTML = names.length ? names.map(n =>
+    '<div class="hidden-company-item"><span class="hidden-company-name">' + n.charAt(0).toUpperCase() + n.slice(1) + '</span><button class="unhide-btn" onclick="unhideCompany(\'' + n.replace(/'/g, "\\'") + '\')">Unhide</button></div>'
+  ).join('') : '<p style="color:var(--text-light);text-align:center;padding:20px">No hidden companies</p>';
+  document.getElementById('hiddenPanel').classList.add('open');
+  document.getElementById('hiddenBackdrop').classList.add('open');
+}
+function closeHiddenPanel() {
+  document.getElementById('hiddenPanel').classList.remove('open');
+  document.getElementById('hiddenBackdrop').classList.remove('open');
+}
+
 const SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali'};
 const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic'};
 const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC'};
 
 function initApp() {
   ALL_JOBS.forEach(j => { j.isDeveleapCustomer = DEVELEAP_CUSTOMERS.some(c => j.company.toLowerCase().includes(c.toLowerCase())); });
+  updateHiddenUI();
   updateStats(); renderJobs();
   updateFreshnessDisplay();
   setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
@@ -2222,6 +2290,8 @@ function sortBy(col) {
 function getFilteredJobs() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   return ALL_JOBS.filter(j => {
+    // Hidden companies filter
+    if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
     if (currentView==='develeap'&&!j.isDeveleapCustomer) return false;
     if (currentView==='new'&&!j.isNew) return false;
     if (currentFilter!=='all') {
@@ -2260,7 +2330,7 @@ function renderJobs() {
     <tr class="${j.isDeveleapCustomer?'develeap-customer':''}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':'')}</td>
       <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
-      <td><div class="company-cell"><div class="company-logo">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div></td>
+      <td><div class="company-cell"><div class="company-logo">${j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div><button class="company-hide-btn" onclick="hideCompany('${j.company.replace(/'/g,"\\'")}',event)" title="Hide all listings from ${j.company}">&#10005; hide</button></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td><span class="badge badge-${j.source}">${SOURCE_LABELS[j.source]||j.source}</span></td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
