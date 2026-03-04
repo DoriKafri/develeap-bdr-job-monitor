@@ -265,7 +265,6 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Saar Yoskovitz", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/saaryoskovitz/", "source": "GeekTime", "email": "syoskovitz@augury.com"},
     ],
     "pagaya": [
-        {"name": "Shmulik Fronman", "title": "VP R&D", "linkedin": "https://www.linkedin.com/in/shmulik-fronman-69267767/", "source": "LinkedIn", "email": "shmulik.fronman@pagaya.com"},
         {"name": "Avital Pardo", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avital-pardo-257408b7/", "source": "Calcalist", "email": "avital.pardo@pagaya.com"},
         {"name": "Dina Leventol Nimrodi", "title": "Director of Research Engineering", "linkedin": "https://www.linkedin.com/in/dina-leventol-nimrodi-309a8395/", "source": "LinkedIn", "email": ""},
     ],
@@ -482,14 +481,14 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Yonatan Cohen", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yonatan-cohen-05684411/", "source": "Calcalist", "email": "yonatan@quantum-machines.co"},
     ],
     "mastercard": [
-        {"name": "Jorn Lambert", "title": "Chief Digital Officer", "linkedin": "https://www.linkedin.com/in/jornlambert/", "source": "LinkedIn", "email": ""},
+        {"name": "Jorn Lambert", "title": "Chief Product Officer", "linkedin": "https://www.linkedin.com/in/jornlambert/", "source": "LinkedIn", "email": ""},
     ],
     "salesforce": [
-        {"name": "Michal Ronen-Harel", "title": "VP Engineering, Israel R&D Center", "linkedin": "https://www.linkedin.com/in/michalrh/", "source": "LinkedIn", "email": ""},
+        {"name": "Oren Winter", "title": "SVP Engineering, Israel R&D", "linkedin": "https://www.linkedin.com/in/oren-winter-89571a/", "source": "LinkedIn", "email": ""},
     ],
     "blink ops": [
         {"name": "Gil Barak", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/gilbarak/", "source": "LinkedIn", "email": "gil@blinkops.com"},
-        {"name": "Ofer Smadari", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/ofersmadari/", "source": "LinkedIn", "email": "ofer@blinkops.com"},
+        {"name": "Raz Itzhakian", "title": "CTO", "linkedin": "https://www.linkedin.com/in/razitzhakian/", "source": "LinkedIn", "email": ""},
     ],
     "chaos labs": [
         {"name": "Omer Goldberg", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/omer-goldberg/", "source": "LinkedIn", "email": "omer@chaoslabs.xyz"},
@@ -505,10 +504,11 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Eyal Heiman", "title": "CTO", "linkedin": "https://www.linkedin.com/in/eyal-heiman-99233a98/", "source": "LinkedIn", "email": ""},
     ],
     "global payments": [
-        {"name": "Josh Whipple", "title": "SVP Technology", "linkedin": "https://www.linkedin.com/in/joshwhipple/", "source": "LinkedIn", "email": ""},
+        {"name": "Josh Whipple", "title": "CFO & Senior EVP", "linkedin": "https://www.linkedin.com/in/joshwhipple/", "source": "LinkedIn", "email": ""},
     ],
     "yael group": [
-        {"name": "Ohad Zeira", "title": "CEO", "linkedin": "https://www.linkedin.com/in/ohad-zeira/", "source": "LinkedIn", "email": "ohad@yaelgroup.com"},
+        {"name": "Doron Gigi", "title": "CEO", "linkedin": "https://www.linkedin.com/in/doron-gigi-93123823/", "source": "LinkedIn", "email": ""},
+        {"name": "Amit Dover", "title": "Deputy CEO & CTO", "linkedin": "https://www.linkedin.com/in/amitdover/", "source": "Company Website", "email": ""},
     ],
     "terasky": [
         {"name": "Or Yaacov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/oryaacov/", "source": "LinkedIn", "email": "or@terasky.com"},
@@ -522,7 +522,7 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Dean Sysman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/deansysman/", "source": "LinkedIn", "email": ""},
     ],
     "freightos": [
-        {"name": "Michi Kossowsky", "title": "VP R&D", "linkedin": "https://www.linkedin.com/in/michikossowsky/", "source": "LinkedIn", "email": ""},
+        {"name": "Moshe Yakobovich", "title": "Sr. Director R&D", "linkedin": "https://www.linkedin.com/in/moshe-yakobovich/", "source": "LinkedIn", "email": ""},
     ],
     "linearb": [
         {"name": "Yishai Beeri", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yishaibeeri/", "source": "LinkedIn", "email": ""},
@@ -550,13 +550,13 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Benny Dvir", "title": "Sr. Director Solutions & Services, Israel", "linkedin": "https://www.linkedin.com/in/bennydvir/", "source": "LinkedIn", "email": ""},
     ],
     "ness technologies": [
-        {"name": "Roni Kass", "title": "CEO Israel", "linkedin": "https://www.linkedin.com/in/ronikass/", "source": "LinkedIn", "email": ""},
+        {"name": "Sudip Singh", "title": "CEO", "linkedin": "https://www.linkedin.com/in/sudipsingh/", "source": "LinkedIn", "email": ""},
     ],
     "samsung": [
         {"name": "Ilan Elias", "title": "VP & Head of Samsung Israel R&D Center", "linkedin": "https://www.linkedin.com/in/ilan-elias-6766b54/", "source": "LinkedIn", "email": ""},
     ],
     "sqlink": [
-        {"name": "Lior Zamir", "title": "CEO", "linkedin": "https://www.linkedin.com/in/liorzamir/", "source": "LinkedIn", "email": ""},
+        {"name": "Tamir Goren", "title": "CEO", "linkedin": "https://www.linkedin.com/in/tamir-goren-8b666a4/", "source": "LinkedIn", "email": ""},
     ],
     "comm it": [
         {"name": "Ilan Sokolov", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ilan-sokolov/", "source": "LinkedIn", "email": ""},
