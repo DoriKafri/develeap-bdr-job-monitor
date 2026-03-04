@@ -171,6 +171,162 @@ COMPANY_STAKEHOLDERS = {
     "somekhchaikin": [
         {"name": "Dina Pasca-Raz", "title": "Partner, Head of Technology", "linkedin": "", "source": "Company Website", "email": ""},
     ],
+    "taboola": [
+        {"name": "Tal Sliwowicz", "title": "Senior VP R&D - Infrastructure", "linkedin": "https://www.linkedin.com/in/talsliwowicz/", "source": "LinkedIn", "email": "tal@taboola.com"},
+        {"name": "Lior Golan", "title": "CTO", "linkedin": "https://www.linkedin.com/in/liorgolan/", "source": "LinkedIn", "email": "lior.golan@taboola.com"},
+        {"name": "Anjali Oldfield", "title": "Head of HR, EMEA & APAC", "linkedin": "https://www.linkedin.com/in/anjalioldfield/", "source": "LinkedIn", "email": "anjali@taboola.com"},
+    ],
+    "cyberark": [
+        {"name": "Udi Mokady", "title": "Founder & Executive Chairman", "linkedin": "https://www.linkedin.com/in/udimokady/", "source": "LinkedIn", "email": "udi.mokady@cyberark.com"},
+        {"name": "Matt Cohen", "title": "CEO", "linkedin": "https://www.linkedin.com/in/mattjcohen/", "source": "LinkedIn", "email": "matt.cohen@cyberark.com"},
+        {"name": "Kathy Cullen-Cote", "title": "Chief People Officer", "linkedin": "https://www.linkedin.com/in/kathy-cullen/", "source": "LinkedIn", "email": "kathy.cullen-cote@cyberark.com"},
+    ],
+    "wiz": [
+        {"name": "Assaf Rappaport", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/assafrappaport/", "source": "LinkedIn", "email": "assaf@wiz.io"},
+        {"name": "Roy Reznik", "title": "Co-Founder, VP R&D", "linkedin": "https://www.linkedin.com/in/roy-reznik-a8b822189/", "source": "LinkedIn", "email": "roy@wiz.io"},
+        {"name": "Arik Nemtsov", "title": "Director of Engineering", "linkedin": "https://www.linkedin.com/in/arik-nemtsov-b9516578/", "source": "LinkedIn", "email": "arik@wiz.io"},
+    ],
+    "fireblocks": [
+        {"name": "Michael Shaulov", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/michaelsh/", "source": "LinkedIn", "email": "michael@fireblocks.com"},
+        {"name": "Pavel Berengoltz", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/pavelberengoltz/", "source": "LinkedIn", "email": "pavel@fireblocks.com"},
+        {"name": "Idan Ofrat", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/idanofrat/", "source": "LinkedIn", "email": "idan@fireblocks.com"},
+    ],
+    "mobileye": [
+        {"name": "Amnon Shashua", "title": "President & CEO, Founder", "linkedin": "https://www.linkedin.com/in/amnon-shashua/", "source": "LinkedIn", "email": "amnon.shashua@mobileye.com"},
+        {"name": "Shai Shalev-Shwartz", "title": "CTO", "linkedin": "https://www.linkedin.com/in/shai-shalev-shwartz/", "source": "LinkedIn", "email": "shai@mobileye.com"},
+    ],
+    "silverfort": [
+        {"name": "Hed Kovetz", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/hedkovetz/", "source": "LinkedIn", "email": "hed@silverfort.com"},
+        {"name": "Ben Livne", "title": "Senior VP R&D", "linkedin": "https://www.linkedin.com/in/benlivne/", "source": "LinkedIn", "email": "ben@silverfort.com"},
+        {"name": "Yiftach Keshet", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yiftachkeshet/", "source": "LinkedIn", "email": "yiftach@silverfort.com"},
+    ],
+    "similarweb": [
+        {"name": "Ron Asher", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ronasher/", "source": "LinkedIn", "email": "ron.asher@similarweb.com"},
+        {"name": "Or Offer", "title": "CEO", "linkedin": "https://www.linkedin.com/in/oroffer/", "source": "LinkedIn", "email": "or.offer@similarweb.com"},
+    ],
+    "pentera": [
+        {"name": "Amitai Ratzon", "title": "CEO", "linkedin": "https://www.linkedin.com/in/amitairatzon/", "source": "LinkedIn", "email": "amitai@pentera.io"},
+        {"name": "Arik Liberzon", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/arikliberzon/", "source": "LinkedIn", "email": "arik@pentera.io"},
+    ],
+    "au10tix": [
+        {"name": "Dan Yerushalmi", "title": "CEO", "linkedin": "https://www.linkedin.com/in/danyerushalmi/", "source": "LinkedIn", "email": "dan@au10tix.com"},
+    ],
+    "audiocodes": [
+        {"name": "Shabtai Adlersberg", "title": "President & CEO", "linkedin": "https://www.linkedin.com/in/shabtai-adlersberg/", "source": "LinkedIn", "email": "shabtai.adlersberg@audiocodes.com"},
+        {"name": "Niran Baruch", "title": "VP Finance & CFO", "linkedin": "https://www.linkedin.com/in/niran-baruch/", "source": "LinkedIn", "email": "niran.baruch@audiocodes.com"},
+    ],
+    "biocatch": [
+        {"name": "Gadi Mazor", "title": "CEO", "linkedin": "https://www.linkedin.com/in/gadimazor/", "source": "LinkedIn", "email": "gadi@biocatch.com"},
+        {"name": "Avi Turgeman", "title": "Founder & CTO", "linkedin": "https://www.linkedin.com/in/aviturgeman/", "source": "LinkedIn", "email": "avi@biocatch.com"},
+    ],
+    "cymulate": [
+        {"name": "Eyal Wachsman", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/eyalwachsman/", "source": "LinkedIn", "email": "eyal@cymulate.com"},
+        {"name": "Avihai Ben-Yossef", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avihai-ben-yossef/", "source": "LinkedIn", "email": "avihai@cymulate.com"},
+    ],
+    "doit": [
+        {"name": "Vadim Solovey", "title": "CTO & Managing Director", "linkedin": "https://www.linkedin.com/in/vadimska/", "source": "LinkedIn", "email": "vadim@doit.com"},
+        {"name": "Yoav Toussia-Cohen", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/yoavtc/", "source": "LinkedIn", "email": "yoav@doit.com"},
+    ],
+    "fetcherr": [
+        {"name": "Roi Dover", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/roidover/", "source": "LinkedIn", "email": "roi@fetcherr.io"},
+        {"name": "Roy Friedman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/royfriedman1/", "source": "LinkedIn", "email": "roy@fetcherr.io"},
+    ],
+    "zscaler": [
+        {"name": "Jay Chaudhry", "title": "CEO, Chairman & Founder", "linkedin": "https://www.linkedin.com/in/jaychaudhry/", "source": "LinkedIn", "email": "jay@zscaler.com"},
+    ],
+    "allcloud": [
+        {"name": "Roman Koterman", "title": "VP Engineering", "linkedin": "https://www.linkedin.com/in/roman-koterman/", "source": "LinkedIn", "email": "rkoterman@allcloud.io"},
+    ],
+    "applied materials": [
+        {"name": "Nir Yogev", "title": "VP Engineering", "linkedin": "https://www.linkedin.com/in/nir-yogev-0a2a2618/", "source": "LinkedIn", "email": "nir.yogev@amat.com"},
+        {"name": "Anat Tzur", "title": "Director of DevOps", "linkedin": "https://www.linkedin.com/in/anat-tzur/", "source": "LinkedIn", "email": "anat.tzur@amat.com"},
+    ],
+    "aquasec": [
+        {"name": "Dror Davidoff", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/drordavidoff/", "source": "LinkedIn", "email": "dror@aquasec.com"},
+        {"name": "Amir Jerbi", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/amirjerbi/", "source": "LinkedIn", "email": "amir@aquasec.com"},
+    ],
+    "codevalue": [
+        {"name": "Lior Fridman", "title": "VP Engineering", "linkedin": "https://www.linkedin.com/in/lior-fridman-8a07906/", "source": "LinkedIn", "email": "lior@codevalue.com"},
+    ],
+    "globallogic": [
+        {"name": "Nitzan Shapira", "title": "Country Manager Israel", "linkedin": "https://www.linkedin.com/in/nitzanshapira/", "source": "LinkedIn", "email": "nitzan.shapira@globallogic.com"},
+    ],
+    "team8": [
+        {"name": "Nadav Zafrir", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/nadavzafrir/", "source": "LinkedIn", "email": "nadav@team8.vc"},
+        {"name": "Israel Grimberg", "title": "Partner", "linkedin": "https://www.linkedin.com/in/israelgrimberg/", "source": "LinkedIn", "email": "israel@team8.vc"},
+    ],
+    "paragon": [
+        {"name": "Idan Nurick", "title": "CEO", "linkedin": "https://www.linkedin.com/in/idannurick/", "source": "LinkedIn", "email": ""},
+    ],
+    "plainid": [
+        {"name": "Oren Ohayon Harel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/oren-ohayon-harel/", "source": "LinkedIn", "email": "oren@plainid.com"},
+        {"name": "Gal Helemski", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/galhelemski/", "source": "LinkedIn", "email": "gal@plainid.com"},
+    ],
+    "pango": [
+        {"name": "Hari Ravichandran", "title": "Founder & CEO (Aura)", "linkedin": "https://www.linkedin.com/in/hariravichandran/", "source": "LinkedIn", "email": ""},
+    ],
+    "terasky": [
+        {"name": "Alon Barel", "title": "CEO & Founder", "linkedin": "https://www.linkedin.com/in/alonbarel/", "source": "LinkedIn", "email": "alon@terasky.com"},
+    ],
+    "voyantis": [
+        {"name": "Ido Benmoshe", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/idobenmoshe/", "source": "LinkedIn", "email": "ido@voyantis.com"},
+    ],
+    "wavebl": [
+        {"name": "Noam Ohana", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/noamohana/", "source": "LinkedIn", "email": "noam@wavebl.com"},
+    ],
+    "metalbear": [
+        {"name": "Aviram Hassan", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/aviramhassan/", "source": "LinkedIn", "email": "aviram@metalbear.co"},
+        {"name": "Eyal Bukchin", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/eyal-bukchin/", "source": "LinkedIn", "email": "eyal@metalbear.co"},
+    ],
+    "quantummachines": [
+        {"name": "Itamar Sivan", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/itamarsivan/", "source": "LinkedIn", "email": "itamar@quantum-machines.co"},
+        {"name": "Yonatan Cohen", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yonatancohen/", "source": "LinkedIn", "email": "yonatan@quantum-machines.co"},
+    ],
+    "chaoslabs": [
+        {"name": "Omer Goldberg", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/omergoldberg/", "source": "LinkedIn", "email": "omer@chaoslabs.xyz"},
+    ],
+    "next insurance": [
+        {"name": "Guy Goldstein", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/guygoldstein/", "source": "LinkedIn", "email": "guy@nextinsurance.com"},
+        {"name": "Alon Huri", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/alonhuri/", "source": "LinkedIn", "email": "alon@nextinsurance.com"},
+    ],
+    "cato networks": [
+        {"name": "Shlomo Kramer", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/shlomokramer/", "source": "LinkedIn", "email": "shlomo@catonetworks.com"},
+        {"name": "Gur Shatz", "title": "Co-Founder & COO", "linkedin": "https://www.linkedin.com/in/gurshatz/", "source": "LinkedIn", "email": "gur@catonetworks.com"},
+    ],
+    "datadog": [
+        {"name": "Olivier Pomel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/olivierpomel/", "source": "LinkedIn", "email": "olivier@datadoghq.com"},
+        {"name": "Alexis Le-Quoc", "title": "CTO & Co-Founder", "linkedin": "https://www.linkedin.com/in/alexislequoc/", "source": "LinkedIn", "email": "alexis@datadoghq.com"},
+    ],
+    "unity": [
+        {"name": "Matt Bromberg", "title": "CEO", "linkedin": "https://www.linkedin.com/in/mattbromberg/", "source": "LinkedIn", "email": "matt.bromberg@unity3d.com"},
+    ],
+    "appcharge": [
+        {"name": "Maor Sauron", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/maorsauron/", "source": "LinkedIn", "email": "maor@appcharge.com"},
+    ],
+    "blinkops": [
+        {"name": "Gil Barak", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/gilbarak/", "source": "LinkedIn", "email": "gil@blinkops.com"},
+    ],
+    "harmonya": [
+        {"name": "Eran Lupo", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/eranlupo/", "source": "LinkedIn", "email": "eran@harmonya.com"},
+    ],
+    "oligosecurity": [
+        {"name": "Nadav Czerninski", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/nadavczerninski/", "source": "LinkedIn", "email": "nadav@oligo.security"},
+    ],
+    "minimus": [
+        {"name": "Matan Derman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/matanderman/", "source": "LinkedIn", "email": "matan@minimus.io"},
+    ],
+    "nextta": [
+        {"name": "Oded Shopen", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/odedshopen/", "source": "LinkedIn", "email": "oded@nextta.com"},
+    ],
+    "remedio": [
+        {"name": "Tal Peer", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/talpeer/", "source": "LinkedIn", "email": "tal@gytpol.com"},
+    ],
+    "imagen": [
+        {"name": "Oron Branitzky", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/oronbranitzky/", "source": "LinkedIn", "email": "oron@imagen.io"},
+    ],
+    "marvin": [
+        {"name": "Hila Qu", "title": "CEO", "linkedin": "https://www.linkedin.com/in/hilaqu/", "source": "LinkedIn", "email": "hila@marvin.com"},
+    ],
 }
 
 SEARCH_QUERIES = [
@@ -818,18 +974,36 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         "nextinsurance66": "Next Insurance",
         "catonetworks": "Cato Networks",
         "jobgether": "Jobgether",
+        "castailabs": "Castai",
+        "castaigroupinc": "CAST AI",
+        "oligosecurity": "Oligo Security",
+        "chaoslabs": "Chaos Labs",
+        "blinkops": "Blink Ops",
+        "quantummachines": "Quantum Machines",
+        "majesticlabs": "Majestic Labs",
+        "joinattil": "Attil",
+        "phasev": "PhaseV",
+        "quanthealth": "Quant Health",
+        "aquasec": "Aqua Security",
+        # Workday slugs
+        "leidos": "Leidos",
+        "mastercard": "Mastercard",
+        "amat": "Applied Materials",
+        "salesforce": "Salesforce",
     }
 
     # 0. ATS URL patterns — HIGHEST PRIORITY (most reliable source of company name)
-    # Greenhouse / Lever / Ashby / Comeet URLs embed the company slug
+    # Greenhouse / Lever / Ashby / Comeet / Workday URLs embed the company slug
     for ats_pat in [
         r"greenhouse\.io/([a-z0-9\-]+)/jobs",
         r"boards\.greenhouse\.io/([a-z0-9\-]+)",
         r"job-boards\.greenhouse\.io/([a-z0-9\-]+)",
+        r"job-boards\.eu\.greenhouse\.io/([a-z0-9\-]+)",
         r"lever\.co/([a-z0-9\-]+)",
         r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
         r"jobs\.lever\.co/([a-z0-9\-]+)",
         r"comeet\.com/jobs/([a-z0-9\-]+)",
+        r"([a-z0-9\-]+)\.wd\d+\.myworkdayjobs\.com",
     ]:
         m = re.search(ats_pat, url, re.IGNORECASE)
         if m:
@@ -1553,6 +1727,7 @@ def main():
     #     and fix entries where company looks like a job title
     ats_url_patterns = [
         r"greenhouse\.io/", r"lever\.co/", r"ashbyhq\.com/", r"comeet\.com/jobs/",
+        r"\.myworkdayjobs\.com",
     ]
     for j in existing:
         url = j.get("sourceUrl", "")
