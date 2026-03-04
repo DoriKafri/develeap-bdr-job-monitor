@@ -236,8 +236,34 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             if not _is_job_title(company):
                 return company
 
-    # 2. "Role at Company" pattern (strongest signal in titles)
+    # 1b. Known career site URL patterns: careers.COMPANY.com, jobs.COMPANY.com
+    m = re.search(r"https?://(?:careers|jobs)\.([a-z0-9\-]+)\.", url)
+    if m:
+        domain_company = m.group(1).replace("-", " ").title()
+        if len(domain_company) > 2 and domain_company.lower() not in {"secret", "lhh"}:
+            return domain_company
+
+    # 1c. COMPANY.com/careers or similar career page patterns
+    m = re.search(r"https?://(?:www\.)?([a-z0-9\-]+)\.(?:com|io|co\.il|ai)/.+", url)
+    if m:
+        domain_company = m.group(1).replace("-", " ").title()
+        # Only use domain as company for known career-hosting patterns
+        job_boards = {
+            "builtin", "startup", "glassdoor", "indeed", "alljobs", "drushim",
+            "facebook", "google", "jobify360", "machinelearning", "aidevtlv",
+            "linkedin", "secrettelaviv", "aijobs",
+        }
+        if len(domain_company) > 2 and domain_company.lower() not in job_boards:
+            # Verify the URL looks like a career/job page, not a random page
+            if re.search(r"/(careers|jobs|position|openings|join|hiring|vacancy)", url, re.IGNORECASE):
+                return domain_company
+
+    # 2. "Role at Company" pattern — use the LAST "at" in the title (strongest signal)
     m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title)
+    # If there are multiple "at" matches, prefer the last one
+    all_at_matches = list(re.finditer(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title))
+    if all_at_matches:
+        m = all_at_matches[-1]
     if m:
         company = m.group(1).strip()
         if not _is_job_title(company):
@@ -307,16 +333,50 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         seen_urls.add(url)
 
         # Skip results that are clearly not job listings
+        title_lower = title.lower()
         skip_keywords = ["how to", "salary", "resume", "interview tips", "career advice",
                          "blog", "article", "guide", "tutorial", "top 10", "best companies",
-                         "average salary", "job description template", "what is a"]
-        if any(kw in title.lower() for kw in skip_keywords):
+                         "average salary", "job description template", "what is a",
+                         "conference", "meetup", "event", "webinar", "course"]
+        if any(kw in title_lower for kw in skip_keywords):
             continue
 
-        # Skip aggregator/search pages that list many jobs (not a single listing)
-        skip_url_patterns = ["google.com/search", "indeed.com/q-", "indeed.com/jobs?",
-                             "linkedin.com/jobs/search", "glassdoor.com/Job/"]
+        # Skip Hebrew aggregator pages ("we found N job offers", "jobs wanted")
+        hebrew_skip = ["מצאנו", "הצעות עבודה", "משרות אחרונות", "חיפוש משרות"]
+        if any(kw in title for kw in hebrew_skip):
+            continue
+
+        # Skip search/aggregator pages — only allow individual job listing URLs
+        url_lower = url.lower()
+        skip_url_patterns = [
+            # Search result pages
+            "google.com/search", "indeed.com/q-", "indeed.com/jobs?",
+            "linkedin.com/jobs/search",
+            # LinkedIn job search pages (e.g. /jobs/devops-engineer-jobs)
+            # Only /jobs/view/ are individual listings
+            "glassdoor.com/Job/",
+            # Generic job listing indexes
+            "/jobs?q=", "/search?",
+        ]
         if any(p in url for p in skip_url_patterns):
+            continue
+
+        # LinkedIn: only accept /jobs/view/ (individual listings)
+        if "linkedin.com/jobs" in url_lower and "/jobs/view/" not in url_lower:
+            continue
+
+        # Skip generic job board index/search pages
+        if re.search(r"(alljobs\.co\.il/SearchResults|drushim\.co\.il/.*\?)", url):
+            continue
+
+        # Skip pages that are clearly job indexes, not individual listings
+        index_url_patterns = [
+            r"/jobs/?$", r"/careers/?$", r"/openings/?$",
+            r"/jobs/?\?", r"/location/", r"/locations/", r"/category/",
+            r"/job-location-category/", r"/jobs/mena/",
+            r"/list/", r"startup\.jobs/",
+        ]
+        if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
 
         source = detect_source(url)
