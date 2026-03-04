@@ -928,6 +928,19 @@ def scrape_job_page(url: str) -> dict:
                 log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
                 break
 
+        # ── Check for stale time-ago indicators (e.g. "3 months ago") ──
+        if not result["closed"]:
+            stale_match = re.search(
+                r'(\d+)\s+(month|year)s?\s+ago',
+                text_lower_check
+            )
+            if stale_match:
+                num = int(stale_match.group(1))
+                unit = stale_match.group(2)
+                if unit == "year" or (unit == "month" and num >= 1):
+                    result["closed"] = True
+                    log.info(f"  CLOSED (stale): {url[:60]} — '{stale_match.group(0)}'")
+
         # LinkedIn: check for JSON-LD (indicates active listing)
         if "linkedin.com" in url:
             has_job_ld = bool(re.search(
@@ -1677,13 +1690,13 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 snippet_date = dt.strftime("%Y-%m-%d")
                 log.info(f"  Date from Hebrew snippet: {snippet_date} for {j['title'][:40]}")
 
-        # ── 3. Skip very old listings (>6 months) ──
+        # ── 3. Skip listings older than 14 days ──
         if snippet_date:
             from datetime import datetime as dt_cls
             try:
                 post_dt = dt_cls.strptime(snippet_date, "%Y-%m-%d")
                 age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
-                if age_days > 180:
+                if age_days > 14:
                     log.info(f"  Skipping old listing ({age_days} days): {j['title'][:50]}")
                     continue
             except ValueError:
@@ -1702,6 +1715,16 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if page_data.get("date") and not snippet_date:
                 snippet_date = page_data["date"]
                 log.info(f"  Date from page: {snippet_date} for {j['title'][:40]}")
+                # Check if page date is older than 14 days
+                try:
+                    from datetime import datetime as dt_cls_pg
+                    post_dt_pg = dt_cls_pg.strptime(snippet_date, "%Y-%m-%d")
+                    age_days_pg = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt_pg).days
+                    if age_days_pg > 14:
+                        log.info(f"  Skipping old listing from page date ({age_days_pg} days): {j['title'][:50]}")
+                        continue
+                except ValueError:
+                    pass
 
             # Fix company if still Unknown
             if j["company"] == "Unknown" and page_data.get("company"):
