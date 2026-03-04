@@ -13,6 +13,8 @@ import random
 import hashlib
 import zipfile
 import io
+import html as html_mod
+import base64
 import logging
 from datetime import datetime, timezone
 from urllib.parse import quote_plus, urljoin
@@ -870,6 +872,55 @@ def detect_category(title: str, snippet: str) -> str:
     return "devops"  # Default
 
 
+def _fetch_linkedin_photo(linkedin_url: str) -> str:
+    """Fetch LinkedIn profile photo and return as base64 data URI."""
+    if not linkedin_url or "linkedin.com/in/" not in linkedin_url:
+        return ""
+    try:
+        resp = requests.get(linkedin_url, headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept": "text/html",
+        }, timeout=8, allow_redirects=True)
+        if resp.status_code != 200:
+            return ""
+        og = re.search(r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\'](.*?)["\']', resp.text)
+        if not og:
+            return ""
+        img_url = html_mod.unescape(og.group(1))
+        # Skip default silhouette avatar
+        if "static.licdn.com" in img_url:
+            return ""
+        if "media.licdn.com/dms/image" not in img_url:
+            return ""
+        # Strip query params to avoid 403 from LinkedIn CDN
+        if "?" in img_url:
+            img_url = img_url.split("?")[0]
+        # Download the photo
+        img_resp = requests.get(img_url, timeout=8)
+        if img_resp.status_code != 200 or len(img_resp.content) < 500:
+            return ""
+        if len(img_resp.content) > 50_000:  # Skip unusually large images
+            return ""
+        ct = img_resp.headers.get("content-type", "image/jpeg")
+        b64 = base64.b64encode(img_resp.content).decode()
+        return f"data:{ct};base64,{b64}"
+    except Exception as e:
+        log.debug(f"Photo fetch failed for {linkedin_url[:40]}: {e}")
+        return ""
+
+
+def _enrich_stakeholder_photos(stakeholders: list) -> list:
+    """Add photo field to stakeholders by fetching LinkedIn profile photos."""
+    for s in stakeholders:
+        if s.get("photo"):  # Already has a photo
+            continue
+        photo = _fetch_linkedin_photo(s.get("linkedin", ""))
+        if photo:
+            s["photo"] = photo
+            log.info(f"  Got photo for {s['name']}")
+    return stakeholders
+
+
 def _get_stakeholders(company: str) -> list:
     """Look up stakeholders for a company from the COMPANY_STAKEHOLDERS dict."""
     if not company:
@@ -1525,10 +1576,18 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
 
-    # Mark existing jobs as not new; update stakeholders
+    # Mark existing jobs as not new; update stakeholders (preserve photos)
     for j in existing:
         j["isNew"] = False
-        j["stakeholders"] = _get_stakeholders(j.get("company", ""))
+        old_stakeholders = j.get("stakeholders", [])
+        new_stakeholders = _get_stakeholders(j.get("company", ""))
+        # Preserve photos from previously enriched stakeholders
+        old_photos = {s.get("linkedin", ""): s.get("photo", "") for s in old_stakeholders if s.get("photo")}
+        for s in new_stakeholders:
+            li = s.get("linkedin", "")
+            if li and li in old_photos:
+                s["photo"] = old_photos[li]
+        j["stakeholders"] = new_stakeholders
 
     truly_new = []
     for j in new_jobs:
@@ -1561,8 +1620,8 @@ def update_dashboard_html(html: str, jobs: list[dict]) -> str:
     # Update LAST_UPDATED constant
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     html = re.sub(
-        r'const LAST_UPDATED\s*=\s*"[^"]*"',
-        lambda _: f'const LAST_UPDATED = "{now_iso}"',
+        r'(?:const|let)\s+LAST_UPDATED\s*=\s*"[^"]*"',
+        lambda _: f'let LAST_UPDATED = "{now_iso}"',
         html
     )
     return html
@@ -1763,6 +1822,47 @@ def main():
     customer_new = [j for j in truly_new if j.get("isDeveleapCustomer")]
     if customer_new:
         log.info(f"  🌟 {len(customer_new)} new listings from Develeap customers!")
+
+    # 4b. Enrich stakeholders with LinkedIn profile photos
+    log.info("Enriching stakeholder photos from LinkedIn...")
+    photo_cache = {}  # linkedin_url → base64 data URI (or "" if failed)
+    # First pass: collect all already-known photos
+    for j in merged:
+        for s in j.get("stakeholders", []):
+            li = s.get("linkedin", "")
+            if li and s.get("photo"):
+                photo_cache[li] = s["photo"]
+    # Second pass: fetch missing photos (deduplicated by LinkedIn URL)
+    photo_count = 0
+    fetch_count = 0
+    max_fetches = 120  # Rate limit: max LinkedIn profile fetches per run
+    for j in merged:
+        for s in j.get("stakeholders", []):
+            li = s.get("linkedin", "")
+            if not li:
+                continue
+            if li in photo_cache:
+                if photo_cache[li]:
+                    s["photo"] = photo_cache[li]
+                continue
+            if fetch_count >= max_fetches:
+                photo_cache[li] = ""
+                continue
+            photo = _fetch_linkedin_photo(li)
+            photo_cache[li] = photo
+            fetch_count += 1
+            if photo:
+                s["photo"] = photo
+                photo_count += 1
+                log.info(f"  Got photo for {s.get('name', '?')} ({j.get('company', '?')})")
+            time.sleep(random.uniform(0.5, 1.5))  # Be polite to LinkedIn
+    # Third pass: apply cached photos to any remaining duplicates
+    for j in merged:
+        for s in j.get("stakeholders", []):
+            li = s.get("linkedin", "")
+            if li and not s.get("photo") and photo_cache.get(li):
+                s["photo"] = photo_cache[li]
+    log.info(f"  Fetched {photo_count} new photos ({fetch_count} LinkedIn requests)")
 
     # 5. Update dashboard HTML
     updated_html = update_dashboard_html(html, merged)

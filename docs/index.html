@@ -4833,17 +4833,11 @@ function _contactKey(s) { return (s.name + '|' + s.linkedin).toLowerCase(); }
 
 function _stakeholderAvatar(s) {
   const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2);
-  // Extract LinkedIn username for photo lookup
-  const liMatch = s.linkedin && s.linkedin.match(/linkedin\.com\/in\/([a-zA-Z0-9\-]+)/);
-  const liUser = liMatch ? liMatch[1].replace(/\/$/, '') : '';
-  // Try unavatar.io (resolves from Gravatar, Google, GitHub, etc.)
-  // Then try ui-avatars.com for nice generated avatar
-  if (s.email && s.email.includes('@')) {
-    return `<img src="https://unavatar.io/${encodeURIComponent(s.email)}?fallback=https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}%26background=0A66C2%26color=fff%26size=80" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
+  // Use base64 photo from Python enrichment if available
+  if (s.photo && s.photo.startsWith('data:')) {
+    return `<img src="${s.photo}" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
   }
-  if (liUser) {
-    return `<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=0A66C2&color=fff&size=80" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
-  }
+  // Fallback to initials
   return initials;
 }
 
