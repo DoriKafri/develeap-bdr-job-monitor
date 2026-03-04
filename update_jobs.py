@@ -113,10 +113,21 @@ def search_serpapi(query: str) -> list[dict]:
         data = resp.json()
         results = []
         for r in data.get("organic_results", []):
+            # Combine snippet with rich_snippet text and date for better parsing
+            snippet = r.get("snippet", "")
+            rich = r.get("rich_snippet", {})
+            if rich:
+                # Rich snippets may contain additional text with dates
+                for v in rich.values():
+                    if isinstance(v, dict):
+                        for sv in v.values():
+                            if isinstance(sv, str) and sv not in snippet:
+                                snippet = f"{snippet} {sv}"
             results.append({
                 "title": r.get("title", ""),
-                "snippet": r.get("snippet", ""),
+                "snippet": snippet,
                 "url": r.get("link", ""),
+                "date": r.get("date", ""),  # SerpAPI sometimes returns date
             })
         return results
     except Exception as e:
@@ -769,30 +780,98 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "posted": "",  # Will be filled by date extraction
             "isNew": True,
             "isDeveleapCustomer": is_develeap_customer(company),
+            "_snippet": snippet,  # Keep full snippet for closed/date detection
             "description": snippet[:120] if snippet else title,
             "skills": [],
         })
 
-    # Fetch real posting dates, company names, and closed status from job pages
+    # Fetch real posting dates, company names, and closed status
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     active_jobs = []
     for j in jobs:
         url = j.get("sourceUrl", "")
+        snippet_full = j.get("_snippet", "")  # Google search snippet
+        snippet_lower = snippet_full.lower()
+
+        # ── 1. Check Google snippet for closed signals (most reliable!) ──
+        snippet_closed_phrases = [
+            "no longer accepting applications",
+            "this job is no longer available",
+            "position has been filled",
+            "job has expired",
+        ]
+        if any(p in snippet_lower for p in snippet_closed_phrases):
+            log.info(f"  Skipping closed (snippet): {j['title'][:50]}")
+            continue
+
+        # ── 2. Extract date from Google snippet (relative dates) ──
+        snippet_date = ""
+        from datetime import timedelta
+        # Patterns like "3 days ago", "1 year ago", "2 weeks ago" in snippet
+        rel_match = re.search(r'(\d+)\s+(hour|day|week|month|year)s?\s+ago', snippet_lower)
+        if rel_match:
+            n = int(rel_match.group(1))
+            unit = rel_match.group(2)
+            now = datetime.now(timezone.utc)
+            if unit == "hour":
+                dt = now - timedelta(hours=n)
+            elif unit == "day":
+                dt = now - timedelta(days=n)
+            elif unit == "week":
+                dt = now - timedelta(weeks=n)
+            elif unit == "month":
+                dt = now - timedelta(days=n * 30)
+            elif unit == "year":
+                dt = now - timedelta(days=n * 365)
+            snippet_date = dt.strftime("%Y-%m-%d")
+            log.info(f"  Date from snippet: {snippet_date} ({rel_match.group()}) for {j['title'][:40]}")
+        # Hebrew relative dates in snippet: "לפני X ימים"
+        if not snippet_date:
+            heb_match = re.search(r'לפני\s+(?:‏)?(\d+)\s*(?:‏)?\s*(ימים|שבועות|חודשים|שנים|שעות)', snippet_full)
+            if heb_match:
+                n = int(heb_match.group(1))
+                unit_heb = heb_match.group(2)
+                now = datetime.now(timezone.utc)
+                unit_map = {"שעות": "hours", "ימים": "days", "שבועות": "weeks", "חודשים": "months", "שנים": "years"}
+                unit = unit_map.get(unit_heb, "days")
+                if unit == "hours":
+                    dt = now - timedelta(hours=n)
+                elif unit == "days":
+                    dt = now - timedelta(days=n)
+                elif unit == "weeks":
+                    dt = now - timedelta(weeks=n)
+                elif unit == "months":
+                    dt = now - timedelta(days=n * 30)
+                elif unit == "years":
+                    dt = now - timedelta(days=n * 365)
+                snippet_date = dt.strftime("%Y-%m-%d")
+                log.info(f"  Date from Hebrew snippet: {snippet_date} for {j['title'][:40]}")
+
+        # ── 3. Skip very old listings (>6 months) ──
+        if snippet_date:
+            from datetime import datetime as dt_cls
+            try:
+                post_dt = dt_cls.strptime(snippet_date, "%Y-%m-%d")
+                age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
+                if age_days > 180:
+                    log.info(f"  Skipping old listing ({age_days} days): {j['title'][:50]}")
+                    continue
+            except ValueError:
+                pass
+
+        # ── 4. Scrape page for additional data ──
         if url:
             page_data = scrape_job_page(url)
 
-            # Skip closed listings ("No longer accepting applications", etc.)
+            # Skip closed listings detected from page HTML
             if page_data.get("closed"):
-                log.info(f"  Skipping closed listing: {j['title'][:50]}")
+                log.info(f"  Skipping closed (page): {j['title'][:50]}")
                 continue
 
-            if page_data.get("date"):
-                j["posted"] = page_data["date"]
-                log.info(f"  Date: {page_data['date']} for {j['title'][:40]}")
-            else:
-                # No date found — default to today for new search results
-                # (Google indexed it recently, so it's likely still active)
-                j["posted"] = today
+            # Use page date if we don't have snippet date
+            if page_data.get("date") and not snippet_date:
+                snippet_date = page_data["date"]
+                log.info(f"  Date from page: {snippet_date} for {j['title'][:40]}")
 
             # Fix company if still Unknown
             if j["company"] == "Unknown" and page_data.get("company"):
@@ -801,6 +880,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 log.info(f"  Company from page: {page_data['company']}")
 
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
+
+        j["posted"] = snippet_date if snippet_date else today
+        j.pop("_snippet", None)  # Remove internal field before dashboard
 
         # Skip Develeap's own listings
         if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
