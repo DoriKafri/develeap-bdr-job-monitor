@@ -206,7 +206,8 @@
   .stakeholder-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
   .stakeholder-card { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); transition:all 0.15s; }
   .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(97,97,255,0.1); }
-  .stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; }
+  .stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; overflow:hidden; }
+  .stakeholder-avatar img { width:100%; height:100%; object-fit:cover; }
   .stakeholder-info { flex:1; min-width:0; }
   .stakeholder-name { font-weight:600; font-size:14px; color:var(--text); }
   .stakeholder-role { font-size:12px; color:var(--text-light); }
@@ -4830,6 +4831,22 @@ const MAIL_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" s
 
 function _contactKey(s) { return (s.name + '|' + s.linkedin).toLowerCase(); }
 
+function _stakeholderAvatar(s) {
+  const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2);
+  // Extract LinkedIn username for photo lookup
+  const liMatch = s.linkedin && s.linkedin.match(/linkedin\.com\/in\/([a-zA-Z0-9\-]+)/);
+  const liUser = liMatch ? liMatch[1].replace(/\/$/, '') : '';
+  // Try unavatar.io (resolves from Gravatar, Google, GitHub, etc.)
+  // Then try ui-avatars.com for nice generated avatar
+  if (s.email && s.email.includes('@')) {
+    return `<img src="https://unavatar.io/${encodeURIComponent(s.email)}?fallback=https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}%26background=0A66C2%26color=fff%26size=80" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
+  }
+  if (liUser) {
+    return `<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=0A66C2&color=fff&size=80" alt="${initials}" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
+  }
+  return initials;
+}
+
 function buildOutreachSection(job) {
   const stakeholders = job.stakeholders || [];
   const hasStakeholders = stakeholders.length > 0;
@@ -4866,7 +4883,7 @@ function buildOutreachSection(job) {
 
       return `
       <div class="stakeholder-card" data-idx="${i}">
-        <div class="stakeholder-avatar">${s.name.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
+        <div class="stakeholder-avatar">${_stakeholderAvatar(s)}</div>
         <div class="stakeholder-info">
           <div class="stakeholder-name">${s.name} ${connBadge}</div>
           <div class="stakeholder-role">${s.title}</div>
