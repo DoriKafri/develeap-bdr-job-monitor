@@ -187,23 +187,90 @@ def is_develeap_customer(company: str) -> bool:
     return any(c.lower() in company_lower for c in DEVELEAP_CUSTOMERS)
 
 
-def extract_company(title: str, snippet: str) -> str:
+def _is_job_title(text: str) -> bool:
+    """Return True if text looks like a job title rather than a company name."""
+    t = text.lower().strip().rstrip(".")
+    # Common job-title words / prefixes
+    title_words = {
+        "sr", "jr", "senior", "junior", "lead", "staff", "principal", "head",
+        "chief", "director", "manager", "vp", "engineer", "developer", "architect",
+        "analyst", "consultant", "specialist", "coordinator", "administrator",
+        "technician", "intern", "trainee", "associate", "devops", "sre", "mlops",
+        "cloud", "platform", "infrastructure", "data", "ai", "ml", "software",
+        "backend", "frontend", "fullstack", "full-stack", "full stack",
+        "technical", "tech", "site reliability", "security", "devsecops",
+        "solution", "solutions", "product", "project", "program", "qa", "test",
+        "automation", "release", "build", "deployment", "systems", "network",
+        "database", "dba", "linux", "windows", "python", "java", "golang",
+        "kubernetes", "terraform", "aws", "azure", "gcp", "remote", "hybrid",
+        "israel", "tel aviv", "tel-aviv", "ramat gan", "herzliya", "haifa",
+        "jerusalem", "beer sheva", "netanya", "petah tikva", "ra'anana",
+        "hiring", "job", "jobs", "opening", "position",
+        "vacancy", "career", "careers", "apply", "wanted", "looking for",
+    }
+    # Check if the entire text matches a known non-company phrase
+    known_locations = {"tel aviv", "ramat gan", "herzliya", "haifa", "jerusalem",
+                       "beer sheva", "netanya", "petah tikva", "ra'anana", "hod hasharon",
+                       "israel", "remote", "hybrid"}
+    if t in known_locations:
+        return True
+
+    words = set(re.split(r"[\s/\-\.]+", t))
+    # If most words are title-like, it's a job title
+    if len(words) > 0 and len(words & title_words) / len(words) >= 0.5:
+        return True
+    # Starts with common title prefixes
+    if re.match(r"^(sr\.?|jr\.?|senior|junior|lead|staff|principal|head of|chief|director)\b", t):
+        return True
+    return False
+
+
+def extract_company(title: str, snippet: str, url: str = "") -> str:
     """Try to extract company name from search result."""
-    # Common patterns: "Role at Company", "Company - Role", "Company is hiring"
-    patterns = [
-        r"(?:at|@)\s+([A-Z][A-Za-z0-9\.\-\s]{1,30}?)(?:\s*[-–|,]|\s+is\s+|\s+in\s+|$)",
-        r"^([A-Z][A-Za-z0-9\.\-\s]{1,25}?)\s*[-–|]\s*",
-        r"([A-Z][A-Za-z0-9\.\-]{1,25}?)\s+(?:is hiring|careers|jobs)",
-    ]
-    for text in [title, snippet]:
-        for pattern in patterns:
-            m = re.search(pattern, text)
-            if m:
-                company = m.group(1).strip()
-                # Filter out generic words
-                if company.lower() not in {"senior", "junior", "lead", "staff", "principal",
-                                            "israel", "tel aviv", "remote", "hybrid"}:
-                    return company
+
+    # 1. LinkedIn URL pattern: .../TITLE-at-COMPANY-1234567
+    if "linkedin.com" in url:
+        m = re.search(r"/jobs/view/.*?-at-(.+?)-\d{5,}", url)
+        if m:
+            company = m.group(1).replace("-", " ").title()
+            if not _is_job_title(company):
+                return company
+
+    # 2. "Role at Company" pattern (strongest signal in titles)
+    m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,]|\s+in\s+|\s+is\s+|\s*$)", title)
+    if m:
+        company = m.group(1).strip()
+        if not _is_job_title(company):
+            return company
+
+    # 3. "Company - Role" or "Company | Role" (only if left side is NOT a job title)
+    m = re.match(r"^([^-–|]{2,35}?)\s*[-–|]\s*(.+)", title)
+    if m:
+        left = m.group(1).strip()
+        right = m.group(2).strip()
+        # If left looks like a company (not a job title) → use it
+        if not _is_job_title(left):
+            return left
+        # Otherwise try right side for "Role - Company" pattern
+        # Take the last segment after the last dash/pipe
+        parts = re.split(r"\s*[-–|]\s*", title)
+        if len(parts) >= 2 and not _is_job_title(parts[-1].strip()):
+            return parts[-1].strip()
+
+    # 4. "Company is hiring" pattern
+    m = re.search(r"([A-Z][A-Za-z0-9\.\-&]{1,25})\s+(?:is hiring|careers|jobs)", title + " " + snippet)
+    if m:
+        company = m.group(1).strip()
+        if not _is_job_title(company):
+            return company
+
+    # 5. Try snippet with "at Company" pattern
+    m = re.search(r"\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35}?)(?:\s*[-–|,\.]|\s+in\s+|\s+is\s+|\s*$)", snippet)
+    if m:
+        company = m.group(1).strip()
+        if not _is_job_title(company):
+            return company
+
     return "Unknown"
 
 
@@ -241,13 +308,20 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # Skip results that are clearly not job listings
         skip_keywords = ["how to", "salary", "resume", "interview tips", "career advice",
-                         "blog", "article", "guide", "tutorial"]
+                         "blog", "article", "guide", "tutorial", "top 10", "best companies",
+                         "average salary", "job description template", "what is a"]
         if any(kw in title.lower() for kw in skip_keywords):
+            continue
+
+        # Skip aggregator/search pages that list many jobs (not a single listing)
+        skip_url_patterns = ["google.com/search", "indeed.com/q-", "indeed.com/jobs?",
+                             "linkedin.com/jobs/search", "glassdoor.com/Job/"]
+        if any(p in url for p in skip_url_patterns):
             continue
 
         source = detect_source(url)
         category = detect_category(title, snippet)
-        company = extract_company(title, snippet)
+        company = extract_company(title, snippet, url)
         location = extract_location(title, snippet)
 
         # Generate stable ID from URL
@@ -485,6 +559,15 @@ def main():
     else:
         log.error(f"Dashboard not found at {DASHBOARD_PATH}")
         return
+
+    # 3b. Clean existing jobs: fix entries where company looks like a job title
+    for j in existing:
+        if _is_job_title(j.get("company", "")):
+            # Try to re-extract from title/snippet/url
+            fixed = extract_company(j.get("title", ""), j.get("description", ""), j.get("sourceUrl", ""))
+            log.info(f"  Fixed company: '{j['company']}' → '{fixed}'")
+            j["company"] = fixed
+            j["isDeveleapCustomer"] = is_develeap_customer(fixed)
 
     # 4. Merge and identify new listings
     merged, truly_new = merge_jobs(existing, new_jobs)
