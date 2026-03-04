@@ -1744,7 +1744,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                     from datetime import datetime as dt_cls2
                     post_dt2 = dt_cls2.strptime(page_date_for_age, "%Y-%m-%d")
                     age_days2 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt2).days
-                    if age_days2 > 180:
+                    if age_days2 > 14:
                         log.info(f"  Skipping old listing from page date ({age_days2} days, {page_date_for_age}): {j['title'][:50]}")
                         continue
                 except ValueError:
@@ -1842,7 +1842,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_spa != len(existing):
         log.info(f"  Removed {before_spa - len(existing)} unverifiable SPA career pages from existing jobs")
 
-    # Re-check existing listings — remove closed, stale (>180d), and non-Israel
+    # Re-check existing listings — remove closed, stale (>14d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
     for j in existing:
@@ -1855,7 +1855,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 from datetime import datetime as dt_cls3
                 post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
                 age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
-                if age_days3 > 180:
+                if age_days3 > 14:
                     log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
                     continue
             except ValueError:
@@ -1876,7 +1876,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     from datetime import datetime as dt_cls4
                     post_dt4 = dt_cls4.strptime(page_data["date"], "%Y-%m-%d")
                     age_days4 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt4).days
-                    if age_days4 > 180:
+                    if age_days4 > 14:
                         log.info(f"  Removing stale listing after date update ({age_days4} days): {j.get('title', '')[:50]}")
                         continue
                 except ValueError:
