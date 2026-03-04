@@ -67,7 +67,9 @@ SEARCH_QUERIES = [
     # Career sites and job boards
     "DevOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "AI Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
-    "DevOps Engineer Israel site:apple.com OR site:microsoft.com OR site:google.com",
+    # Note: removed apple.com/microsoft.com/google.com — their SPA career pages
+    # don't expose structured location data, causing false positives (e.g. India jobs on /en-il/ locale)
+    "DevOps Engineer Israel site:workday.com OR site:myworkdayjobs.com",
     # Comeet (Israeli ATS with structured data)
     "site:comeet.com/jobs DevOps Engineer Israel",
     "site:comeet.com/jobs AI Engineer Israel",
@@ -847,6 +849,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if re.search(r"(alljobs\.co\.il/SearchResults|drushim\.co\.il/.*\?)", url):
             continue
 
+        # Skip SPA career sites where location can't be verified server-side
+        spa_domains = ["jobs.apple.com", "careers.google.com", "careers.microsoft.com"]
+        if any(d in url_lower for d in spa_domains):
+            continue
+
         # Skip pages that are clearly job indexes, not individual listings
         index_url_patterns = [
             r"/jobs/?$", r"/careers/?$", r"/openings/?$",
@@ -1096,6 +1103,14 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing = [j for j in existing if not _is_aggregator(j)]
     if before_agg != len(existing):
         log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
+
+    # Remove SPA career sites where location can't be verified server-side
+    # (e.g. jobs.apple.com /en-il/ shows jobs from all countries, not just Israel)
+    spa_unverifiable = ["jobs.apple.com", "careers.google.com", "careers.microsoft.com"]
+    before_spa = len(existing)
+    existing = [j for j in existing if not any(d in j.get("sourceUrl", "") for d in spa_unverifiable)]
+    if before_spa != len(existing):
+        log.info(f"  Removed {before_spa - len(existing)} unverifiable SPA career pages from existing jobs")
 
     # Re-check existing listings — remove closed, stale (>180d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
