@@ -561,6 +561,10 @@ COMPANY_STAKEHOLDERS = {
     "comm it": [
         {"name": "Ilan Sokolov", "title": "CTO", "linkedin": "https://www.linkedin.com/in/ilan-sokolov/", "source": "LinkedIn", "email": ""},
     ],
+    "gett": [
+        {"name": "Yaki Zakai", "title": "CTO", "linkedin": "https://il.linkedin.com/in/yaki-zakai-62847", "source": "LinkedIn", "email": ""},
+        {"name": "Matteo de Renzi", "title": "CEO", "linkedin": "https://uk.linkedin.com/in/matteoderenzi", "source": "LinkedIn", "email": ""},
+    ],
 }
 
 SEARCH_QUERIES = [
