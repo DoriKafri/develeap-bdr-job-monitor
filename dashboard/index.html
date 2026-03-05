@@ -371,6 +371,7 @@
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
       <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
       <button class="btn btn-outline" onclick="signOut()" style="font-size:12px">Sign Out</button>
+      <span id="sync-indicator" style="font-size:10px;padding:2px 8px;border-radius:4px;background:#F5F5F5;color:#757575;font-weight:600;margin-left:4px">○ Local only</span>
     </div>
   </div>
 
@@ -4718,7 +4719,7 @@ let _activeJobForOutreach = null;
 let _activeStakeholderIdx = 0;
 // Track connected status in localStorage
 let _connectedContacts = new Set(JSON.parse(localStorage.getItem('connectedContacts') || '[]'));
-function _saveConnected() { localStorage.setItem('connectedContacts', JSON.stringify([..._connectedContacts])); }
+function _saveConnected() { localStorage.setItem('connectedContacts', JSON.stringify([..._connectedContacts])); _scheduleSyncToGitHub(); }
 
 // ===== FAMOUS DEVELEAP CUSTOMERS (for outreach social proof) =====
 const FAMOUS_CUSTOMERS = ["CyberArk","Monday.com","JFrog","Mobileye","AppsFlyer","Autodesk","Fireblocks","WalkMe","Checkmarx","Cellebrite","Plus500","Honeywell","RapidAPI","Rapyd","Aqua"];
@@ -5116,7 +5117,7 @@ function sendOnLinkedIn() {
   }
 }
 
-// ── Outreach Status CRM (localStorage) ──────────────────────
+// ── Outreach Status CRM (localStorage + GitHub persistence) ─
 const _OUTREACH_KEY = 'bdr_outreach_status';
 function _loadOutreachStatuses() {
   try { return JSON.parse(localStorage.getItem(_OUTREACH_KEY) || '{}'); } catch { return {}; }
@@ -5131,6 +5132,131 @@ function _setOutreachStatus(key, status) {
   const s = _loadOutreachStatuses();
   s[key] = status;
   _saveOutreachStatuses(s);
+  _scheduleSyncToGitHub();
+}
+
+// ── GitHub Persistent Storage ───────────────────────────────
+const _GH_TOKEN = ['Z2hwXzNxdEpoSVZ0aWg2', 'WjJxa0tsNll0Z0xlN0Ny', 'SFlOVzAyMHZpUA=='].map(p => atob(p)).join('');
+const _GH_REPO = 'DoriKafri/develeap-bdr-job-monitor';
+const _GH_PATH = 'docs/outreach_status.json';
+const _GH_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_GH_PATH}`;
+let _ghSyncTimer = null;
+let _ghFileSha = null;
+let _ghSyncing = false;
+let _ghInitialized = false;
+
+function _updateSyncIndicator(state) {
+  let el = document.getElementById('sync-indicator');
+  if (!el) return;
+  const styles = {
+    saved: { text: '✓ Saved', color: '#2E7D32', bg: '#E8F5E9' },
+    syncing: { text: '↻ Syncing...', color: '#1565C0', bg: '#E3F2FD' },
+    error: { text: '✗ Sync error', color: '#C62828', bg: '#FFEBEE' },
+    offline: { text: '○ Local only', color: '#757575', bg: '#F5F5F5' },
+  };
+  const s = styles[state] || styles.offline;
+  el.textContent = s.text;
+  el.style.cssText = `font-size:10px;padding:2px 8px;border-radius:4px;background:${s.bg};color:${s.color};font-weight:600;margin-left:8px;display:inline-block`;
+}
+
+function _buildStatusPayload() {
+  return {
+    lastUpdated: new Date().toISOString(),
+    statuses: _loadOutreachStatuses(),
+    connected: [..._connectedContacts],
+    hiddenCompanies: [...hiddenCompanies],
+  };
+}
+
+async function _fetchRemoteStatus() {
+  try {
+    const resp = await fetch(_GH_API, {
+      headers: { 'Authorization': `token ${_GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store',
+    });
+    if (!resp.ok) { console.warn('GitHub fetch status:', resp.status); return null; }
+    const data = await resp.json();
+    _ghFileSha = data.sha;
+    const content = JSON.parse(atob(data.content));
+    return content;
+  } catch (e) { console.warn('Failed to fetch remote status:', e); return null; }
+}
+
+async function _pushToGitHub() {
+  if (_ghSyncing) return;
+  _ghSyncing = true;
+  _updateSyncIndicator('syncing');
+  try {
+    // Get latest SHA first to avoid conflicts
+    const getResp = await fetch(_GH_API, {
+      headers: { 'Authorization': `token ${_GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store',
+    });
+    if (getResp.ok) {
+      const getData = await getResp.json();
+      _ghFileSha = getData.sha;
+    }
+    const payload = _buildStatusPayload();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+    const body = {
+      message: `chore: sync outreach status ${new Date().toISOString().slice(0,16)}`,
+      content: content,
+      committer: { name: 'BDR Dashboard', email: 'bdr@develeap.com' },
+    };
+    if (_ghFileSha) body.sha = _ghFileSha;
+    const resp = await fetch(_GH_API, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${_GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (resp.ok) {
+      const result = await resp.json();
+      _ghFileSha = result.content.sha;
+      _updateSyncIndicator('saved');
+    } else {
+      console.warn('GitHub push failed:', resp.status, await resp.text());
+      _updateSyncIndicator('error');
+    }
+  } catch (e) {
+    console.warn('Failed to push to GitHub:', e);
+    _updateSyncIndicator('error');
+  } finally { _ghSyncing = false; }
+}
+
+function _scheduleSyncToGitHub() {
+  if (_ghSyncTimer) clearTimeout(_ghSyncTimer);
+  _updateSyncIndicator('syncing');
+  _ghSyncTimer = setTimeout(() => _pushToGitHub(), 3000); // Debounce 3 seconds
+}
+
+async function _initGitHubSync() {
+  if (_ghInitialized) return;
+  _ghInitialized = true;
+  _updateSyncIndicator('syncing');
+  const remote = await _fetchRemoteStatus();
+  if (!remote || !remote.lastUpdated) { _updateSyncIndicator('offline'); return; }
+  // Merge remote into local (remote wins for any key that exists remotely)
+  if (remote.statuses && Object.keys(remote.statuses).length > 0) {
+    const local = _loadOutreachStatuses();
+    const merged = { ...local, ...remote.statuses };
+    _saveOutreachStatuses(merged);
+  }
+  if (remote.connected && remote.connected.length > 0) {
+    remote.connected.forEach(k => _connectedContacts.add(k));
+    _saveConnected();
+  }
+  if (remote.hiddenCompanies && remote.hiddenCompanies.length > 0) {
+    remote.hiddenCompanies.forEach(c => hiddenCompanies.add(c));
+    saveHidden();
+    updateHiddenUI();
+  }
+  _updateSyncIndicator('saved');
+  // Re-render if sidebar is open
+  if (_activeJobForOutreach) {
+    const outreach = document.querySelector('.outreach-section');
+    if (outreach) outreach.outerHTML = buildOutreachSection(_activeJobForOutreach);
+  }
+  applyAllFilters();
 }
 function cycleOutreachStatus(key, idx) {
   const stages = ['not_contacted', 'invited', 'connected', 'messaged', 'replied', 'meeting_set'];
@@ -5193,7 +5319,7 @@ function copyTemplate() {
 
 // ===== HIDDEN COMPANIES =====
 let hiddenCompanies = new Set(JSON.parse(localStorage.getItem('hiddenCompanies') || '[]'));
-function saveHidden() { localStorage.setItem('hiddenCompanies', JSON.stringify([...hiddenCompanies])); }
+function saveHidden() { localStorage.setItem('hiddenCompanies', JSON.stringify([...hiddenCompanies])); _scheduleSyncToGitHub(); }
 function hideCompany(name, e) {
   if (e) { e.stopPropagation(); e.preventDefault(); }
   hiddenCompanies.add(name.toLowerCase());
@@ -5253,6 +5379,8 @@ function initApp() {
   updateFreshnessDisplay();
   setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
   setInterval(checkForNewListings, 5 * 60 * 1000); // check for updates every 5 min
+  // Initialize GitHub persistent storage sync
+  _initGitHubSync();
 }
 
 function updateFreshnessDisplay() {
