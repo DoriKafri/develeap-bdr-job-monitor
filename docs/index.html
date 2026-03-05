@@ -5285,11 +5285,19 @@ function messageOnLinkedIn(stakeholderIdx) {
     _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
   }
 
-  // Open LinkedIn profile in new tab
-  window.open(liUrl, '_blank');
+  // Mark button as ready (Claude will handle LinkedIn automation)
+  const cards = document.querySelectorAll('.stakeholder-card');
+  if (cards[stakeholderIdx]) {
+    const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+    if (btn) {
+      btn.innerHTML = '✅ Ready';
+      btn.style.background = '#2E7D32';
+      btn.style.color = 'white';
+    }
+  }
 
   // Show toast
-  _showToast(`Opening LinkedIn for ${s.name} — tell Claude to paste the message!`);
+  _showToast(`✅ Message queued for ${s.name}`);
 }
 
 // Legacy function kept for template picker button
