@@ -1368,16 +1368,19 @@ def _validate_linkedin_urls(jobs: list) -> list:
                 continue
             check_count += 1
             try:
-                resp = requests.head(
+                resp = requests.get(
                     url,
-                    headers={"User-Agent": "Mozilla/5.0 (compatible; JobMonitorBot/1.0)"},
+                    headers={
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                        "Accept": "text/html",
+                    },
                     allow_redirects=True,
                     timeout=10,
                 )
-                # LinkedIn returns 404 or redirects to /404/ for broken profiles
-                is_valid = resp.status_code == 200 and "/404" not in resp.url
-                checked[url] = is_valid
-                if not is_valid:
+                # Only flag as broken if LinkedIn explicitly returns 404 or redirects to /404/
+                is_broken = resp.status_code == 404 or "/404" in resp.url
+                checked[url] = not is_broken
+                if is_broken:
                     log.warning(f"  BROKEN LinkedIn: {s.get('name','')} → {url} (HTTP {resp.status_code}, final: {resp.url[:80]})")
                     s["linkedin"] = ""
                     broken_count += 1
