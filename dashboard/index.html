@@ -6989,11 +6989,12 @@ async function _saveSettingsToGitHub() {
 
 // ===== NEW SETTINGS SECTION MANAGEMENT =====
 function switchSettingsSection(section) {
-  // Update sidebar
+  // Update sidebar active state
   document.querySelectorAll('.settings-sidebar-item').forEach(item => {
     item.classList.remove('active');
+    var txt = item.textContent.trim().toLowerCase();
+    if (txt.includes(section)) item.classList.add('active');
   });
-  event.target.closest('.settings-sidebar-item').classList.add('active');
 
   // Hide all sections
   document.querySelectorAll('.settings-section').forEach(sec => {
@@ -7007,6 +7008,7 @@ function switchSettingsSection(section) {
     if (section === 'categories') renderCategoriesSection();
     else if (section === 'customers') renderCustomersSection();
     else if (section === 'sources') renderSourcesSection();
+    else if (section === 'templates') renderSettingsTab(_currentSettingsTab);
   }
 }
 
@@ -7252,7 +7254,21 @@ function renderSettingsTab(idx) {
 }
 
 function renderSettingsView() {
-  renderSettingsTab(_currentSettingsTab);
+  // Render the currently active settings section
+  var activeSection = document.querySelector('.settings-sidebar-item.active');
+  var sectionName = 'categories';
+  if (activeSection) {
+    var txt = activeSection.textContent.trim().toLowerCase();
+    if (txt.includes('categories')) sectionName = 'categories';
+    else if (txt.includes('customers')) sectionName = 'customers';
+    else if (txt.includes('sources')) sectionName = 'sources';
+    else if (txt.includes('templates')) sectionName = 'templates';
+  }
+  // Render the section content
+  if (sectionName === 'categories') renderCategoriesSection();
+  else if (sectionName === 'customers') renderCustomersSection();
+  else if (sectionName === 'sources') renderSourcesSection();
+  else if (sectionName === 'templates') renderSettingsTab(_currentSettingsTab);
 }
 
 function updateTemplateEmoji(el) {
