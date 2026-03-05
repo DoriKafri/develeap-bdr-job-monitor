@@ -6438,7 +6438,17 @@ function previewTemplate(setId, idx) {
   if (!templates || !templates[idx]) return;
 
   const tpl = templates[idx];
-  const preview = `${tpl.name}\n${tpl.emoji ? tpl.emoji + ' ' : ''}\n\n${tpl.subject ? 'Subject: ' + tpl.subject + '\n\n' : ''}${tpl.body}`;
+  // Use a sample job and stakeholder for preview
+  const sampleJob = (typeof ALL_JOBS !== 'undefined' && ALL_JOBS.length > 0)
+    ? ALL_JOBS[0]
+    : { company: 'Acme Corp', title: 'Senior DevOps Engineer', category: 'devops', isDeveleapCustomer: false, isPastCustomer: false };
+  const sampleStakeholder = (sampleJob.stakeholders && sampleJob.stakeholders.length > 0)
+    ? sampleJob.stakeholders[0]
+    : { name: 'Sarah Cohen', title: 'VP Engineering' };
+
+  const filledBody = fillTemplate(tpl.body, sampleJob, sampleStakeholder);
+  const filledSubject = tpl.subject ? fillTemplate(tpl.subject, sampleJob, sampleStakeholder) : '';
+  const preview = `${tpl.emoji || ''} ${tpl.name}\n\n${filledSubject ? 'Subject: ' + filledSubject + '\n\n' : ''}${filledBody}`;
 
   document.getElementById('previewContent').textContent = preview;
   document.getElementById('previewModal').classList.add('open');
