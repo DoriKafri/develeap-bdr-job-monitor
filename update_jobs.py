@@ -1345,7 +1345,8 @@ def _validate_linkedin_urls(jobs: list) -> list:
 
 
 def _get_stakeholders(company: str) -> list:
-    """Look up stakeholders for a company from the COMPANY_STAKEHOLDERS dict."""
+    """Look up stakeholders for a company from the COMPANY_STAKEHOLDERS dict,
+    falling back to automatic SerpAPI-based discovery when no manual entry exists."""
     if not company:
         return []
     company_lower = company.lower().strip()
@@ -1362,7 +1363,125 @@ def _get_stakeholders(company: str) -> list:
         key_squished = key.replace(" ", "").replace("-", "")
         if key_squished in company_squished or company_squished in key_squished:
             return contacts
-    return []
+    # No manual entry — try auto-discovery
+    return _auto_discover_stakeholders(company)
+
+
+# ── Auto-stakeholder discovery cache ──────────────────────────────────────
+_stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
+_auto_discover_count = 0                    # Track SerpAPI usage per run
+AUTO_DISCOVER_MAX = 30                      # Max auto-lookups per pipeline run
+
+
+def _auto_discover_stakeholders(company: str) -> list:
+    """Use SerpAPI to find CTO / VP R&D / VP Engineering for a company.
+    Parses LinkedIn profile URLs from search results and returns contacts."""
+    global _auto_discover_count
+
+    if not SERPAPI_KEY or not company:
+        return []
+
+    company_lower = company.lower().strip()
+    if company_lower in _stakeholder_cache:
+        return _stakeholder_cache[company_lower]
+
+    if _auto_discover_count >= AUTO_DISCOVER_MAX:
+        _stakeholder_cache[company_lower] = []
+        return []
+
+    _auto_discover_count += 1
+    contacts = []
+
+    try:
+        # Search for company leadership on LinkedIn
+        query = f'site:linkedin.com/in "{company}" CTO OR "VP R&D" OR "VP Engineering" OR "Head of Engineering"'
+        resp = requests.get("https://serpapi.com/search", params={
+            "q": query,
+            "api_key": SERPAPI_KEY,
+            "gl": "il",
+            "hl": "en",
+            "num": 8,
+        }, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+
+        seen_urls = set()
+        for r in data.get("organic_results", []):
+            link = r.get("link", "")
+            title_text = r.get("title", "")
+            snippet = r.get("snippet", "")
+
+            # Must be a LinkedIn profile URL
+            if "/in/" not in link or link in seen_urls:
+                continue
+
+            # Extract name from title (usually "Name - Title - Company | LinkedIn")
+            name = ""
+            person_title = ""
+            if " - " in title_text:
+                parts = title_text.split(" - ")
+                name = parts[0].strip().replace(" | LinkedIn", "").strip()
+                if len(parts) >= 2:
+                    person_title = parts[1].strip().replace(" | LinkedIn", "").strip()
+            elif " | " in title_text:
+                name = title_text.split(" | ")[0].strip()
+
+            if not name or name.lower() == "linkedin":
+                continue
+
+            # Verify the result is actually about this company
+            combined = (title_text + " " + snippet).lower()
+            company_words = company_lower.split()
+            # At least one significant company word must appear
+            if not any(w in combined for w in company_words if len(w) > 2):
+                continue
+
+            # Extract title from snippet if not in title
+            if not person_title:
+                # Try to find title patterns in snippet
+                title_match = re.search(
+                    r'((?:CTO|Chief Technology Officer|VP\s+(?:R&D|Engineering|Research)|'
+                    r'Head of Engineering|Director of Engineering|'
+                    r'Co-Founder|CEO|Chief Executive Officer|'
+                    r'SVP Engineering|Sr\.?\s*Director)[^.·|]*)',
+                    snippet, re.IGNORECASE
+                )
+                if title_match:
+                    person_title = title_match.group(1).strip().rstrip(",. ")
+
+            if not person_title:
+                continue
+
+            # Skip generic profiles that aren't leadership
+            skip_titles = ["recruiter", "talent", "intern", "junior", "associate", "analyst"]
+            if any(s in person_title.lower() for s in skip_titles):
+                continue
+
+            seen_urls.add(link)
+            contacts.append({
+                "name": name,
+                "title": person_title,
+                "linkedin": link,
+                "source": "Auto-discovered",
+                "email": "",
+            })
+
+            if len(contacts) >= 2:  # Cap at 2 contacts per company
+                break
+
+        if contacts:
+            log.info(f"  Auto-discovered {len(contacts)} stakeholder(s) for {company}: "
+                     f"{', '.join(c['name'] + ' (' + c['title'] + ')' for c in contacts)}")
+        else:
+            log.debug(f"  No stakeholders auto-discovered for {company}")
+
+        time.sleep(random.uniform(0.5, 1.5))
+
+    except Exception as e:
+        log.debug(f"  Auto-discover failed for {company}: {e}")
+
+    _stakeholder_cache[company_lower] = contacts
+    return contacts
 
 
 def _company_matches(company: str, customer_list: list) -> bool:
@@ -2237,6 +2356,10 @@ def notify_slack(new_jobs: list[dict]) -> bool:
 # ── Main ───────────────────────────────────────────────────────────────────
 
 def main():
+    global _auto_discover_count
+    _auto_discover_count = 0  # Reset per run
+    _stakeholder_cache.clear()
+
     log.info("=== Develeap BDR Job Monitor Update ===")
 
     # 1. Search for jobs
@@ -2310,6 +2433,11 @@ def main():
     customer_new = [j for j in truly_new if j.get("isDeveleapCustomer")]
     if customer_new:
         log.info(f"  🌟 {len(customer_new)} new listings from Develeap customers!")
+
+    # 4a-2. Log auto-discovery stats
+    auto_found = sum(1 for j in merged if any(s.get("source") == "Auto-discovered" for s in j.get("stakeholders", [])))
+    if _auto_discover_count > 0:
+        log.info(f"  Auto-discovered stakeholders for {auto_found} listings ({_auto_discover_count} SerpAPI lookups)")
 
     # 4b. Enrich stakeholders with LinkedIn profile photos
     log.info("Enriching stakeholder photos from LinkedIn...")
