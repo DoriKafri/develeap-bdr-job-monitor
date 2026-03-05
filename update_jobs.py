@@ -565,6 +565,41 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Yaki Zakai", "title": "CTO", "linkedin": "https://il.linkedin.com/in/yaki-zakai-62847", "source": "LinkedIn", "email": ""},
         {"name": "Matteo de Renzi", "title": "CEO", "linkedin": "https://uk.linkedin.com/in/matteoderenzi", "source": "LinkedIn", "email": ""},
     ],
+    "wix": [
+        {"name": "Yoav Abrahami", "title": "CTO & Head of Wix Engineering", "linkedin": "https://www.linkedin.com/in/yoavabrahami/", "source": "LinkedIn", "email": ""},
+        {"name": "Nir Zohar", "title": "President & COO", "linkedin": "https://www.linkedin.com/in/nirzohar/", "source": "LinkedIn", "email": ""},
+    ],
+    "cloudflare": [
+        {"name": "John Graham-Cumming", "title": "CTO", "linkedin": "https://www.linkedin.com/in/jgrahamc/", "source": "LinkedIn", "email": ""},
+    ],
+    "intel": [
+        {"name": "Greg Lavender", "title": "CTO & SVP", "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/", "source": "LinkedIn", "email": ""},
+    ],
+    "intel corporation": [
+        {"name": "Greg Lavender", "title": "CTO & SVP", "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/", "source": "LinkedIn", "email": ""},
+    ],
+    "atera": [
+        {"name": "Gil Pekelman", "title": "CEO", "linkedin": "https://www.linkedin.com/in/gilpekelman/", "source": "LinkedIn", "email": ""},
+        {"name": "Oshri Moyal", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/oshrimoyal/", "source": "LinkedIn", "email": ""},
+    ],
+    "cloudera": [
+        {"name": "Dipto Chakravarty", "title": "Chief Engineering Officer", "linkedin": "https://www.linkedin.com/in/diptochakravarty/", "source": "LinkedIn", "email": ""},
+    ],
+    "accenture": [
+        {"name": "Karthik Narain", "title": "CEO, Accenture Technology", "linkedin": "https://www.linkedin.com/in/karthiknarain/", "source": "LinkedIn", "email": ""},
+    ],
+    "medtronic": [
+        {"name": "Ken Washington", "title": "SVP & CTO", "linkedin": "https://www.linkedin.com/in/kenwashington/", "source": "LinkedIn", "email": ""},
+    ],
+    "carrier": [
+        {"name": "James Pisz", "title": "VP Digital Solutions & CTO", "linkedin": "https://www.linkedin.com/in/jamespisz/", "source": "LinkedIn", "email": ""},
+    ],
+    "gsk": [
+        {"name": "Karenann Terrell", "title": "Chief Digital & Technology Officer", "linkedin": "https://www.linkedin.com/in/karenannterrell/", "source": "LinkedIn", "email": ""},
+    ],
+    "xsolla": [
+        {"name": "Chris Hewish", "title": "CEO", "linkedin": "https://www.linkedin.com/in/chrishewish/", "source": "LinkedIn", "email": ""},
+    ],
 }
 
 SEARCH_QUERIES = [
@@ -1478,6 +1513,7 @@ def _auto_discover_stakeholders(company: str) -> list:
     skip_companies = {
         "unknown", "remoterockethub", "efinancialcareers", "jobgether",
         "techaviv", "play", "automatit", "efinancialcareers norway",
+        "factored", "attil", "mksinst", "adaptive6",
     }
     if company_lower in skip_companies:
         _stakeholder_cache[company_lower] = []
