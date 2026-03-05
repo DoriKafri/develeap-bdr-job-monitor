@@ -612,6 +612,12 @@
       <div class="nav-bottom-item">
         <span id="sync-indicator-sidebar" style="font-size:10px">○ Local only</span>
       </div>
+      <div class="nav-bottom-item" style="margin-top:12px;">
+        <button onclick="signOut()" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-size:12px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.7)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Sign Out
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -626,7 +632,6 @@
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
       <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
-      <button class="btn btn-outline" onclick="signOut()" style="font-size:12px">Sign Out</button>
     </div>
   </div>
 
@@ -6511,11 +6516,22 @@ function reloadNewListings() {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+function _isCareerPage(j) {
+  // Filter out multi-job career pages like "Jobs at Company"
+  if (/^jobs\s+at\s+/i.test(j.title)) return true;
+  // Also filter URLs that point to career page indexes (not individual listings)
+  const u = (j.sourceUrl || '').toLowerCase();
+  if (/greenhouse\.io\/[^/]+\/?(\?|$)/.test(u) && !/\/jobs\/\d+/.test(u)) return true;
+  if (/comeet\.com\/jobs\/[^/]+\/?(\?|$)/.test(u) && !/\/\d{2,}/.test(u)) return true;
+  return false;
+}
+
 function updateStats() {
-  // Base set: exclude hidden companies and jobs without valid URLs
+  // Base set: exclude hidden companies, jobs without valid URLs, and career pages
   const visible = ALL_JOBS.filter(j => {
     if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
     if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
+    if (_isCareerPage(j)) return false;
     return true;
   });
   document.getElementById('statTotal').textContent = visible.length;
@@ -6637,6 +6653,8 @@ function getFilteredJobs() {
   return ALL_JOBS.filter(j => {
     // Skip jobs with empty/broken URLs
     if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
+    // Skip multi-job career pages ("Jobs at Company")
+    if (_isCareerPage(j)) return false;
     // Hidden companies filter
     if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
     if (currentView==='develeap'&&!j.isDeveleapCustomer) return false;
