@@ -5027,16 +5027,17 @@ function buildOutreachSection(job) {
 
       // Action buttons differ based on connected status
       let actionBtns = '';
-      const liUrl = hasLI ? s.linkedin : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
       if (connected) {
-        actionBtns += `<a href="${liUrl}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${MSG_ICON} Message</a>`;
+        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="border:none;cursor:pointer">${MSG_ICON} Message</button>`;
       } else if (hasLI) {
-        actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${LI_ICON} Connect</a>`;
+        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="border:none;cursor:pointer">${LI_ICON} Connect</button>`;
       }
       if (hasEmail) {
         actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
       }
-      actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
+      if (!connected && !hasLI) {
+        actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
+      }
 
       // Toggle connected status button
       const toggleBtn = (hasLI || connected)
@@ -5134,6 +5135,13 @@ function switchTemplate(idx) {
   document.getElementById('templatePreview').textContent = msg;
 }
 
+function scrollToTemplates() {
+  setTimeout(() => {
+    const tp = document.querySelector('.template-picker');
+    if (tp) tp.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 100);
+}
+
 function selectStakeholderForMsg(idx) {
   _activeStakeholderIdx = idx;
   const job = _activeJobForOutreach;
@@ -5170,50 +5178,72 @@ function toggleConnected(key, idx) {
   }
 }
 
+// Pending LinkedIn message queue (read by Claude automation)
+let _pendingLinkedInMsg = null;
+
 function sendOnLinkedIn() {
   const job = _activeJobForOutreach;
   if (!job) return;
   const stakeholders = job.stakeholders || [];
   const s = stakeholders[_activeStakeholderIdx || 0];
-  const isConn = s ? _connectedContacts.has(_contactKey(s)) : false;
+  const key = s ? _contactKey(s) : '';
+  const isConn = s ? (_connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key))) : false;
 
-  // Get the right message — use pipeline-generated connectMsg/followUpMsg if available
+  // Get the right message
   let msg;
   if (isConn && s && s.followUpMsg) {
     msg = s.followUpMsg;
   } else if (!isConn && s && s.connectMsg) {
     msg = s.connectMsg;
   } else {
-    // Fall back to template system
     msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
   }
 
-  // Copy to clipboard so user can paste into LinkedIn
-  navigator.clipboard.writeText(msg).then(() => {
-    // Show toast notification
-    _showToast(isConn
-      ? '📋 Follow-up message copied! Opening LinkedIn...'
-      : '📋 Connection note copied! Paste it when LinkedIn asks for a note.');
-  }).catch(() => {});
+  const liUrl = (s && s.linkedin && s.linkedin.startsWith('http'))
+    ? s.linkedin
+    : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s ? s.name : job.company)}`;
 
-  // Open LinkedIn profile
-  if (s && s.linkedin && s.linkedin.startsWith('http')) {
-    window.open(s.linkedin, '_blank');
-  } else {
-    window.open('https://www.linkedin.com/search/results/people/?keywords=' + encodeURIComponent(job.company + ' CTO VP Engineering'), '_blank');
+  // Store pending message for Claude automation
+  _pendingLinkedInMsg = {
+    contactName: s ? s.name : 'Unknown',
+    contactTitle: s ? s.title : '',
+    company: job.company,
+    linkedinUrl: liUrl,
+    message: msg,
+    isConnected: isConn,
+    timestamp: new Date().toISOString(),
+  };
+  // Also save to localStorage so Claude can read it
+  localStorage.setItem('bdr_pending_linkedin', JSON.stringify(_pendingLinkedInMsg));
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(msg).then(() => {
+    _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
+  }).catch(() => {
+    _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
+  });
+
+  // Update button to show "Ready" state
+  const btn = document.getElementById('btnLinkedInAction');
+  if (btn) {
+    btn.innerHTML = '✅ Ready — Ask Claude to Send';
+    btn.style.background = '#2E7D32';
   }
 
   // Track outreach status
   if (s) {
-    const key = _contactKey(s);
     const status = _getOutreachStatus(key);
     if (!status || status === 'not_contacted') {
       _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
-      // Re-render
       const outreach = document.querySelector('.outreach-section');
       if (outreach) outreach.outerHTML = buildOutreachSection(job);
     }
   }
+}
+
+// Called by Claude automation to get pending message
+function getPendingLinkedInMessage() {
+  return _pendingLinkedInMsg || JSON.parse(localStorage.getItem('bdr_pending_linkedin') || 'null');
 }
 
 // ── Outreach Status CRM (localStorage + GitHub persistence) ─
