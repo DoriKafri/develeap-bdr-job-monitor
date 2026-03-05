@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05T17:41:40.443Z",
+  "lastUpdated": "2026-03-05T17:45:45.057Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -24,7 +24,8 @@
     "nir minerbi": "connected",
     "amir naveh": "connected",
     "check point|nataly kremer": "connected",
-    "dror davidoff": "invited"
+    "dror davidoff": "invited",
+    "amir misgav": "invited"
   },
   "connected": [
     "check point|nataly kremer"
