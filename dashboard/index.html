@@ -5076,9 +5076,9 @@ function buildOutreachSection(job) {
       // Action buttons differ based on connected status
       let actionBtns = '';
       if (connected) {
-        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="border:none;cursor:pointer">${MSG_ICON} Message</button>`;
+        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();messageOnLinkedIn(${i})" style="border:none;cursor:pointer">${MSG_ICON} Message</button>`;
       } else if (hasLI) {
-        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="border:none;cursor:pointer">${LI_ICON} Connect</button>`;
+        actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();messageOnLinkedIn(${i})" style="border:none;cursor:pointer">${LI_ICON} Connect</button>`;
       }
       if (hasEmail) {
         actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
@@ -5189,8 +5189,6 @@ function switchTemplate(idx) {
   const stakeholder = stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
   const msg = fillTemplate(OUTREACH_TEMPLATES[idx].body, job, stakeholder);
   document.getElementById('templatePreview').textContent = msg;
-  // Auto-trigger LinkedIn send preparation when template is picked
-  sendOnLinkedIn();
 }
 
 function scrollToTemplates() {
@@ -5240,76 +5238,66 @@ function toggleConnected(key, idx) {
 // Pending LinkedIn message queue (read by Claude automation)
 let _pendingLinkedInMsg = null;
 
-function sendOnLinkedIn() {
+// One-click: select stakeholder, prepare message, store for Claude, open LinkedIn
+function messageOnLinkedIn(stakeholderIdx) {
   const job = _activeJobForOutreach;
   if (!job) return;
+  _activeStakeholderIdx = stakeholderIdx;
   const stakeholders = job.stakeholders || [];
-  const s = stakeholders[_activeStakeholderIdx || 0];
-  const key = s ? _contactKey(s) : '';
-  const isConn = s ? (_connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key))) : false;
+  const s = stakeholders[stakeholderIdx];
+  if (!s) return;
 
-  // Get the right message
-  let msg;
-  if (isConn && s && s.followUpMsg) {
-    msg = s.followUpMsg;
-  } else if (!isConn && s && s.connectMsg) {
-    msg = s.connectMsg;
-  } else {
-    msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
-  }
+  const key = _contactKey(s);
+  const isConn = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
 
-  const liUrl = (s && s.linkedin && s.linkedin.startsWith('http'))
+  // Build message from current template
+  const msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
+
+  const liUrl = (s.linkedin && s.linkedin.startsWith('http'))
     ? s.linkedin
-    : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s ? s.name : job.company)}`;
+    : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
 
   // Store pending message for Claude automation
   _pendingLinkedInMsg = {
-    contactName: s ? s.name : 'Unknown',
-    contactTitle: s ? s.title : '',
+    contactName: s.name,
+    contactTitle: s.title || '',
     company: job.company,
     linkedinUrl: liUrl,
     message: msg,
     isConnected: isConn,
     timestamp: new Date().toISOString(),
   };
-  // Also save to localStorage so Claude can read it
   localStorage.setItem('bdr_pending_linkedin', JSON.stringify(_pendingLinkedInMsg));
 
-  // Update button to show "Ready" state FIRST (before clipboard which may fail)
-  const btn = document.getElementById('btnLinkedInAction');
-  if (btn) {
-    btn.innerHTML = '✅ Ready — Ask Claude to Send';
-    btn.style.background = '#2E7D32';
+  // Update template preview
+  const preview = document.getElementById('templatePreview');
+  if (preview) preview.textContent = msg;
+
+  // Highlight selected stakeholder card
+  document.querySelectorAll('.stakeholder-card').forEach((c,i) => {
+    c.style.borderColor = i===stakeholderIdx ? 'var(--primary)' : '';
+    c.style.background = i===stakeholderIdx ? 'var(--primary-light)' : '';
+  });
+
+  // Track outreach status
+  const status = _getOutreachStatus(key);
+  if (!status || status === 'not_contacted') {
+    _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
   }
 
-  // Copy to clipboard (may fail if page not focused)
-  try {
-    navigator.clipboard.writeText(msg).then(() => {
-      _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
-    }).catch(() => {
-      _showToast(`✅ Message ready! Ask Claude to send on LinkedIn.`);
-    });
-  } catch(e) {
-    _showToast(`✅ Message ready! Ask Claude to send on LinkedIn.`);
-  }
+  // Open LinkedIn profile in new tab
+  window.open(liUrl, '_blank');
 
-  // Track outreach status (don't rebuild section — it resets the Ready button)
-  if (s) {
-    const status = _getOutreachStatus(key);
-    if (!status || status === 'not_contacted') {
-      _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
-      // Update status badge inline without full rebuild
-      const cards = document.querySelectorAll('.stakeholder-card');
-      if (cards[_activeStakeholderIdx]) {
-        const badge = cards[_activeStakeholderIdx].querySelector('.badge');
-        if (badge) {
-          const newStatus = isConn ? 'messaged' : 'invited';
-          badge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).replace('_',' ');
-          badge.className = 'badge badge-' + newStatus;
-        }
-      }
-    }
-  }
+  // Show toast
+  _showToast(`Opening LinkedIn for ${s.name} — tell Claude to paste the message!`);
+}
+
+// Legacy function kept for template picker button
+function sendOnLinkedIn() {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const s = (job.stakeholders || [])[_activeStakeholderIdx || 0];
+  if (s) messageOnLinkedIn(_activeStakeholderIdx || 0);
 }
 
 // Called by Claude automation to get pending message
