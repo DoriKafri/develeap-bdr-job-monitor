@@ -634,10 +634,10 @@
   <div class="main-content">
     <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
-    <div class="stats-bar" id="statsBar">
-    <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
-    <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
-    <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
+    <div class="stats-bar" id="statsBar" style="display:flex;gap:8px;flex-wrap:wrap;">
+    <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
+    <div class="stat-card new" data-stat="new" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
+    <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
     <div id="categoryStatsContainer"></div>
   </div>
 
@@ -6524,6 +6524,7 @@ function updateStats() {
 
   // Dynamically render category stats
   const catStatsContainer = document.getElementById('categoryStatsContainer');
+  catStatsContainer.style.display = 'contents';
   const catStatsDivs = [];
   for (const [key, label] of Object.entries(CAT_LABELS)) {
     const count = visible.filter(j => j.category === key).length;
@@ -6533,6 +6534,7 @@ function updateStats() {
     statDiv.setAttribute('data-stat', key);
     statDiv.setAttribute('onclick', 'filterByStat(this)');
     statDiv.style.borderLeftColor = color;
+    statDiv.style.flex = '0 1 auto';
     statDiv.innerHTML = `<div class="stat-number" style="color:${color}">${count}</div><div class="stat-label">${label} Listings</div>`;
     catStatsDivs.push(statDiv);
   }
@@ -6776,6 +6778,7 @@ function clearSourceFilters() {
 
 function buildCategoryFilters() {
   const container = document.getElementById('categoryFilterContainer');
+  container.style.display = 'contents';
   container.innerHTML = '';
   for (const [key, label] of Object.entries(CAT_LABELS)) {
     const chip = document.createElement('div');
