@@ -217,7 +217,7 @@ COMPANY_STAKEHOLDERS = {
         {"name": "Jeff Denworth", "title": "Co-Founder & CMO", "linkedin": "https://www.linkedin.com/in/jeffreydenworth/", "source": "LinkedIn", "email": "jeff.denworth@vastdata.com"},
     ],
     "check point": [
-        {"name": "Nataly Kremer", "title": "CPO & Head of R&D", "linkedin": "https://www.linkedin.com/in/natalyk/", "source": "Company Website", "email": ""},
+        {"name": "Nataly Kremer", "title": "CPO & Head of R&D", "linkedin": "https://www.linkedin.com/in/nataly-kremer-12744b29/", "source": "Company Website", "email": ""},
         {"name": "Tomer Lev", "title": "Engineering Director", "linkedin": "https://www.linkedin.com/in/tomerlev/", "source": "LinkedIn", "email": ""},
         {"name": "Ofir Israel", "title": "Engineering Director", "linkedin": "https://www.linkedin.com/in/ofirisrael/", "source": "LinkedIn", "email": ""},
         {"name": "Alex Spokoiny", "title": "Chief Information Officer", "linkedin": "", "source": "Company Website", "email": ""},
