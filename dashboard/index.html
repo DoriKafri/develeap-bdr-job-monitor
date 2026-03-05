@@ -5203,7 +5203,7 @@ function buildOutreachSection(job) {
   if (hasStakeholders) {
     stakeholderHTML = '<div class="stakeholder-list">' + stakeholders.map((s, i) => {
       const key = _contactKey(s);
-      const connected = _connectedContacts.has(key);
+      const connected = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
       const hasLI = s.linkedin && s.linkedin.startsWith('http');
       const hasEmail = s.email && s.email.includes('@');
       const outreachStatus = _getOutreachStatus(key);
@@ -5260,7 +5260,7 @@ function buildOutreachSection(job) {
 
   // Filter templates based on first stakeholder's connected status
   const firstKey = stakeholders[0] ? _contactKey(stakeholders[0]) : '';
-  const isConn = _connectedContacts.has(firstKey);
+  const isConn = _connectedContacts.has(firstKey) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(firstKey));
   const templateTabs = OUTREACH_TEMPLATES.map((t, i) => {
     const match = t.forConnected === undefined || t.forConnected === isConn || (!isConn && !t.forConnected);
     return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchTemplate(${i})" ${!match?'style="opacity:0.5"':''}>${t.emoji} ${t.name}</button>`;
