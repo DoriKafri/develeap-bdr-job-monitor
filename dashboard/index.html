@@ -33,33 +33,49 @@
 
   /* APP */
   #app { display:none; }
-  .top-nav { background:#05323C; color:white; padding:0 32px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(5,50,60,0.3); }
-  .top-nav .logo { display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px; }
-  .top-nav .logo svg { width:28px; height:28px; }
-  .nav-actions { display:flex; align-items:center; gap:16px; }
-  .nav-actions .last-update { font-size:13px; opacity:0.7; display:flex; flex-direction:column; align-items:flex-end; line-height:1.3; }
-  .last-update .freshness-relative { font-size:11px; opacity:0.7; }
+
+  /* ── SIDEBAR NAVIGATION ── */
+  .sidebar-nav { position:fixed; left:0; top:0; bottom:0; width:240px; background:#05323C; color:white; z-index:200; display:flex; flex-direction:column; transition:transform 0.3s ease; overflow-y:auto; box-shadow:2px 0 8px rgba(0,0,0,0.15); }
+  .sidebar-nav .nav-logo { padding:20px 24px; display:flex; align-items:center; gap:12px; font-weight:700; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.1); }
+  .sidebar-nav .nav-logo svg { width:24px; height:24px; flex-shrink:0; }
+  .sidebar-nav .nav-section { padding:16px 0 8px 24px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; }
+  .sidebar-nav .nav-item { display:flex; align-items:center; gap:12px; padding:10px 24px; font-size:14px; color:rgba(255,255,255,0.7); cursor:pointer; transition:all 0.15s; border-left:3px solid transparent; }
+  .sidebar-nav .nav-item:hover { background:rgba(255,255,255,0.08); color:white; }
+  .sidebar-nav .nav-item.active { background:rgba(255,255,255,0.12); color:white; border-left-color:var(--accent); font-weight:600; }
+  .sidebar-nav .nav-item-badge { margin-left:auto; background:var(--accent); color:var(--primary); font-size:10px; padding:2px 6px; border-radius:8px; font-weight:700; }
+  .sidebar-nav .nav-bottom { margin-top:auto; padding:16px 24px; border-top:1px solid rgba(255,255,255,0.1); }
+  .sidebar-nav .nav-bottom-item { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
+  .sidebar-nav .nav-bottom-item:last-child { margin-bottom:0; }
+  .sidebar-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:199; }
+  .sidebar-backdrop.open { display:block; }
+  .sidebar-nav.open { transform:translateX(0); }
+
+  /* ── TOP BAR ── */
+  .top-bar { position:fixed; top:0; left:240px; right:0; height:48px; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 24px; z-index:100; gap:16px; }
+  .top-bar .hamburger { display:none; background:none; border:none; font-size:20px; cursor:pointer; color:var(--text); padding:8px; margin-right:8px; }
+  .nav-actions { display:flex; align-items:center; gap:16px; margin-left:auto; }
+  .nav-actions .last-update { font-size:13px; color:var(--text-light); display:flex; flex-direction:column; align-items:flex-end; line-height:1.3; }
+  .last-update .freshness-relative { font-size:11px; color:var(--text-lighter); }
   .new-listings-banner { display:none; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:var(--primary); padding:10px 32px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s; animation:slideDown 0.4s ease; }
   .new-listings-banner:hover { background:linear-gradient(135deg,var(--accent-dark),#C68A00); }
   .new-listings-banner.show { display:block; }
   @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
-  .user-info { display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.8; }
-  .user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); }
-  .btn { padding:8px 20px; border-radius:8px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
+  .user-info { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); }
+  .user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); }
+  .btn { padding:8px 16px; border-radius:8px; border:none; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
   .btn-primary { background:var(--primary); color:white; }
   .btn-primary:hover { background:var(--primary-dark); }
-  .btn-outline { background:transparent; color:white; border:1px solid rgba(255,255,255,0.3); }
-  .btn-outline:hover { background:rgba(255,255,255,0.1); }
+  .btn-outline { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+  .btn-outline:hover { background:#F0F1F3; }
   .btn-run { background:var(--accent); color:var(--primary); border:none; position:relative; font-weight:700; }
   .btn-run:hover:not(:disabled) { background:var(--accent-dark); }
   .btn-run:disabled { opacity:0.5; cursor:not-allowed; }
   .btn-run .countdown { font-weight:400; font-size:11px; opacity:0.85; margin-left:2px; }
-  .view-tabs { display:flex; gap:0; margin-left:24px; }
-  .view-tab { padding:8px 20px; font-size:13px; font-weight:600; border:none; background:transparent; color:rgba(255,255,255,0.6); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
-  .view-tab:hover { color:white; }
-  .view-tab.active { color:white; border-bottom-color:var(--accent); }
 
-  .stats-bar { display:flex; gap:16px; padding:20px 32px; background:white; border-bottom:1px solid var(--border); }
+  /* ── MAIN CONTENT ── */
+  .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
+
+  .stats-bar { display:flex; gap:16px; padding:20px 0; background:transparent; border-bottom:none; }
   .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
   .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
   .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
@@ -71,7 +87,7 @@
   .stat-number { font-size:28px; font-weight:800; line-height:1; }
   .stat-label { font-size:13px; color:var(--text-light); margin-top:4px; }
 
-  .filters-bar { display:flex; align-items:center; gap:12px; padding:16px 32px; background:white; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .filters-bar { display:flex; align-items:center; gap:12px; padding:16px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
   .search-box { flex:1; min-width:250px; position:relative; }
   .search-box input { width:100%; padding:10px 16px 10px 40px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; }
   .search-box input:focus { border-color:var(--primary); }
@@ -98,7 +114,7 @@
   .source-dropdown-footer button { background:none; border:none; color:var(--primary); font-size:12px; cursor:pointer; padding:4px 0; }
   .source-dropdown-footer button:hover { text-decoration:underline; }
 
-  .table-container { margin:20px 32px 32px; background:white; border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
+  .table-container { margin:0; background:white; border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
   .table-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
   .table-header h2 { font-size:16px; font-weight:700; }
 
@@ -270,44 +286,33 @@
   .no-stakeholders p { font-size:13px; color:#F57F17; margin:0 0 8px; }
   .no-stakeholders small { font-size:11px; color:var(--text-light); }
 
-  /* Tablet */
+  /* Tablet (768px-1024px) */
   @media (max-width:1024px) {
-    .stats-bar { flex-wrap:wrap; padding:16px; gap:12px; }
+    .stats-bar { flex-wrap:wrap; gap:12px; }
     .stat-card { min-width:calc(50% - 6px); padding:12px 16px; }
-    .table-container { margin:12px; }
-    .filters-bar { padding:12px; }
-    .top-nav { padding:0 16px; }
-    .view-tabs { margin-left:12px; }
+    .filters-bar { gap:8px; }
   }
 
-  /* Mobile */
-  @media (max-width:640px) {
-    .top-nav { height:auto; padding:10px 16px; flex-wrap:wrap; gap:8px; }
-    .top-nav .logo { font-size:15px; gap:8px; }
-    .top-nav .logo svg { width:22px; height:22px; }
-    .view-tabs { margin-left:0; order:3; width:100%; }
-    .view-tab { padding:6px 12px; font-size:12px; }
-    .nav-actions { gap:8px; }
-    .nav-actions .last-update { font-size:11px; }
-    .nav-actions .btn-outline { padding:6px 12px; font-size:12px; }
-    .nav-actions .btn-outline svg { display:none; }
-    .user-info { display:none; }
-    .new-listings-banner { padding:8px 16px; font-size:13px; }
-
-    .stats-bar { padding:12px; gap:8px; flex-wrap:wrap; }
+  /* Mobile (<768px) */
+  @media (max-width:768px) {
+    .sidebar-nav { transform:translateX(-100%); width:240px; }
+    .sidebar-nav.open { transform:translateX(0); }
+    .sidebar-backdrop { display:none; }
+    .sidebar-backdrop.open { display:block; }
+    .top-bar { left:0; }
+    .top-bar .hamburger { display:flex; }
+    .main-content { margin-left:0; margin-top:48px; padding:16px; }
+    .stats-bar { padding:16px 0; gap:8px; flex-wrap:wrap; }
     .stat-card { min-width:calc(50% - 4px); padding:10px 12px; }
     .stat-number { font-size:22px; }
     .stat-label { font-size:11px; }
-
-    .filters-bar { padding:10px 12px; gap:8px; }
+    .filters-bar { padding:12px 0; gap:6px; }
     .search-box { min-width:100%; }
     .search-box input { padding:8px 12px 8px 36px; font-size:13px; }
     .filter-chip { padding:6px 12px; font-size:12px; }
-
-    .table-container { margin:8px; border-radius:10px; }
+    .table-container { border-radius:10px; }
     .table-header { padding:12px 14px; }
     .table-header h2 { font-size:14px; }
-
     /* Card layout for mobile */
     table, thead, tbody, th, tr, td { display:block; }
     thead { display:none; }
@@ -331,16 +336,11 @@
     td:nth-child(7) { display:inline-block; margin-left:8px; }
     td:nth-child(7) .date-cell { font-size:12px; }
     td:nth-child(8) { display:none; }
-
-    .sidebar { width:100%; }
-    .sidebar-body { padding:16px; }
-    .sidebar-header { padding:16px; }
-
     .col-filter-dropdown { left:auto; right:0; }
   }
 
   /* ── Queue View ── */
-  #queueView { display:none; margin:20px 32px 32px; }
+  #queueView { display:none; margin:0; }
   #queueView.active { display:block; }
   .queue-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
   .queue-header h2 { font-size:20px; font-weight:700; display:flex; align-items:center; gap:10px; }
@@ -416,7 +416,7 @@
   .queue-type-badge.connect { background:#F3E5F5; color:#7B1FA2; }
 
   /* ── Settings View ── */
-  #settingsView { display:none; margin:20px 32px 32px; }
+  #settingsView { display:none; margin:0; }
   #settingsView.active { display:block; }
   .settings-header { margin-bottom:24px; }
   .settings-header h2 { font-size:20px; font-weight:700; display:flex; align-items:center; gap:10px; margin-bottom:8px; }
@@ -533,30 +533,70 @@
 
 <!-- APP -->
 <div id="app">
-  <div class="top-nav">
-    <div style="display:flex;align-items:center">
-      <div class="logo"><img src="https://www.develeap.com/wp-content/uploads/2025/12/develeap-logo.svg" alt="Develeap" style="height:24px;width:auto;filter:brightness(0) invert(1)"> Job Monitor</div>
-      <div class="view-tabs">
-        <button class="view-tab active" onclick="setView('all')">All Listings</button>
-        <button class="view-tab" onclick="setView('develeap')">Develeap Customers</button>
-        <button class="view-tab" onclick="setView('new')">New Today</button>
-        <button class="view-tab" onclick="setView('queue')" id="queueTab">📋 Queue <span id="queueBadge" style="background:var(--accent);color:var(--primary);font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:700;display:none">0</span></button>
-        <button class="view-tab" onclick="setView('settings')" id="settingsTab">⚙️ Settings</button>
+  <!-- SIDEBAR NAVIGATION -->
+  <nav class="sidebar-nav">
+    <div class="nav-logo">
+      <img src="https://www.develeap.com/wp-content/uploads/2025/12/develeap-logo.svg" alt="Develeap" style="height:20px;width:auto;filter:brightness(0) invert(1)">
+      <span>Job Monitor</span>
+    </div>
+
+    <div style="flex:1;overflow-y:auto">
+      <div class="nav-section">Listings</div>
+      <div class="nav-item active" data-view="all" onclick="setView('all')">
+        <span>📋</span>
+        <span>All Listings</span>
+      </div>
+      <div class="nav-item" data-view="develeap" onclick="setView('develeap')">
+        <span>⭐</span>
+        <span>Develeap Customers</span>
+      </div>
+      <div class="nav-item" data-view="new" onclick="setView('new')">
+        <span>🆕</span>
+        <span>New Today</span>
+      </div>
+
+      <div class="nav-section">Outreach</div>
+      <div class="nav-item" data-view="queue" onclick="setView('queue')">
+        <span>📬</span>
+        <span>Queue</span>
+        <span class="nav-item-badge" id="sidebarQueueBadge" style="display:none">0</span>
+      </div>
+
+      <div class="nav-section">Settings</div>
+      <div class="nav-item" data-view="settings" onclick="setView('settings')">
+        <span>⚙️</span>
+        <span>Settings</span>
       </div>
     </div>
+
+    <div class="nav-bottom">
+      <div class="nav-bottom-item" id="sidebarLastUpdate"></div>
+      <div class="nav-bottom-item">
+        <span id="sync-indicator-sidebar" style="font-size:10px">○ Local only</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR BACKDROP (mobile) -->
+  <div class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
     <div class="nav-actions">
       <div class="user-info" id="userInfo"></div>
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
       <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
       <button class="btn btn-outline" onclick="signOut()" style="font-size:12px">Sign Out</button>
-      <span id="sync-indicator" style="font-size:10px;padding:2px 8px;border-radius:4px;background:#F5F5F5;color:#757575;font-weight:600;margin-left:4px">○ Local only</span>
     </div>
   </div>
 
-  <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
-  <div class="stats-bar">
+    <div class="stats-bar">
     <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
     <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
     <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
@@ -674,7 +714,10 @@
     <h3 style="font-size:18px;font-weight:700;margin-bottom:16px">🎬 Queue Soap Opera Sequence</h3>
     <div id="sosQueueBody"></div>
   </div>
+  </div>
+  <!-- End main-content -->
 </div>
+<!-- End app -->
 
 <!-- Sidebar -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar(event)">
@@ -6124,6 +6167,20 @@ function _companyMatches(company, list) {
     return re.test(cl);
   });
 }
+// Sidebar navigation for mobile
+function toggleSidebar(show) {
+  const sidebar = document.querySelector('.sidebar-nav');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  if (show === undefined) show = !sidebar.classList.contains('open');
+  if (show) {
+    sidebar.classList.add('open');
+    backdrop.classList.add('open');
+  } else {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+}
+
 function initApp() {
   ALL_JOBS.forEach(j => {
     j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
@@ -6147,6 +6204,9 @@ function updateFreshnessDisplay() {
   const abs = d.toLocaleDateString('en-IL',{month:'short',day:'numeric',year:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL',{hour:'2-digit',minute:'2-digit'});
   const rel = timeAgo(d);
   el.innerHTML = '<span>' + abs + '</span><span class="freshness-relative">' + rel + '</span>';
+  // Also update sidebar
+  const sidebarEl = document.getElementById('sidebarLastUpdate');
+  if (sidebarEl) sidebarEl.innerHTML = rel;
 }
 
 function timeAgo(date) {
@@ -7284,18 +7344,21 @@ var _queueData = { queue: [], lastProcessed: '' };
 var _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
 var _queueFilter = null; // null = show all, or 'pending','paused','conn_pending','completed','failed'
 
-// Update setView to handle queue and settings tabs
+// Update setView to handle sidebar nav items
 var setView = function(v) {
   currentView = v;
-  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.view-tab').forEach(t => {
-    if ((v==='all' && t.textContent.includes('All Listings')) ||
-        (v==='develeap' && t.textContent.includes('Develeap')) ||
-        (v==='new' && t.textContent.includes('New Today')) ||
-        (v==='queue' && t.id === 'queueTab') ||
-        (v==='settings' && t.id === 'settingsTab'))
-      t.classList.add('active');
+
+  // Update sidebar nav items
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+    const view = item.getAttribute('data-view');
+    if (view === v) item.classList.add('active');
   });
+
+  // Close mobile sidebar after selection
+  if (window.innerWidth <= 768) {
+    toggleSidebar(false);
+  }
 
   const tableContainer = document.querySelector('.table-container');
   const queueView = document.getElementById('queueView');
@@ -7377,13 +7440,9 @@ var renderQueueView = function() {
 
   const q = _queueData.queue || [];
 
-  // Update queue badge in tab
-  const badge = document.getElementById('queueBadge');
+  // Update queue badge in tab and sidebar
   const pendingCount = q.filter(e => e.status === 'pending' || e.status === 'processing').length;
-  if (badge) {
-    badge.textContent = pendingCount;
-    badge.style.display = pendingCount > 0 ? 'inline' : 'none';
-  }
+  _updateQueueBadges(pendingCount);
 
   // Stats
   const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0, sos_waiting: 0 };
@@ -7850,11 +7909,13 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
     }
     _showToast(`✅ ${s.name} added to queue`);
     // Update badge
-    const badge = document.getElementById('queueBadge');
-    if (badge) {
-      const cur = parseInt(badge.textContent) || 0;
-      badge.textContent = cur + 1;
-      badge.style.display = 'inline';
+    const oldBadge = document.getElementById('queueBadge');
+    const newBadge = document.getElementById('sidebarQueueBadge');
+    if (oldBadge || newBadge) {
+      const cur = parseInt((oldBadge?.textContent || newBadge?.textContent) || '0') || 0;
+      const newCount = cur + 1;
+      if (oldBadge) { oldBadge.textContent = newCount; oldBadge.style.display = 'inline'; }
+      if (newBadge) { newBadge.textContent = newCount; newBadge.style.display = 'inline'; }
     }
   }).catch(err => {
     console.error('Queue push failed:', err);
@@ -8024,11 +8085,13 @@ var autoQueueNonConnected = async function(job) {
       // Update outreach statuses
       newEntries.forEach(e => _setOutreachStatus(e.contactKey, 'invited'));
       // Update badge
-      const badge = document.getElementById('queueBadge');
-      if (badge) {
-        const cur = parseInt(badge.textContent) || 0;
-        badge.textContent = cur + newEntries.length;
-        badge.style.display = 'inline';
+      const oldBadge = document.getElementById('queueBadge');
+      const newBadge = document.getElementById('sidebarQueueBadge');
+      if (oldBadge || newBadge) {
+        const cur = parseInt((oldBadge?.textContent || newBadge?.textContent) || '0') || 0;
+        const newCount = cur + newEntries.length;
+        if (oldBadge) { oldBadge.textContent = newCount; oldBadge.style.display = 'inline'; }
+        if (newBadge) { newBadge.textContent = newCount; newBadge.style.display = 'inline'; }
       }
       _showToast(`📋 Auto-queued ${newEntries.length} contact${newEntries.length>1?'s':''} for ${job.company} (paused — review in Queue)`);
       // Update the outreach section buttons to show "Queued"
@@ -8053,6 +8116,18 @@ var autoQueueNonConnected = async function(job) {
 }
 
 // Load queue badge count on page load
+function _updateQueueBadges(count) {
+  const oldBadge = document.getElementById('queueBadge');
+  const newBadge = document.getElementById('sidebarQueueBadge');
+  if (count > 0) {
+    if (oldBadge) { oldBadge.textContent = count; oldBadge.style.display = 'inline'; }
+    if (newBadge) { newBadge.textContent = count; newBadge.style.display = 'inline'; }
+  } else {
+    if (oldBadge) oldBadge.style.display = 'none';
+    if (newBadge) newBadge.style.display = 'none';
+  }
+}
+
 var _initQueueBadge = async function() {
   try {
     const resp = await fetch(_LI_QUEUE_API, {
@@ -8064,11 +8139,7 @@ var _initQueueBadge = async function() {
       _liQueueSha = data.sha;
       const q = JSON.parse(atob(data.content));
       const pending = (q.queue || []).filter(e => e.status === 'pending' || e.status === 'processing').length;
-      const badge = document.getElementById('queueBadge');
-      if (badge && pending > 0) {
-        badge.textContent = pending;
-        badge.style.display = 'inline';
-      }
+      _updateQueueBadges(pending);
     }
   } catch (e) { /* silent */ }
 }
