@@ -75,8 +75,9 @@
   /* ── MAIN CONTENT ── */
   .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
 
-  .stats-bar { display:flex; gap:16px; padding:20px 0; background:transparent; border-bottom:none; }
-  .stat-card { flex:1; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+  .stats-bar { display:flex; gap:16px; padding:20px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
+  #categoryStatsContainer { display:contents; }
+  .stat-card { flex:1; min-width:120px; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
   .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
   .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
   .stat-card.develeap { border-left-color:var(--accent); }
