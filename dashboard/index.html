@@ -5285,19 +5285,25 @@ function messageOnLinkedIn(stakeholderIdx) {
     _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
   }
 
-  // Mark button as ready (Claude will handle LinkedIn automation)
+  // Copy message to clipboard
+  try { navigator.clipboard.writeText(msg); } catch(e) {}
+
+  // Mark button as ready
   const cards = document.querySelectorAll('.stakeholder-card');
   if (cards[stakeholderIdx]) {
     const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
     if (btn) {
-      btn.innerHTML = '✅ Ready';
+      btn.innerHTML = '✅ Copied';
       btn.style.background = '#2E7D32';
       btn.style.color = 'white';
     }
   }
 
+  // Open LinkedIn profile
+  window.open(liUrl, '_blank');
+
   // Show toast
-  _showToast(`✅ Message queued for ${s.name}`);
+  _showToast(`Message copied! Click the message box on LinkedIn and press Ctrl+V to paste.`);
 }
 
 // Legacy function kept for template picker button
