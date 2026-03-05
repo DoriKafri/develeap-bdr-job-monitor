@@ -2204,13 +2204,17 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # Remove aggregator/index pages from existing jobs
     def _is_aggregator(j):
         t = j.get("title", "").lower()
+        sub = j.get("subtitle", "").lower()
         u = j.get("sourceUrl", "").lower()
-        # Title patterns: "X jobs in Israel", "jobs (N)", "Archives", "jobs wanted"
+        combined = t + " " + sub
+        # Title/subtitle patterns: "X jobs in Israel", "jobs (N)", "Archives", "jobs wanted"
         if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', t):
             return True
-        if any(kw in t for kw in ["jobs in israel", "apply now", "remote jobs in",
+        if any(kw in combined for kw in ["jobs in israel", "apply now", "remote jobs in",
                                    "archives", "משרות דרושים", "jobs wanted",
-                                   "as a service for startups"]):
+                                   "as a service for startups", "open positions",
+                                   "see our list", "career opportunities",
+                                   "we're hiring", "join our team"]):
             return True
         # URL patterns for known aggregators
         agg_domains = ["remoterocketship.com", "devjobs.co.il", "simplyhired.com",
