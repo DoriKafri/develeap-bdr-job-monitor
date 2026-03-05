@@ -5238,7 +5238,7 @@ function toggleConnected(key, idx) {
 // Pending LinkedIn message queue (read by Claude automation)
 let _pendingLinkedInMsg = null;
 
-// One-click: select stakeholder, prepare message, store for Claude, open LinkedIn
+// One-click: select stakeholder, prepare message, push to GitHub queue
 function messageOnLinkedIn(stakeholderIdx) {
   const job = _activeJobForOutreach;
   if (!job) return;
@@ -5257,18 +5257,6 @@ function messageOnLinkedIn(stakeholderIdx) {
     ? s.linkedin
     : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
 
-  // Store pending message for Claude automation
-  _pendingLinkedInMsg = {
-    contactName: s.name,
-    contactTitle: s.title || '',
-    company: job.company,
-    linkedinUrl: liUrl,
-    message: msg,
-    isConnected: isConn,
-    timestamp: new Date().toISOString(),
-  };
-  localStorage.setItem('bdr_pending_linkedin', JSON.stringify(_pendingLinkedInMsg));
-
   // Update template preview
   const preview = document.getElementById('templatePreview');
   if (preview) preview.textContent = msg;
@@ -5279,31 +5267,93 @@ function messageOnLinkedIn(stakeholderIdx) {
     c.style.background = i===stakeholderIdx ? 'var(--primary-light)' : '';
   });
 
+  // Mark button as queued immediately
+  const cards = document.querySelectorAll('.stakeholder-card');
+  if (cards[stakeholderIdx]) {
+    const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+    if (btn) {
+      btn.innerHTML = '⏳ Queued';
+      btn.style.background = '#F57C00';
+      btn.style.color = 'white';
+    }
+  }
+
+  // Push to GitHub queue for scheduled Claude task
+  _pushToLinkedInQueue({
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2,4),
+    contactName: s.name,
+    contactTitle: s.title || '',
+    contactKey: key,
+    company: job.company,
+    linkedinUrl: liUrl,
+    message: msg,
+    isConnected: isConn,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    completedAt: null
+  }).then(() => {
+    // Update button to show queued
+    if (cards[stakeholderIdx]) {
+      const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+      if (btn) {
+        btn.innerHTML = '✅ Queued';
+        btn.style.background = '#2E7D32';
+      }
+    }
+    _showToast(`✅ ${s.name} added to LinkedIn queue — Claude will send automatically.`);
+  }).catch(err => {
+    console.error('Queue push failed:', err);
+    if (cards[stakeholderIdx]) {
+      const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+      if (btn) {
+        btn.innerHTML = '❌ Failed';
+        btn.style.background = '#C62828';
+      }
+    }
+    _showToast(`❌ Failed to queue message. Try again.`);
+  });
+
   // Track outreach status
   const status = _getOutreachStatus(key);
   if (!status || status === 'not_contacted') {
     _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
   }
+}
 
-  // Copy message to clipboard
-  try { navigator.clipboard.writeText(msg); } catch(e) {}
+// Push a message to the GitHub LinkedIn queue
+const _LI_QUEUE_PATH = 'docs/linkedin_queue.json';
+const _LI_QUEUE_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_LI_QUEUE_PATH}`;
+let _liQueueSha = null;
 
-  // Mark button as ready
-  const cards = document.querySelectorAll('.stakeholder-card');
-  if (cards[stakeholderIdx]) {
-    const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
-    if (btn) {
-      btn.innerHTML = '✅ Copied';
-      btn.style.background = '#2E7D32';
-      btn.style.color = 'white';
-    }
+async function _pushToLinkedInQueue(entry) {
+  // Fetch current queue
+  const resp = await fetch(_LI_QUEUE_API, {
+    headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+  });
+  let queue = { queue: [], lastProcessed: '' };
+  if (resp.ok) {
+    const data = await resp.json();
+    _liQueueSha = data.sha;
+    try { queue = JSON.parse(atob(data.content)); } catch(e) {}
   }
 
-  // Open LinkedIn profile
-  window.open(liUrl, '_blank');
+  // Add new entry
+  queue.queue.push(entry);
 
-  // Show toast
-  _showToast(`Message copied! Click the message box on LinkedIn and press Ctrl+V to paste.`);
+  // Push back to GitHub
+  const body = {
+    message: `Queue LinkedIn message for ${entry.contactName}`,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(queue, null, 2)))),
+    sha: _liQueueSha
+  };
+  const putResp = await fetch(_LI_QUEUE_API, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!putResp.ok) throw new Error('GitHub push failed: ' + putResp.status);
+  const putData = await putResp.json();
+  _liQueueSha = putData.content.sha;
 }
 
 // Legacy function kept for template picker button
