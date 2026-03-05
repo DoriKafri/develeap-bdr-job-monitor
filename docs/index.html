@@ -75,9 +75,9 @@
   /* ── MAIN CONTENT ── */
   .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
 
-  .stats-bar { display:flex; gap:16px; padding:20px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
+  .stats-bar { display:flex; gap:10px; padding:20px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
   #categoryStatsContainer { display:contents; }
-  .stat-card { flex:1; min-width:120px; padding:16px 20px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+  .stat-card { flex:1 1 0; min-width:100px; padding:12px 14px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
   .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
   .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
   .stat-card.develeap { border-left-color:var(--accent); }
@@ -85,8 +85,8 @@
   .stat-card.ai { border-left-color:var(--teal); }
   .stat-card.devops { border-left-color:var(--warning); }
   .stat-card.finops { border-left-color:#00897B; }
-  .stat-number { font-size:28px; font-weight:800; line-height:1; }
-  .stat-label { font-size:13px; color:var(--text-light); margin-top:4px; }
+  .stat-number { font-size:22px; font-weight:800; line-height:1; }
+  .stat-label { font-size:11px; color:var(--text-light); margin-top:4px; white-space:nowrap; }
 
   .filters-bar { display:flex; align-items:center; gap:12px; padding:16px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
   .search-box { flex:1; min-width:250px; position:relative; }
