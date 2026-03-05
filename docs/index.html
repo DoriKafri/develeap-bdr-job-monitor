@@ -5442,12 +5442,18 @@ function reloadNewListings() {
 }
 
 function updateStats() {
-  document.getElementById('statTotal').textContent = ALL_JOBS.length;
-  document.getElementById('statNew').textContent = ALL_JOBS.filter(j=>j.isNew).length;
-  document.getElementById('statDeveleap').textContent = ALL_JOBS.filter(j=>j.isDeveleapCustomer).length;
-  document.getElementById('statDevOps').textContent = ALL_JOBS.filter(j=>j.category==='devops').length;
-  document.getElementById('statAI').textContent = ALL_JOBS.filter(j=>j.category==='ai'||j.category==='agentic').length;
-  document.getElementById('statFinOps').textContent = ALL_JOBS.filter(j=>j.category==='finops').length;
+  // Base set: exclude hidden companies and jobs without valid URLs
+  const visible = ALL_JOBS.filter(j => {
+    if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
+    if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
+    return true;
+  });
+  document.getElementById('statTotal').textContent = visible.length;
+  document.getElementById('statNew').textContent = visible.filter(j=>j.isNew).length;
+  document.getElementById('statDeveleap').textContent = visible.filter(j=>j.isDeveleapCustomer).length;
+  document.getElementById('statDevOps').textContent = visible.filter(j=>j.category==='devops').length;
+  document.getElementById('statAI').textContent = visible.filter(j=>j.category==='ai'||j.category==='agentic').length;
+  document.getElementById('statFinOps').textContent = visible.filter(j=>j.category==='finops').length;
 }
 
 // ===== COLUMN FILTER LOGIC =====
@@ -5566,7 +5572,7 @@ function getFilteredJobs() {
   });
 }
 
-function applyAllFilters() { renderJobs(); }
+function applyAllFilters() { updateStats(); renderJobs(); }
 
 function renderJobs() {
   const jobs = getFilteredJobs();

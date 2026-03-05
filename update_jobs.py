@@ -2196,9 +2196,10 @@ def load_existing_jobs(html: str) -> list[dict]:
 
 def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """Merge new jobs with existing, return (merged, only_new)."""
-    # Filter out Develeap's own listings from existing jobs too
+    # Filter out Develeap's own listings and Unknown company jobs
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
     existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
+    existing = [j for j in existing if j.get("company", "").strip() not in ("Unknown", "")]
 
     # Remove aggregator/index pages from existing jobs
     def _is_aggregator(j):
