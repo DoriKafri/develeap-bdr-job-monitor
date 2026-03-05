@@ -5152,7 +5152,15 @@ function buildOutreachSection(job) {
 function fillTemplate(tpl, job, stakeholder) {
   const name = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
   const title = stakeholder ? stakeholder.title : 'leader';
-  const role = job.title.replace(/at\s+.*$/i, '').replace(/[-\u2013\u2014].*$/, '').replace(/\|.*$/, '').trim();
+  const role = job.title
+    .replace(/at\s+.*$/i, '')           // strip "at Company..."
+    .replace(/[-\u2013\u2014].*$/, '')   // strip "- ..." or "— ..."
+    .replace(/\|.*$/, '')                // strip "| ..."
+    .replace(/[\u0590-\u05FF]+/g, '')    // strip Hebrew characters
+    .replace(new RegExp(job.company.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), '') // strip company name
+    .replace(/\(\d+\)/, '')              // strip job ID like (25020)
+    .replace(/\s{2,}/g, ' ')            // collapse multiple spaces
+    .trim();
   const cat = job.category || 'devops';
   const vp = CAT_VALUE_PROPS[cat] || CAT_VALUE_PROPS.devops;
   const custs = _pickCustomers(job.company, 3).join(', ');
@@ -5267,18 +5275,22 @@ function sendOnLinkedIn() {
   // Also save to localStorage so Claude can read it
   localStorage.setItem('bdr_pending_linkedin', JSON.stringify(_pendingLinkedInMsg));
 
-  // Copy to clipboard
-  navigator.clipboard.writeText(msg).then(() => {
-    _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
-  }).catch(() => {
-    _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
-  });
-
-  // Update button to show "Ready" state
+  // Update button to show "Ready" state FIRST (before clipboard which may fail)
   const btn = document.getElementById('btnLinkedInAction');
   if (btn) {
     btn.innerHTML = '✅ Ready — Ask Claude to Send';
     btn.style.background = '#2E7D32';
+  }
+
+  // Copy to clipboard (may fail if page not focused)
+  try {
+    navigator.clipboard.writeText(msg).then(() => {
+      _showToast(`✅ Message ready for ${s ? s.name : 'contact'}! Ask Claude to send it on LinkedIn.`);
+    }).catch(() => {
+      _showToast(`✅ Message ready! Ask Claude to send on LinkedIn.`);
+    });
+  } catch(e) {
+    _showToast(`✅ Message ready! Ask Claude to send on LinkedIn.`);
   }
 
   // Track outreach status (don't rebuild section — it resets the Ready button)
