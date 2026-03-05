@@ -5859,6 +5859,22 @@ var refreshQueueView = async function() {
     _queueData = { queue: [], lastProcessed: '' };
   }
 
+  // Backfill contactPhoto and companyLogo from ALL_JOBS for entries missing them
+  if (typeof ALL_JOBS !== 'undefined' && ALL_JOBS.length > 0) {
+    (_queueData.queue || []).forEach(entry => {
+      if (entry.contactPhoto && entry.companyLogo) return; // already has both
+      for (const job of ALL_JOBS) {
+        if (job.company !== entry.company) continue;
+        if (!entry.companyLogo && job.logo) entry.companyLogo = job.logo;
+        if (!entry.contactPhoto && job.stakeholders) {
+          const match = job.stakeholders.find(s => _contactKey(s) === entry.contactKey);
+          if (match && match.photo) entry.contactPhoto = match.photo;
+        }
+        if (entry.contactPhoto && entry.companyLogo) break;
+      }
+    });
+  }
+
   renderQueueView();
 }
 
@@ -5969,15 +5985,24 @@ var renderQueueView = function() {
       actions = `<button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
     }
 
+    // Avatar: use photo if available, otherwise initials
+    const avatarContent = entry.contactPhoto
+      ? `<img src="${entry.contactPhoto}" alt="${initials}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`
+      : initials;
+    // Company logo: small inline logo next to company name
+    const compLogoHtml = entry.companyLogo
+      ? `<img src="${entry.companyLogo}" alt="" style="width:16px;height:16px;border-radius:3px;object-fit:contain;vertical-align:middle;margin-right:4px" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+      : '';
+
     return `
     <div class="queue-card status-${statusClass}">
-      <div class="queue-card-avatar">${initials}</div>
+      <div class="queue-card-avatar">${avatarContent}</div>
       <div class="queue-card-info">
         <div class="queue-card-name">
           ${entry.contactName} ${typeBadge} ${custLabel}
           ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
         </div>
-        <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${entry.company}</div>
+        <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${compLogoHtml}${entry.company}</div>
         <div id="qMsg_${origIdx}" class="queue-card-message" onclick="this.classList.toggle('expanded')" title="Click to expand/edit">${msgPreview}${editBtn}</div>
         <div class="queue-card-meta">
           <span>🕐 ${timeAgo}${completedInfo}</span>
@@ -6203,7 +6228,9 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
     contactName: s.name,
     contactTitle: s.title || '',
     contactKey: key,
+    contactPhoto: s.photo || '',
     company: job.company,
+    companyLogo: job.logo || '',
     linkedinUrl: liUrl,
     message: msg,
     isConnected: isConn,
@@ -6343,7 +6370,9 @@ var autoQueueNonConnected = async function(job) {
       contactName: s.name,
       contactTitle: s.title || '',
       contactKey: key,
+      contactPhoto: s.photo || '',
       company: job.company,
+      companyLogo: job.logo || '',
       linkedinUrl: liUrl,
       message: msg,
       isConnected: false,
