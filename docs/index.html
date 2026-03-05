@@ -365,7 +365,7 @@
   .queue-stat.paused { border-left-color:#9E9E9E; }
   .queue-stat.paused .queue-stat-number { color:#9E9E9E; }
   .queue-list { display:flex; flex-direction:column; gap:10px; }
-  .queue-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:16px 20px; display:flex; align-items:center; gap:16px; transition:all 0.15s; border-left:4px solid transparent; }
+  .queue-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:16px 20px; display:flex; align-items:flex-start; gap:16px; transition:all 0.15s; border-left:4px solid transparent; }
   .queue-card.status-pending { border-left-color:#F57C00; }
   .queue-card.status-processing { border-left-color:#1565C0; animation:pulse 1.5s infinite; }
   .queue-card.status-completed { border-left-color:#2E7D32; opacity:0.75; }
@@ -377,10 +377,13 @@
   .queue-card-info { flex:1; min-width:0; }
   .queue-card-name { font-weight:700; font-size:15px; display:flex; align-items:center; gap:8px; }
   .queue-card-company { font-size:13px; color:var(--text-light); margin-top:2px; }
-  .queue-card-message { font-size:12px; color:var(--text-lighter); margin-top:6px; max-height:40px; overflow:hidden; line-height:1.4; cursor:pointer; }
-  .queue-card-message.expanded { max-height:none; }
-  .queue-card-message-edit { width:100%; min-height:80px; max-height:200px; font-size:12px; font-family:inherit; border:1px solid var(--primary); border-radius:6px; padding:8px; margin-top:6px; line-height:1.4; resize:vertical; outline:none; }
+  .queue-card-message { font-size:13px; color:var(--text-light); margin-top:8px; line-height:1.55; white-space:pre-line; background:#f8f9fa; border-radius:8px; padding:10px 12px; border:1px solid #e9ecef; }
+  .queue-card-message-edit { width:100%; min-height:120px; max-height:300px; font-size:13px; font-family:inherit; border:1px solid var(--primary); border-radius:6px; padding:10px 12px; margin-top:6px; line-height:1.55; resize:vertical; outline:none; }
   .queue-card-message-edit:focus { box-shadow:0 0 0 2px rgba(44,62,80,0.15); }
+  .queue-template-tabs { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+  .queue-template-tab { font-size:11px; padding:3px 8px; border-radius:12px; border:1px solid var(--border); background:white; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+  .queue-template-tab:hover { background:#f0f0f0; }
+  .queue-template-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
   .queue-edit-actions { display:flex; gap:4px; margin-top:4px; }
   .queue-edit-actions button { font-size:11px; padding:3px 10px; border-radius:4px; cursor:pointer; border:1px solid var(--border); background:white; }
   .queue-edit-actions button.save { background:var(--primary); color:white; border-color:var(--primary); }
@@ -5948,9 +5951,8 @@ var renderQueueView = function() {
     const timeAgo = _timeAgo(entry.createdAt);
     const completedInfo = entry.completedAt ? ` · Done ${_timeAgo(entry.completedAt)}` : '';
 
-    // Truncated message preview
-    const msgPreview = (entry.message || '').replace(/\n/g, ' ').substring(0, 120) + ((entry.message || '').length > 120 ? '...' : '');
-    const msgFull = (entry.message || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Full message display (no truncation)
+    const msgDisplay = (entry.message || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
     // Customer type label
     let custLabel = '';
@@ -5960,7 +5962,20 @@ var renderQueueView = function() {
 
     // Can edit if not completed/processing
     const canEdit = entry.status !== 'completed' && entry.status !== 'processing';
-    const editBtn = canEdit ? `<button onclick="event.stopPropagation();editQueueMessage(${origIdx})" title="Edit message" style="font-size:10px;padding:1px 6px;background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;margin-left:6px">✏️ Edit</button>` : '';
+    const editBtn = canEdit ? `<button onclick="event.stopPropagation();editQueueMessage(${origIdx})" title="Edit message" style="font-size:10px;padding:3px 8px;background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;margin-left:auto">✏️ Edit</button>` : '';
+
+    // Template switcher tabs (only for connect entries that can be edited)
+    let templateTabs = '';
+    if (isConnect && canEdit) {
+      const custType = entry.customerType || 'prospect';
+      const templates = custType === 'customer' ? CONNECT_TEMPLATES_CUSTOMER
+                      : custType === 'past' ? CONNECT_TEMPLATES_PAST
+                      : CONNECT_TEMPLATES_PROSPECT;
+      const activeIdx = entry.templateIdx || 0;
+      templateTabs = '<div class="queue-template-tabs">' + templates.map((t, ti) =>
+        `<button class="queue-template-tab${ti === activeIdx ? ' active' : ''}" onclick="event.stopPropagation();switchQueueTemplate(${origIdx},${ti})" title="${t.style}">${t.emoji} ${t.name}</button>`
+      ).join('') + '</div>';
+    }
 
     // Action buttons based on status
     let actions = '';
@@ -6002,8 +6017,9 @@ var renderQueueView = function() {
           ${entry.contactName} ${typeBadge} ${custLabel}
           ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
         </div>
-        <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${compLogoHtml}${entry.company}</div>
-        <div id="qMsg_${origIdx}" class="queue-card-message" onclick="this.classList.toggle('expanded')" title="Click to expand/edit">${msgPreview}${editBtn}</div>
+        <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${compLogoHtml}${entry.company}</div>${templateTabs}
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px">${editBtn}</div>
+        <div id="qMsg_${origIdx}" class="queue-card-message">${msgDisplay}</div>
         <div class="queue-card-meta">
           <span>🕐 ${timeAgo}${completedInfo}</span>
           ${entry.linkedinUrl ? '<a href="'+entry.linkedinUrl+'" target="_blank" style="font-size:11px;color:#0A66C2;text-decoration:none">🔗 LinkedIn</a>' : ''}
@@ -6109,23 +6125,24 @@ var editQueueMessage = function(idx) {
   const container = document.getElementById('qMsg_' + idx);
   if (!container) return;
   const escaped = (entry.message || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  container.onclick = null;
-  container.classList.remove('queue-card-message');
-  container.style.maxHeight = 'none';
-  container.style.overflow = 'visible';
+  container.className = '';
   container.innerHTML = `
     <textarea class="queue-card-message-edit" id="qEdit_${idx}">${escaped}</textarea>
     <div class="queue-edit-actions">
       <button class="save" onclick="event.stopPropagation();saveQueueMessage(${idx})">💾 Save</button>
       <button class="cancel" onclick="event.stopPropagation();renderQueueView()">Cancel</button>
-      <span style="font-size:10px;color:var(--text-lighter);margin-left:auto" id="qEditCount_${idx}">${(entry.message||'').length} chars</span>
+      <span style="font-size:11px;color:var(--text-lighter);margin-left:auto" id="qEditCount_${idx}">${(entry.message||'').length} / 300 chars</span>
     </div>`;
   const ta = document.getElementById('qEdit_' + idx);
   ta.focus();
   ta.setSelectionRange(ta.value.length, ta.value.length);
   ta.addEventListener('input', function() {
     const countEl = document.getElementById('qEditCount_' + idx);
-    if (countEl) countEl.textContent = this.value.length + ' chars';
+    if (countEl) {
+      const len = this.value.length;
+      countEl.textContent = len + ' / 300 chars';
+      countEl.style.color = len > 300 ? 'var(--danger)' : 'var(--text-lighter)';
+    }
   });
 }
 
@@ -6138,6 +6155,51 @@ var saveQueueMessage = async function(idx) {
   await _saveQueueToGitHub();
   renderQueueView();
   _showToast('✅ Message updated');
+}
+
+var switchQueueTemplate = async function(idx, templateIdx) {
+  const entry = _queueData.queue[idx];
+  if (!entry) return;
+
+  // Determine which template set to use based on customerType
+  const custType = entry.customerType || 'prospect';
+  const templates = custType === 'customer' ? CONNECT_TEMPLATES_CUSTOMER
+                  : custType === 'past' ? CONNECT_TEMPLATES_PAST
+                  : CONNECT_TEMPLATES_PROSPECT;
+  if (templateIdx < 0 || templateIdx >= templates.length) return;
+
+  // Find matching job and stakeholder to fill template
+  const job = ALL_JOBS.find(j => j.company === entry.company);
+  let stakeholder = null;
+  if (job && job.stakeholders) {
+    stakeholder = job.stakeholders.find(s => _contactKey(s) === entry.contactKey);
+  }
+  // Fallback stakeholder object if not found in current jobs
+  if (!stakeholder) {
+    stakeholder = { name: entry.contactName, title: entry.contactTitle || '' };
+  }
+  // Fallback job object
+  const fillJob = job || { company: entry.company, title: '', category: 'devops', isDeveleapCustomer: custType === 'customer', isPastCustomer: custType === 'past' };
+
+  const newMsg = fillTemplate(templates[templateIdx].body, fillJob, stakeholder);
+  entry.message = newMsg;
+  entry.templateIdx = templateIdx;
+
+  // Update UI immediately
+  const msgEl = document.getElementById('qMsg_' + idx);
+  if (msgEl) msgEl.innerHTML = newMsg.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  // Update active tab styling
+  const card = msgEl ? msgEl.closest('.queue-card') : null;
+  if (card) {
+    card.querySelectorAll('.queue-template-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === templateIdx);
+    });
+  }
+
+  // Save to GitHub
+  await _saveQueueToGitHub();
+  _showToast(`✅ Switched to "${templates[templateIdx].name}" template`);
 }
 
 var _saveQueueToGitHub = async function() {
