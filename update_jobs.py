@@ -600,6 +600,14 @@ COMPANY_STAKEHOLDERS = {
     "xsolla": [
         {"name": "Chris Hewish", "title": "CEO", "linkedin": "https://www.linkedin.com/in/chrishewish/", "source": "LinkedIn", "email": ""},
     ],
+    "cast ai": [
+        {"name": "Laurent Gil", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/laurentgil/", "source": "LinkedIn", "email": ""},
+        {"name": "Yuri Frayman", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yurifrayman/", "source": "LinkedIn", "email": ""},
+    ],
+    "cast.ai": [
+        {"name": "Laurent Gil", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/laurentgil/", "source": "LinkedIn", "email": ""},
+        {"name": "Yuri Frayman", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yurifrayman/", "source": "LinkedIn", "email": ""},
+    ],
 }
 
 SEARCH_QUERIES = [
@@ -650,6 +658,9 @@ SEARCH_QUERIES = [
     "FinOps Engineer Israel hiring 2026",
     "Cloud Cost Optimization Engineer Israel job",
     "Cloud Financial Management Israel job",
+    # Solutions Architect / Sales Engineer roles (companies hiring these likely need DevOps help)
+    "site:linkedin.com/jobs/view Solutions Architect Israel cloud OR kubernetes OR DevOps",
+    "site:linkedin.com/jobs/view Sales Engineer Israel cloud OR DevOps OR infrastructure",
 ]
 
 CATEGORY_KEYWORDS = {
