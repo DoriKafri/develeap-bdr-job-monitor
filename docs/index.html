@@ -353,7 +353,9 @@
   .queue-btn-clear { background:var(--bg); color:var(--danger); border:1px solid var(--danger) !important; }
   .queue-btn-clear:hover { background:#FFEBEE; }
   .queue-stats { display:flex; gap:16px; margin-bottom:20px; }
-  .queue-stat { flex:1; padding:16px 20px; border-radius:12px; background:white; box-shadow:var(--shadow); border-left:4px solid var(--primary); }
+  .queue-stat { flex:1; padding:16px 20px; border-radius:12px; background:white; box-shadow:var(--shadow); border-left:4px solid var(--primary); cursor:pointer; transition:all 0.15s; user-select:none; }
+  .queue-stat:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
+  .queue-stat.filter-active { background:#f0f4f8; box-shadow:0 2px 8px rgba(0,0,0,0.15); transform:translateY(-1px); }
   .queue-stat-number { font-size:24px; font-weight:800; }
   .queue-stat-label { font-size:12px; color:var(--text-light); margin-top:2px; }
   .queue-stat.pending { border-left-color:#F57C00; }
@@ -5805,6 +5807,7 @@ const CONNECT_TEMPLATES = CONNECT_TEMPLATES_PROSPECT;
 // ===== QUEUE VIEW MANAGEMENT =====
 var _queueData = { queue: [], lastProcessed: '' };
 var _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
+var _queueFilter = null; // null = show all, or 'pending','paused','conn_pending','completed','failed'
 
 // Update setView to handle queue tab
 var setView = function(v) {
@@ -5900,12 +5903,14 @@ var renderQueueView = function() {
   const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0 };
   q.forEach(e => { counts[e.status] = (counts[e.status] || 0) + 1; });
 
+  const totalCount = q.length;
   statsEl.innerHTML = `
-    <div class="queue-stat pending"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
-    <div class="queue-stat paused"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
-    <div class="queue-stat" style="border-left-color:#7B1FA2"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Connection Pending</div></div>
-    <div class="queue-stat completed"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
-    <div class="queue-stat failed"><div class="queue-stat-number">${counts.failed}</div><div class="queue-stat-label">Failed</div></div>
+    <div class="queue-stat${_queueFilter === null ? ' filter-active' : ''}" onclick="filterQueue(null)" style="border-left-color:var(--primary)"><div class="queue-stat-number" style="color:var(--primary)">${totalCount}</div><div class="queue-stat-label">All</div></div>
+    <div class="queue-stat pending${_queueFilter === 'pending' ? ' filter-active' : ''}" onclick="filterQueue('pending')"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
+    <div class="queue-stat paused${_queueFilter === 'paused' ? ' filter-active' : ''}" onclick="filterQueue('paused')"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
+    <div class="queue-stat${_queueFilter === 'conn_pending' ? ' filter-active' : ''}" style="border-left-color:#7B1FA2" onclick="filterQueue('conn_pending')"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Conn. Pending</div></div>
+    <div class="queue-stat completed${_queueFilter === 'completed' ? ' filter-active' : ''}" onclick="filterQueue('completed')"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
+    <div class="queue-stat failed${_queueFilter === 'failed' ? ' filter-active' : ''}" onclick="filterQueue('failed')"><div class="queue-stat-number">${counts.failed}</div><div class="queue-stat-label">Failed</div></div>
   `;
 
   // Update global toggle button
@@ -5934,7 +5939,24 @@ var renderQueueView = function() {
 
   // Sort: pending/processing first, then paused, conn_pending, then completed/failed
   const statusOrder = { processing: 0, pending: 1, paused: 2, conn_pending: 3, failed: 4, completed: 5 };
-  const sorted = [...q].sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
+  let sorted = [...q].sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
+
+  // Apply filter if active
+  if (_queueFilter) {
+    if (_queueFilter === 'pending') {
+      sorted = sorted.filter(e => e.status === 'pending' || e.status === 'processing');
+    } else {
+      sorted = sorted.filter(e => e.status === _queueFilter);
+    }
+  }
+
+  if (sorted.length === 0 && _queueFilter) {
+    listEl.innerHTML = `<div class="queue-empty">
+      <h3>No ${_queueFilter.replace('_',' ')} entries</h3>
+      <p>Click "All" to see all queue items.</p>
+    </div>`;
+    return;
+  }
 
   listEl.innerHTML = sorted.map((entry, idx) => {
     const origIdx = q.indexOf(entry);
@@ -6044,6 +6066,12 @@ var _timeAgo = function(isoStr) {
   const days = Math.floor(hrs / 24);
   return days + 'd ago';
 }
+
+// Queue filter
+var filterQueue = function(status) {
+  _queueFilter = status;
+  renderQueueView();
+};
 
 // Queue entry actions
 var pauseQueueEntry = async function(idx) {
