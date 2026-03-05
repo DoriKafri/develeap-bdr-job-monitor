@@ -2217,14 +2217,15 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                                    "archives", "משרות דרושים", "jobs wanted",
                                    "as a service for startups", "open positions",
                                    "see our list", "career opportunities",
-                                   "we're hiring", "join our team", "jobs at "]):
+                                   "we're hiring", "join our team", "jobs at ",
+                                   "- comeet", "- careers - comeet"]):
             return True
         # URL patterns for known aggregators
         agg_domains = ["remoterocketship.com", "devjobs.co.il", "simplyhired.com",
                        "jooble.", "talent.com", "jobrapido.", "careerjet.",
                        "secrettelaviv.com", "efinancialcareers.com",
                        "aidevtlv.com", "machinelearning.co.il", "gotfriends.co.il",
-                       "whist.ai", "startup.jobs"]
+                       "whist.ai", "startup.jobs", "comeet.com"]
         if any(d in u for d in agg_domains):
             return True
         return False
