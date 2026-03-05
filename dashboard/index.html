@@ -515,6 +515,43 @@
   .sos-queue-modal-actions .btn-confirm:hover { background:var(--primary-dark); }
   .sos-queue-modal-actions .btn-cancel { background:var(--bg); color:var(--text); border:1px solid var(--border); }
   .sos-queue-modal-actions .btn-cancel:hover { background:#F0F1F3; }
+  /* Settings Sidebar Layout */
+  .settings-container { display:flex; height:100%; gap:0; }
+  .settings-sidebar { width:200px; background:#05323C; color:white; padding:20px 0; overflow-y:auto; border-right:1px solid rgba(255,255,255,0.1); }
+  .settings-sidebar-item { padding:12px 20px; cursor:pointer; transition:all 0.2s; border-left:3px solid transparent; font-size:14px; display:flex; align-items:center; gap:10px; }
+  .settings-sidebar-item:hover { background:rgba(255,255,255,0.08); }
+  .settings-sidebar-item.active { background:rgba(255,255,255,0.12); border-left-color:var(--accent); font-weight:600; }
+  .settings-content-area { flex:1; padding:24px 32px; overflow-y:auto; }
+  .settings-section-title { font-size:18px; font-weight:700; margin-bottom:20px; }
+  .category-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; margin-bottom:24px; }
+  .category-card { background:white; border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .category-card-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .category-color-picker { width:32px; height:32px; border-radius:6px; border:1px solid var(--border); cursor:pointer; }
+  .category-card-field { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+  .category-card-field label { font-size:11px; font-weight:600; color:var(--text-light); text-transform:uppercase; }
+  .category-card-field input { padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; outline:none; }
+  .category-card-field input:focus { border-color:var(--primary); }
+  .category-card-actions { display:flex; gap:8px; margin-top:12px; }
+  .category-card-actions button { flex:1; padding:6px 10px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:white; cursor:pointer; transition:all 0.2s; }
+  .category-card-actions button:hover { border-color:var(--primary); color:var(--primary); }
+  .customer-list-section { margin-bottom:24px; }
+  .customer-list-header { font-size:14px; font-weight:600; margin-bottom:12px; }
+  .customer-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .customer-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:var(--bg); border:1px solid var(--border); border-radius:16px; font-size:13px; }
+  .customer-chip-remove { cursor:pointer; font-weight:bold; color:var(--danger); }
+  .customer-input-group { display:flex; gap:8px; }
+  .customer-input-group input { flex:1; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; outline:none; }
+  .customer-input-group input:focus { border-color:var(--primary); }
+  .customer-input-group button { padding:8px 16px; background:var(--primary); color:white; border:none; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+  .customer-input-group button:hover { background:var(--primary-dark); }
+  .source-table { width:100%; border-collapse:collapse; margin-bottom:24px; }
+  .source-table th { padding:10px; text-align:left; font-weight:600; font-size:12px; color:var(--text-light); border-bottom:1px solid var(--border); }
+  .source-table td { padding:10px; border-bottom:1px solid var(--border); }
+  .source-table input { padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; outline:none; width:100%; }
+  .source-table input:focus { border-color:var(--primary); }
+  .settings-footer { display:flex; gap:12px; margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
+  .btn-add-category { padding:10px 20px; background:var(--primary); color:white; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+  .btn-add-category:hover { background:var(--primary-dark); }
 </style>
 </head>
 <body>
@@ -596,13 +633,11 @@
   <div class="main-content">
     <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
-    <div class="stats-bar">
+    <div class="stats-bar" id="statsBar">
     <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
     <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
     <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
-    <div class="stat-card devops" data-stat="devops" onclick="filterByStat(this)"><div class="stat-number" id="statDevOps" style="color:var(--warning)">0</div><div class="stat-label">DevOps Listings</div></div>
-    <div class="stat-card ai" data-stat="ai_agentic" onclick="filterByStat(this)"><div class="stat-number" id="statAI" style="color:var(--info)">0</div><div class="stat-label">AI / Agentic Listings</div></div>
-    <div class="stat-card finops" data-stat="finops" onclick="filterByStat(this)"><div class="stat-number" id="statFinOps" style="color:#00897B">0</div><div class="stat-label">FinOps Listings</div></div>
+    <div id="categoryStatsContainer"></div>
   </div>
 
   <div class="filters-bar">
@@ -611,10 +646,7 @@
       <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters()">
     </div>
     <div class="filter-chip active" data-filter="all" onclick="toggleFilter(this)">All</div>
-    <div class="filter-chip" data-filter="devops" onclick="toggleFilter(this)">DevOps</div>
-    <div class="filter-chip" data-filter="ai" onclick="toggleFilter(this)">AI Engineering</div>
-    <div class="filter-chip" data-filter="agentic" onclick="toggleFilter(this)">Agentic / LLM</div>
-    <div class="filter-chip" data-filter="finops" onclick="toggleFilter(this)">FinOps</div>
+    <div id="categoryFilterContainer"></div>
     <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
     <div class="source-dropdown-wrap" id="sourceDropdownWrap">
       <button class="source-dropdown-btn" id="sourceDropdownBtn" onclick="toggleSourceDropdown(event)">
@@ -669,28 +701,110 @@
   <div id="settingsView">
     <div class="settings-header">
       <h2>⚙️ Settings & Templates</h2>
-      <p style="color:var(--text-light);font-size:13px">Customize your outreach and connection templates</p>
+      <p style="color:var(--text-light);font-size:13px">Customize your outreach, connection templates, and business configuration</p>
     </div>
 
-    <div class="api-key-section">
-      <h3>🔑 Anthropic API Key (for AI Polish)</h3>
-      <input type="password" id="anthropicApiKey" class="api-key-input" placeholder="sk-ant-..." />
-      <div class="api-key-help">Optional: Add your Anthropic API key to enable AI Polish feature. Stored locally in your browser.</div>
-    </div>
+    <div class="settings-container">
+      <div class="settings-sidebar">
+        <div class="settings-sidebar-item active" onclick="switchSettingsSection('categories')">
+          <span>📁</span>
+          <span>Categories</span>
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('customers')">
+          <span>👥</span>
+          <span>Customers</span>
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('sources')">
+          <span>🌐</span>
+          <span>Sources</span>
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('templates')">
+          <span>📝</span>
+          <span>Templates</span>
+        </div>
+      </div>
 
-    <div class="settings-tabs">
-      <button class="settings-tab active" onclick="switchSettingsTab(0)">Connect - Prospect</button>
-      <button class="settings-tab" onclick="switchSettingsTab(1)">Connect - Customer</button>
-      <button class="settings-tab" onclick="switchSettingsTab(2)">Connect - Past Customer</button>
-      <button class="settings-tab" onclick="switchSettingsTab(3)">Outreach - Email</button>
-      <button class="settings-tab" onclick="switchSettingsTab(4)">🎬 Soap Opera Sequences</button>
-    </div>
+      <div class="settings-content-area">
+        <div class="api-key-section" style="margin-bottom:24px">
+          <h3>🔑 Anthropic API Key (for AI Polish)</h3>
+          <input type="password" id="anthropicApiKey" class="api-key-input" placeholder="sk-ant-..." />
+          <div class="api-key-help">Optional: Add your Anthropic API key to enable AI Polish feature. Stored locally in your browser.</div>
+        </div>
 
-    <div id="settingsTabContent"></div>
+        <!-- Categories Section -->
+        <div id="categoriesSection" class="settings-section" style="display:block">
+          <h3 class="settings-section-title">📁 Manage Categories</h3>
+          <div class="category-grid" id="categoryGrid"></div>
+          <button class="btn-add-category" onclick="addNewCategory()">+ Add Category</button>
+        </div>
 
-    <div class="settings-footer">
-      <button class="btn-save" onclick="saveAllSettings()">💾 Save All to GitHub</button>
-      <button class="btn-reset" onclick="resetToDefaults()">↻ Reset to Defaults</button>
+        <!-- Customers Section -->
+        <div id="customersSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">👥 Manage Customer Lists</h3>
+
+          <div class="customer-list-section">
+            <div class="customer-list-header">Current Customers</div>
+            <div class="customer-chips" id="currentCustomersChips"></div>
+            <div class="customer-input-group">
+              <input type="text" id="currentCustomerInput" placeholder="Enter company name...">
+              <button onclick="addCurrentCustomer()">Add</button>
+            </div>
+          </div>
+
+          <div class="customer-list-section">
+            <div class="customer-list-header">Past Customers</div>
+            <div class="customer-chips" id="pastCustomersChips"></div>
+            <div class="customer-input-group">
+              <input type="text" id="pastCustomerInput" placeholder="Enter company name...">
+              <button onclick="addPastCustomer()">Add</button>
+            </div>
+          </div>
+
+          <div class="customer-list-section">
+            <div class="customer-list-header">Famous Customers (Social Proof)</div>
+            <div class="customer-chips" id="famousCustomersChips"></div>
+            <div class="customer-input-group">
+              <input type="text" id="famousCustomerInput" placeholder="Enter company name...">
+              <button onclick="addFamousCustomer()">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sources Section -->
+        <div id="sourcesSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">🌐 Manage Job Sources</h3>
+          <table class="source-table">
+            <thead>
+              <tr>
+                <th style="width:150px">Key (ID)</th>
+                <th style="width:150px">Label</th>
+                <th style="width:200px">Domain</th>
+                <th style="width:80px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sourcesTableBody"></tbody>
+          </table>
+          <button class="btn-add-category" onclick="addNewSource()">+ Add Source</button>
+        </div>
+
+        <!-- Templates Section -->
+        <div id="templatesSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">📝 Message Templates</h3>
+          <div class="settings-tabs">
+            <button class="settings-tab active" onclick="switchSettingsTab(0)">Connect - Prospect</button>
+            <button class="settings-tab" onclick="switchSettingsTab(1)">Connect - Customer</button>
+            <button class="settings-tab" onclick="switchSettingsTab(2)">Connect - Past Customer</button>
+            <button class="settings-tab" onclick="switchSettingsTab(3)">Outreach - Email</button>
+            <button class="settings-tab" onclick="switchSettingsTab(4)">🎬 Soap Opera Sequences</button>
+          </div>
+          <div id="settingsTabContent"></div>
+        </div>
+
+        <div class="settings-footer">
+          <button class="btn-save" onclick="saveAllSettings()">💾 Save All to GitHub</button>
+          <button class="btn-reset" onclick="resetToDefaults()">↻ Reset to Defaults</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -758,8 +872,8 @@ function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();docume
 
 // ===== DATA =====
 let LAST_UPDATED = "2026-03-05T21:51:25Z";
-const DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
-const DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
+let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
+let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
   {
@@ -4822,7 +4936,7 @@ let _connectedContacts = new Set(JSON.parse(localStorage.getItem('connectedConta
 function _saveConnected() { localStorage.setItem('connectedContacts', JSON.stringify([..._connectedContacts])); _scheduleSyncToGitHub(); }
 
 // ===== FAMOUS DEVELEAP CUSTOMERS (for outreach social proof) =====
-const FAMOUS_CUSTOMERS = ["CyberArk","Monday.com","JFrog","Mobileye","AppsFlyer","Autodesk","Fireblocks","WalkMe","Checkmarx","Cellebrite","Plus500","Honeywell","RapidAPI","Rapyd","Aqua"];
+let FAMOUS_CUSTOMERS = ["CyberArk","Monday.com","JFrog","Mobileye","AppsFlyer","Autodesk","Fireblocks","WalkMe","Checkmarx","Cellebrite","Plus500","Honeywell","RapidAPI","Rapyd","Aqua"];
 
 function _pickCustomers(company, count) {
   // Pick random famous customers, excluding the target company
@@ -4832,7 +4946,7 @@ function _pickCustomers(company, count) {
 }
 
 // ===== CATEGORY-SPECIFIC VALUE PROPS =====
-const CAT_VALUE_PROPS = {
+let CAT_VALUE_PROPS = {
   devops: {
     pain: "your existing engineers are drowning in infra work they shouldn't be doing. Releases slow down. Tech debt piles up.",
     result: "cut deployment cycles from 2 weeks to 45 minutes",
@@ -4863,6 +4977,46 @@ const CAT_VALUE_PROPS = {
     offer: "cloud cost optimization, FinOps frameworks, showback/chargeback models, and automated cost governance",
     audit: "cloud spending and cost optimization opportunities",
     expertise: "FinOps & Cloud Cost",
+    link: "https://www.develeap.com/"
+  },
+  cloud: {
+    pain: "managing multi-cloud complexity without dedicated platform teams",
+    result: "reduced cloud provisioning time by 80% with self-service infrastructure",
+    offer: "AWS/Azure/GCP architecture, cloud migration, IaC, landing zones",
+    audit: "cloud infrastructure and multi-cloud strategy",
+    expertise: "cloud infrastructure",
+    link: "https://www.develeap.com/"
+  },
+  security: {
+    pain: "security vulnerabilities discovered too late in the development cycle",
+    result: "shifted security left and reduced critical vulnerabilities by 90%",
+    offer: "DevSecOps pipelines, SAST/DAST, container security, compliance automation",
+    audit: "security posture and DevSecOps pipeline",
+    expertise: "security engineering",
+    link: "https://www.develeap.com/"
+  },
+  data: {
+    pain: "data pipelines breaking constantly and analysts waiting days for fresh data",
+    result: "built real-time data pipelines processing 10M+ events/day with 99.9% uptime",
+    offer: "data pipelines, ETL/ELT, data lakes, streaming architecture, dbt",
+    audit: "data pipeline and architecture",
+    expertise: "data engineering",
+    link: "https://www.develeap.com/"
+  },
+  platform: {
+    pain: "developers spending 40% of time on infrastructure instead of features",
+    result: "built an internal developer platform that cut onboarding from weeks to hours",
+    offer: "internal developer platforms, golden paths, service catalogs, developer portals",
+    audit: "developer experience and platform engineering",
+    expertise: "platform engineering",
+    link: "https://www.develeap.com/"
+  },
+  sre: {
+    pain: "firefighting production incidents instead of building reliability",
+    result: "achieved 99.99% uptime and reduced MTTR from hours to minutes",
+    offer: "SLO/SLI frameworks, incident management, chaos engineering, observability",
+    audit: "reliability engineering and incident response",
+    expertise: "site reliability",
     link: "https://www.develeap.com/"
   }
 };
@@ -6057,11 +6211,11 @@ function closeHiddenPanel() {
   document.getElementById('hiddenBackdrop').classList.remove('open');
 }
 
-const SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',other:'Other'};
-const SOURCE_DOMAINS = {linkedin:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org'};
+let SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',other:'Other'};
+let SOURCE_DOMAINS = {linkedin:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org'};
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
-const CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps'};
-const CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC',finops:'#00897B'};
+let CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps',cloud:'Cloud & Infrastructure',security:'Security & DevSecOps',data:'Data Engineering',platform:'Platform Engineering',sre:'SRE'};
+let CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC',finops:'#00897B',cloud:'#0288D1',security:'#D32F2F',data:'#7B1FA2',platform:'#00695C',sre:'#E64A19'};
 
 function _companyMatches(company, list) {
   const cl = company.toLowerCase().trim();
@@ -6093,6 +6247,7 @@ function initApp() {
   });
   updateHiddenUI();
   buildSourceDropdown();
+  buildCategoryFilters();
   updateStats(); renderJobs();
   updateFreshnessDisplay();
   setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
@@ -6181,9 +6336,23 @@ function updateStats() {
   document.getElementById('statTotal').textContent = visible.length;
   document.getElementById('statNew').textContent = visible.filter(j=>j.isNew).length;
   document.getElementById('statDeveleap').textContent = visible.filter(j=>j.isDeveleapCustomer).length;
-  document.getElementById('statDevOps').textContent = visible.filter(j=>j.category==='devops').length;
-  document.getElementById('statAI').textContent = visible.filter(j=>j.category==='ai'||j.category==='agentic').length;
-  document.getElementById('statFinOps').textContent = visible.filter(j=>j.category==='finops').length;
+
+  // Dynamically render category stats
+  const catStatsContainer = document.getElementById('categoryStatsContainer');
+  const catStatsDivs = [];
+  for (const [key, label] of Object.entries(CAT_LABELS)) {
+    const count = visible.filter(j => j.category === key).length;
+    const color = CAT_COLORS[key] || '#999';
+    const statDiv = document.createElement('div');
+    statDiv.className = 'stat-card ' + key;
+    statDiv.setAttribute('data-stat', key);
+    statDiv.setAttribute('onclick', 'filterByStat(this)');
+    statDiv.style.borderLeftColor = color;
+    statDiv.innerHTML = `<div class="stat-number" style="color:${color}">${count}</div><div class="stat-label">${label} Listings</div>`;
+    catStatsDivs.push(statDiv);
+  }
+  catStatsContainer.innerHTML = '';
+  catStatsDivs.forEach(div => catStatsContainer.appendChild(div));
 }
 
 // ===== COLUMN FILTER LOGIC =====
@@ -6418,6 +6587,19 @@ function clearSourceFilters() {
   document.querySelectorAll('#sourceDropdownPanel input[type="checkbox"]').forEach(cb => { cb.checked = false; });
   updateSourceBtnLabel();
   applyAllFilters();
+}
+
+function buildCategoryFilters() {
+  const container = document.getElementById('categoryFilterContainer');
+  container.innerHTML = '';
+  for (const [key, label] of Object.entries(CAT_LABELS)) {
+    const chip = document.createElement('div');
+    chip.className = 'filter-chip';
+    chip.setAttribute('data-filter', key);
+    chip.setAttribute('onclick', 'toggleFilter(this)');
+    chip.textContent = label;
+    container.appendChild(chip);
+  }
 }
 
 function updateSourceBtnLabel() {
@@ -6732,23 +6914,47 @@ function _loadSettingsFromGitHub() {
     _settingsInitialized = true;
     const key = localStorage.getItem('anthropicApiKey');
     if (key) document.getElementById('anthropicApiKey').value = key;
+
+    // Load other settings from localStorage (if available) or set defaults
+    // This will be expanded when we add GitHub persistence
+    renderCategoriesSection();
   }
 }
 
 async function _saveSettingsToGitHub() {
-  const templates = {
-    prospect: CONNECT_TEMPLATES_PROSPECT,
-    customer: CONNECT_TEMPLATES_CUSTOMER,
-    past: CONNECT_TEMPLATES_PAST,
-    outreach: OUTREACH_TEMPLATES,
-    sos_prospect: SOS_PROSPECT,
-    sos_customer: SOS_CUSTOMER,
-    sos_past: SOS_PAST
+  const allSettings = {
+    templates: {
+      prospect: CONNECT_TEMPLATES_PROSPECT,
+      customer: CONNECT_TEMPLATES_CUSTOMER,
+      past: CONNECT_TEMPLATES_PAST,
+      outreach: OUTREACH_TEMPLATES,
+      sos_prospect: SOS_PROSPECT,
+      sos_customer: SOS_CUSTOMER,
+      sos_past: SOS_PAST
+    },
+    categories: {
+      labels: CAT_LABELS,
+      colors: CAT_COLORS,
+      valueProps: CAT_VALUE_PROPS
+    },
+    customers: {
+      current: DEVELEAP_CUSTOMERS,
+      past: DEVELEAP_PAST_CUSTOMERS,
+      famous: FAMOUS_CUSTOMERS
+    },
+    sources: {
+      labels: SOURCE_LABELS,
+      domains: SOURCE_DOMAINS
+    }
   };
 
+  // Also save API key to localStorage
+  const apiKey = document.getElementById('anthropicApiKey').value;
+  if (apiKey) localStorage.setItem('anthropicApiKey', apiKey);
+
   const payload = {
-    message: 'Update template settings',
-    content: btoa(JSON.stringify(templates, null, 2)),
+    message: 'Update all settings (templates, categories, customers, sources)',
+    content: btoa(JSON.stringify(allSettings, null, 2)),
     branch: 'main'
   };
 
@@ -6768,17 +6974,228 @@ async function _saveSettingsToGitHub() {
     if (resp.ok) {
       const data = await resp.json();
       _settingsSha = data.content.sha;
-      _showToast('✅ Templates saved to GitHub');
+      _showToast('✅ All settings saved to GitHub');
       return true;
     } else {
-      _showToast('❌ Failed to save templates');
+      _showToast('❌ Failed to save settings');
       return false;
     }
   } catch (e) {
     console.error('Settings save error:', e);
-    _showToast('❌ Error saving templates');
+    _showToast('❌ Error saving settings');
     return false;
   }
+}
+
+// ===== NEW SETTINGS SECTION MANAGEMENT =====
+function switchSettingsSection(section) {
+  // Update sidebar
+  document.querySelectorAll('.settings-sidebar-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  event.target.closest('.settings-sidebar-item').classList.add('active');
+
+  // Hide all sections
+  document.querySelectorAll('.settings-section').forEach(sec => {
+    sec.style.display = 'none';
+  });
+
+  // Show the selected section
+  const sectionEl = document.getElementById(section + 'Section');
+  if (sectionEl) {
+    sectionEl.style.display = 'block';
+    if (section === 'categories') renderCategoriesSection();
+    else if (section === 'customers') renderCustomersSection();
+    else if (section === 'sources') renderSourcesSection();
+  }
+}
+
+function renderCategoriesSection() {
+  const grid = document.getElementById('categoryGrid');
+  grid.innerHTML = '';
+  for (const [key, label] of Object.entries(CAT_LABELS)) {
+    const vp = CAT_VALUE_PROPS[key] || {};
+    const color = CAT_COLORS[key] || '#999';
+    const card = document.createElement('div');
+    card.className = 'category-card';
+    card.innerHTML = `
+      <div class="category-card-header">
+        <input type="color" class="category-color-picker" value="${color}" onchange="updateCategoryColor('${key}', this.value)">
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:14px">${label}</div>
+          <div style="font-size:11px;color:var(--text-lighter)">${key}</div>
+        </div>
+      </div>
+      <div class="category-card-field">
+        <label>Label</label>
+        <input type="text" value="${label}" onchange="updateCategoryLabel('${key}', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Pain Point</label>
+        <input type="text" value="${vp.pain || ''}" onchange="updateCategoryValueProp('${key}', 'pain', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Result</label>
+        <input type="text" value="${vp.result || ''}" onchange="updateCategoryValueProp('${key}', 'result', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Offer</label>
+        <input type="text" value="${vp.offer || ''}" onchange="updateCategoryValueProp('${key}', 'offer', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Audit Focus</label>
+        <input type="text" value="${vp.audit || ''}" onchange="updateCategoryValueProp('${key}', 'audit', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Expertise</label>
+        <input type="text" value="${vp.expertise || ''}" onchange="updateCategoryValueProp('${key}', 'expertise', this.value)">
+      </div>
+      <div class="category-card-field">
+        <label>Link</label>
+        <input type="text" value="${vp.link || ''}" onchange="updateCategoryValueProp('${key}', 'link', this.value)">
+      </div>
+      <div class="category-card-actions">
+        <button onclick="removeCategoryCard('${key}')">Delete</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function updateCategoryLabel(key, newLabel) {
+  CAT_LABELS[key] = newLabel;
+  buildCategoryFilters();
+  updateStats();
+}
+
+function updateCategoryColor(key, color) {
+  CAT_COLORS[key] = color;
+  updateStats();
+}
+
+function updateCategoryValueProp(key, prop, value) {
+  if (!CAT_VALUE_PROPS[key]) CAT_VALUE_PROPS[key] = {};
+  CAT_VALUE_PROPS[key][prop] = value;
+}
+
+function removeCategoryCard(key) {
+  if (confirm(`Remove category "${CAT_LABELS[key]}"?`)) {
+    delete CAT_LABELS[key];
+    delete CAT_COLORS[key];
+    delete CAT_VALUE_PROPS[key];
+    renderCategoriesSection();
+    buildCategoryFilters();
+    updateStats();
+  }
+}
+
+function addNewCategory() {
+  const key = prompt('Enter category ID (lowercase, no spaces):');
+  if (!key) return;
+  const label = prompt('Enter category label:');
+  if (!label) return;
+  CAT_LABELS[key] = label;
+  CAT_COLORS[key] = '#' + Math.floor(Math.random()*16777215).toString(16);
+  CAT_VALUE_PROPS[key] = {pain:'', result:'', offer:'', audit:'', expertise:'', link:''};
+  renderCategoriesSection();
+  buildCategoryFilters();
+}
+
+function renderCustomersSection() {
+  renderCustomerList('current', DEVELEAP_CUSTOMERS, 'currentCustomersChips');
+  renderCustomerList('past', DEVELEAP_PAST_CUSTOMERS, 'pastCustomersChips');
+  renderCustomerList('famous', FAMOUS_CUSTOMERS, 'famousCustomersChips');
+}
+
+function renderCustomerList(type, list, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = list.map(name => `
+    <div class="customer-chip">
+      ${name}
+      <span class="customer-chip-remove" onclick="removeCustomer('${type}', '${name.replace(/'/g, "\\'")}')">×</span>
+    </div>
+  `).join('');
+}
+
+function addCurrentCustomer() {
+  addCustomerToList('current', DEVELEAP_CUSTOMERS, 'currentCustomerInput', 'currentCustomersChips');
+}
+
+function addPastCustomer() {
+  addCustomerToList('past', DEVELEAP_PAST_CUSTOMERS, 'pastCustomerInput', 'pastCustomersChips');
+}
+
+function addFamousCustomer() {
+  addCustomerToList('famous', FAMOUS_CUSTOMERS, 'famousCustomerInput', 'famousCustomersChips');
+}
+
+function addCustomerToList(type, list, inputId, containerId) {
+  const input = document.getElementById(inputId);
+  const name = input.value.trim();
+  if (!name) return;
+  if (!list.includes(name)) {
+    list.push(name);
+  }
+  input.value = '';
+  renderCustomerList(type, list, containerId);
+}
+
+function removeCustomer(type, name) {
+  let list;
+  if (type === 'current') list = DEVELEAP_CUSTOMERS;
+  else if (type === 'past') list = DEVELEAP_PAST_CUSTOMERS;
+  else list = FAMOUS_CUSTOMERS;
+
+  const idx = list.indexOf(name);
+  if (idx > -1) list.splice(idx, 1);
+  renderCustomersSection();
+}
+
+function renderSourcesSection() {
+  const tbody = document.getElementById('sourcesTableBody');
+  tbody.innerHTML = '';
+  for (const [key, label] of Object.entries(SOURCE_LABELS)) {
+    const domain = SOURCE_DOMAINS[key] || '';
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="text" value="${key}" onchange="updateSourceKey('${key}', this.value)" readonly style="background:#f5f5f5"></td>
+      <td><input type="text" value="${label}" onchange="updateSourceLabel('${key}', this.value)"></td>
+      <td><input type="text" value="${domain}" onchange="updateSourceDomain('${key}', this.value)"></td>
+      <td><button onclick="removeSource('${key}')" style="padding:6px 10px;background:#E44258;color:white;border:none;border-radius:4px;cursor:pointer">Delete</button></td>
+    `;
+    tbody.appendChild(row);
+  }
+}
+
+function updateSourceLabel(key, newLabel) {
+  SOURCE_LABELS[key] = newLabel;
+  buildSourceDropdown();
+}
+
+function updateSourceDomain(key, newDomain) {
+  SOURCE_DOMAINS[key] = newDomain;
+  buildSourceDropdown();
+}
+
+function removeSource(key) {
+  if (confirm(`Remove source "${SOURCE_LABELS[key]}"?`)) {
+    delete SOURCE_LABELS[key];
+    delete SOURCE_DOMAINS[key];
+    renderSourcesSection();
+    buildSourceDropdown();
+  }
+}
+
+function addNewSource() {
+  const key = prompt('Enter source ID (lowercase, no spaces):');
+  if (!key) return;
+  const label = prompt('Enter source label:');
+  if (!label) return;
+  const domain = prompt('Enter domain (e.g., linkedin.com):');
+  SOURCE_LABELS[key] = label;
+  SOURCE_DOMAINS[key] = domain || '';
+  renderSourcesSection();
+  buildSourceDropdown();
 }
 
 function switchSettingsTab(idx) {
