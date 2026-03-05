@@ -4768,9 +4768,17 @@ function buildOutreachSection(job) {
       const connected = _connectedContacts.has(key);
       const hasLI = s.linkedin && s.linkedin.startsWith('http');
       const hasEmail = s.email && s.email.includes('@');
-      const connBadge = connected
-        ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#E8F5E9;color:#2E7D32;font-weight:600;margin-left:4px">Connected</span>'
-        : '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600;margin-left:4px">Not Connected</span>';
+      const outreachStatus = _getOutreachStatus(key);
+      const statusStyles = {
+        not_contacted: {bg:'#FFF3E0',color:'#E65100',label:'Not Contacted'},
+        invited: {bg:'#E3F2FD',color:'#1565C0',label:'Invited'},
+        connected: {bg:'#E8F5E9',color:'#2E7D32',label:'Connected'},
+        messaged: {bg:'#F3E5F5',color:'#7B1FA2',label:'Messaged'},
+        replied: {bg:'#E0F7FA',color:'#00695C',label:'Replied'},
+        meeting_set: {bg:'#FFF8E1',color:'#F57F17',label:'Meeting Set'},
+      };
+      const st = statusStyles[outreachStatus] || statusStyles.not_contacted;
+      const connBadge = `<span onclick="event.stopPropagation();cycleOutreachStatus('${key.replace(/'/g,"\\'")}',${i})" style="font-size:10px;padding:2px 6px;border-radius:4px;background:${st.bg};color:${st.color};font-weight:600;margin-left:4px;cursor:pointer" title="Click to change status">${st.label}</span>`;
 
       // Action buttons differ based on connected status
       let actionBtns = '';
@@ -4923,11 +4931,93 @@ function sendOnLinkedIn() {
   if (!job) return;
   const stakeholders = job.stakeholders || [];
   const s = stakeholders[_activeStakeholderIdx || 0];
+  const isConn = s ? _connectedContacts.has(_contactKey(s)) : false;
+
+  // Get the right message — use pipeline-generated connectMsg/followUpMsg if available
+  let msg;
+  if (isConn && s && s.followUpMsg) {
+    msg = s.followUpMsg;
+  } else if (!isConn && s && s.connectMsg) {
+    msg = s.connectMsg;
+  } else {
+    // Fall back to template system
+    msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
+  }
+
+  // Copy to clipboard so user can paste into LinkedIn
+  navigator.clipboard.writeText(msg).then(() => {
+    // Show toast notification
+    _showToast(isConn
+      ? '📋 Follow-up message copied! Opening LinkedIn...'
+      : '📋 Connection note copied! Paste it when LinkedIn asks for a note.');
+  }).catch(() => {});
+
+  // Open LinkedIn profile
   if (s && s.linkedin && s.linkedin.startsWith('http')) {
     window.open(s.linkedin, '_blank');
   } else {
     window.open('https://www.linkedin.com/search/results/people/?keywords=' + encodeURIComponent(job.company + ' CTO VP Engineering'), '_blank');
   }
+
+  // Track outreach status
+  if (s) {
+    const key = _contactKey(s);
+    const status = _getOutreachStatus(key);
+    if (!status || status === 'not_contacted') {
+      _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
+      // Re-render
+      const outreach = document.querySelector('.outreach-section');
+      if (outreach) outreach.outerHTML = buildOutreachSection(job);
+    }
+  }
+}
+
+// ── Outreach Status CRM (localStorage) ──────────────────────
+const _OUTREACH_KEY = 'bdr_outreach_status';
+function _loadOutreachStatuses() {
+  try { return JSON.parse(localStorage.getItem(_OUTREACH_KEY) || '{}'); } catch { return {}; }
+}
+function _saveOutreachStatuses(statuses) {
+  localStorage.setItem(_OUTREACH_KEY, JSON.stringify(statuses));
+}
+function _getOutreachStatus(contactKey) {
+  return _loadOutreachStatuses()[contactKey] || 'not_contacted';
+}
+function _setOutreachStatus(key, status) {
+  const s = _loadOutreachStatuses();
+  s[key] = status;
+  _saveOutreachStatuses(s);
+}
+function cycleOutreachStatus(key, idx) {
+  const stages = ['not_contacted', 'invited', 'connected', 'messaged', 'replied', 'meeting_set'];
+  const current = _getOutreachStatus(key);
+  const next = stages[(stages.indexOf(current) + 1) % stages.length];
+  _setOutreachStatus(key, next);
+  // Also sync connected status
+  if (next === 'connected' || next === 'messaged' || next === 'replied' || next === 'meeting_set') {
+    _connectedContacts.add(key);
+  } else {
+    _connectedContacts.delete(key);
+  }
+  _saveConnected();
+  const job = _activeJobForOutreach;
+  if (job) {
+    const outreach = document.querySelector('.outreach-section');
+    if (outreach) outreach.outerHTML = buildOutreachSection(job);
+  }
+}
+
+function _showToast(msg) {
+  let toast = document.getElementById('toast-notification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:white;padding:12px 20px;border-radius:10px;font-size:14px;z-index:10000;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:opacity 0.3s;max-width:360px';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, 3500);
 }
 
 function sendEmail() {

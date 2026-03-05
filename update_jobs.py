@@ -1372,16 +1372,117 @@ _stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
 _auto_discover_count = 0                    # Track SerpAPI usage per run
 AUTO_DISCOVER_MAX = 30                      # Max auto-lookups per pipeline run
 
+# Leadership title patterns for auto-discovery
+_LEADERSHIP_RE = re.compile(
+    r'(?:CTO|Chief Technology Officer|Chief Executive Officer|CEO|'
+    r'Co-?Founder|VP\s*(?:of\s+)?(?:R&D|Engineering|Research|Technology|Product)|'
+    r'Head of (?:Engineering|R&D|Technology)|'
+    r'Director of (?:Engineering|R&D)|'
+    r'SVP\s+(?:Engineering|R&D)|'
+    r'Sr\.?\s*Director\s+(?:Engineering|R&D)|'
+    r'General Manager|Country Manager|Managing Director)',
+    re.IGNORECASE
+)
+_SKIP_TITLE_RE = re.compile(
+    r'recruiter|talent\s+acq|intern\b|junior|associate|analyst|student|'
+    r'looking\s+for|seeking|open\s+to',
+    re.IGNORECASE
+)
+
+
+def _parse_linkedin_search_result(result: dict, company_lower: str,
+                                   seen_urls: set) -> dict | None:
+    """Parse a single SerpAPI organic result into a stakeholder contact.
+    Returns a contact dict or None if the result doesn't qualify."""
+    link = result.get("link", "")
+    title_text = result.get("title", "")
+    snippet = result.get("snippet", "")
+
+    # Must be a LinkedIn profile URL
+    if "/in/" not in link or link in seen_urls:
+        return None
+
+    # Extract name and title from title line
+    # Typical formats:
+    #   "Name - Title - Company | LinkedIn"
+    #   "Name - Company | LinkedIn"
+    #   "Name | LinkedIn"
+    name = ""
+    person_title = ""
+    clean_title = title_text.replace(" | LinkedIn", "").replace("| LinkedIn", "").strip()
+
+    if " - " in clean_title:
+        parts = [p.strip() for p in clean_title.split(" - ")]
+        name = parts[0]
+        if len(parts) >= 3:
+            person_title = parts[1]
+        elif len(parts) == 2:
+            # Could be "Name - Title" or "Name - Company"
+            if _LEADERSHIP_RE.search(parts[1]):
+                person_title = parts[1]
+    elif clean_title:
+        name = clean_title.split("|")[0].strip()
+
+    if not name or name.lower() == "linkedin" or len(name) < 3:
+        return None
+
+    # Verify the result is actually about this company
+    combined = (title_text + " " + snippet).lower()
+    company_words = [w for w in company_lower.split() if len(w) > 2]
+    if company_words and not any(w in combined for w in company_words):
+        # Also try squished match (e.g. "intel" in "intelcorporation")
+        squished = company_lower.replace(" ", "")
+        if squished not in combined.replace(" ", ""):
+            return None
+
+    # Extract/refine title from snippet if we don't have one yet
+    if not person_title or not _LEADERSHIP_RE.search(person_title):
+        title_match = _LEADERSHIP_RE.search(snippet)
+        if title_match:
+            # Grab the match and a bit of context
+            start = title_match.start()
+            end = min(start + 60, len(snippet))
+            candidate = snippet[start:end].split("·")[0].split("|")[0].split("…")[0].strip().rstrip(",. ")
+            if candidate:
+                person_title = candidate
+
+    # Must have a leadership title
+    if not person_title or not _LEADERSHIP_RE.search(person_title):
+        return None
+
+    # Skip non-leadership profiles
+    if _SKIP_TITLE_RE.search(person_title):
+        return None
+
+    seen_urls.add(link)
+    return {
+        "name": name,
+        "title": person_title,
+        "linkedin": link,
+        "source": "Auto-discovered",
+        "email": "",
+    }
+
 
 def _auto_discover_stakeholders(company: str) -> list:
     """Use SerpAPI to find CTO / VP R&D / VP Engineering for a company.
-    Parses LinkedIn profile URLs from search results and returns contacts."""
+    Tries multiple search strategies and parses LinkedIn profiles from results."""
     global _auto_discover_count
 
     if not SERPAPI_KEY or not company:
         return []
 
     company_lower = company.lower().strip()
+
+    # Skip companies that are actually job board names, not real employers
+    skip_companies = {
+        "unknown", "remoterockethub", "efinancialcareers", "jobgether",
+        "techaviv", "play", "automatit", "efinancialcareers norway",
+    }
+    if company_lower in skip_companies:
+        _stakeholder_cache[company_lower] = []
+        return []
+
     if company_lower in _stakeholder_cache:
         return _stakeholder_cache[company_lower]
 
@@ -1392,82 +1493,35 @@ def _auto_discover_stakeholders(company: str) -> list:
     _auto_discover_count += 1
     contacts = []
 
+    # Try multiple search queries — broader first, then specific
+    queries = [
+        f'{company} CTO OR CEO site:linkedin.com/in',
+        f'{company} "VP Engineering" OR "VP R&D" OR "Head of R&D" site:linkedin.com/in',
+    ]
+
     try:
-        # Search for company leadership on LinkedIn
-        query = f'site:linkedin.com/in "{company}" CTO OR "VP R&D" OR "VP Engineering" OR "Head of Engineering"'
-        resp = requests.get("https://serpapi.com/search", params={
-            "q": query,
-            "api_key": SERPAPI_KEY,
-            "gl": "il",
-            "hl": "en",
-            "num": 8,
-        }, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-
         seen_urls = set()
-        for r in data.get("organic_results", []):
-            link = r.get("link", "")
-            title_text = r.get("title", "")
-            snippet = r.get("snippet", "")
-
-            # Must be a LinkedIn profile URL
-            if "/in/" not in link or link in seen_urls:
-                continue
-
-            # Extract name from title (usually "Name - Title - Company | LinkedIn")
-            name = ""
-            person_title = ""
-            if " - " in title_text:
-                parts = title_text.split(" - ")
-                name = parts[0].strip().replace(" | LinkedIn", "").strip()
-                if len(parts) >= 2:
-                    person_title = parts[1].strip().replace(" | LinkedIn", "").strip()
-            elif " | " in title_text:
-                name = title_text.split(" | ")[0].strip()
-
-            if not name or name.lower() == "linkedin":
-                continue
-
-            # Verify the result is actually about this company
-            combined = (title_text + " " + snippet).lower()
-            company_words = company_lower.split()
-            # At least one significant company word must appear
-            if not any(w in combined for w in company_words if len(w) > 2):
-                continue
-
-            # Extract title from snippet if not in title
-            if not person_title:
-                # Try to find title patterns in snippet
-                title_match = re.search(
-                    r'((?:CTO|Chief Technology Officer|VP\s+(?:R&D|Engineering|Research)|'
-                    r'Head of Engineering|Director of Engineering|'
-                    r'Co-Founder|CEO|Chief Executive Officer|'
-                    r'SVP Engineering|Sr\.?\s*Director)[^.·|]*)',
-                    snippet, re.IGNORECASE
-                )
-                if title_match:
-                    person_title = title_match.group(1).strip().rstrip(",. ")
-
-            if not person_title:
-                continue
-
-            # Skip generic profiles that aren't leadership
-            skip_titles = ["recruiter", "talent", "intern", "junior", "associate", "analyst"]
-            if any(s in person_title.lower() for s in skip_titles):
-                continue
-
-            seen_urls.add(link)
-            contacts.append({
-                "name": name,
-                "title": person_title,
-                "linkedin": link,
-                "source": "Auto-discovered",
-                "email": "",
-            })
-
-            if len(contacts) >= 2:  # Cap at 2 contacts per company
+        for query in queries:
+            if len(contacts) >= 2:
                 break
+            resp = requests.get("https://serpapi.com/search", params={
+                "q": query,
+                "api_key": SERPAPI_KEY,
+                "gl": "il",
+                "hl": "en",
+                "num": 5,
+            }, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+
+            for r in data.get("organic_results", []):
+                if len(contacts) >= 2:
+                    break
+                parsed = _parse_linkedin_search_result(r, company_lower, seen_urls)
+                if parsed:
+                    contacts.append(parsed)
+
+            time.sleep(random.uniform(0.3, 0.8))
 
         if contacts:
             log.info(f"  Auto-discovered {len(contacts)} stakeholder(s) for {company}: "
@@ -1482,6 +1536,66 @@ def _auto_discover_stakeholders(company: str) -> list:
 
     _stakeholder_cache[company_lower] = contacts
     return contacts
+
+
+def _generate_outreach_messages(job: dict) -> None:
+    """Generate personalized LinkedIn outreach messages for each stakeholder.
+    Adds 'connectMsg' and 'followUpMsg' fields to each stakeholder dict."""
+    company = job.get("company", "Unknown")
+    job_title = job.get("title", "").split(" at ")[0].split(" - ")[0].strip()
+    category = job.get("category", "devops")
+    is_customer = job.get("isDeveleapCustomer", False)
+
+    # Map categories to Develeap service descriptions
+    service_map = {
+        "devops": "DevOps & cloud-native transformation",
+        "finops": "FinOps and cloud cost optimization",
+        "ai": "AI/ML infrastructure and MLOps",
+        "agentic": "Agentic AI and automation",
+    }
+    service = service_map.get(category, "DevOps & cloud engineering")
+
+    for s in job.get("stakeholders", []):
+        first_name = s.get("name", "").split()[0] if s.get("name") else "there"
+        title = s.get("title", "")
+
+        if is_customer:
+            # Warm intro — they already know Develeap
+            connect_msg = (
+                f"Hi {first_name}, I'm Dori from Develeap. "
+                f"I noticed {company} is growing the team with a {job_title} role — "
+                f"great to see! As a current partner, I'd love to discuss how we can "
+                f"support your scaling efforts. Would love to connect."
+            )
+            followup_msg = (
+                f"Thanks for connecting, {first_name}! "
+                f"Since Develeap already works with {company}, I wanted to reach out "
+                f"about the {job_title} hiring. We often help teams ramp up faster "
+                f"with interim {service} expertise while permanent hires onboard. "
+                f"Would a quick chat be useful?"
+            )
+        else:
+            # Cold outreach
+            connect_msg = (
+                f"Hi {first_name}, I noticed {company} is hiring a {job_title} — "
+                f"sounds like exciting growth! I lead Develeap, an Israeli {service} "
+                f"consultancy. Would love to connect and share how we help teams like "
+                f"yours move faster."
+            )
+            followup_msg = (
+                f"Thanks for connecting, {first_name}! "
+                f"I wanted to share how Develeap helps companies like {company} "
+                f"accelerate their {service} initiatives. We've worked with 50+ "
+                f"Israeli tech companies on similar challenges. "
+                f"Would you be open to a 15-min intro call this week?"
+            )
+
+        # LinkedIn connection notes have a 300-char limit
+        if len(connect_msg) > 295:
+            connect_msg = connect_msg[:292] + "..."
+
+        s["connectMsg"] = connect_msg
+        s["followUpMsg"] = followup_msg
 
 
 def _company_matches(company: str, customer_list: list) -> bool:
@@ -2487,6 +2601,15 @@ def main():
     # 4c. Validate stakeholder LinkedIn URLs (catch broken/404 profiles)
     log.info("Validating stakeholder LinkedIn URLs...")
     merged = _validate_linkedin_urls(merged)
+
+    # 4d. Generate personalized outreach messages for each stakeholder
+    log.info("Generating personalized outreach messages...")
+    msg_count = 0
+    for j in merged:
+        if j.get("stakeholders"):
+            _generate_outreach_messages(j)
+            msg_count += len(j["stakeholders"])
+    log.info(f"  Generated messages for {msg_count} stakeholder contacts")
 
     # 5. Update dashboard HTML
     updated_html = update_dashboard_html(html, merged)
