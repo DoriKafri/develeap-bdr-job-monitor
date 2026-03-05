@@ -5133,6 +5133,8 @@ function switchTemplate(idx) {
   const stakeholder = stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
   const msg = fillTemplate(OUTREACH_TEMPLATES[idx].body, job, stakeholder);
   document.getElementById('templatePreview').textContent = msg;
+  // Auto-trigger LinkedIn send preparation when template is picked
+  sendOnLinkedIn();
 }
 
 function scrollToTemplates() {
@@ -5151,7 +5153,8 @@ function selectStakeholderForMsg(idx) {
   document.getElementById('templatePreview').textContent = msg;
   // Update button labels based on connected status
   if (stakeholder) {
-    const isConn = _connectedContacts.has(_contactKey(stakeholder));
+    const sKey = _contactKey(stakeholder);
+    const isConn = _connectedContacts.has(sKey) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(sKey));
     const btn = document.getElementById('btnLinkedInAction');
     if (btn) btn.innerHTML = LI_ICON + (isConn ? ' Send Message' : ' Connect on LinkedIn');
     // Highlight selected card
@@ -5230,13 +5233,21 @@ function sendOnLinkedIn() {
     btn.style.background = '#2E7D32';
   }
 
-  // Track outreach status
+  // Track outreach status (don't rebuild section — it resets the Ready button)
   if (s) {
     const status = _getOutreachStatus(key);
     if (!status || status === 'not_contacted') {
       _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
-      const outreach = document.querySelector('.outreach-section');
-      if (outreach) outreach.outerHTML = buildOutreachSection(job);
+      // Update status badge inline without full rebuild
+      const cards = document.querySelectorAll('.stakeholder-card');
+      if (cards[_activeStakeholderIdx]) {
+        const badge = cards[_activeStakeholderIdx].querySelector('.badge');
+        if (badge) {
+          const newStatus = isConn ? 'messaged' : 'invited';
+          badge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).replace('_',' ');
+          badge.className = 'badge badge-' + newStatus;
+        }
+      }
     }
   }
 }
