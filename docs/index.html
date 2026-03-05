@@ -338,6 +338,65 @@
 
     .col-filter-dropdown { left:auto; right:0; }
   }
+
+  /* ── Queue View ── */
+  #queueView { display:none; margin:20px 32px 32px; }
+  #queueView.active { display:block; }
+  .queue-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .queue-header h2 { font-size:20px; font-weight:700; display:flex; align-items:center; gap:10px; }
+  .queue-global-controls { display:flex; gap:8px; align-items:center; }
+  .queue-global-controls .btn { padding:8px 18px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:none; display:flex; align-items:center; gap:6px; transition:all 0.15s; }
+  .queue-btn-pause { background:#F57C00; color:white; }
+  .queue-btn-pause:hover { background:#E65100; }
+  .queue-btn-play { background:#2E7D32; color:white; }
+  .queue-btn-play:hover { background:#1B5E20; }
+  .queue-btn-clear { background:var(--bg); color:var(--danger); border:1px solid var(--danger) !important; }
+  .queue-btn-clear:hover { background:#FFEBEE; }
+  .queue-stats { display:flex; gap:16px; margin-bottom:20px; }
+  .queue-stat { flex:1; padding:16px 20px; border-radius:12px; background:white; box-shadow:var(--shadow); border-left:4px solid var(--primary); }
+  .queue-stat-number { font-size:24px; font-weight:800; }
+  .queue-stat-label { font-size:12px; color:var(--text-light); margin-top:2px; }
+  .queue-stat.pending { border-left-color:#F57C00; }
+  .queue-stat.pending .queue-stat-number { color:#F57C00; }
+  .queue-stat.completed { border-left-color:#2E7D32; }
+  .queue-stat.completed .queue-stat-number { color:#2E7D32; }
+  .queue-stat.failed { border-left-color:var(--danger); }
+  .queue-stat.failed .queue-stat-number { color:var(--danger); }
+  .queue-stat.paused { border-left-color:#9E9E9E; }
+  .queue-stat.paused .queue-stat-number { color:#9E9E9E; }
+  .queue-list { display:flex; flex-direction:column; gap:10px; }
+  .queue-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:16px 20px; display:flex; align-items:center; gap:16px; transition:all 0.15s; border-left:4px solid transparent; }
+  .queue-card.status-pending { border-left-color:#F57C00; }
+  .queue-card.status-processing { border-left-color:#1565C0; animation:pulse 1.5s infinite; }
+  .queue-card.status-completed { border-left-color:#2E7D32; opacity:0.75; }
+  .queue-card.status-failed { border-left-color:var(--danger); }
+  .queue-card.status-paused { border-left-color:#9E9E9E; opacity:0.6; }
+  .queue-card.status-conn_pending { border-left-color:#7B1FA2; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  .queue-card-avatar { width:44px; height:44px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; }
+  .queue-card-info { flex:1; min-width:0; }
+  .queue-card-name { font-weight:700; font-size:15px; display:flex; align-items:center; gap:8px; }
+  .queue-card-company { font-size:13px; color:var(--text-light); margin-top:2px; }
+  .queue-card-message { font-size:12px; color:var(--text-lighter); margin-top:6px; max-height:40px; overflow:hidden; line-height:1.4; cursor:pointer; }
+  .queue-card-message.expanded { max-height:none; }
+  .queue-card-meta { display:flex; gap:12px; align-items:center; margin-top:6px; }
+  .queue-card-meta span { font-size:11px; color:var(--text-light); }
+  .queue-card-status { padding:4px 10px; border-radius:12px; font-size:11px; font-weight:700; text-transform:uppercase; white-space:nowrap; }
+  .queue-card-status.pending { background:#FFF3E0; color:#E65100; }
+  .queue-card-status.processing { background:#E3F2FD; color:#1565C0; }
+  .queue-card-status.completed { background:#E8F5E9; color:#2E7D32; }
+  .queue-card-status.failed { background:#FFEBEE; color:#C62828; }
+  .queue-card-status.paused { background:#F5F5F5; color:#757575; }
+  .queue-card-status.conn_pending { background:#F3E5F5; color:#7B1FA2; }
+  .queue-card-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+  .queue-card-actions button { background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:4px; }
+  .queue-card-actions button:hover { border-color:var(--primary); color:var(--primary); }
+  .queue-card-actions button.btn-delete:hover { border-color:var(--danger); color:var(--danger); }
+  .queue-empty { text-align:center; padding:60px 20px; color:var(--text-light); }
+  .queue-empty h3 { font-size:18px; margin-bottom:8px; color:var(--text); }
+  .queue-type-badge { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; }
+  .queue-type-badge.message { background:#E3F2FD; color:#0A66C2; }
+  .queue-type-badge.connect { background:#F3E5F5; color:#7B1FA2; }
 </style>
 </head>
 <body>
@@ -363,6 +422,7 @@
         <button class="view-tab active" onclick="setView('all')">All Listings</button>
         <button class="view-tab" onclick="setView('develeap')">Develeap Customers</button>
         <button class="view-tab" onclick="setView('new')">New Today</button>
+        <button class="view-tab" onclick="setView('queue')" id="queueTab">📋 Queue <span id="queueBadge" style="background:var(--accent);color:var(--primary);font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:700;display:none">0</span></button>
       </div>
     </div>
     <div class="nav-actions">
@@ -428,6 +488,22 @@
         <tbody id="jobsTable"></tbody>
       </table>
     </div>
+  </div>
+
+  <!-- Queue View -->
+  <div id="queueView">
+    <div class="queue-header">
+      <h2>📋 LinkedIn Outreach Queue</h2>
+      <div class="queue-global-controls">
+        <button class="btn queue-btn-play" id="queueGlobalToggle" onclick="toggleQueueGlobal()">
+          <span id="queueToggleIcon">▶</span> <span id="queueToggleLabel">Resume All</span>
+        </button>
+        <button class="btn queue-btn-clear" onclick="clearCompletedQueue()">🗑 Clear Completed</button>
+        <button class="btn" style="background:var(--primary);color:white" onclick="refreshQueueView()">↻ Refresh</button>
+      </div>
+    </div>
+    <div class="queue-stats" id="queueStats"></div>
+    <div class="queue-list" id="queueList"></div>
   </div>
 </div>
 
@@ -5454,7 +5530,7 @@ document.addEventListener('click', function(e) {
     document.getElementById('sourceDropdownBtn').classList.remove('open');
   }
 });
-function setView(v){currentView=v;document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.view-tab').forEach(t=>{if((v==='all'&&t.textContent==='All Listings')||(v==='develeap'&&t.textContent==='Develeap Customers')||(v==='new'&&t.textContent==='New Today'))t.classList.add('active');});applyAllFilters();}
+// setView is defined below with queue support
 
 function openDetail(id){
   const j=ALL_JOBS.find(x=>x.id===id);if(!j)return;
@@ -5580,6 +5656,532 @@ document.addEventListener('click', e => {
   if (e.key==='Escape') closeSidebar();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
+
+// ===== CONNECTION REQUEST TEMPLATES (Hormozi/Brunson/Carnegie style) =====
+const CONNECT_TEMPLATES = [
+  {
+    name: "Hormozi Value Lead",
+    emoji: "💰",
+    style: "Alex Hormozi",
+    body: `{contact_name}, I help companies like {company} solve the #{1} reason {cat_expertise} hires fail — they take 6 months and burn $200K before producing anything.
+
+We've embedded {cat_expertise} squads at {customers} that ship in 2 weeks — not 6 months.
+
+That {role} role you're hiring for? I have a faster path. Open to hearing it?`
+  },
+  {
+    name: "Brunson Curiosity Hook",
+    emoji: "🎯",
+    style: "Russell Brunson",
+    body: `{contact_name}, I noticed something about that {role} role at {company} that 90% of hiring managers miss...
+
+The companies who scale {cat_expertise} fastest aren't hiring — they're partnering. {customers} figured this out. Their secret? They called us.
+
+Curious what that looks like for {company}?`
+  },
+  {
+    name: "Carnegie Genuine Interest",
+    emoji: "🤝",
+    style: "Dale Carnegie",
+    body: `{contact_name}, I've been following {company}'s growth — really impressive what you're building.
+
+I noticed you're looking for a {role}. At Develeap, we specialize in exactly this kind of {cat_expertise} work — we've helped {customers} and 100+ companies.
+
+I'd genuinely love to learn more about your vision and see if there's a way we can help. Would you be open to connecting?`
+  },
+  {
+    name: "Short & Direct",
+    emoji: "⚡",
+    style: "Quick Connect",
+    body: `Hey {contact_name} — I run Develeap, Israel's largest {cat_expertise} consulting firm. Noticed {company} is hiring a {role}. We've helped {customers} scale fast. Worth connecting?`
+  }
+];
+
+// ===== QUEUE VIEW MANAGEMENT =====
+let _queueData = { queue: [], lastProcessed: '' };
+let _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
+
+// Update setView to handle queue tab
+const _origSetView = setView;
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-tab').forEach(t => {
+    if ((v==='all' && t.textContent.includes('All Listings')) ||
+        (v==='develeap' && t.textContent.includes('Develeap')) ||
+        (v==='new' && t.textContent.includes('New Today')) ||
+        (v==='queue' && t.id === 'queueTab'))
+      t.classList.add('active');
+  });
+
+  const tableContainer = document.querySelector('.table-container');
+  const queueView = document.getElementById('queueView');
+  const statsBar = document.querySelector('.stats-bar');
+  const filtersBar = document.querySelector('.filters-bar');
+
+  if (v === 'queue') {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (queueView) queueView.classList.add('active');
+    if (statsBar) statsBar.style.display = 'none';
+    if (filtersBar) filtersBar.style.display = 'none';
+    refreshQueueView();
+  } else {
+    if (tableContainer) tableContainer.style.display = '';
+    if (queueView) queueView.classList.remove('active');
+    if (statsBar) statsBar.style.display = '';
+    if (filtersBar) filtersBar.style.display = '';
+    applyAllFilters();
+  }
+}
+
+async function refreshQueueView() {
+  const listEl = document.getElementById('queueList');
+  const statsEl = document.getElementById('queueStats');
+  if (!listEl) return;
+
+  listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light)">⏳ Loading queue from GitHub...</div>';
+
+  try {
+    const resp = await fetch(_LI_QUEUE_API, {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      _liQueueSha = data.sha;
+      _queueData = JSON.parse(atob(data.content));
+    } else {
+      _queueData = { queue: [], lastProcessed: '' };
+    }
+  } catch (e) {
+    console.error('Failed to fetch queue:', e);
+    _queueData = { queue: [], lastProcessed: '' };
+  }
+
+  renderQueueView();
+}
+
+function renderQueueView() {
+  const listEl = document.getElementById('queueList');
+  const statsEl = document.getElementById('queueStats');
+  if (!listEl || !statsEl) return;
+
+  const q = _queueData.queue || [];
+
+  // Update queue badge in tab
+  const badge = document.getElementById('queueBadge');
+  const pendingCount = q.filter(e => e.status === 'pending' || e.status === 'processing').length;
+  if (badge) {
+    badge.textContent = pendingCount;
+    badge.style.display = pendingCount > 0 ? 'inline' : 'none';
+  }
+
+  // Stats
+  const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0 };
+  q.forEach(e => { counts[e.status] = (counts[e.status] || 0) + 1; });
+
+  statsEl.innerHTML = `
+    <div class="queue-stat pending"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
+    <div class="queue-stat paused"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
+    <div class="queue-stat" style="border-left-color:#7B1FA2"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Connection Pending</div></div>
+    <div class="queue-stat completed"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
+    <div class="queue-stat failed"><div class="queue-stat-number">${counts.failed}</div><div class="queue-stat-label">Failed</div></div>
+  `;
+
+  // Update global toggle button
+  const toggleBtn = document.getElementById('queueGlobalToggle');
+  const toggleIcon = document.getElementById('queueToggleIcon');
+  const toggleLabel = document.getElementById('queueToggleLabel');
+  if (toggleBtn) {
+    if (_queuePaused) {
+      toggleBtn.className = 'btn queue-btn-play';
+      toggleIcon.textContent = '▶';
+      toggleLabel.textContent = 'Resume All';
+    } else {
+      toggleBtn.className = 'btn queue-btn-pause';
+      toggleIcon.textContent = '⏸';
+      toggleLabel.textContent = 'Pause All';
+    }
+  }
+
+  if (q.length === 0) {
+    listEl.innerHTML = `<div class="queue-empty">
+      <h3>Queue is empty</h3>
+      <p>Click "Message" or "Connect" on any contact to add them to the queue.</p>
+    </div>`;
+    return;
+  }
+
+  // Sort: pending/processing first, then paused, conn_pending, then completed/failed
+  const statusOrder = { processing: 0, pending: 1, paused: 2, conn_pending: 3, failed: 4, completed: 5 };
+  const sorted = [...q].sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
+
+  listEl.innerHTML = sorted.map((entry, idx) => {
+    const origIdx = q.indexOf(entry);
+    const initials = entry.contactName.split(' ').map(n => n[0]).join('').substring(0, 2);
+    const isConnect = !entry.isConnected;
+    const typeBadge = isConnect
+      ? '<span class="queue-type-badge connect">🔗 Connect</span>'
+      : '<span class="queue-type-badge message">💬 Message</span>';
+    const statusLabel = {
+      pending: 'Pending', processing: 'Processing...', completed: 'Completed',
+      failed: 'Failed', paused: 'Paused', conn_pending: 'Connection Pending'
+    }[entry.status] || entry.status;
+    const statusClass = entry.status;
+    const timeAgo = _timeAgo(entry.createdAt);
+    const completedInfo = entry.completedAt ? ` · Done ${_timeAgo(entry.completedAt)}` : '';
+
+    // Truncated message preview
+    const msgPreview = (entry.message || '').replace(/\n/g, ' ').substring(0, 120) + ((entry.message || '').length > 120 ? '...' : '');
+
+    // Action buttons based on status
+    let actions = '';
+    if (entry.status === 'pending' || entry.status === 'processing') {
+      actions = `
+        <button onclick="event.stopPropagation();pauseQueueEntry(${origIdx})" title="Pause">⏸ Pause</button>
+        <button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
+    } else if (entry.status === 'paused') {
+      actions = `
+        <button onclick="event.stopPropagation();resumeQueueEntry(${origIdx})" title="Resume">▶ Resume</button>
+        <button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
+    } else if (entry.status === 'failed') {
+      actions = `
+        <button onclick="event.stopPropagation();retryQueueEntry(${origIdx})" title="Retry">↻ Retry</button>
+        <button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
+    } else if (entry.status === 'conn_pending') {
+      actions = `
+        <button onclick="event.stopPropagation();markConnAccepted(${origIdx})" title="Mark Accepted" style="color:#2E7D32;border-color:#2E7D32">✓ Accepted</button>
+        <button onclick="event.stopPropagation();retryQueueEntry(${origIdx})" title="Resend">↻ Resend</button>
+        <button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
+    } else if (entry.status === 'completed') {
+      actions = `<button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
+    }
+
+    return `
+    <div class="queue-card status-${statusClass}">
+      <div class="queue-card-avatar">${initials}</div>
+      <div class="queue-card-info">
+        <div class="queue-card-name">
+          ${entry.contactName} ${typeBadge}
+          ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
+        </div>
+        <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${entry.company}</div>
+        <div class="queue-card-message" onclick="this.classList.toggle('expanded')" title="Click to expand">${msgPreview}</div>
+        <div class="queue-card-meta">
+          <span>🕐 ${timeAgo}${completedInfo}</span>
+          ${entry.linkedinUrl ? '<a href="'+entry.linkedinUrl+'" target="_blank" style="font-size:11px;color:#0A66C2;text-decoration:none">🔗 LinkedIn</a>' : ''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
+        <span class="queue-card-status ${statusClass}">${statusLabel}</span>
+        <div class="queue-card-actions">${actions}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function _timeAgo(isoStr) {
+  if (!isoStr) return '';
+  const diff = Date.now() - new Date(isoStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(hrs / 24);
+  return days + 'd ago';
+}
+
+// Queue entry actions
+async function pauseQueueEntry(idx) {
+  _queueData.queue[idx].status = 'paused';
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('⏸ Paused: ' + _queueData.queue[idx].contactName);
+}
+
+async function resumeQueueEntry(idx) {
+  _queueData.queue[idx].status = 'pending';
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('▶ Resumed: ' + _queueData.queue[idx].contactName);
+}
+
+async function retryQueueEntry(idx) {
+  _queueData.queue[idx].status = 'pending';
+  _queueData.queue[idx].error = null;
+  _queueData.queue[idx].completedAt = null;
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('↻ Retrying: ' + _queueData.queue[idx].contactName);
+}
+
+async function deleteQueueEntry(idx) {
+  const name = _queueData.queue[idx].contactName;
+  _queueData.queue.splice(idx, 1);
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('🗑 Removed: ' + name);
+}
+
+async function markConnAccepted(idx) {
+  const entry = _queueData.queue[idx];
+  entry.status = 'completed';
+  entry.completedAt = new Date().toISOString();
+  // Update outreach status to connected
+  _setOutreachStatus(entry.contactKey, 'connected');
+  _connectedContacts.add(entry.contactKey);
+  _saveConnected();
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('✅ ' + entry.contactName + ' is now connected!');
+}
+
+async function toggleQueueGlobal() {
+  _queuePaused = !_queuePaused;
+  localStorage.setItem('queuePaused', JSON.stringify(_queuePaused));
+
+  // Pause/resume all pending entries
+  _queueData.queue.forEach(e => {
+    if (_queuePaused && (e.status === 'pending' || e.status === 'processing')) {
+      e.status = 'paused';
+    } else if (!_queuePaused && e.status === 'paused') {
+      e.status = 'pending';
+    }
+  });
+
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast(_queuePaused ? '⏸ Queue paused' : '▶ Queue resumed');
+}
+
+async function clearCompletedQueue() {
+  const before = _queueData.queue.length;
+  _queueData.queue = _queueData.queue.filter(e => e.status !== 'completed');
+  const removed = before - _queueData.queue.length;
+  if (removed === 0) { _showToast('No completed entries to clear'); return; }
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast(`🗑 Cleared ${removed} completed entries`);
+}
+
+async function _saveQueueToGitHub() {
+  try {
+    // Get latest SHA
+    const resp = await fetch(_LI_QUEUE_API, {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      _liQueueSha = data.sha;
+    }
+
+    const body = {
+      message: 'Update LinkedIn queue',
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(_queueData, null, 2)))),
+      sha: _liQueueSha
+    };
+    const putResp = await fetch(_LI_QUEUE_API, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (putResp.ok) {
+      const putData = await putResp.json();
+      _liQueueSha = putData.content.sha;
+    }
+  } catch (e) {
+    console.error('Failed to save queue:', e);
+    _showToast('❌ Failed to save queue changes');
+  }
+}
+
+// Also update messageOnLinkedIn to use connect templates for non-connected contacts
+const _origMessageOnLinkedIn = messageOnLinkedIn;
+function messageOnLinkedInV2(stakeholderIdx) {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  _activeStakeholderIdx = stakeholderIdx;
+  const stakeholders = job.stakeholders || [];
+  const s = stakeholders[stakeholderIdx];
+  if (!s) return;
+
+  const key = _contactKey(s);
+  const isConn = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
+
+  // Use connect templates for non-connected, regular templates for connected
+  let msg;
+  if (!isConn && CONNECT_TEMPLATES.length > 0) {
+    // Use the active connect template (default to first)
+    const ctIdx = _activeConnectTemplateIdx || 0;
+    msg = fillTemplate(CONNECT_TEMPLATES[ctIdx].body, job, s);
+  } else {
+    msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
+  }
+
+  const liUrl = (s.linkedin && s.linkedin.startsWith('http'))
+    ? s.linkedin
+    : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
+
+  // Update template preview
+  const preview = document.getElementById('templatePreview');
+  if (preview) preview.textContent = msg;
+
+  // Highlight selected stakeholder card
+  document.querySelectorAll('.stakeholder-card').forEach((c,i) => {
+    c.style.borderColor = i===stakeholderIdx ? 'var(--primary)' : '';
+    c.style.background = i===stakeholderIdx ? 'var(--primary-light)' : '';
+  });
+
+  // Mark button as queued immediately
+  const cards = document.querySelectorAll('.stakeholder-card');
+  if (cards[stakeholderIdx]) {
+    const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+    if (btn) {
+      btn.innerHTML = '⏳ Queuing...';
+      btn.style.background = '#F57C00';
+      btn.style.color = 'white';
+      btn.disabled = true;
+    }
+  }
+
+  // Push to GitHub queue for scheduled Claude task
+  _pushToLinkedInQueue({
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2,4),
+    contactName: s.name,
+    contactTitle: s.title || '',
+    contactKey: key,
+    company: job.company,
+    linkedinUrl: liUrl,
+    message: msg,
+    isConnected: isConn,
+    status: _queuePaused ? 'paused' : 'pending',
+    createdAt: new Date().toISOString(),
+    completedAt: null
+  }).then(() => {
+    if (cards[stakeholderIdx]) {
+      const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+      if (btn) {
+        btn.innerHTML = '✅ Queued';
+        btn.style.background = '#2E7D32';
+      }
+    }
+    _showToast(`✅ ${s.name} added to queue`);
+    // Update badge
+    const badge = document.getElementById('queueBadge');
+    if (badge) {
+      const cur = parseInt(badge.textContent) || 0;
+      badge.textContent = cur + 1;
+      badge.style.display = 'inline';
+    }
+  }).catch(err => {
+    console.error('Queue push failed:', err);
+    if (cards[stakeholderIdx]) {
+      const btn = cards[stakeholderIdx].querySelector('.btn-linkedin');
+      if (btn) {
+        btn.innerHTML = '❌ Failed';
+        btn.style.background = '#C62828';
+        btn.disabled = false;
+      }
+    }
+    _showToast(`❌ Failed to queue. Try again.`);
+  });
+
+  // Track outreach status
+  const status = _getOutreachStatus(key);
+  if (!status || status === 'not_contacted') {
+    _setOutreachStatus(key, isConn ? 'messaged' : 'invited');
+  }
+}
+
+// Override global reference
+messageOnLinkedIn = messageOnLinkedInV2;
+let _activeConnectTemplateIdx = 0;
+
+// Add connect template picker to outreach section for non-connected contacts
+const _origBuildOutreach = buildOutreachSection;
+function buildOutreachSectionV2(job) {
+  let html = _origBuildOutreach(job);
+
+  // Add connect templates section if there are non-connected stakeholders
+  const stakeholders = job.stakeholders || [];
+  const hasNonConnected = stakeholders.some(s => {
+    const key = _contactKey(s);
+    return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
+  });
+
+  if (hasNonConnected) {
+    const connectTabs = CONNECT_TEMPLATES.map((t, i) => {
+      return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchConnectTemplate(${i})" style="font-size:11px">${t.emoji} ${t.name}</button>`;
+    }).join('');
+
+    const firstS = stakeholders.find(s => {
+      const key = _contactKey(s);
+      return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
+    }) || stakeholders[0];
+    const firstConnMsg = fillTemplate(CONNECT_TEMPLATES[0].body, job, firstS);
+
+    const connectSection = `
+    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed var(--border)">
+      <div style="font-size:12px;font-weight:700;color:#7B1FA2;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+        🔗 Connection Request Style
+        <span style="font-size:10px;font-weight:400;color:var(--text-light)">(for non-connected contacts)</span>
+      </div>
+      <div class="template-tabs" id="connectTemplateTabs">${connectTabs}</div>
+      <div class="template-preview" id="connectTemplatePreview" style="max-height:160px;font-size:12px">${firstConnMsg}</div>
+      <div style="font-size:10px;color:var(--text-lighter);margin-top:6px;text-align:right">
+        Style: <strong>${CONNECT_TEMPLATES[0].style}</strong> · Max 300 chars for LinkedIn notes
+      </div>
+    </div>`;
+
+    // Insert before closing </div> of outreach-section
+    html = html.replace(/<\/div>\s*$/, connectSection + '</div>');
+  }
+
+  return html;
+}
+buildOutreachSection = buildOutreachSectionV2;
+
+function switchConnectTemplate(idx) {
+  _activeConnectTemplateIdx = idx;
+  document.querySelectorAll('#connectTemplateTabs .template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  const stakeholders = job.stakeholders || [];
+  const s = stakeholders.find(s => {
+    const key = _contactKey(s);
+    return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
+  }) || stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
+  const msg = fillTemplate(CONNECT_TEMPLATES[idx].body, job, s);
+  const preview = document.getElementById('connectTemplatePreview');
+  if (preview) preview.textContent = msg;
+  // Update style label
+  const styleLabel = preview?.parentElement?.querySelector('strong');
+  if (styleLabel) styleLabel.textContent = CONNECT_TEMPLATES[idx].style;
+}
+
+// Load queue badge count on page load
+async function _initQueueBadge() {
+  try {
+    const resp = await fetch(_LI_QUEUE_API, {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      _liQueueSha = data.sha;
+      const q = JSON.parse(atob(data.content));
+      const pending = (q.queue || []).filter(e => e.status === 'pending' || e.status === 'processing').length;
+      const badge = document.getElementById('queueBadge');
+      if (badge && pending > 0) {
+        badge.textContent = pending;
+        badge.style.display = 'inline';
+      }
+    }
+  } catch (e) { /* silent */ }
+}
+setTimeout(_initQueueBadge, 2000);
 
 window.onload = initGoogleAuth;
 </script>
