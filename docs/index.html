@@ -5220,12 +5220,11 @@ function buildOutreachSection(job) {
 
       // Action buttons differ based on connected status
       let actionBtns = '';
-      if (hasLI) {
-        if (connected) {
-          actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-msg" onclick="event.stopPropagation()" style="text-decoration:none">${MSG_ICON} Message</a>`;
-        } else {
-          actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${LI_ICON} Connect</a>`;
-        }
+      const liUrl = hasLI ? s.linkedin : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
+      if (connected) {
+        actionBtns += `<a href="${liUrl}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${MSG_ICON} Message</a>`;
+      } else if (hasLI) {
+        actionBtns += `<a href="${s.linkedin}" target="_blank" class="btn-linkedin" onclick="event.stopPropagation()" style="text-decoration:none">${LI_ICON} Connect</a>`;
       }
       if (hasEmail) {
         actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
@@ -5233,7 +5232,7 @@ function buildOutreachSection(job) {
       actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i})" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
 
       // Toggle connected status button
-      const toggleBtn = hasLI
+      const toggleBtn = (hasLI || connected)
         ? `<button onclick="event.stopPropagation();toggleConnected('${key.replace(/'/g,"\\'")}',${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--text-lighter);padding:2px 4px;margin-top:2px" title="${connected?'Mark as not connected':'Mark as connected'}">${connected?'✓ mark not connected':'+ mark connected'}</button>`
         : '';
 
