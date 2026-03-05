@@ -4990,7 +4990,7 @@ const LI_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentCo
 const MSG_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
 const MAIL_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
 
-function _contactKey(s) { return (s.name + '|' + s.linkedin).toLowerCase(); }
+function _contactKey(s) { return s.name.toLowerCase().trim(); }
 
 function _stakeholderAvatar(s) {
   const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2);
@@ -5334,16 +5334,30 @@ async function _initGitHubSync() {
   _updateSyncIndicator('syncing');
   const remote = await _fetchRemoteStatus();
   if (!remote || !remote.lastUpdated) { _updateSyncIndicator('offline'); return; }
-  // Merge remote into local (remote wins for any key that exists remotely)
+  // Migrate old keys (name|linkedin_url → name) and merge
+  function _migrateKey(k) {
+    if (k.includes('|http')) return k.split('|')[0].trim();
+    if (k.includes('|')) { const parts = k.split('|'); if (parts[1] === '' || parts[1].startsWith('http')) return parts[0].trim(); }
+    return k.trim();
+  }
   if (remote.statuses && Object.keys(remote.statuses).length > 0) {
     const local = _loadOutreachStatuses();
-    const merged = { ...local, ...remote.statuses };
-    _saveOutreachStatuses(merged);
+    const migrated = {};
+    // Migrate remote keys
+    Object.entries(remote.statuses).forEach(([k, v]) => { migrated[_migrateKey(k)] = v; });
+    // Migrate local keys
+    Object.entries(local).forEach(([k, v]) => { const mk = _migrateKey(k); if (!migrated[mk]) migrated[mk] = v; });
+    _saveOutreachStatuses(migrated);
   }
   if (remote.connected && remote.connected.length > 0) {
-    remote.connected.forEach(k => _connectedContacts.add(k));
+    remote.connected.forEach(k => _connectedContacts.add(_migrateKey(k)));
     _saveConnected();
   }
+  // Also migrate local connected contacts
+  const oldConnected = [..._connectedContacts];
+  _connectedContacts.clear();
+  oldConnected.forEach(k => _connectedContacts.add(_migrateKey(k)));
+  _saveConnected();
   if (remote.hiddenCompanies && remote.hiddenCompanies.length > 0) {
     remote.hiddenCompanies.forEach(c => hiddenCompanies.add(c));
     saveHidden();
