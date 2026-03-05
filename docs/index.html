@@ -373,6 +373,7 @@
   .queue-card.status-completed { border-left-color:#2E7D32; opacity:0.75; }
   .queue-card.status-failed { border-left-color:var(--danger); }
   .queue-card.status-paused { border-left-color:#9E9E9E; opacity:0.6; }
+  .queue-card.status-sos_waiting { border-left-color:#FFB100; background:#FFFBF0; }
   .queue-card.status-conn_pending { border-left-color:#7B1FA2; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
   .queue-card-avatar { width:44px; height:44px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; }
@@ -403,6 +404,7 @@
   .queue-card-status.failed { background:#FFEBEE; color:#C62828; }
   .queue-card-status.paused { background:#F5F5F5; color:#757575; }
   .queue-card-status.conn_pending { background:#F3E5F5; color:#7B1FA2; }
+  .queue-card-status.sos_waiting { background:#FFF3E0; color:#E65100; }
   .queue-card-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
   .queue-card-actions button { background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:4px; }
   .queue-card-actions button:hover { border-color:var(--primary); color:var(--primary); }
@@ -463,6 +465,56 @@
   .modal-close { position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light); }
   .modal-title { font-size:18px; font-weight:700; margin-bottom:16px; }
   .modal-preview { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; font-size:13px; line-height:1.7; white-space:pre-wrap; word-break:break-word; color:var(--text); }
+
+  /* ── Soap Opera Sequences ── */
+  .sos-sub-tabs { display:flex; gap:8px; margin-bottom:24px; border-bottom:2px solid var(--border); }
+  .sos-sub-tab { padding:12px 20px; font-size:14px; font-weight:600; border:none; background:transparent; color:var(--text-light); cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; }
+  .sos-sub-tab:hover { color:var(--text); }
+  .sos-sub-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+  .sos-timeline { position:relative; padding-left:50px; margin-bottom:32px; }
+  .sos-timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:3px; background:linear-gradient(180deg, var(--primary), var(--accent)); border-radius:3px; }
+  .sos-step { position:relative; margin-bottom:28px; }
+  .sos-step:last-child { margin-bottom:0; }
+  .sos-step-badge { position:absolute; left:-42px; width:36px; height:36px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; z-index:1; border:3px solid white; box-shadow:0 2px 8px rgba(5,50,60,0.2); }
+  .sos-step-card { background:white; border:1px solid var(--border); border-radius:12px; padding:20px; box-shadow:var(--shadow); transition:all 0.2s; }
+  .sos-step-card:hover { box-shadow:0 4px 20px rgba(0,0,0,0.12); border-color:var(--primary); }
+  .sos-step-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .sos-step-name { font-size:13px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.5px; }
+  .sos-step-emoji { font-size:24px; }
+  .sos-step-day { font-size:12px; color:var(--text-light); background:var(--primary-light); padding:4px 10px; border-radius:8px; margin-left:auto; }
+  .sos-subject-input { width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; margin-bottom:12px; outline:none; font-weight:600; }
+  .sos-subject-input:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(5,50,60,0.1); }
+  .sos-body-textarea { width:100%; min-height:180px; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:13px; font-family:'Monaco','Courier New',monospace; line-height:1.6; outline:none; resize:vertical; }
+  .sos-body-textarea:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(5,50,60,0.1); }
+  .sos-variables { margin-top:12px; padding:12px; background:var(--bg); border-radius:8px; border:1px solid var(--border); }
+  .sos-variables-label { font-size:11px; font-weight:700; color:var(--text-light); text-transform:uppercase; margin-bottom:8px; }
+  .sos-variable-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .sos-variable-chip { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; background:var(--primary); color:white; font-size:11px; font-weight:600; cursor:pointer; transition:all 0.2s; user-select:none; }
+  .sos-variable-chip:hover { background:var(--primary-dark); transform:translateY(-1px); box-shadow:0 2px 4px rgba(5,50,60,0.2); }
+  .sos-step-actions { display:flex; gap:8px; margin-top:12px; }
+  .sos-step-actions button { flex:1; padding:8px 12px; border-radius:6px; border:1px solid var(--border); background:white; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .sos-step-actions button:hover { border-color:var(--primary); color:var(--primary); }
+  .sos-step-actions .btn-polish { background:linear-gradient(135deg,#FF6B9D 0%,#FEC868 100%); color:white; border:none; }
+  .sos-step-actions .btn-polish:hover { transform:translateY(-1px); box-shadow:0 2px 8px rgba(255,107,157,0.3); }
+  .sos-queue-btn { background:var(--primary); color:white; border:none; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; margin-top:16px; }
+  .sos-queue-btn:hover { background:var(--primary-dark); }
+  .sos-queue-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:500; align-items:center; justify-content:center; }
+  .sos-queue-modal.open { display:flex; }
+  .sos-queue-modal-content { background:white; border-radius:12px; padding:32px; max-width:500px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-height:80vh; overflow-y:auto; }
+  .sos-queue-modal-close { position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light); }
+  .sos-queue-form { display:flex; flex-direction:column; gap:16px; }
+  .sos-queue-form label { font-size:13px; font-weight:600; color:var(--text); }
+  .sos-queue-form select, .sos-queue-form input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; outline:none; }
+  .sos-queue-form select:focus, .sos-queue-form input:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(5,50,60,0.1); }
+  .sos-queue-days-group { margin-top:8px; }
+  .sos-queue-days-item { display:flex; align-items:center; gap:8px; padding:8px 0; }
+  .sos-queue-days-item input[type="number"] { width:60px; }
+  .sos-queue-modal-actions { display:flex; gap:8px; margin-top:24px; }
+  .sos-queue-modal-actions button { flex:1; padding:10px 20px; border-radius:8px; border:none; font-size:14px; font-weight:600; cursor:pointer; }
+  .sos-queue-modal-actions .btn-confirm { background:var(--primary); color:white; }
+  .sos-queue-modal-actions .btn-confirm:hover { background:var(--primary-dark); }
+  .sos-queue-modal-actions .btn-cancel { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+  .sos-queue-modal-actions .btn-cancel:hover { background:#F0F1F3; }
 </style>
 </head>
 <body>
@@ -591,6 +643,7 @@
       <button class="settings-tab" onclick="switchSettingsTab(1)">Connect - Customer</button>
       <button class="settings-tab" onclick="switchSettingsTab(2)">Connect - Past Customer</button>
       <button class="settings-tab" onclick="switchSettingsTab(3)">Outreach - Email</button>
+      <button class="settings-tab" onclick="switchSettingsTab(4)">🎬 Soap Opera Sequences</button>
     </div>
 
     <div id="settingsTabContent"></div>
@@ -611,6 +664,15 @@
     <div style="margin-top:16px;text-align:right">
       <button class="btn" style="background:var(--primary);color:white;border:none" onclick="closePreviewModal()">Close</button>
     </div>
+  </div>
+</div>
+
+<!-- SOS Queue Modal -->
+<div class="sos-queue-modal" id="sosQueueModal">
+  <div class="sos-queue-modal-content">
+    <button class="sos-queue-modal-close" onclick="closeSOSQueueModal()">&times;</button>
+    <h3 style="font-size:18px;font-weight:700;margin-bottom:16px">🎬 Queue Soap Opera Sequence</h3>
+    <div id="sosQueueBody"></div>
   </div>
 </div>
 
@@ -4980,6 +5042,483 @@ https://www.develeap.com/contact/`
 // Create var version that can be modified
 var OUTREACH_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_OUTREACH_TEMPLATES));
 
+// ── SOAP OPERA SEQUENCES (Brunson SOS) ──
+const DEFAULT_SOS_PROSPECT = [
+  {
+    name: "Set the Stage",
+    emoji: "🎬",
+    sosStep: 1,
+    subject: "{contact_name}, a story about why {role} hiring fails 90% of the time",
+    body: `{contact_name},
+
+I'm Dori from Develeap. Want to tell you a story.
+
+Back in 2009, we watched our first hire take 6 months, cost $200K, and then fail. We thought it was just bad luck.
+
+Over the next 5 years, we realized something terrifying: {role} hires fail about 90% of the time.
+
+The problem? Companies hire for the wrong reasons. They see a gap, panic, and throw 6 months of cash at an external hire who doesn't know their stack, culture, or timeline.
+
+Meanwhile, {cat_pain}
+
+We eventually figured out a different path. One that {customers} and 100+ Israeli tech companies now use to move 3x faster.
+
+I'm reaching out because I see {company} is building and hiring. There's a strategy that could change everything — but I'll save that for our call.
+
+You interested in exploring a different way?
+
+Dori
+CEO, Develeap`
+  },
+  {
+    name: "High Drama / Backstory",
+    emoji: "😱",
+    sosStep: 2,
+    subject: "{contact_name}, the failure that almost killed us",
+    body: `{contact_name},
+
+Follow-up on my last email.
+
+I want to show you the wall we hit that changed everything for Develeap.
+
+By 2014, we were on the edge. We had clients paying premium fees, but we were burning through consultants. Every {role} hire took 8+ months, cost 3x what we budgeted, and half the time they couldn't deliver the {cat_expertise} work we promised.
+
+Our clients were leaving.
+
+Then we realized: companies don't need hiring. They need {cat_result}.
+
+So we asked ourselves: what if instead of finding a {role}, we just... embedded a fully-trained {cat_expertise} squad in 2 weeks?
+
+{customers} said yes to this crazy idea. And it worked.
+
+What was supposed to be a 6-month process became a 2-week ramp. Projects shipped faster. Teams learned faster. Everything changed.
+
+The reason I'm telling you this: {company} is at that same crossroads right now.
+
+You can keep hiring (and waiting 6 months), or you can do what the smart companies do.
+
+Which path interests you?
+
+Dori`
+  },
+  {
+    name: "Epiphany / Breakthrough",
+    emoji: "💡",
+    sosStep: 3,
+    subject: "The moment everything clicked for {company}'s {role} problem",
+    body: `{contact_name},
+
+Here's the aha moment.
+
+We finally understood: the problem was never finding talent. The problem was {cat_pain}.
+
+Once we saw that, everything clicked.
+
+Companies like {customers} stopped asking "how do we hire?" and started asking "how do we solve {cat_expertise} in the next 30 days?"
+
+The answer: bring in someone who already knows how.
+
+That's when we built Develeap's model. Not hiring. Partnership. You get {cat_offer}, we get to solve problems we love. Win-win.
+
+And the timeline goes from 6 months to 2 weeks.
+
+Think about that for a second. While your competitors are still interviewing, you're shipping.
+
+This is what we do for {customers}. This is what could happen at {company}.
+
+The question is: does {company} want to stay on the hiring cycle, or switch to the partnership path?
+
+Let me show you which way works faster.
+
+Dori`
+  },
+  {
+    name: "Hidden Benefits",
+    emoji: "🎁",
+    sosStep: 4,
+    subject: "{contact_name}, the secret benefit nobody talks about",
+    body: `{contact_name},
+
+Last email on this, then I'll be quiet.
+
+What people don't tell you about hiring: it's not just slow. It's risky.
+
+You hire a {role}. Great. But:
+- They don't know your stack for 3 months
+- They've built things a different way (conflict)
+- Half the time they leave after 6 months anyway
+
+Meanwhile, {cat_pain}
+
+Here's what nobody advertises: when you partner with Develeap instead, you get something different.
+
+You get {cat_result_short}. But you also get:
+- Zero ramp time (we know this work already)
+- Zero training overhead (we bring expertise, not a blank slate)
+- Zero hiring risk (if something changes, we adapt; no severance, no months of bad fit)
+
+{customers} came to us for help with {role}. They stayed because of everything else.
+
+That's the hidden benefit.
+
+Want to see what it looks like for {company}?
+
+Dori
+CEO, Develeap
+{cat_audit}`
+  },
+  {
+    name: "Urgency / CTA",
+    emoji: "⏰",
+    sosStep: 5,
+    subject: "{contact_name}, one slot opening next week",
+    body: `{contact_name},
+
+Quick note because this matters.
+
+Our next cohort for {cat_expertise} work starts {contact_title} next week. We have one opening left.
+
+Given what {company} is building, and the fact that you're hiring for this gap, I think you'd be insane not to at least see what the partnership path looks like.
+
+No pressure. No pitch deck. Just a 15-minute conversation about:
+- What {company} is trying to build
+- Why the traditional hire path takes 6 months
+- How {customers} solved this in weeks, not months
+
+If it's not a fit, totally cool. But if there's even a 20% chance this could save you 3 months and $150K, isn't it worth 15 minutes?
+
+Only reason not to: you're 100% committed to the traditional hire, slow-ramp path.
+
+Let's find a time:
+{cat_link}
+
+Dori
+CEO, Develeap`
+  }
+];
+
+const DEFAULT_SOS_CUSTOMER = [
+  {
+    name: "Set the Stage",
+    emoji: "🎬",
+    sosStep: 1,
+    subject: "{contact_name}, a story about deepening partnerships",
+    body: `{contact_name},
+
+It's Dori from Develeap. Been a minute.
+
+Quick story. One of our biggest customers called last month with a problem. They wanted to expand the scope of what we're doing together.
+
+The call went something like this:
+
+"Dori, we're hiring a whole {role} team. Instead of 6 months of recruiting, what if we just... deepened the partnership with you instead?"
+
+That conversation changed everything for them.
+
+See, the thing about partnerships is: the real value comes later. Year 2. Year 3. When you stop treating the vendor as a vendor and start treating them as an extension of the team.
+
+That's the stage {company} is at right now.
+
+You've worked with us on {cat_expertise}. You know we deliver. The question is: do you want to level that up?
+
+I'm reaching out because I think it's time.
+
+Let me share what we're seeing with other customers.
+
+Dori`
+  },
+  {
+    name: "High Drama / Backstory",
+    emoji: "😱",
+    sosStep: 2,
+    subject: "The call that almost lost our biggest partnership",
+    body: `{contact_name},
+
+I need to be honest about something.
+
+Last quarter, one of our longest customers came to us. They said: "Dori, we love Develeap, but we're thinking of bringing this {role} hire in-house. We need to own this competency."
+
+My stomach dropped.
+
+Not because they were leaving. But because I realized: they thought we were just a vendor who does work. They didn't see what we could become together.
+
+So I asked them one question: "What if instead of replacing us with an internal hire, we became your {cat_expertise} squad?"
+
+Everything changed in that moment.
+
+The internal hire talk went away. Instead, they asked: "What does that look like?"
+
+We showed them.
+
+Now, 6 months later, they're shipping 3x faster. They've scaled {cat_expertise} without the headcount. And they're asking us to do more.
+
+Here's why I'm telling you this: {company} is at that same moment right now.
+
+You can keep us as a vendor (one project at a time), or you can deepen the partnership.
+
+One path keeps you stuck. The other accelerates everything.
+
+Which version of Develeap do you want to be with?
+
+Dori`
+  },
+  {
+    name: "Epiphany / Breakthrough",
+    emoji: "💡",
+    sosStep: 3,
+    subject: "{contact_name}, the insight that changed everything",
+    body: `{contact_name},
+
+Here's what I learned from that conversation.
+
+When you're good at {cat_expertise}, you should never hire for it. You should partner for it.
+
+Why? Because {customers} figured something out:
+
+External hires take 6 months to ramp. Partnerships (with teams who already know your stack) take 2 weeks.
+
+But here's the deeper insight: partnerships compound.
+
+Every project we do for {customers}, we learn more. The next project is faster. The one after that is even faster. By month 12, we're not just delivering {cat_offer} — we're thinking like an extension of your team.
+
+That's the hidden value.
+
+{company} is past the "vendor" stage with Develeap. You're in the "partnership" stage. The question is: are you going to level it up, or keep it flat?
+
+Leveling it up means: instead of hiring a {role}, you deepen what we do. You get {cat_result_short} without the headcount, the hiring risk, or the ramp time.
+
+Not ready to decide yet? That's cool. But at least see what the next level looks like.
+
+Worth a call?
+
+Dori`
+  },
+  {
+    name: "Hidden Benefits",
+    emoji: "🎁",
+    sosStep: 4,
+    subject: "{contact_name}, what nobody tells you about true partnerships",
+    body: `{contact_name},
+
+Last email on this, promise.
+
+There's a benefit to deepening partnerships that doesn't show up in spreadsheets.
+
+When {company} came to us talking about bringing {cat_expertise} in-house, we didn't fight it. We just asked: "What if you didn't have to hire?"
+
+The conversation shifted immediately.
+
+Suddenly, it wasn't about finding a {role}. It was about: how do we solve the problem in the smartest way?
+
+And the smartest way for {customers} (and now your peers in the space) is: partner deeper with a team that already knows your tech stack, your problems, and your goals.
+
+The benefits?
+- Zero hiring risk
+- Zero ramp time
+- Zero HR overhead
+- 3x faster delivery (because we know you)
+- Flexibility to scale up/down without headcount commitments
+
+But the real hidden benefit: {cat_result}.
+
+Faster. Cheaper. With less organizational risk.
+
+That's what happened with our customers when they said yes to deepening the partnership.
+
+What could it look like for {company}?
+
+Dori`
+  },
+  {
+    name: "Urgency / CTA",
+    emoji: "⏰",
+    sosStep: 5,
+    subject: "Let's schedule this call — {contact_title} next week?",
+    body: `{contact_name},
+
+I'm going to be direct.
+
+{company} is hiring. We already work with you. This is a "why not" moment.
+
+The "why not deepen the partnership instead of hiring?" conversation.
+
+I've got 2 slots next week to walk through what this could look like for {company}:
+- Tuesday, 2pm: deep-dive on {cat_expertise} roadmap
+- Thursday, 10am: show how other customers scaled this way
+
+Pick whichever works:
+{cat_link}
+
+20 minutes. That's all I'm asking.
+
+If it's not a fit, cool — we keep doing what we're doing. But if there's a chance to level up the partnership and solve the {role} problem faster... I think you'd want to know what that looks like.
+
+{company} is too smart to keep hiring the hard way.
+
+Let's talk.
+
+Dori
+CEO, Develeap`
+  }
+];
+
+const DEFAULT_SOS_PAST = [
+  {
+    name: "Set the Stage",
+    emoji: "🎬",
+    sosStep: 1,
+    subject: "{contact_name}, the story I've been meaning to tell",
+    body: `{contact_name},
+
+It's Dori from Develeap.
+
+It's been a while since we worked together, and I owe you something: a real conversation.
+
+Here's what I've been thinking about lately: we had a great partnership with {company}. It ended. But I realized... I never told you the full story of what happened after.
+
+See, I watch what happens when companies stop partnering with us on {cat_expertise}. Some thrive. Some struggle.
+
+And the ones who struggle? They always say the same thing: "We thought we could solve {cat_pain} ourselves."
+
+Then reality hits. {cat_expertise} is harder than it looks when you're building it from scratch.
+
+I'm not writing this to sell you back. I'm writing it because I saw {company} is hiring a {role}. And I want to tell you something that might matter.
+
+There's a path that's faster than hiring. A path we pioneered with {customers}.
+
+Interested in hearing about it?
+
+Dori`
+  },
+  {
+    name: "High Drama / Backstory",
+    emoji: "😱",
+    sosStep: 2,
+    subject: "{contact_name}, the call that haunted me",
+    body: `{contact_name},
+
+I need to tell you about a call that stuck with me.
+
+One of our past customers — you'd know them, great company — they came to Develeap because they needed {cat_expertise} help fast. We partnered. We delivered {cat_result}. Everyone was happy.
+
+Then... they went internal.
+
+"Thanks Develeap, but we're building this ourselves," they said. Totally fair decision.
+
+18 months later, they called me back.
+
+Their tone was different. They said: "{cat_pain}. Hiring hasn't worked. Building internally is taking forever. We made a mistake."
+
+That call broke my heart, honestly. Because I'd seen it coming.
+
+Here's what happened: they thought {cat_expertise} could be solved by hiring a {role}. It can't. It requires deep experience. Infrastructure. A track record.
+
+All the things that take years to build, but weeks to access through partnership.
+
+They came back to Develeap. Now they're thriving again.
+
+I'm telling you this story because {company} is at that same fork right now.
+
+Hire the slow way. Hope it works. Or take a shortcut.
+
+You know which one we'd choose.
+
+Dori`
+  },
+  {
+    name: "Epiphany / Breakthrough",
+    emoji: "💡",
+    sosStep: 3,
+    subject: "The moment I realized why partnerships matter more than hiring",
+    body: `{contact_name},
+
+That same company who came back to us taught me something.
+
+They said: "Dori, we realized too late — building {cat_expertise} in-house requires context. You already have it. Instead of us trying to replicate 15 years of learning, we should just access it from you."
+
+That's when it clicked.
+
+{customers} didn't hire for {cat_expertise}. They partnered for it. Because partnership compressed 6 months of ramp into 2 weeks.
+
+And the compounding effect: every month with us, they got smarter. Every quarter, they shipped faster.
+
+There's a reason {customers} keep expanding what they do with Develeap.
+
+It's not because we're charming (we're okay 😄). It's because {cat_offer} is faster through partnership than through hiring.
+
+{company} left us once. You didn't have the context then. But now you do.
+
+Now you know: the hard way takes 6 months. The smart way takes 2 weeks.
+
+And we've gotten way better since you last worked with us.
+
+Worth reconnecting?
+
+Dori`
+  },
+  {
+    name: "Hidden Benefits",
+    emoji: "🎁",
+    sosStep: 4,
+    subject: "{contact_name}, what we've built since you left",
+    body: `{contact_name},
+
+When you and I last worked together, Develeap was good.
+
+Now, 2+ years later, we're way better.
+
+Our {cat_expertise} squad has grown. Our customers have 5x multiplied. We've shipped projects that would have seemed impossible back when we worked together.
+
+The reason I'm mentioning this: comeback stories work better when the other side has improved too.
+
+You used to know Develeap. Now, you should know who we've become.
+
+{customers} and 100+ companies are seeing: Develeap in 2024 is not the same team you knew. We're faster. We're deeper. We know more.
+
+And the partnership would be different this time. Better.
+
+No "hoping it works out." Just: here's what {cat_result_short} looks like now. Here's the speed. Here's the risk (which is zero).
+
+Worth seeing what the upgraded version of Develeap brings to {company}?
+
+Dori`
+  },
+  {
+    name: "Urgency / CTA",
+    emoji: "⏰",
+    sosStep: 5,
+    subject: "{contact_name}, one week to reconnect",
+    body: `{contact_name},
+
+Last email, and then I'll back off.
+
+{company} is hiring. We've worked before. Your customer for 2 years is now hiring with us, shipping {cat_result}, and scaling {cat_expertise} without the headcount.
+
+The path is clear.
+
+You can:
+1. Start the {role} search (6 months, good luck)
+2. Or reconnect with us (2 weeks, proven path, {customers} can vouch)
+
+I've got space next week for a no-pressure catch-up call. Not a sales pitch. Just: "What's {company} building now? How have things changed? Is there a partnership that makes sense?"
+
+Wednesday or Friday work?
+{cat_link}
+
+You know the work we do. You know we deliver. The question now is: do you want the easier path this time?
+
+Let's reconnect.
+
+Dori
+CEO, Develeap`
+  }
+];
+
+// Create var versions that can be modified
+var SOS_PROSPECT = JSON.parse(JSON.stringify(DEFAULT_SOS_PROSPECT));
+var SOS_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_SOS_CUSTOMER));
+var SOS_PAST = JSON.parse(JSON.stringify(DEFAULT_SOS_PAST));
+
 const LI_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
 const MSG_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
 const MAIL_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
@@ -6236,7 +6775,10 @@ async function _saveSettingsToGitHub() {
     prospect: CONNECT_TEMPLATES_PROSPECT,
     customer: CONNECT_TEMPLATES_CUSTOMER,
     past: CONNECT_TEMPLATES_PAST,
-    outreach: OUTREACH_TEMPLATES
+    outreach: OUTREACH_TEMPLATES,
+    sos_prospect: SOS_PROSPECT,
+    sos_customer: SOS_CUSTOMER,
+    sos_past: SOS_PAST
   };
 
   const payload = {
@@ -6281,6 +6823,12 @@ function switchSettingsTab(idx) {
 }
 
 function renderSettingsTab(idx) {
+  // Special handling for SOS tab (idx 4)
+  if (idx === 4) {
+    renderSOSTab();
+    return;
+  }
+
   const templateSets = [
     {name: 'Prospect', templates: CONNECT_TEMPLATES_PROSPECT, id: 'prospect'},
     {name: 'Customer', templates: CONNECT_TEMPLATES_CUSTOMER, id: 'customer'},
@@ -6458,6 +7006,256 @@ function closePreviewModal() {
   document.getElementById('previewModal').classList.remove('open');
 }
 
+// ── SOS (Soap Opera Sequences) Functions ──
+function renderSOSTab() {
+  let html = `
+    <div class="sos-sub-tabs">
+      <button class="sos-sub-tab active" onclick="switchSOSSubTab(0)">Prospect</button>
+      <button class="sos-sub-tab" onclick="switchSOSSubTab(1)">Customer</button>
+      <button class="sos-sub-tab" onclick="switchSOSSubTab(2)">Past Customer</button>
+    </div>
+    <div id="sosSubTabContent"></div>
+  `;
+  document.getElementById('settingsTabContent').innerHTML = html;
+  switchSOSSubTab(0);
+}
+
+var _currentSOSSubTab = 0;
+function switchSOSSubTab(idx) {
+  _currentSOSSubTab = idx;
+  document.querySelectorAll('.sos-sub-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  renderSOSSubTab(idx);
+}
+
+function renderSOSSubTab(idx) {
+  const sets = [
+    {name: 'Prospect', templates: SOS_PROSPECT, id: 'prospect'},
+    {name: 'Customer', templates: SOS_CUSTOMER, id: 'customer'},
+    {name: 'Past Customer', templates: SOS_PAST, id: 'past'}
+  ];
+
+  const set = sets[idx];
+  if (!set) return;
+
+  let html = '<div class="sos-timeline">';
+  set.templates.forEach((tpl, i) => {
+    const stepName = ['Set the Stage', 'High Drama', 'Epiphany', 'Hidden Benefits', 'Urgency / CTA'][i] || '';
+    const dayMap = [0, 2, 4, 6, 9];
+    const dayDelay = dayMap[i];
+
+    html += `
+      <div class="sos-step">
+        <div class="sos-step-badge">${i + 1}</div>
+        <div class="sos-step-card">
+          <div class="sos-step-header">
+            <span class="sos-step-emoji">${tpl.emoji}</span>
+            <span class="sos-step-name">${stepName}</span>
+            <span class="sos-step-day">Day ${dayDelay}</span>
+          </div>
+          <input type="text" class="sos-subject-input" value="${tpl.subject}" data-set="${set.id}" data-idx="${i}" onchange="updateSOSSubject(this)" placeholder="Email subject line" />
+          <textarea class="sos-body-textarea" data-set="${set.id}" data-idx="${i}" placeholder="Email body...">${tpl.body}</textarea>
+          <div class="sos-variables">
+            <div class="sos-variables-label">Variables:</div>
+            <div class="sos-variable-chips">
+              ${TEMPLATE_VARIABLES.map(v => `<span class="sos-variable-chip" onclick="insertVariableAtCursor('textarea[data-set=\\'${set.id}\\'][data-idx=\\'${i}\\']', '${v.var}')" title="${v.desc}">{${v.var}}</span>`).join('')}
+            </div>
+          </div>
+          <div class="sos-step-actions">
+            <button class="btn-polish" onclick="aiPolishTemplate('textarea[data-set=\\'${set.id}\\'][data-idx=\\'${i}\\']')">✨ AI Polish</button>
+            <button class="btn-preview" onclick="previewSOSTemplate('${set.id}', ${i})">👁 Preview</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  html += `<button class="sos-queue-btn" onclick="openSOSQueueModal('${set.id}')">▶️ Queue Full Sequence</button>`;
+
+  document.getElementById('sosSubTabContent').innerHTML = html;
+}
+
+function updateSOSSubject(el) {
+  const set = el.dataset.set;
+  const idx = parseInt(el.dataset.idx);
+  const templates = {
+    prospect: SOS_PROSPECT,
+    customer: SOS_CUSTOMER,
+    past: SOS_PAST
+  }[set];
+  if (templates && templates[idx]) {
+    templates[idx].subject = el.value;
+  }
+}
+
+function previewSOSTemplate(setId, idx) {
+  const templates = {
+    prospect: SOS_PROSPECT,
+    customer: SOS_CUSTOMER,
+    past: SOS_PAST
+  }[setId];
+
+  if (!templates || !templates[idx]) return;
+
+  const tpl = templates[idx];
+  const sampleJob = (typeof ALL_JOBS !== 'undefined' && ALL_JOBS.length > 0)
+    ? ALL_JOBS[0]
+    : { company: 'Acme Corp', title: 'Senior DevOps Engineer', category: 'devops', isDeveleapCustomer: false, isPastCustomer: false };
+  const sampleStakeholder = (sampleJob.stakeholders && sampleJob.stakeholders.length > 0)
+    ? sampleJob.stakeholders[0]
+    : { name: 'Sarah Cohen', title: 'VP Engineering' };
+
+  const filledBody = fillTemplate(tpl.body, sampleJob, sampleStakeholder);
+  const filledSubject = fillTemplate(tpl.subject, sampleJob, sampleStakeholder);
+  const preview = `${tpl.emoji} ${tpl.name} (Email ${idx + 1}/5)\n\nSubject: ${filledSubject}\n\n${filledBody}`;
+
+  document.getElementById('previewContent').textContent = preview;
+  document.getElementById('previewModal').classList.add('open');
+}
+
+function openSOSQueueModal(sosType) {
+  const typeLabels = { prospect: 'Prospect', customer: 'Customer', past: 'Past Customer' };
+  const contacts = ALL_JOBS.reduce((acc, job) => {
+    if (job.stakeholders && job.stakeholders.length > 0) {
+      job.stakeholders.forEach(s => {
+        const key = _contactKey(s);
+        if (!acc.find(c => _contactKey(c) === key)) {
+          acc.push({...s, company: job.company, contactKey: key});
+        }
+      });
+    }
+    return acc;
+  }, []).filter(c => !_connectedContacts.has(_contactKey(c)));
+
+  let html = `
+    <form class="sos-queue-form" onsubmit="confirmSOSQueueing(event, '${sosType}')">
+      <div>
+        <label>Select Contact:</label>
+        <select name="contact" required style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px">
+          <option value="">Choose a contact...</option>
+          ${contacts.map((c, i) => `<option value="${i}">${c.name} • ${c.company}</option>`).join('')}
+        </select>
+      </div>
+
+      <div>
+        <label>Day Delays for Each Email:</label>
+        <div class="sos-queue-days-group">
+          <div class="sos-queue-days-item">
+            <label style="flex:1;margin:0">Email 1 (Set the Stage):</label>
+            <input type="number" name="day0" value="0" min="0" style="width:60px" /> days
+          </div>
+          <div class="sos-queue-days-item">
+            <label style="flex:1;margin:0">Email 2 (High Drama):</label>
+            <input type="number" name="day1" value="2" min="0" style="width:60px" /> days
+          </div>
+          <div class="sos-queue-days-item">
+            <label style="flex:1;margin:0">Email 3 (Epiphany):</label>
+            <input type="number" name="day2" value="4" min="0" style="width:60px" /> days
+          </div>
+          <div class="sos-queue-days-item">
+            <label style="flex:1;margin:0">Email 4 (Hidden Benefits):</label>
+            <input type="number" name="day3" value="6" min="0" style="width:60px" /> days
+          </div>
+          <div class="sos-queue-days-item">
+            <label style="flex:1;margin:0">Email 5 (Urgency / CTA):</label>
+            <input type="number" name="day4" value="9" min="0" style="width:60px" /> days
+          </div>
+        </div>
+      </div>
+
+      <div class="sos-queue-modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeSOSQueueModal()">Cancel</button>
+        <button type="submit" class="btn-confirm">Queue Sequence</button>
+      </div>
+    </form>
+  `;
+
+  document.getElementById('sosQueueBody').innerHTML = html;
+  document.getElementById('sosQueueModal').classList.add('open');
+  window._sosQueueContacts = contacts;
+  window._sosQueueType = sosType;
+}
+
+function closeSOSQueueModal() {
+  document.getElementById('sosQueueModal').classList.remove('open');
+}
+
+function confirmSOSQueueing(event, sosType) {
+  event.preventDefault();
+  const form = event.target;
+  const contactIdx = parseInt(form.contact.value);
+  const contact = window._sosQueueContacts[contactIdx];
+
+  if (!contact) {
+    _showToast('❌ Please select a contact');
+    return;
+  }
+
+  const dayDelays = [
+    parseInt(form.day0.value),
+    parseInt(form.day1.value),
+    parseInt(form.day2.value),
+    parseInt(form.day3.value),
+    parseInt(form.day4.value)
+  ];
+
+  queueSOSSequence(sosType, contact, dayDelays);
+  closeSOSQueueModal();
+}
+
+async function queueSOSSequence(sosType, contact, dayDelays) {
+  const templates = {
+    prospect: SOS_PROSPECT,
+    customer: SOS_CUSTOMER,
+    past: SOS_PAST
+  }[sosType];
+
+  if (!templates || templates.length !== 5) {
+    _showToast('❌ Invalid SOS sequence');
+    return;
+  }
+
+  const sequenceId = 'sos_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  const sampleJob = ALL_JOBS.find(j => j.stakeholders && j.stakeholders.some(s => _contactKey(s) === contact.contactKey)) ||
+    { company: contact.company, title: 'Position', category: 'devops', isDeveleapCustomer: false, isPastCustomer: false };
+
+  try {
+    for (let i = 0; i < 5; i++) {
+      const tpl = templates[i];
+      const filledBody = fillTemplate(tpl.body, sampleJob, contact);
+      const filledSubject = fillTemplate(tpl.subject, sampleJob, contact);
+
+      const queueEntry = {
+        id: 'msg_' + Date.now() + '_' + i + '_' + Math.random().toString(36).substr(2, 6),
+        contactName: contact.name,
+        contactTitle: contact.title,
+        contactKey: contact.contactKey,
+        company: contact.company,
+        linkedinUrl: contact.linkedin || '',
+        message: filledBody,
+        subject: filledSubject,
+        isConnected: false,
+        customerType: 'prospect',
+        status: i === 0 ? 'pending' : 'sos_waiting',
+        type: 'outreach',
+        sosStep: i + 1,
+        sosType: sosType,
+        sequenceId: sequenceId,
+        scheduledDay: dayDelays[i],
+        createdAt: new Date().toISOString()
+      };
+
+      _liQueue.push(queueEntry);
+    }
+
+    await _saveQueueToGitHub();
+    renderQueueView();
+    _showToast(`✅ Queued ${sosType} SOS sequence for ${contact.name} (5 emails)`);
+  } catch (e) {
+    console.error('Error queuing SOS:', e);
+    _showToast('❌ Error queuing sequence');
+  }
+}
+
 function saveAllSettings() {
   const apiKey = document.getElementById('anthropicApiKey').value;
   if (apiKey) {
@@ -6474,6 +7272,9 @@ function resetToDefaults() {
   CONNECT_TEMPLATES_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_CONNECT_TEMPLATES_CUSTOMER));
   CONNECT_TEMPLATES_PAST = JSON.parse(JSON.stringify(DEFAULT_CONNECT_TEMPLATES_PAST));
   OUTREACH_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_OUTREACH_TEMPLATES));
+  SOS_PROSPECT = JSON.parse(JSON.stringify(DEFAULT_SOS_PROSPECT));
+  SOS_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_SOS_CUSTOMER));
+  SOS_PAST = JSON.parse(JSON.stringify(DEFAULT_SOS_PAST));
   renderSettingsTab(_currentSettingsTab);
   _showToast('✅ Templates reset to defaults');
 }
@@ -6585,13 +7386,14 @@ var renderQueueView = function() {
   }
 
   // Stats
-  const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0 };
+  const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0, sos_waiting: 0 };
   q.forEach(e => { counts[e.status] = (counts[e.status] || 0) + 1; });
 
   const totalCount = q.length;
   statsEl.innerHTML = `
     <div class="queue-stat${_queueFilter === null ? ' filter-active' : ''}" onclick="filterQueue(null)" style="border-left-color:var(--primary)"><div class="queue-stat-number" style="color:var(--primary)">${totalCount}</div><div class="queue-stat-label">All</div></div>
     <div class="queue-stat pending${_queueFilter === 'pending' ? ' filter-active' : ''}" onclick="filterQueue('pending')"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
+    <div class="queue-stat paused${_queueFilter === 'sos_waiting' ? ' filter-active' : ''}" style="border-left-color:#FFB100" onclick="filterQueue('sos_waiting')"><div class="queue-stat-number" style="color:#FFB100">${counts.sos_waiting}</div><div class="queue-stat-label">🎬 Sequenced</div></div>
     <div class="queue-stat paused${_queueFilter === 'paused' ? ' filter-active' : ''}" onclick="filterQueue('paused')"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
     <div class="queue-stat${_queueFilter === 'conn_pending' ? ' filter-active' : ''}" style="border-left-color:#7B1FA2" onclick="filterQueue('conn_pending')"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Conn. Pending</div></div>
     <div class="queue-stat completed${_queueFilter === 'completed' ? ' filter-active' : ''}" onclick="filterQueue('completed')"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
@@ -6667,6 +7469,14 @@ var renderQueueView = function() {
     else if (entry.customerType === 'past') custLabel = '<span class="queue-card-type-label past">Past</span>';
     else custLabel = '<span class="queue-card-type-label prospect">Prospect</span>';
 
+    // SOS sequence badge
+    let sosBadge = '';
+    if (entry.sosStep && entry.sequenceId) {
+      const dayMap = [0, 2, 4, 6, 9];
+      const dayDelay = dayMap[entry.sosStep - 1] || 0;
+      sosBadge = `<span style="font-size:11px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600;margin-left:4px">📧 SOS ${entry.sosStep}/5 • Day ${dayDelay}</span>`;
+    }
+
     // Can edit if not completed/processing
     const canEdit = entry.status !== 'completed' && entry.status !== 'processing';
     const editBtn = canEdit ? `<button onclick="event.stopPropagation();editQueueMessage(${origIdx})" title="Edit message" style="font-size:10px;padding:3px 8px;background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;margin-left:auto">✏️ Edit</button>` : '';
@@ -6721,7 +7531,7 @@ var renderQueueView = function() {
       <div class="queue-card-avatar">${avatarContent}</div>
       <div class="queue-card-info">
         <div class="queue-card-name">
-          ${entry.contactName} ${typeBadge} ${custLabel}
+          ${entry.contactName} ${typeBadge} ${custLabel} ${sosBadge}
           ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
         </div>
         <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${compLogoHtml}${entry.company}</div>${templateTabs}
@@ -6798,9 +7608,26 @@ var markConnAccepted = async function(idx) {
   _setOutreachStatus(entry.contactKey, 'connected');
   _connectedContacts.add(entry.contactKey);
   _saveConnected();
+
+  // Auto-advance SOS sequence if this is part of one
+  if (entry.sequenceId) {
+    advanceSOSSequence(entry.sequenceId);
+  }
+
   await _saveQueueToGitHub();
   renderQueueView();
   _showToast('✅ ' + entry.contactName + ' is now connected!');
+}
+
+// Auto-advance next SOS email in sequence from sos_waiting to pending
+function advanceSOSSequence(sequenceId) {
+  const q = _queueData.queue || [];
+  const seqEntries = q.filter(e => e.sequenceId === sequenceId);
+  // Find first sos_waiting entry for this sequence
+  const nextEntry = seqEntries.find(e => e.status === 'sos_waiting');
+  if (nextEntry) {
+    nextEntry.status = 'pending';
+  }
 }
 
 var toggleQueueGlobal = async function() {
