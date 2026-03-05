@@ -379,6 +379,16 @@
   .queue-card-company { font-size:13px; color:var(--text-light); margin-top:2px; }
   .queue-card-message { font-size:12px; color:var(--text-lighter); margin-top:6px; max-height:40px; overflow:hidden; line-height:1.4; cursor:pointer; }
   .queue-card-message.expanded { max-height:none; }
+  .queue-card-message-edit { width:100%; min-height:80px; max-height:200px; font-size:12px; font-family:inherit; border:1px solid var(--primary); border-radius:6px; padding:8px; margin-top:6px; line-height:1.4; resize:vertical; outline:none; }
+  .queue-card-message-edit:focus { box-shadow:0 0 0 2px rgba(44,62,80,0.15); }
+  .queue-edit-actions { display:flex; gap:4px; margin-top:4px; }
+  .queue-edit-actions button { font-size:11px; padding:3px 10px; border-radius:4px; cursor:pointer; border:1px solid var(--border); background:white; }
+  .queue-edit-actions button.save { background:var(--primary); color:white; border-color:var(--primary); }
+  .queue-edit-actions button.cancel { background:#f5f5f5; }
+  .queue-card-type-label { font-size:10px; padding:1px 6px; border-radius:4px; font-weight:600; margin-left:6px; }
+  .queue-card-type-label.customer { background:#E8F5E9; color:#2E7D32; }
+  .queue-card-type-label.past { background:#FFF3E0; color:#E65100; }
+  .queue-card-type-label.prospect { background:#E3F2FD; color:#1565C0; }
   .queue-card-meta { display:flex; gap:12px; align-items:center; margin-top:6px; }
   .queue-card-meta span { font-size:11px; color:var(--text-light); }
   .queue-card-status { padding:4px 10px; border-radius:12px; font-size:11px; font-weight:700; text-transform:uppercase; white-space:nowrap; }
@@ -5550,6 +5560,8 @@ function openDetail(id){
     <div style="margin-top:12px;text-align:center"><button onclick="hideCompany('${j.company.replace(/'/g,"\\\\'")}',event);closeSidebar()" style="background:none;border:none;color:var(--text-lighter);font-size:12px;cursor:pointer;padding:4px 8px">&#10005; Hide all ${j.company} listings</button></div>
     ${buildOutreachSection(j)}`;
   document.getElementById('sidebarOverlay').classList.add('active');
+  // Auto-queue non-connected contacts with default connection message
+  setTimeout(() => autoQueueNonConnected(j), 500);
 }
 function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverlay'))return;document.getElementById('sidebarOverlay').classList.remove('active');}
 
@@ -5660,13 +5672,13 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
 
-// ===== CONNECTION REQUEST TEMPLATES (Hormozi/Brunson/Carnegie style) =====
-const CONNECT_TEMPLATES = [
+// ===== CONNECTION REQUEST TEMPLATES BY CUSTOMER TYPE =====
+const CONNECT_TEMPLATES_PROSPECT = [
   {
     name: "Hormozi Value Lead",
     emoji: "💰",
     style: "Alex Hormozi",
-    body: `{contact_name}, I help companies like {company} solve the #{1} reason {cat_expertise} hires fail — they take 6 months and burn $200K before producing anything.
+    body: `{contact_name}, I help companies like {company} solve the #1 reason {cat_expertise} hires fail — they take 6 months and burn $200K before producing anything.
 
 We've embedded {cat_expertise} squads at {customers} that ship in 2 weeks — not 6 months.
 
@@ -5699,6 +5711,93 @@ I'd genuinely love to learn more about your vision and see if there's a way we c
     body: `Hey {contact_name} — I run Develeap, Israel's largest {cat_expertise} consulting firm. Noticed {company} is hiring a {role}. We've helped {customers} scale fast. Worth connecting?`
   }
 ];
+
+const CONNECT_TEMPLATES_CUSTOMER = [
+  {
+    name: "Warm Reconnect",
+    emoji: "🤝",
+    style: "Warm Partner",
+    body: `{contact_name}, great to connect! Develeap has been working with {company} and I wanted to reach out personally.
+
+I saw you're looking for a {role} — we have {cat_expertise} squads already embedded at {company}, so spinning up for this should be seamless.
+
+Happy to chat about how we can help fill this gap fast.`
+  },
+  {
+    name: "Insider Value",
+    emoji: "⭐",
+    style: "Hormozi Insider",
+    body: `{contact_name}, since Develeap already works with {company}, I wanted to flag something about that {role} role.
+
+We've shipped {cat_expertise} projects for your team before — instead of a 6-month hire ramp, we can have someone producing in 2 weeks.
+
+Want me to loop in our team lead who knows your stack?`
+  },
+  {
+    name: "Expansion Play",
+    emoji: "🚀",
+    style: "Growth Partner",
+    body: `Hey {contact_name} — Dori here from Develeap. We've been partnering with {company} and I noticed this {role} opening.
+
+Our {cat_expertise} squad already knows your environment. Fastest path to filling this: let us extend the team we already have in place.
+
+Worth a 15-min call?`
+  },
+  {
+    name: "Quick Existing",
+    emoji: "⚡",
+    style: "Quick Connect",
+    body: `Hey {contact_name} — Dori from Develeap. We already work with {company} on {cat_expertise}. Saw the {role} opening — we can ramp fast since we know your stack. Happy to connect!`
+  }
+];
+
+const CONNECT_TEMPLATES_PAST = [
+  {
+    name: "Reunion Play",
+    emoji: "🔄",
+    style: "Carnegie Reunion",
+    body: `{contact_name}, Develeap had the pleasure of working with {company} in the past — it was a great partnership.
+
+I noticed you're hiring a {role}. Our {cat_expertise} team has grown a lot since then, and we'd love the chance to reconnect and show what's new.
+
+Would you be open to catching up?`
+  },
+  {
+    name: "Win-Back Value",
+    emoji: "💎",
+    style: "Hormozi Win-Back",
+    body: `{contact_name}, since Develeap worked with {company} before, I can skip the sales pitch — you know we deliver.
+
+That {role} role? We've helped {customers} fill similar gaps in 2 weeks. Our {cat_expertise} bench is stronger than ever.
+
+Worth reconnecting to see if there's a fit?`
+  },
+  {
+    name: "Nostalgia Hook",
+    emoji: "🎯",
+    style: "Brunson Nostalgia",
+    body: `{contact_name}, fun fact: {company} was one of our favorite {cat_expertise} engagements at Develeap.
+
+I noticed you're looking for a {role} — the companies scaling fastest right now aren't hiring for these roles, they're outsourcing to specialists like us. {customers} figured this out recently.
+
+Curious if {company} wants back in?`
+  },
+  {
+    name: "Quick Past",
+    emoji: "⚡",
+    style: "Quick Connect",
+    body: `Hey {contact_name} — Dori from Develeap. We worked with {company} before and loved it. Noticed the {role} opening — our {cat_expertise} team has grown and we'd love to reconnect. Worth chatting?`
+  }
+];
+
+// Helper to get the right template set based on company type
+function _getConnectTemplates(job) {
+  if (job && job.isDeveleapCustomer) return CONNECT_TEMPLATES_CUSTOMER;
+  if (job && job.isPastCustomer) return CONNECT_TEMPLATES_PAST;
+  return CONNECT_TEMPLATES_PROSPECT;
+}
+// Backward-compat alias
+const CONNECT_TEMPLATES = CONNECT_TEMPLATES_PROSPECT;
 
 // ===== QUEUE VIEW MANAGEMENT =====
 var _queueData = { queue: [], lastProcessed: '' };
@@ -5835,6 +5934,17 @@ var renderQueueView = function() {
 
     // Truncated message preview
     const msgPreview = (entry.message || '').replace(/\n/g, ' ').substring(0, 120) + ((entry.message || '').length > 120 ? '...' : '');
+    const msgFull = (entry.message || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    // Customer type label
+    let custLabel = '';
+    if (entry.customerType === 'customer') custLabel = '<span class="queue-card-type-label customer">⭐ Customer</span>';
+    else if (entry.customerType === 'past') custLabel = '<span class="queue-card-type-label past">Past</span>';
+    else custLabel = '<span class="queue-card-type-label prospect">Prospect</span>';
+
+    // Can edit if not completed/processing
+    const canEdit = entry.status !== 'completed' && entry.status !== 'processing';
+    const editBtn = canEdit ? `<button onclick="event.stopPropagation();editQueueMessage(${origIdx})" title="Edit message" style="font-size:10px;padding:1px 6px;background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;margin-left:6px">✏️ Edit</button>` : '';
 
     // Action buttons based on status
     let actions = '';
@@ -5864,11 +5974,11 @@ var renderQueueView = function() {
       <div class="queue-card-avatar">${initials}</div>
       <div class="queue-card-info">
         <div class="queue-card-name">
-          ${entry.contactName} ${typeBadge}
+          ${entry.contactName} ${typeBadge} ${custLabel}
           ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
         </div>
         <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${entry.company}</div>
-        <div class="queue-card-message" onclick="this.classList.toggle('expanded')" title="Click to expand">${msgPreview}</div>
+        <div id="qMsg_${origIdx}" class="queue-card-message" onclick="this.classList.toggle('expanded')" title="Click to expand/edit">${msgPreview}${editBtn}</div>
         <div class="queue-card-meta">
           <span>🕐 ${timeAgo}${completedInfo}</span>
           ${entry.linkedinUrl ? '<a href="'+entry.linkedinUrl+'" target="_blank" style="font-size:11px;color:#0A66C2;text-decoration:none">🔗 LinkedIn</a>' : ''}
@@ -5967,6 +6077,44 @@ var clearCompletedQueue = async function() {
   _showToast(`🗑 Cleared ${removed} completed entries`);
 }
 
+// Inline edit queue message
+var editQueueMessage = function(idx) {
+  const entry = _queueData.queue[idx];
+  if (!entry) return;
+  const container = document.getElementById('qMsg_' + idx);
+  if (!container) return;
+  const escaped = (entry.message || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  container.onclick = null;
+  container.classList.remove('queue-card-message');
+  container.style.maxHeight = 'none';
+  container.style.overflow = 'visible';
+  container.innerHTML = `
+    <textarea class="queue-card-message-edit" id="qEdit_${idx}">${escaped}</textarea>
+    <div class="queue-edit-actions">
+      <button class="save" onclick="event.stopPropagation();saveQueueMessage(${idx})">💾 Save</button>
+      <button class="cancel" onclick="event.stopPropagation();renderQueueView()">Cancel</button>
+      <span style="font-size:10px;color:var(--text-lighter);margin-left:auto" id="qEditCount_${idx}">${(entry.message||'').length} chars</span>
+    </div>`;
+  const ta = document.getElementById('qEdit_' + idx);
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.addEventListener('input', function() {
+    const countEl = document.getElementById('qEditCount_' + idx);
+    if (countEl) countEl.textContent = this.value.length + ' chars';
+  });
+}
+
+var saveQueueMessage = async function(idx) {
+  const ta = document.getElementById('qEdit_' + idx);
+  if (!ta) return;
+  const newMsg = ta.value.trim();
+  if (!newMsg) { _showToast('Message cannot be empty'); return; }
+  _queueData.queue[idx].message = newMsg;
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('✅ Message updated');
+}
+
 var _saveQueueToGitHub = async function() {
   try {
     // Get latest SHA
@@ -6012,14 +6160,16 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
   const isConn = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
 
   // Use connect templates for non-connected, regular templates for connected
+  const templates = _getConnectTemplates(job);
   let msg;
-  if (!isConn && CONNECT_TEMPLATES.length > 0) {
+  if (!isConn && templates.length > 0) {
     // Use the active connect template (default to first)
     const ctIdx = _activeConnectTemplateIdx || 0;
-    msg = fillTemplate(CONNECT_TEMPLATES[ctIdx].body, job, s);
+    msg = fillTemplate(templates[Math.min(ctIdx, templates.length - 1)].body, job, s);
   } else {
     msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, s);
   }
+  const customerType = job.isDeveleapCustomer ? 'customer' : (job.isPastCustomer ? 'past' : 'prospect');
 
   const liUrl = (s.linkedin && s.linkedin.startsWith('http'))
     ? s.linkedin
@@ -6057,6 +6207,7 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
     linkedinUrl: liUrl,
     message: msg,
     isConnected: isConn,
+    customerType: customerType,
     status: _queuePaused ? 'paused' : 'pending',
     createdAt: new Date().toISOString(),
     completedAt: null
@@ -6113,7 +6264,10 @@ var buildOutreachSectionV2 = function(job) {
   });
 
   if (hasNonConnected) {
-    const connectTabs = CONNECT_TEMPLATES.map((t, i) => {
+    const templates = _getConnectTemplates(job);
+    const custTypeLabel = job.isDeveleapCustomer ? '⭐ Existing Customer' : (job.isPastCustomer ? '🔄 Past Customer' : '🆕 New Prospect');
+    const custTypeColor = job.isDeveleapCustomer ? '#2E7D32' : (job.isPastCustomer ? '#E65100' : '#1565C0');
+    const connectTabs = templates.map((t, i) => {
       return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchConnectTemplate(${i})" style="font-size:11px">${t.emoji} ${t.name}</button>`;
     }).join('');
 
@@ -6121,18 +6275,18 @@ var buildOutreachSectionV2 = function(job) {
       const key = _contactKey(s);
       return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
     }) || stakeholders[0];
-    const firstConnMsg = fillTemplate(CONNECT_TEMPLATES[0].body, job, firstS);
+    const firstConnMsg = fillTemplate(templates[0].body, job, firstS);
 
     const connectSection = `
     <div style="margin-top:20px;padding-top:16px;border-top:1px dashed var(--border)">
       <div style="font-size:12px;font-weight:700;color:#7B1FA2;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px">
         🔗 Connection Request Style
-        <span style="font-size:10px;font-weight:400;color:var(--text-light)">(for non-connected contacts)</span>
+        <span style="font-size:10px;font-weight:600;color:${custTypeColor};padding:1px 6px;border-radius:4px;background:${custTypeColor}11">${custTypeLabel}</span>
       </div>
       <div class="template-tabs" id="connectTemplateTabs">${connectTabs}</div>
       <div class="template-preview" id="connectTemplatePreview" style="max-height:160px;font-size:12px">${firstConnMsg}</div>
       <div style="font-size:10px;color:var(--text-lighter);margin-top:6px;text-align:right">
-        Style: <strong>${CONNECT_TEMPLATES[0].style}</strong> · Max 300 chars for LinkedIn notes
+        Style: <strong>${templates[0].style}</strong> · Max 300 chars for LinkedIn notes
       </div>
     </div>`;
 
@@ -6149,17 +6303,122 @@ var switchConnectTemplate = function(idx) {
   document.querySelectorAll('#connectTemplateTabs .template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   const job = _activeJobForOutreach;
   if (!job) return;
+  const templates = _getConnectTemplates(job);
   const stakeholders = job.stakeholders || [];
   const s = stakeholders.find(s => {
     const key = _contactKey(s);
     return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
   }) || stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
-  const msg = fillTemplate(CONNECT_TEMPLATES[idx].body, job, s);
+  const msg = fillTemplate(templates[idx].body, job, s);
   const preview = document.getElementById('connectTemplatePreview');
   if (preview) preview.textContent = msg;
   // Update style label
   const styleLabel = preview?.parentElement?.querySelector('strong');
-  if (styleLabel) styleLabel.textContent = CONNECT_TEMPLATES[idx].style;
+  if (styleLabel) styleLabel.textContent = templates[idx].style;
+}
+
+// Auto-queue all non-connected contacts when opening a listing detail
+var _autoQueuedJobs = new Set(); // track which jobs we've already auto-queued
+var autoQueueNonConnected = async function(job) {
+  if (!job || !job.stakeholders || job.stakeholders.length === 0) return;
+  if (_autoQueuedJobs.has(job.id)) return; // already auto-queued for this job
+
+  const templates = _getConnectTemplates(job);
+  const customerType = job.isDeveleapCustomer ? 'customer' : (job.isPastCustomer ? 'past' : 'prospect');
+  const defaultIdx = 0; // Use first template as default
+
+  // Collect non-connected stakeholders that aren't already queued/invited
+  const toQueue = [];
+  for (const s of job.stakeholders) {
+    const key = _contactKey(s);
+    const isConn = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
+    if (isConn) continue;
+    const outStatus = _getOutreachStatus(key);
+    if (outStatus === 'invited') continue; // already queued before
+    const hasLI = s.linkedin && s.linkedin.startsWith('http');
+    const liUrl = hasLI ? s.linkedin : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.name)}`;
+    const msg = fillTemplate(templates[defaultIdx].body, job, s);
+    toQueue.push({
+      id: Date.now().toString(36) + Math.random().toString(36).substr(2,4),
+      contactName: s.name,
+      contactTitle: s.title || '',
+      contactKey: key,
+      company: job.company,
+      linkedinUrl: liUrl,
+      message: msg,
+      isConnected: false,
+      customerType: customerType,
+      status: 'paused', // auto-queued starts paused so user can review/edit
+      createdAt: new Date().toISOString(),
+      completedAt: null
+    });
+  }
+
+  if (toQueue.length === 0) return;
+
+  // Batch push to queue
+  try {
+    const resp = await fetch(_LI_QUEUE_API, {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    let queue = { queue: [], lastProcessed: '' };
+    if (resp.ok) {
+      const data = await resp.json();
+      _liQueueSha = data.sha;
+      try { queue = JSON.parse(atob(data.content)); } catch(e) {}
+    }
+
+    // Check for duplicates (don't re-add contacts already in queue)
+    const existingKeys = new Set((queue.queue || []).map(e => e.contactKey));
+    const newEntries = toQueue.filter(e => !existingKeys.has(e.contactKey));
+    if (newEntries.length === 0) { _autoQueuedJobs.add(job.id); return; }
+
+    queue.queue.push(...newEntries);
+
+    const body = {
+      message: `Auto-queue ${newEntries.length} contacts for ${job.company}`,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(queue, null, 2)))),
+      sha: _liQueueSha
+    };
+    const putResp = await fetch(_LI_QUEUE_API, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (putResp.ok) {
+      const putData = await putResp.json();
+      _liQueueSha = putData.content.sha;
+      _autoQueuedJobs.add(job.id);
+      // Update outreach statuses
+      newEntries.forEach(e => _setOutreachStatus(e.contactKey, 'invited'));
+      // Update badge
+      const badge = document.getElementById('queueBadge');
+      if (badge) {
+        const cur = parseInt(badge.textContent) || 0;
+        badge.textContent = cur + newEntries.length;
+        badge.style.display = 'inline';
+      }
+      _showToast(`📋 Auto-queued ${newEntries.length} contact${newEntries.length>1?'s':''} for ${job.company} (paused — review in Queue)`);
+      // Update the outreach section buttons to show "Queued"
+      document.querySelectorAll('.stakeholder-card').forEach((card, i) => {
+        const s = job.stakeholders[i];
+        if (!s) return;
+        const k = _contactKey(s);
+        if (newEntries.some(e => e.contactKey === k)) {
+          const btn = card.querySelector('.btn-linkedin');
+          if (btn && btn.textContent.includes('Connect')) {
+            btn.innerHTML = '✅ Queued';
+            btn.style.background = '#2E7D32';
+            btn.style.color = 'white';
+            btn.disabled = true;
+          }
+        }
+      });
+    }
+  } catch(e) {
+    console.error('Auto-queue failed:', e);
+  }
 }
 
 // Load queue badge count on page load
