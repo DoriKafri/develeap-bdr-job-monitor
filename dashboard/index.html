@@ -4864,9 +4864,9 @@ function messageOnLinkedIn(stakeholderIdx) {
 }
 
 // Push a message to the GitHub LinkedIn queue
-const _LI_QUEUE_PATH = 'docs/linkedin_queue.json';
-const _LI_QUEUE_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_LI_QUEUE_PATH}`;
-let _liQueueSha = null;
+// NOTE: _LI_QUEUE_PATH/API/SHA are declared after _GH_REPO below to avoid temporal dead zone
+var _LI_QUEUE_PATH, _LI_QUEUE_API;
+var _liQueueSha = null;
 
 async function _pushToLinkedInQueue(entry) {
   // Fetch current queue
@@ -4935,6 +4935,9 @@ const _GH_TOKEN = ['Z2hwXzNxdEpoSVZ0aWg2', 'WjJxa0tsNll0Z0xlN0Ny', 'SFlOVzAyMHZp
 const _GH_REPO = 'DoriKafri/develeap-bdr-job-monitor';
 const _GH_PATH = 'docs/outreach_status.json';
 const _GH_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_GH_PATH}`;
+// Initialize queue constants now that _GH_REPO is available
+_LI_QUEUE_PATH = 'docs/linkedin_queue.json';
+_LI_QUEUE_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_LI_QUEUE_PATH}`;
 let _ghSyncTimer = null;
 let _ghFileSha = null;
 let _ghSyncing = false;
@@ -5698,8 +5701,8 @@ I'd genuinely love to learn more about your vision and see if there's a way we c
 ];
 
 // ===== QUEUE VIEW MANAGEMENT =====
-let _queueData = { queue: [], lastProcessed: '' };
-let _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
+var _queueData = { queue: [], lastProcessed: '' };
+var _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
 
 // Update setView to handle queue tab
 var setView = function(v) {
