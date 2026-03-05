@@ -1,1 +1,34 @@
-{"lastUpdated":"","statuses":{},"connected":[],"hiddenCompanies":[]}
+{
+  "lastUpdated": "2026-03-05T14:13:19.985Z",
+  "statuses": {
+    "nataly kremer|https://www.linkedin.com/in/natalyk/": "connected",
+    "lior golan|https://www.linkedin.com/in/liorgolan/": "connected",
+    "shay haluba|https://www.linkedin.com/in/shay-haluba/": "connected",
+    "erez barak|https://www.linkedin.com/in/erezbarak/": "connected",
+    "lior kanfi|https://www.linkedin.com/in/liorkanfi/": "connected",
+    "tamir tausi|https://il.linkedin.com/in/tamirtausi": "connected",
+    "oren ohayon harel|https://www.linkedin.com/in/oren-ohayon-harel/": "connected",
+    "gal helemski|https://www.linkedin.com/in/galhelemski/": "connected",
+    "amit krig|https://www.linkedin.com/in/amit-krig-7492981/": "connected",
+    "michael kagan|https://il.linkedin.com/in/mikagan": "connected",
+    "or yaacov|https://www.linkedin.com/in/oryaacov/": "connected",
+    "yishai beeri|https://www.linkedin.com/in/yishaibeeri/": "connected",
+    "oshri moyal|https://www.linkedin.com/in/oshrimoyal/": "connected",
+    "arik liberzon|https://www.linkedin.com/in/arikliberzon/": "connected",
+    "yaki zakai|https://il.linkedin.com/in/yaki-zakai-62847": "connected",
+    "amir jerbi|https://www.linkedin.com/in/amirjerbi/": "connected",
+    "benny savinik|https://www.linkedin.com/in/benny-savinik-0299364/": "connected",
+    "yoav levy|https://www.linkedin.com/in/yoav-levy-117b2b1/": "connected",
+    "gal elbaz|https://www.linkedin.com/in/gal-elbaz-2b70b214/": "connected",
+    "yehuda naveh|https://www.linkedin.com/in/yehuda-naveh/": "connected",
+    "nir minerbi|https://www.linkedin.com/in/nir-minerbi/": "connected",
+    "amir naveh|https://www.linkedin.com/in/amir-naveh-li/": "connected",
+    "check point|nataly kremer": "connected"
+  },
+  "connected": [
+    "check point|nataly kremer"
+  ],
+  "hiddenCompanies": [
+    "unknown"
+  ]
+}
