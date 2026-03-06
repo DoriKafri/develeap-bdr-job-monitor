@@ -728,6 +728,10 @@
           <span>📝</span>
           <span>Templates</span>
         </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('integrations')">
+          <span>🔗</span>
+          <span>Integrations</span>
+        </div>
       </div>
 
       <div class="settings-content-area">
@@ -791,6 +795,66 @@
             <tbody id="sourcesTableBody"></tbody>
           </table>
           <button class="btn-add-category" onclick="addNewSource()">+ Add Source</button>
+        </div>
+
+        <!-- Integrations Section -->
+        <div id="integrationsSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">🔗 CRM Integrations</h3>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:20px">Connect your CRM to enrich job listings with company and deal data. The integration is provider-agnostic - configure any supported CRM below.</p>
+
+          <div class="integration-provider-select" style="margin-bottom:20px">
+            <label style="font-weight:600;font-size:13px;display:block;margin-bottom:8px">CRM Provider</label>
+            <select id="crmProvider" onchange="onCrmProviderChange()" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;width:220px">
+              <option value="">None (disabled)</option>
+              <option value="hubspot">HubSpot</option>
+            </select>
+          </div>
+
+          <div id="crmConfigPanel" style="display:none">
+            <!-- HubSpot Config -->
+            <div id="hubspotConfig" class="crm-config-block">
+              <div style="background:var(--primary-light);border-radius:12px;padding:16px;margin-bottom:16px">
+                <div style="font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px">HubSpot API Configuration</div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Enter your HubSpot Private App access token. Create one at Settings > Integrations > Private Apps in HubSpot. Required scopes: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.contacts.read</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.companies.read</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.deals.read</code></p>
+                <div style="margin-bottom:12px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Access Token</label>
+                  <input type="password" id="hubspotApiToken" class="api-key-input" placeholder="pat-na1-..." style="width:100%" />
+                </div>
+                <div style="margin-bottom:12px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID)</label>
+                  <input type="text" id="hubspotPortalId" class="api-key-input" placeholder="e.g. 25695560" style="width:200px" />
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichCards" checked> Show CRM badges on job cards</label>
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichDetail" checked> Show CRM info in detail panel</label>
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmAutoMatch" checked> Auto-match companies on load</label>
+                </div>
+                <div style="margin-bottom:12px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Match Pipeline (optional - leave empty for all)</label>
+                  <input type="text" id="hubspotPipelineFilter" class="api-key-input" placeholder="e.g. SALES ISRAEL" style="width:300px" />
+                </div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button class="btn btn-primary" onclick="testCrmConnection()" style="font-size:12px;padding:6px 16px">Test Connection</button>
+                  <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
+                </div>
+              </div>
+
+              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
+                <div style="font-weight:600;font-size:14px;margin-bottom:4px">Deal Stage Mapping</div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Map HubSpot deal stages to dashboard display labels and colors. Loaded automatically after a successful connection test.</p>
+                <div id="dealStageMappingContainer" style="font-size:12px;color:var(--text-lighter)">Connect to HubSpot first to load deal stages.</div>
+              </div>
+
+              <div style="background:#f8f9fb;border-radius:12px;padding:16px">
+                <div style="font-weight:600;font-size:14px;margin-bottom:8px">CRM Cache</div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px">Company matches are cached to avoid repeated API calls. Cache auto-refreshes every session.</p>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:11px;padding:4px 12px">Refresh Cache Now</button>
+                  <span id="crmCacheStatus" style="font-size:11px;color:var(--text-lighter);align-self:center"></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Templates Section -->
@@ -6346,6 +6410,8 @@ function initApp() {
   _initGitHubSync();
   // Initialize settings
   _loadSettingsFromGitHub();
+  // Load CRM integration config from localStorage and trigger auto-match
+  _initCrmIntegration();
 }
 
 function updateFreshnessDisplay() {
@@ -6604,7 +6670,7 @@ function renderJobs() {
     <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':''))}</td>
       <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
-      <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div></td>
+      <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td><span class="badge badge-${j.source} source-badge">${sourceIcon(j.source)}${SOURCE_LABELS[j.source]||j.source}</span></td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
@@ -6745,6 +6811,7 @@ function openDetail(id){
     <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
+    ${_buildCrmDetailHtml(j.company)}
     <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
     <div style="margin-top:12px;text-align:center"><button onclick="hideCompany('${j.company.replace(/'/g,"\\\\'")}',event);closeSidebar()" style="background:none;border:none;color:var(--text-lighter);font-size:12px;cursor:pointer;padding:4px 8px">&#10005; Hide all ${j.company} listings</button></div>
     ${buildOutreachSection(j)}`;
@@ -7027,6 +7094,448 @@ function _loadSettingsFromGitHub() {
   }
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// CRM INTEGRATION LAYER  -  Provider-agnostic adapter pattern
+// ══════════════════════════════════════════════════════════════════════════
+var CRM_CONFIG = {
+  provider: '',           // 'hubspot' | '' (none) | future: 'salesforce', 'pipedrive', etc.
+  enrichCards: true,      // show CRM badges on job list cards
+  enrichDetail: true,     // show CRM section in detail panel
+  autoMatch: true,        // auto-lookup companies on data load
+  pipelineFilter: '',     // optional pipeline name filter
+  portalId: '',           // HubSpot portal ID (for building links)
+  dealStageMap: {},       // {stageId: {label, color}} from HubSpot
+};
+
+// In-memory CRM cache: { 'company_name_lower': { companyId, companyName, deals: [...], contacts: [...], lastFetched } }
+var _crmCache = {};
+var _crmCacheBuilt = false;
+
+// ── CRM Config helpers ─────────────────────────────────────────────────
+function _getCrmIntegrationConfig() {
+  // Return config WITHOUT secrets (token stored only in localStorage)
+  return {
+    provider: CRM_CONFIG.provider,
+    enrichCards: CRM_CONFIG.enrichCards,
+    enrichDetail: CRM_CONFIG.enrichDetail,
+    autoMatch: CRM_CONFIG.autoMatch,
+    pipelineFilter: CRM_CONFIG.pipelineFilter,
+    portalId: CRM_CONFIG.portalId,
+    dealStageMap: CRM_CONFIG.dealStageMap
+  };
+}
+
+function _saveCrmSecretsToLocal() {
+  const tokenEl = document.getElementById('hubspotApiToken');
+  if (tokenEl && tokenEl.value) {
+    localStorage.setItem('crm_hubspot_token', tokenEl.value);
+  }
+}
+
+function _loadCrmSecretsFromLocal() {
+  const token = localStorage.getItem('crm_hubspot_token') || '';
+  const tokenEl = document.getElementById('hubspotApiToken');
+  if (tokenEl && token) tokenEl.value = token;
+  return token;
+}
+
+function _applyCrmConfigFromSettings(cfg) {
+  if (!cfg) return;
+  CRM_CONFIG.provider = cfg.provider || '';
+  CRM_CONFIG.enrichCards = cfg.enrichCards !== false;
+  CRM_CONFIG.enrichDetail = cfg.enrichDetail !== false;
+  CRM_CONFIG.autoMatch = cfg.autoMatch !== false;
+  CRM_CONFIG.pipelineFilter = cfg.pipelineFilter || '';
+  CRM_CONFIG.portalId = cfg.portalId || '';
+  CRM_CONFIG.dealStageMap = cfg.dealStageMap || {};
+}
+
+function renderIntegrationsSection() {
+  // Restore UI from CRM_CONFIG
+  const provSel = document.getElementById('crmProvider');
+  if (provSel) provSel.value = CRM_CONFIG.provider || '';
+  onCrmProviderChange();
+  const portalEl = document.getElementById('hubspotPortalId');
+  if (portalEl) portalEl.value = CRM_CONFIG.portalId || '';
+  const pipeEl = document.getElementById('hubspotPipelineFilter');
+  if (pipeEl) pipeEl.value = CRM_CONFIG.pipelineFilter || '';
+  const chk1 = document.getElementById('crmEnrichCards');
+  if (chk1) chk1.checked = CRM_CONFIG.enrichCards;
+  const chk2 = document.getElementById('crmEnrichDetail');
+  if (chk2) chk2.checked = CRM_CONFIG.enrichDetail;
+  const chk3 = document.getElementById('crmAutoMatch');
+  if (chk3) chk3.checked = CRM_CONFIG.autoMatch;
+  _loadCrmSecretsFromLocal();
+  _renderDealStageMapping();
+}
+
+function onCrmProviderChange() {
+  const prov = document.getElementById('crmProvider').value;
+  CRM_CONFIG.provider = prov;
+  const panel = document.getElementById('crmConfigPanel');
+  if (panel) panel.style.display = prov ? 'block' : 'none';
+}
+
+function _collectCrmConfigFromUI() {
+  CRM_CONFIG.provider = document.getElementById('crmProvider').value || '';
+  CRM_CONFIG.portalId = (document.getElementById('hubspotPortalId').value || '').trim();
+  CRM_CONFIG.pipelineFilter = (document.getElementById('hubspotPipelineFilter').value || '').trim();
+  CRM_CONFIG.enrichCards = document.getElementById('crmEnrichCards').checked;
+  CRM_CONFIG.enrichDetail = document.getElementById('crmEnrichDetail').checked;
+  CRM_CONFIG.autoMatch = document.getElementById('crmAutoMatch').checked;
+}
+
+// ── HubSpot API adapter ────────────────────────────────────────────────
+function _hubspotHeaders() {
+  const token = document.getElementById('hubspotApiToken')?.value || localStorage.getItem('crm_hubspot_token') || '';
+  return {
+    'Authorization': 'Bearer ' + token,
+    'Content-Type': 'application/json'
+  };
+}
+
+async function _hubspotSearchCompanies(companyName) {
+  const resp = await fetch('https://api.hubapi.com/crm/v3/objects/companies/search', {
+    method: 'POST',
+    headers: _hubspotHeaders(),
+    body: JSON.stringify({
+      filterGroups: [{
+        filters: [{ propertyName: 'name', operator: 'CONTAINS_TOKEN', value: companyName }]
+      }],
+      properties: ['name', 'domain', 'industry', 'lifecyclestage', 'num_associated_deals', 'num_associated_contacts'],
+      limit: 5
+    })
+  });
+  if (!resp.ok) throw new Error('HubSpot API error: ' + resp.status);
+  return (await resp.json()).results || [];
+}
+
+async function _hubspotGetDealsForCompany(companyId) {
+  // Get associated deals
+  const assocResp = await fetch('https://api.hubapi.com/crm/v4/objects/companies/' + companyId + '/associations/deals', {
+    headers: _hubspotHeaders()
+  });
+  if (!assocResp.ok) return [];
+  const assocData = await assocResp.json();
+  const dealIds = (assocData.results || []).map(r => r.toObjectId);
+  if (!dealIds.length) return [];
+
+  // Batch-read deal details
+  const batchResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals/batch/read', {
+    method: 'POST',
+    headers: _hubspotHeaders(),
+    body: JSON.stringify({
+      inputs: dealIds.slice(0, 10).map(id => ({ id: String(id) })),
+      properties: ['dealname', 'dealstage', 'pipeline', 'amount', 'closedate', 'hubspot_owner_id']
+    })
+  });
+  if (!batchResp.ok) return [];
+  return (await batchResp.json()).results || [];
+}
+
+async function _hubspotGetContactsForCompany(companyId) {
+  const assocResp = await fetch('https://api.hubapi.com/crm/v4/objects/companies/' + companyId + '/associations/contacts', {
+    headers: _hubspotHeaders()
+  });
+  if (!assocResp.ok) return [];
+  const assocData = await assocResp.json();
+  const contactIds = (assocData.results || []).map(r => r.toObjectId);
+  if (!contactIds.length) return [];
+
+  const batchResp = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
+    method: 'POST',
+    headers: _hubspotHeaders(),
+    body: JSON.stringify({
+      inputs: contactIds.slice(0, 10).map(id => ({ id: String(id) })),
+      properties: ['firstname', 'lastname', 'email', 'jobtitle', 'lifecyclestage']
+    })
+  });
+  if (!batchResp.ok) return [];
+  return (await batchResp.json()).results || [];
+}
+
+async function _hubspotGetDealStages() {
+  const resp = await fetch('https://api.hubapi.com/crm/v3/pipelines/deals', {
+    headers: _hubspotHeaders()
+  });
+  if (!resp.ok) throw new Error('Failed to fetch pipelines: ' + resp.status);
+  return await resp.json();
+}
+
+// ── Provider-agnostic CRM interface ────────────────────────────────────
+async function crmLookupCompany(companyName) {
+  if (!CRM_CONFIG.provider) return null;
+  const cacheKey = companyName.toLowerCase().trim();
+  if (_crmCache[cacheKey] && (Date.now() - _crmCache[cacheKey].lastFetched < 30 * 60 * 1000)) {
+    return _crmCache[cacheKey];
+  }
+
+  try {
+    if (CRM_CONFIG.provider === 'hubspot') {
+      const companies = await _hubspotSearchCompanies(companyName);
+      if (!companies.length) {
+        _crmCache[cacheKey] = { companyId: null, companyName, deals: [], contacts: [], lastFetched: Date.now() };
+        return _crmCache[cacheKey];
+      }
+      // Take best match
+      const match = companies[0];
+      const deals = await _hubspotGetDealsForCompany(match.id);
+      const contacts = await _hubspotGetContactsForCompany(match.id);
+      _crmCache[cacheKey] = {
+        companyId: match.id,
+        companyName: match.properties.name,
+        domain: match.properties.domain,
+        industry: match.properties.industry,
+        lifecyclestage: match.properties.lifecyclestage,
+        deals: deals.map(d => ({
+          id: d.id,
+          name: d.properties.dealname,
+          stage: d.properties.dealstage,
+          stageName: _resolveStageName(d.properties.dealstage),
+          pipeline: d.properties.pipeline,
+          amount: d.properties.amount,
+          closedate: d.properties.closedate
+        })),
+        contacts: contacts.map(c => ({
+          id: c.id,
+          name: ((c.properties.firstname || '') + ' ' + (c.properties.lastname || '')).trim(),
+          email: c.properties.email,
+          title: c.properties.jobtitle
+        })),
+        lastFetched: Date.now()
+      };
+      return _crmCache[cacheKey];
+    }
+    // Future providers go here
+  } catch (e) {
+    console.warn('CRM lookup failed for', companyName, e);
+    return null;
+  }
+}
+
+function _resolveStageName(stageId) {
+  if (CRM_CONFIG.dealStageMap[stageId]) return CRM_CONFIG.dealStageMap[stageId].label;
+  return stageId;
+}
+
+function _resolveStageColor(stageId) {
+  if (CRM_CONFIG.dealStageMap[stageId]) return CRM_CONFIG.dealStageMap[stageId].color;
+  return '#999';
+}
+
+// ── Test Connection ────────────────────────────────────────────────────
+async function testCrmConnection() {
+  _collectCrmConfigFromUI();
+  const resultEl = document.getElementById('crmTestResult');
+  resultEl.textContent = 'Testing...';
+  resultEl.style.color = 'var(--text-light)';
+
+  try {
+    if (CRM_CONFIG.provider === 'hubspot') {
+      // Test with a simple companies search
+      const resp = await fetch('https://api.hubapi.com/crm/v3/objects/companies?limit=1', {
+        headers: _hubspotHeaders()
+      });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+      // Also load pipelines/stages
+      const pipelines = await _hubspotGetDealStages();
+      const stageMap = {};
+      const stageColors = ['#00CA72','#FFB100','#32BBD7','#E44258','#9B59B6','#3498DB','#E67E22','#1ABC9C','#95A5A6','#2ECC71'];
+      let colorIdx = 0;
+      (pipelines.results || []).forEach(p => {
+        (p.stages || []).forEach(s => {
+          stageMap[s.id] = {
+            label: s.label,
+            pipeline: p.label,
+            color: stageColors[colorIdx % stageColors.length]
+          };
+          colorIdx++;
+        });
+      });
+      CRM_CONFIG.dealStageMap = stageMap;
+      _renderDealStageMapping();
+
+      resultEl.textContent = 'Connected! Found ' + Object.keys(stageMap).length + ' deal stages across ' + (pipelines.results || []).length + ' pipelines.';
+      resultEl.style.color = 'var(--success)';
+    }
+  } catch (e) {
+    resultEl.textContent = 'Failed: ' + e.message;
+    resultEl.style.color = 'var(--danger)';
+  }
+}
+
+function _renderDealStageMapping() {
+  const container = document.getElementById('dealStageMappingContainer');
+  if (!container) return;
+  const stages = CRM_CONFIG.dealStageMap;
+  if (!Object.keys(stages).length) {
+    container.innerHTML = '<span style="color:var(--text-lighter);font-size:12px">Connect to HubSpot first to load deal stages.</span>';
+    return;
+  }
+  // Group by pipeline
+  const byPipeline = {};
+  Object.entries(stages).forEach(([id, s]) => {
+    const pName = s.pipeline || 'Unknown';
+    if (!byPipeline[pName]) byPipeline[pName] = [];
+    byPipeline[pName].push({ id, ...s });
+  });
+  let html = '';
+  Object.entries(byPipeline).forEach(([pName, stgs]) => {
+    html += '<div style="margin-bottom:12px"><div style="font-weight:600;font-size:12px;margin-bottom:4px">' + pName + '</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:4px">';
+    stgs.forEach(s => {
+      html += '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:6px;font-size:11px;background:' + s.color + '22;color:' + s.color + ';border:1px solid ' + s.color + '33">' + s.label + '</span>';
+    });
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+// ── CRM Cache management ───────────────────────────────────────────────
+async function refreshCrmCache() {
+  if (!CRM_CONFIG.provider) { _showToast('No CRM provider configured'); return; }
+  const statusEl = document.getElementById('crmCacheStatus');
+  if (statusEl) statusEl.textContent = 'Building cache...';
+
+  _crmCache = {};
+  const uniqueCompanies = [...new Set(ALL_JOBS.map(j => j.company))];
+  let done = 0;
+  const total = uniqueCompanies.length;
+
+  for (const company of uniqueCompanies) {
+    try {
+      await crmLookupCompany(company);
+    } catch (e) { /* skip */ }
+    done++;
+    if (statusEl && done % 5 === 0) statusEl.textContent = 'Processing ' + done + '/' + total + '...';
+    // Rate limit: small delay between batches
+    if (done % 5 === 0) await new Promise(r => setTimeout(r, 200));
+  }
+
+  _crmCacheBuilt = true;
+  if (statusEl) statusEl.textContent = 'Cache built: ' + total + ' companies checked at ' + new Date().toLocaleTimeString();
+  // Re-render job cards to show CRM badges
+  renderJobs();
+  _showToast('CRM cache refreshed - ' + total + ' companies checked');
+}
+
+// ── CRM badge for job table rows ───────────────────────────────────────
+function _getCrmBadgeHtml(companyName) {
+  if (!CRM_CONFIG.provider || !CRM_CONFIG.enrichCards) return '';
+  const cacheKey = companyName.toLowerCase().trim();
+  const data = _crmCache[cacheKey];
+  if (!data || !data.companyId) return '';
+
+  const activeDeals = data.deals.filter(d => {
+    const sName = (d.stageName || '').toLowerCase();
+    return !sName.includes('closed lost') && !sName.includes('not interested');
+  });
+
+  if (activeDeals.length > 0) {
+    const topDeal = activeDeals[0];
+    const stageColor = _resolveStageColor(topDeal.stage);
+    const amount = topDeal.amount ? ' $' + Number(topDeal.amount).toLocaleString() : '';
+    return '<span class="badge" style="background:' + stageColor + '22;color:' + stageColor + ';font-size:10px;white-space:nowrap" title="' + topDeal.name + amount + '">' +
+      'CRM: ' + (topDeal.stageName || 'Deal') + '</span>';
+  }
+
+  if (data.contacts.length > 0) {
+    return '<span class="badge" style="background:#32BBD722;color:#32BBD7;font-size:10px" title="' + data.contacts.length + ' contact(s) in CRM">' +
+      'CRM: ' + data.contacts.length + ' contact(s)</span>';
+  }
+
+  return '<span class="badge" style="background:#95A5A622;color:#95A5A6;font-size:10px">In CRM</span>';
+}
+
+// ── CRM detail panel section ───────────────────────────────────────────
+function _buildCrmDetailHtml(companyName) {
+  if (!CRM_CONFIG.provider || !CRM_CONFIG.enrichDetail) return '';
+  const cacheKey = companyName.toLowerCase().trim();
+  const data = _crmCache[cacheKey];
+
+  let html = '<div class="detail-section" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">';
+  html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> CRM Info</div>';
+
+  if (!data || !data.companyId) {
+    html += '<div style="font-size:12px;color:var(--text-lighter)">No match found in CRM.</div>';
+    html += '</div>';
+    return html;
+  }
+
+  // Company link
+  const portalId = CRM_CONFIG.portalId;
+  const companyUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-2/' + data.companyId : '#';
+  html += '<div style="margin-bottom:8px"><a href="' + companyUrl + '" target="_blank" style="font-size:13px;color:var(--teal);text-decoration:none;font-weight:600">' + data.companyName + ' in HubSpot &rarr;</a></div>';
+
+  // Deals
+  if (data.deals.length > 0) {
+    html += '<div style="font-size:12px;font-weight:600;margin-bottom:4px">Deals (' + data.deals.length + ')</div>';
+    data.deals.forEach(d => {
+      const stageColor = _resolveStageColor(d.stage);
+      const amount = d.amount ? ' - $' + Number(d.amount).toLocaleString() : '';
+      const dealUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-3/' + d.id : '#';
+      html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
+      html += '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + stageColor + ';flex-shrink:0"></span>';
+      html += '<a href="' + dealUrl + '" target="_blank" style="color:var(--text);text-decoration:none">' + d.name + '</a>';
+      html += '<span style="color:var(--text-lighter)">' + (d.stageName || '') + amount + '</span>';
+      html += '</div>';
+    });
+  }
+
+  // Contacts
+  if (data.contacts.length > 0) {
+    html += '<div style="font-size:12px;font-weight:600;margin-top:8px;margin-bottom:4px">Contacts (' + data.contacts.length + ')</div>';
+    data.contacts.forEach(c => {
+      const contactUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-1/' + c.id : '#';
+      html += '<div style="font-size:12px;margin-bottom:2px">';
+      html += '<a href="' + contactUrl + '" target="_blank" style="color:var(--text);text-decoration:none">' + c.name + '</a>';
+      html += c.title ? ' <span style="color:var(--text-lighter)">(' + c.title + ')</span>' : '';
+      html += c.email ? ' <span style="color:var(--text-lighter)">' + c.email + '</span>' : '';
+      html += '</div>';
+    });
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ── Auto-match on data load ────────────────────────────────────────────
+function _initCrmIntegration() {
+  // Load CRM config from localStorage
+  const savedConfig = localStorage.getItem('crm_integration_config');
+  if (savedConfig) {
+    try { _applyCrmConfigFromSettings(JSON.parse(savedConfig)); } catch(e) {}
+  }
+  // Load token
+  _loadCrmSecretsFromLocal();
+  // Trigger auto-match if enabled
+  _crmAutoMatchOnLoad();
+}
+
+// Also save CRM config to localStorage when saving settings
+function _persistCrmConfigLocally() {
+  localStorage.setItem('crm_integration_config', JSON.stringify(_getCrmIntegrationConfig()));
+}
+
+async function _crmAutoMatchOnLoad() {
+  if (!CRM_CONFIG.provider || !CRM_CONFIG.autoMatch || _crmCacheBuilt) return;
+  // Build cache in background, don't block UI
+  setTimeout(async () => {
+    const statusEl = document.getElementById('crmCacheStatus');
+    const uniqueCompanies = [...new Set(ALL_JOBS.map(j => j.company))];
+    let done = 0;
+    for (const company of uniqueCompanies) {
+      try { await crmLookupCompany(company); } catch(e) {}
+      done++;
+      if (done % 10 === 0) await new Promise(r => setTimeout(r, 300));
+    }
+    _crmCacheBuilt = true;
+    if (statusEl) statusEl.textContent = 'Auto-matched ' + uniqueCompanies.length + ' companies';
+    renderJobs();
+  }, 2000);
+}
+
 async function _saveSettingsToGitHub() {
   const allSettings = {
     templates: {
@@ -7051,12 +7560,16 @@ async function _saveSettingsToGitHub() {
     sources: {
       labels: SOURCE_LABELS,
       domains: SOURCE_DOMAINS
-    }
+    },
+    integrations: _getCrmIntegrationConfig()
   };
 
   // Also save API key to localStorage
   const apiKey = document.getElementById('anthropicApiKey').value;
   if (apiKey) localStorage.setItem('anthropicApiKey', apiKey);
+
+  // Save CRM token to localStorage (never push secrets to GitHub)
+  _saveCrmSecretsToLocal();
 
   const payload = {
     message: 'Update all settings (templates, categories, customers, sources)',
@@ -7114,6 +7627,7 @@ function switchSettingsSection(section) {
     if (section === 'categories') renderCategoriesSection();
     else if (section === 'customers') renderCustomersSection();
     else if (section === 'sources') renderSourcesSection();
+    else if (section === 'integrations') renderIntegrationsSection();
     else if (section === 'templates') renderSettingsTab(_currentSettingsTab);
   }
 }
@@ -7368,12 +7882,14 @@ function renderSettingsView() {
     if (txt.includes('categories')) sectionName = 'categories';
     else if (txt.includes('customers')) sectionName = 'customers';
     else if (txt.includes('sources')) sectionName = 'sources';
+    else if (txt.includes('integrations')) sectionName = 'integrations';
     else if (txt.includes('templates')) sectionName = 'templates';
   }
   // Render the section content
   if (sectionName === 'categories') renderCategoriesSection();
   else if (sectionName === 'customers') renderCustomersSection();
   else if (sectionName === 'sources') renderSourcesSection();
+  else if (sectionName === 'integrations') renderIntegrationsSection();
   else if (sectionName === 'templates') renderSettingsTab(_currentSettingsTab);
 }
 
@@ -7767,6 +8283,9 @@ function saveAllSettings() {
   } else {
     localStorage.removeItem('anthropicApiKey');
   }
+  // Collect CRM config from UI before saving
+  if (CRM_CONFIG.provider) _collectCrmConfigFromUI();
+  _persistCrmConfigLocally();
   _saveSettingsToGitHub();
 }
 
