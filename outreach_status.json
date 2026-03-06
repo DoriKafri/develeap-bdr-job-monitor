@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T08:46:54.552Z",
+  "lastUpdated": "2026-03-06T08:46:59.789Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -138,13 +138,12 @@
     "eugene pistunovich": "invited",
     "kostya gorel": "invited",
     "jordan yefet": "invited",
-    "oren ben-shimol": "meeting_set",
+    "oren ben-shimol": "not_contacted",
     "michael mesguich": "invited",
     "adam schneider": "invited"
   },
   "connected": [
-    "check point|nataly kremer",
-    "oren ben-shimol"
+    "check point|nataly kremer"
   ],
   "hiddenCompanies": [
     "unknown"
