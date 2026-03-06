@@ -6293,7 +6293,7 @@ async function _pushToLinkedInQueue(entry) {
   if (resp.ok) {
     const data = await resp.json();
     _liQueueSha = data.sha;
-    try { queue = JSON.parse(decodeURIComponent(escape(atob(data.content)))); } catch(e) {}
+    try { queue = JSON.parse(_base64ToUtf8(data.content)); } catch(e) {}
   }
 
   // Add new entry
@@ -6302,7 +6302,7 @@ async function _pushToLinkedInQueue(entry) {
   // Push back to GitHub
   const body = {
     message: `Queue LinkedIn message for ${entry.contactName}`,
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(queue, null, 2)))),
+    content: _utf8ToBase64(JSON.stringify(queue, null, 2)),
     sha: _liQueueSha
   };
   const putResp = await fetch(_LI_QUEUE_API, {
@@ -6344,6 +6344,21 @@ function _setOutreachStatus(key, status) {
   s[key] = status;
   _saveOutreachStatuses(s);
   _scheduleSyncToGitHub();
+}
+
+// ── UTF-8 safe Base64 helpers (GitHub API) ──────────────────
+function _utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+function _base64ToUtf8(b64) {
+  const clean = b64.replace(/[\s\n\r]/g, '');
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
 }
 
 // ── GitHub Persistent Storage ───────────────────────────────
@@ -6394,7 +6409,7 @@ async function _fetchRemoteStatus() {
     if (!resp.ok) { console.warn('GitHub fetch status:', resp.status); return null; }
     const data = await resp.json();
     _ghFileSha = data.sha;
-    const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+    const content = JSON.parse(_base64ToUtf8(data.content));
     return content;
   } catch (e) { console.warn('Failed to fetch remote status:', e); return null; }
 }
@@ -6414,7 +6429,7 @@ async function _pushToGitHub() {
       _ghFileSha = getData.sha;
     }
     const payload = _buildStatusPayload();
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+    const content = _utf8ToBase64(JSON.stringify(payload, null, 2));
     const body = {
       message: `chore: sync outreach status ${new Date().toISOString().slice(0,16)}`,
       content: content,
@@ -7934,7 +7949,7 @@ async function _saveSettingsToGitHub() {
 
   const payload = {
     message: 'Update all settings (templates, categories, customers, sources)',
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(allSettings, null, 2)))),
+    content: _utf8ToBase64(JSON.stringify(allSettings, null, 2)),
     branch: 'main'
   };
 
@@ -8730,7 +8745,7 @@ var refreshQueueView = async function() {
     if (resp.ok) {
       const data = await resp.json();
       _liQueueSha = data.sha;
-      _queueData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+      _queueData = JSON.parse(_base64ToUtf8(data.content));
     } else {
       _queueData = { queue: [], lastProcessed: '' };
     }
@@ -9140,7 +9155,7 @@ var _saveQueueToGitHub = async function() {
 
     const body = {
       message: 'Update LinkedIn queue',
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(_queueData, null, 2)))),
+      content: _utf8ToBase64(JSON.stringify(_queueData, null, 2)),
       sha: _liQueueSha
     };
     const putResp = await fetch(_LI_QUEUE_API, {
@@ -9384,7 +9399,7 @@ var autoQueueNonConnected = async function(job) {
     if (resp.ok) {
       const data = await resp.json();
       _liQueueSha = data.sha;
-      try { queue = JSON.parse(decodeURIComponent(escape(atob(data.content)))); } catch(e) {}
+      try { queue = JSON.parse(_base64ToUtf8(data.content)); } catch(e) {}
     }
 
     // Check for duplicates (don't re-add contacts already in queue)
@@ -9396,7 +9411,7 @@ var autoQueueNonConnected = async function(job) {
 
     const body = {
       message: `Auto-queue ${newEntries.length} contacts for ${job.company}`,
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(queue, null, 2)))),
+      content: _utf8ToBase64(JSON.stringify(queue, null, 2)),
       sha: _liQueueSha
     };
     const putResp = await fetch(_LI_QUEUE_API, {
@@ -9463,7 +9478,7 @@ var _initQueueBadge = async function() {
     if (resp.ok) {
       const data = await resp.json();
       _liQueueSha = data.sha;
-      const q = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+      const q = JSON.parse(_base64ToUtf8(data.content));
       const pending = (q.queue || []).filter(e => e.status === 'pending' || e.status === 'processing').length;
       _updateQueueBadges(pending);
     }
