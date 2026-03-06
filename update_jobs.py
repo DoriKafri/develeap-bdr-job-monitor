@@ -28,6 +28,7 @@ NETLIFY_TOKEN = os.environ.get("NETLIFY_TOKEN", "")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
 SERPAPI_KEY = os.environ.get("SERPAPI_KEY", "")  # Optional: for better search results
 DASHBOARD_PATH = os.environ.get("DASHBOARD_PATH", "dashboard/index.html")
+SLACK_POSTED_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slack_posted.json")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
@@ -2483,6 +2484,48 @@ def deploy_to_netlify(html: str) -> bool:
         return False
 
 
+# ── Slack Dedup Tracking ───────────────────────────────────────────────────
+
+def _slack_listing_key(job: dict) -> str:
+    """Build a unique identifier for a listing: company|category|title|date."""
+    company = (job.get("company") or "").lower().strip()
+    category = (job.get("category") or "").lower().strip()
+    title = (job.get("title") or "").lower().strip()
+    posted = (job.get("posted") or "")[:10]  # YYYY-MM-DD
+    return f"{company}|{category}|{title}|{posted}"
+
+
+def _load_slack_posted() -> set:
+    """Load the set of listing keys already posted to Slack."""
+    try:
+        with open(SLACK_POSTED_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return set(data.get("posted_keys", []))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return set()
+
+
+def _save_slack_posted(keys: set) -> None:
+    """Persist the set of posted listing keys. Keep last 2000 to avoid unbounded growth."""
+    # Sort to keep most recent entries (keys contain dates)
+    sorted_keys = sorted(keys, reverse=True)[:2000]
+    with open(SLACK_POSTED_PATH, "w", encoding="utf-8") as f:
+        json.dump({"posted_keys": sorted_keys, "updated": datetime.now(timezone.utc).isoformat()}, f, indent=2)
+
+
+def _filter_unposted_jobs(jobs: list[dict]) -> list[dict]:
+    """Filter out jobs that have already been posted to Slack."""
+    posted = _load_slack_posted()
+    unposted = []
+    for j in jobs:
+        key = _slack_listing_key(j)
+        if key not in posted:
+            unposted.append(j)
+    if len(jobs) != len(unposted):
+        log.info(f"  Slack dedup: {len(jobs)} candidates → {len(unposted)} new (filtered {len(jobs) - len(unposted)} already posted)")
+    return unposted
+
+
 # ── Slack Notification ─────────────────────────────────────────────────────
 
 def notify_slack(new_jobs: list[dict]) -> bool:
@@ -2574,13 +2617,18 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=10)
         resp.raise_for_status()
         log.info(f"Slack notification sent for {len(new_jobs)} new listings")
+        # Record posted keys so we never re-post these listings
+        posted = _load_slack_posted()
+        for j in new_jobs:
+            posted.add(_slack_listing_key(j))
+        _save_slack_posted(posted)
         return True
     except Exception as e:
         log.error(f"Slack notification failed: {e}")
         return False
 
 
-# ── Main ───────────────────────────────────────────────────────────────────
+# ── Main───────────────────────────────────────────────────────────────────
 
 def main():
     global _auto_discover_count
@@ -2741,9 +2789,13 @@ def main():
     else:
         log.warning("⚠️  Netlify deploy failed")
 
-    # 7. Notify Slack
+    # 7. Notify Slack (with dedup to prevent re-posting)
     if truly_new:
-        notify_slack(truly_new)
+        unposted = _filter_unposted_jobs(truly_new)
+        if unposted:
+            notify_slack(unposted)
+        else:
+            log.info("All new listings already posted to Slack — skipping")
     else:
         log.info("No new listings — skipping Slack notification")
 
