@@ -7412,12 +7412,13 @@ function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c
 function filterByStat(el){
   const stat=el.dataset.stat;
   // Map stat card to the appropriate currentFilter value
+  // Any key that exists in CAT_LABELS is a valid category filter
   let filterVal='all';
-  if(stat==='devops')filterVal='devops';
-  else if(stat==='ai_agentic')filterVal='ai_agentic';
-  else if(stat==='finops')filterVal='finops';
+  if(stat==='all')filterVal='all';
   else if(stat==='develeap')filterVal='develeap';
   else if(stat==='new')filterVal='new';
+  else if(stat==='ai_agentic')filterVal='ai_agentic';
+  else if(CAT_LABELS[stat])filterVal=stat;
   else filterVal='all';
   currentFilter=filterVal;
   // Sync filter chips  -  clear all, activate matching or 'All'
