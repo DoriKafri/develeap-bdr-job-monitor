@@ -282,6 +282,9 @@
   .template-tab { padding:6px 12px; border-radius:16px; border:1px solid var(--border); background:white; font-size:12px; cursor:pointer; transition:all 0.15s; color:var(--text-light); font-weight:500; }
   .template-tab:hover { border-color:var(--primary); color:var(--primary); }
   .template-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+  .template-select { width:100%; padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:white; font-size:13px; font-weight:500; color:var(--text); cursor:pointer; appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;margin-bottom:10px;transition:border-color 0.15s; }
+  .template-select:hover { border-color:var(--primary); }
+  .template-select:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
   .template-preview { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; font-size:13px; line-height:1.7; color:var(--text); white-space:pre-wrap; min-height:100px; max-height:240px; overflow-y:auto; }
   .template-actions { display:flex; gap:8px; margin-top:12px; }
   .template-actions .btn { flex:1; justify-content:center; font-size:13px; }
@@ -6004,9 +6007,8 @@ function buildOutreachSection(job) {
   // Filter templates based on first stakeholder's connected status
   const firstKey = stakeholders[0] ? _contactKey(stakeholders[0]) : '';
   const isConn = _connectedContacts.has(firstKey) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(firstKey));
-  const templateTabs = OUTREACH_TEMPLATES.map((t, i) => {
-    const match = t.forConnected === undefined || t.forConnected === isConn || (!isConn && !t.forConnected);
-    return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchTemplate(${i})" ${!match?'style="opacity:0.5"':''}>${t.emoji} ${t.name}</button>`;
+  const templateOptions = OUTREACH_TEMPLATES.map((t, i) => {
+    return `<option value="${i}">${t.emoji} ${t.name}</option>`;
   }).join('');
 
   const firstMsg = fillTemplate(OUTREACH_TEMPLATES[0].body, job, stakeholders[0]);
@@ -6020,7 +6022,7 @@ function buildOutreachSection(job) {
       ${stakeholderHTML}
       <div class="template-picker">
         <div class="template-picker-label">Message Templates</div>
-        <div class="template-tabs">${templateTabs}</div>
+        <select class="template-select" id="templateSelect" onchange="event.stopPropagation();switchTemplate(+this.value)">${templateOptions}</select>
         <div class="template-preview" id="templatePreview">${firstMsg}</div>
         <div class="template-actions">
           <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2" id="btnLinkedInAction">
@@ -6070,7 +6072,8 @@ function fillTemplate(tpl, job, stakeholder) {
 
 function switchTemplate(idx) {
   _activeTemplateIdx = idx;
-  document.querySelectorAll('.template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const sel = document.getElementById('templateSelect');
+  if (sel && sel.value !== String(idx)) sel.value = idx;
   const job = _activeJobForOutreach;
   if (!job) return;
   const stakeholders = job._mergedStakeholders || job.stakeholders || [];
@@ -8817,9 +8820,9 @@ var renderQueueView = function() {
                       : custType === 'past' ? CONNECT_TEMPLATES_PAST
                       : CONNECT_TEMPLATES_PROSPECT;
       const activeIdx = entry.templateIdx || 0;
-      templateTabs = '<div class="queue-template-tabs">' + templates.map((t, ti) =>
-        `<button class="queue-template-tab${ti === activeIdx ? ' active' : ''}" onclick="event.stopPropagation();switchQueueTemplate(${origIdx},${ti})" title="${t.style}">${t.emoji} ${t.name}</button>`
-      ).join('') + '</div>';
+      templateTabs = '<div style="margin-top:6px"><select class="template-select" style="font-size:11px;padding:5px 8px" onchange="event.stopPropagation();switchQueueTemplate('+origIdx+',+this.value)">' + templates.map((t, ti) =>
+        `<option value="${ti}"${ti === activeIdx ? ' selected' : ''}>${t.emoji} ${t.name}</option>`
+      ).join('') + '</select></div>';
     }
 
     // Action buttons based on status
@@ -9226,8 +9229,8 @@ var buildOutreachSectionV2 = function(job) {
     const templates = _getConnectTemplates(job);
     const custTypeLabel = job.isDeveleapCustomer ? '⭐ Existing Customer' : (job.isPastCustomer ? '🔄 Past Customer' : '🆕 New Prospect');
     const custTypeColor = job.isDeveleapCustomer ? '#2E7D32' : (job.isPastCustomer ? '#E65100' : '#1565C0');
-    const connectTabs = templates.map((t, i) => {
-      return `<button class="template-tab${i===0?' active':''}" onclick="event.stopPropagation();switchConnectTemplate(${i})" style="font-size:11px">${t.emoji} ${t.name}</button>`;
+    const connectOptions = templates.map((t, i) => {
+      return `<option value="${i}">${t.emoji} ${t.name}</option>`;
     }).join('');
 
     const firstS = stakeholders.find(s => {
@@ -9242,7 +9245,7 @@ var buildOutreachSectionV2 = function(job) {
         🔗 Connection Request Style
         <span style="font-size:10px;font-weight:600;color:${custTypeColor};padding:1px 6px;border-radius:4px;background:${custTypeColor}11">${custTypeLabel}</span>
       </div>
-      <div class="template-tabs" id="connectTemplateTabs">${connectTabs}</div>
+      <select class="template-select" id="connectTemplateSelect" onchange="event.stopPropagation();switchConnectTemplate(+this.value)">${connectOptions}</select>
       <div class="template-preview" id="connectTemplatePreview" style="max-height:160px;font-size:12px">${firstConnMsg}</div>
       <div style="font-size:10px;color:var(--text-lighter);margin-top:6px;text-align:right">
         Style: <strong>${templates[0].style}</strong> · Max 300 chars for LinkedIn notes
@@ -9259,7 +9262,8 @@ buildOutreachSection = buildOutreachSectionV2;
 
 var switchConnectTemplate = function(idx) {
   _activeConnectTemplateIdx = idx;
-  document.querySelectorAll('#connectTemplateTabs .template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const sel = document.getElementById('connectTemplateSelect');
+  if (sel && sel.value !== String(idx)) sel.value = idx;
   const job = _activeJobForOutreach;
   if (!job) return;
   const templates = _getConnectTemplates(job);
