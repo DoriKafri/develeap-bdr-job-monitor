@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T20:01:24.026Z",
+  "lastUpdated": "2026-03-06T20:02:02.875Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -258,7 +258,10 @@
     "ofirp": "invited",
     "jonathanz": "invited",
     "kerenh": "invited",
-    "dana cohen vp": "invited"
+    "dana cohen vp": "invited",
+    "omer seginer": "invited",
+    "yonatan hayun": "invited",
+    "shira katzir": "invited"
   },
   "connected": [
     "check point|nataly kremer"
