@@ -432,7 +432,8 @@
   .settings-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
 
   /* Integration tabs */
-  .intg-nav { display:flex; gap:0; margin-bottom:24px; background:var(--bg); border-radius:14px; padding:4px; border:1px solid var(--border); }
+  .intg-nav-wrap { position:sticky; top:-24px; z-index:10; background:linear-gradient(to bottom, white 80%, rgba(255,255,255,0)); padding-bottom:16px; margin:-4px -4px 8px; padding:4px 4px 16px; }
+  .intg-nav { display:flex; gap:0; background:#f8f9fb; border-radius:14px; padding:4px; border:1px solid var(--border); box-shadow:0 2px 12px rgba(0,0,0,0.06); }
   .intg-nav-btn { flex:1; display:flex; align-items:center; gap:10px; padding:12px 16px; border:none; background:transparent; border-radius:10px; cursor:pointer; transition:all 0.2s; color:var(--text-light); font-size:13px; font-weight:600; position:relative; }
   .intg-nav-btn:hover { background:white; color:var(--text); }
   .intg-nav-btn.active { background:white; color:var(--text); box-shadow:0 1px 4px rgba(0,0,0,0.08); }
@@ -849,27 +850,29 @@
           <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Connect your tools to enrich job listings with company data, contacts, and enrichment intel.</p>
 
           <!-- Integration Nav Tabs -->
-          <div class="intg-nav" id="intgNav">
-            <button class="intg-nav-btn active" onclick="switchIntgTab('overview')">
-              <div class="intg-nav-icon" style="background:var(--primary-light);color:var(--primary)">📊</div>
-              <div class="intg-nav-label"><span>Overview</span><span>Status & sync</span></div>
-            </button>
-            <button class="intg-nav-btn" onclick="switchIntgTab('hubspot')">
-              <div class="intg-nav-icon" style="background:#FFF0E6;color:#FF7A59">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.29 6.42V4.42c.56-.28.94-.84.94-1.5 0-.93-.76-1.69-1.69-1.69s-1.69.76-1.69 1.69c0 .66.38 1.22.94 1.5v2c-.6.09-1.16.3-1.64.61l-5.49-4.27a1.89 1.89 0 00.05-.43c0-1.06-.86-1.92-1.92-1.92S4.87.97 4.87 2.03s.86 1.92 1.92 1.92c.34 0 .65-.09.93-.25l5.38 4.19A4.15 4.15 0 0012.54 10c0 .67.16 1.31.44 1.87l-1.47 1.47a2.15 2.15 0 00-.72-.13c-1.15 0-2.09.93-2.09 2.09s.93 2.09 2.09 2.09 2.09-.93 2.09-2.09c0-.26-.05-.51-.14-.74l1.44-1.44A4.15 4.15 0 0020.88 10c0-2.3-1.86-4.16-4.16-4.16-.47 0-.92.08-1.34.22l.01-.01-.1-.05v.01z"/></svg>
-              </div>
-              <div class="intg-nav-label"><span>HubSpot</span><span>CRM & deals</span></div>
-              <div class="intg-status-dot inactive" id="hubspotStatusDot"></div>
-            </button>
-            <button class="intg-nav-btn" onclick="switchIntgTab('apollo')">
-              <div class="intg-nav-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
-              <div class="intg-nav-label"><span>Apollo.io</span><span>Enrichment</span></div>
-              <div class="intg-status-dot inactive" id="apolloStatusDot"></div>
-            </button>
-            <button class="intg-nav-btn" onclick="switchIntgTab('sync')">
-              <div class="intg-nav-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
-              <div class="intg-nav-label"><span>Sync</span><span>Run & schedule</span></div>
-            </button>
+          <div class="intg-nav-wrap">
+            <div class="intg-nav" id="intgNav">
+              <button class="intg-nav-btn active" onclick="switchIntgTab('overview')">
+                <div class="intg-nav-icon" style="background:var(--primary-light);color:var(--primary)">📊</div>
+                <div class="intg-nav-label"><span>Overview</span><span>Status & sync</span></div>
+              </button>
+              <button class="intg-nav-btn" onclick="switchIntgTab('hubspot')">
+                <div class="intg-nav-icon" style="background:#FFF0E6;color:#FF7A59">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.29 6.42V4.42c.56-.28.94-.84.94-1.5 0-.93-.76-1.69-1.69-1.69s-1.69.76-1.69 1.69c0 .66.38 1.22.94 1.5v2c-.6.09-1.16.3-1.64.61l-5.49-4.27a1.89 1.89 0 00.05-.43c0-1.06-.86-1.92-1.92-1.92S4.87.97 4.87 2.03s.86 1.92 1.92 1.92c.34 0 .65-.09.93-.25l5.38 4.19A4.15 4.15 0 0012.54 10c0 .67.16 1.31.44 1.87l-1.47 1.47a2.15 2.15 0 00-.72-.13c-1.15 0-2.09.93-2.09 2.09s.93 2.09 2.09 2.09 2.09-.93 2.09-2.09c0-.26-.05-.51-.14-.74l1.44-1.44A4.15 4.15 0 0020.88 10c0-2.3-1.86-4.16-4.16-4.16-.47 0-.92.08-1.34.22l.01-.01-.1-.05v.01z"/></svg>
+                </div>
+                <div class="intg-nav-label"><span>HubSpot</span><span>CRM & deals</span></div>
+                <div class="intg-status-dot inactive" id="hubspotStatusDot"></div>
+              </button>
+              <button class="intg-nav-btn" onclick="switchIntgTab('apollo')">
+                <div class="intg-nav-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
+                <div class="intg-nav-label"><span>Apollo.io</span><span>Enrichment</span></div>
+                <div class="intg-status-dot inactive" id="apolloStatusDot"></div>
+              </button>
+              <button class="intg-nav-btn" onclick="switchIntgTab('sync')">
+                <div class="intg-nav-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
+                <div class="intg-nav-label"><span>Sync</span><span>Run & schedule</span></div>
+              </button>
+            </div>
           </div>
 
           <!-- OVERVIEW PANEL -->
