@@ -19,9 +19,32 @@ import re
 import requests
 from datetime import datetime
 
-HUBSPOT_TOKEN = os.environ.get("HUBSPOT_TOKEN", "").strip()
+HUBSPOT_TOKEN_RAW = os.environ.get("HUBSPOT_TOKEN", "").strip()
 HUBSPOT_PORTAL_ID = os.environ.get("HUBSPOT_PORTAL_ID", "").strip()
 BASE_URL = "https://api.hubapi.com"
+
+
+def _decode_token(raw):
+    """HubSpot tokens normally start with 'pat-' or 'eu1-' or 'na1-'.
+    If the value looks base64-encoded, decode it first."""
+    import base64 as b64mod
+    # If it already looks like a raw token, use it as-is
+    if raw.startswith("pat-") or raw.startswith("eu1-") or raw.startswith("na1-"):
+        return raw
+    # Try base64 decode
+    try:
+        decoded = b64mod.b64decode(raw).decode("utf-8", errors="replace")
+        # Strip any leading non-printable / protobuf framing bytes
+        cleaned = decoded.lstrip("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f $\"")
+        if cleaned.startswith("eu1-") or cleaned.startswith("na1-") or cleaned.startswith("pat-"):
+            print(f"  Token was base64-encoded, decoded to {len(cleaned)} chars starting with {cleaned[:10]}...")
+            return cleaned
+    except Exception:
+        pass
+    return raw
+
+
+HUBSPOT_TOKEN = _decode_token(HUBSPOT_TOKEN_RAW)
 OUTPUT_FILE = "crm_data.json"
 
 # Read existing job listings to know which companies to look up
