@@ -296,8 +296,7 @@
   .add-contact-form { padding:12px; border:1px solid var(--border); border-radius:10px; background:var(--bg); display:flex; flex-direction:column; gap:8px; }
   .add-contact-form input { padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; outline:none; transition:border .15s; }
   .add-contact-form input:focus { border-color:var(--primary); }
-  .add-contact-form .form-row { display:flex; gap:8px; }
-  .add-contact-form .form-row input { flex:1; }
+  .add-contact-form input#_mcLinkedin { background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%230A66C2'%3E%3Cpath d='M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z'/%3E%3C/svg%3E") no-repeat 10px center; padding-left:34px; }
   .add-contact-form .form-actions { display:flex; gap:8px; justify-content:flex-end; }
   .add-contact-form .form-actions button { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; }
   .add-contact-form .btn-save { background:var(--primary); color:white; }
@@ -6623,20 +6622,32 @@ const _MANUAL_CONTACTS_KEY = 'bdr_manual_contacts';
 function _getManualContacts() { try { return JSON.parse(localStorage.getItem(_MANUAL_CONTACTS_KEY) || '{}'); } catch { return {}; } }
 function _saveManualContacts(data) { localStorage.setItem(_MANUAL_CONTACTS_KEY, JSON.stringify(data)); }
 
+function _nameFromLinkedInUrl(url) {
+  // Extract readable name from LinkedIn slug: /in/john-smith-123abc → "John Smith"
+  const m = url.match(/linkedin\.com\/in\/([^/?#]+)/i);
+  if (!m) return '';
+  let slug = decodeURIComponent(m[1]).replace(/[-_]/g, ' ').trim();
+  // Remove trailing numbers/hashes (LinkedIn appends IDs)
+  slug = slug.replace(/\s+[a-f0-9]{4,}$/i, '').replace(/\s+\d+$/,'').trim();
+  // Title-case each word
+  return slug.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+}
+
 function _addManualContact(jobId) {
-  const nameEl = document.getElementById('_mcName');
-  const linkedinEl = document.getElementById('_mcLinkedin');
-  const titleEl = document.getElementById('_mcTitle');
-  const name = (nameEl ? nameEl.value : '').trim();
-  const linkedin = (linkedinEl ? linkedinEl.value : '').trim();
-  const title = (titleEl ? titleEl.value : '').trim();
-  if (!name) { if (nameEl) nameEl.style.borderColor='#EF5350'; return; }
-  const contact = { name, title, linkedin, email:'', phone:'', source:'Manual', connectMsg:'', followUpMsg:'' };
+  const urlEl = document.getElementById('_mcLinkedin');
+  const url = (urlEl ? urlEl.value : '').trim();
+  if (!url || !url.includes('linkedin.com/in/')) {
+    if (urlEl) { urlEl.style.borderColor='#EF5350'; urlEl.placeholder='Paste a LinkedIn profile URL'; }
+    return;
+  }
+  const name = _nameFromLinkedInUrl(url) || 'Unknown';
+  const contact = { name, title:'', linkedin:url, email:'', phone:'', source:'Manual', connectMsg:'', followUpMsg:'' };
   const all = _getManualContacts();
   if (!all[jobId]) all[jobId] = [];
+  // Avoid duplicate LinkedIn URLs
+  if (all[jobId].some(c => c.linkedin === url)) { openDetail(jobId); return; }
   all[jobId].push(contact);
   _saveManualContacts(all);
-  // Refresh the detail panel
   openDetail(jobId);
 }
 
@@ -6644,15 +6655,18 @@ function _showAddContactForm(jobId) {
   const container = document.getElementById('_addContactArea');
   if (!container) return;
   container.innerHTML = `<div class="add-contact-form">
-    <div class="form-row"><input id="_mcName" placeholder="Full name *" autofocus><input id="_mcTitle" placeholder="Title (optional)"></div>
-    <input id="_mcLinkedin" placeholder="LinkedIn URL (optional)">
+    <input id="_mcLinkedin" placeholder="Paste LinkedIn profile URL" autofocus style="font-size:14px;padding:10px 12px">
     <div class="form-actions">
       <button class="btn-cancel" onclick="event.stopPropagation();document.getElementById('_addContactArea').innerHTML='<button class=\\'add-contact-btn\\' onclick=\\'event.stopPropagation();_showAddContactForm(&quot;${jobId}&quot;)\\'>+ Add Contact</button>'">Cancel</button>
-      <button class="btn-save" onclick="event.stopPropagation();_addManualContact('${jobId}')">Add Contact</button>
+      <button class="btn-save" onclick="event.stopPropagation();_addManualContact('${jobId}')">Add</button>
     </div>
   </div>`;
-  const nameInput = document.getElementById('_mcName');
-  if (nameInput) nameInput.focus();
+  const input = document.getElementById('_mcLinkedin');
+  if (input) {
+    input.focus();
+    // Allow Enter key to submit
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); _addManualContact(jobId); } });
+  }
 }
 
 // ── Merge job stakeholders with CRM contacts ────────────────────────────
