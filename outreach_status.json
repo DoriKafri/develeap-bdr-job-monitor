@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T08:45:35.659Z",
+  "lastUpdated": "2026-03-06T08:46:09.081Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -120,7 +120,27 @@
     "omer goldberg": "invited",
     "roi dover": "invited",
     "roy friedman": "invited",
-    "greg lavender": "invited"
+    "greg lavender": "invited",
+    "nimrod saharof": "invited",
+    "yochai melochna": "invited",
+    "gabriel berelejis": "invited",
+    "erez atias": "invited",
+    "elior farajpur": "invited",
+    "udi ziv": "invited",
+    "alon kleinman": "invited",
+    "alexander olshanetsky": "invited",
+    "adar benjamin": "invited",
+    "johai kadosh": "invited",
+    "nir oren": "invited",
+    "guy chait": "invited",
+    "raphael ohayon": "invited",
+    "gal spektor": "invited",
+    "eugene pistunovich": "invited",
+    "kostya gorel": "invited",
+    "jordan yefet": "invited",
+    "oren ben-shimol": "invited",
+    "michael mesguich": "invited",
+    "adam schneider": "invited"
   },
   "connected": [
     "check point|nataly kremer"
