@@ -1,0 +1,826 @@
+{
+  "templates": {
+    "prospect": [
+      {
+        "name": "Hormozi Value Lead",
+        "emoji": "💰",
+        "style": "Alex Hormozi",
+        "body": "{contact_name}, I help companies like {company} solve the #1 reason {cat_expertise} hires fail  -  they take 6 months and burn $200K before producing anything.\n\nWe've embedded {cat_expertise} squads at {customers} that ship in 2 weeks  -  not 6 months.\n\nThat {role} role you're hiring for? I have a faster path. Open to hearing it?"
+      },
+      {
+        "name": "Brunson Curiosity Hook",
+        "emoji": "🎯",
+        "style": "Russell Brunson",
+        "body": "{contact_name}, I noticed something about that {role} role at {company} that 90% of hiring managers miss...\n\nThe companies who scale {cat_expertise} fastest aren't hiring  -  they're partnering. {customers} figured this out. Their secret? They called us.\n\nCurious what that looks like for {company}?"
+      },
+      {
+        "name": "Carnegie Genuine Interest",
+        "emoji": "🤝",
+        "style": "Dale Carnegie",
+        "body": "{contact_name}, I've been following {company}'s growth  -  really impressive what you're building.\n\nI noticed you're looking for a {role}. At Develeap, we specialize in exactly this kind of {cat_expertise} work  -  we've helped {customers} and 100+ companies.\n\nI'd genuinely love to learn more about your vision and see if there's a way we can help. Would you be open to connecting?"
+      },
+      {
+        "name": "Short & Direct",
+        "emoji": "⚡",
+        "style": "Quick Connect",
+        "body": "Hey {contact_name}  -  I run Develeap, Israel's largest {cat_expertise} consulting firm. Noticed {company} is hiring a {role}. We've helped {customers} scale fast. Worth connecting?"
+      }
+    ],
+    "customer": [
+      {
+        "name": "Warm Reconnect",
+        "emoji": "🤝",
+        "style": "Warm Partner",
+        "body": "{contact_name}, great to connect! Develeap has been working with {company} and I wanted to reach out personally.\n\nI saw you're looking for a {role}  -  we have {cat_expertise} squads already embedded at {company}, so spinning up for this should be seamless.\n\nHappy to chat about how we can help fill this gap fast."
+      },
+      {
+        "name": "Insider Value",
+        "emoji": "⭐",
+        "style": "Hormozi Insider",
+        "body": "{contact_name}, since Develeap already works with {company}, I wanted to flag something about that {role} role.\n\nWe've shipped {cat_expertise} projects for your team before  -  instead of a 6-month hire ramp, we can have someone producing in 2 weeks.\n\nWant me to loop in our team lead who knows your stack?"
+      },
+      {
+        "name": "Expansion Play",
+        "emoji": "🚀",
+        "style": "Growth Partner",
+        "body": "Hey {contact_name}  -  Dori here from Develeap. We've been partnering with {company} and I noticed this {role} opening.\n\nOur {cat_expertise} squad already knows your environment. Fastest path to filling this: let us extend the team we already have in place.\n\nWorth a 15-min call?"
+      },
+      {
+        "name": "Quick Existing",
+        "emoji": "⚡",
+        "style": "Quick Connect",
+        "body": "Hey {contact_name}  -  Dori from Develeap. We already work with {company} on {cat_expertise}. Saw the {role} opening  -  we can ramp fast since we know your stack. Happy to connect!"
+      }
+    ],
+    "past": [
+      {
+        "name": "Reunion Play",
+        "emoji": "🔄",
+        "style": "Carnegie Reunion",
+        "body": "{contact_name}, Develeap had the pleasure of working with {company} in the past  -  it was a great partnership.\n\nI noticed you're hiring a {role}. Our {cat_expertise} team has grown a lot since then, and we'd love the chance to reconnect and show what's new.\n\nWould you be open to catching up?"
+      },
+      {
+        "name": "Win-Back Value",
+        "emoji": "💎",
+        "style": "Hormozi Win-Back",
+        "body": "{contact_name}, since Develeap worked with {company} before, I can skip the sales pitch  -  you know we deliver.\n\nThat {role} role? We've helped {customers} fill similar gaps in 2 weeks. Our {cat_expertise} bench is stronger than ever.\n\nWorth reconnecting to see if there's a fit?"
+      },
+      {
+        "name": "Nostalgia Hook",
+        "emoji": "🎯",
+        "style": "Brunson Nostalgia",
+        "body": "{contact_name}, fun fact: {company} was one of our favorite {cat_expertise} engagements at Develeap.\n\nI noticed you're looking for a {role}  -  the companies scaling fastest right now aren't hiring for these roles, they're outsourcing to specialists like us. {customers} figured this out recently.\n\nCurious if {company} wants back in?"
+      },
+      {
+        "name": "Quick Past",
+        "emoji": "⚡",
+        "style": "Quick Connect",
+        "body": "Hey {contact_name}  -  Dori from Develeap. We worked with {company} before and loved it. Noticed the {role} opening  -  our {cat_expertise} team has grown and we'd love to reconnect. Worth chatting?"
+      }
+    ],
+    "outreach": [
+      {
+        "name": "Value Bomb",
+        "emoji": "💣",
+        "forConnected": true,
+        "subject": "{company}'s {role} opening  -  we {cat_result_short}",
+        "body": "Hey {contact_name},\n\nSaw {company} is hiring a {role}  -  that tells me {cat_expertise} is a priority right now.\n\nHere's what we just did for a company your size: {cat_result}. No fluff. Real results.\n\nI'm Dori from Develeap. We've built and embedded {cat_expertise} teams at 100+ Israeli tech companies  -  {customers} and more.\n\nWhat if instead of waiting 3-6 months to find + onboard the right {role}... you had a senior squad plugged in within 2 weeks, delivering {cat_offer}?\n\nWorth a 15-min chat? {cat_link}\n\nDori Kafri | CEO, Develeap"
+      },
+      {
+        "name": "Pain Agitator",
+        "emoji": "🎯",
+        "forConnected": true,
+        "subject": "That {role} role at {company}  -  still open?",
+        "body": "{contact_name}, quick question:\n\nThat {role} position at {company}  -  how long has it been open?\n\nHere's what I see every time: The role stays open 90+ days. Meanwhile, {cat_pain}\n\nSound familiar?\n\nI run Develeap. We've helped {customers} and 100+ other companies solve exactly this. We don't just fill the gap  -  we deliver {cat_offer}.\n\nThe ROI math is simple: hire us for 1 month, get 6 months of {cat_expertise} progress.\n\nCan I show you how? {cat_link}\n\nDori Kafri | CEO, Develeap"
+      },
+      {
+        "name": "Free Audit",
+        "emoji": "🎁",
+        "forConnected": true,
+        "subject": "Free {cat_expertise} audit for {company}  -  no strings",
+        "body": "{contact_name},\n\nI'll make this simple:\n\nI see {company} is looking for a {role}. Let my team audit your {cat_audit} for FREE  -  no strings. We'll deliver a report showing exactly where you're losing time and money, plus a roadmap to fix it.\n\nWhy free? Because once you see what 15 years of expertise looks like (we've done this for {customers}), you'll want us on speed dial.\n\nInterested? Just say \"yes\" and I'll set it up.\n\nDori Kafri, CEO @ Develeap\n{cat_link}"
+      },
+      {
+        "name": "Case Study",
+        "emoji": "📊",
+        "forConnected": true,
+        "subject": "How a team like {company} {cat_result_short} with Develeap",
+        "body": "{contact_name},\n\nQuick story:\n\nA company similar to {company} came to us struggling with exactly what that {role} role is meant to solve. They needed serious {cat_expertise} help  -  fast.\n\nIn 6 weeks, we delivered {cat_offer}  -  end to end.\n\nResult: they {cat_result}. And they got there without the 3-6 month hiring cycle.\n\nWe've done the same for {customers} and dozens more.\n\nI see {company} is hiring for this. What if there's a faster, smarter path?\n\n15 minutes  -  I'll show you how: {cat_link}\n\nDori Kafri | Develeap"
+      },
+      {
+        "name": "Connect Note",
+        "emoji": "🤝",
+        "forConnected": false,
+        "subject": "{company}'s {role} hire  -  quick intro",
+        "body": "Hey {contact_name}, noticed {company} is looking for a {role}  -  exciting!\n\nI'm Dori, CEO of Develeap (https://www.develeap.com). We help companies like {customers} scale their {cat_expertise} capabilities  -  100+ Israeli tech companies and counting.\n\nSince {company} is investing in {cat_expertise}, I'd love to share how we've helped similar teams move 3x faster. Open to connecting?"
+      },
+      {
+        "name": "Direct Ask",
+        "emoji": "⚡",
+        "forConnected": true,
+        "subject": "{contact_name}, senior {cat_expertise} talent ready for {company}",
+        "body": "{contact_name},\n\nStraight to it:\n\n{company} needs a {role}. I have 50+ senior engineers who specialize in exactly this  -  {cat_offer}.\n\nDeveleap = Israel's largest DevOps & Cloud consulting firm. {customers} and 100+ companies trust us. 15 years deep.\n\n3 options:\n1. Staff augmentation  -  senior {cat_expertise} engineers in your team, this month\n2. Project-based  -  we deliver {cat_offer}, train your team, hand it off\n3. Ongoing consulting  -  fractional {cat_expertise} leadership\n\nWhich one fits {company} best? Let's talk.\n\nDori Kafri\nCEO, Develeap\nhttps://www.develeap.com/contact/"
+      }
+    ],
+    "sos_prospect": [
+      {
+        "name": "Set the Stage",
+        "emoji": "🎬",
+        "sosStep": 1,
+        "subject": "{contact_name}, a story about why {role} hiring fails 90% of the time",
+        "body": "{contact_name},\n\nI'm Dori from Develeap. Want to tell you a story.\n\nBack in 2009, we watched our first hire take 6 months, cost $200K, and then fail. We thought it was just bad luck.\n\nOver the next 5 years, we realized something terrifying: {role} hires fail about 90% of the time.\n\nThe problem? Companies hire for the wrong reasons. They see a gap, panic, and throw 6 months of cash at an external hire who doesn't know their stack, culture, or timeline.\n\nMeanwhile, {cat_pain}\n\nWe eventually figured out a different path. One that {customers} and 100+ Israeli tech companies now use to move 3x faster.\n\nI'm reaching out because I see {company} is building and hiring. There's a strategy that could change everything  -  but I'll save that for our call.\n\nYou interested in exploring a different way?\n\nDori\nCEO, Develeap"
+      },
+      {
+        "name": "High Drama / Backstory",
+        "emoji": "😱",
+        "sosStep": 2,
+        "subject": "{contact_name}, the failure that almost killed us",
+        "body": "{contact_name},\n\nFollow-up on my last email.\n\nI want to show you the wall we hit that changed everything for Develeap.\n\nBy 2014, we were on the edge. We had clients paying premium fees, but we were burning through consultants. Every {role} hire took 8+ months, cost 3x what we budgeted, and half the time they couldn't deliver the {cat_expertise} work we promised.\n\nOur clients were leaving.\n\nThen we realized: companies don't need hiring. They need {cat_result}.\n\nSo we asked ourselves: what if instead of finding a {role}, we just... embedded a fully-trained {cat_expertise} squad in 2 weeks?\n\n{customers} said yes to this crazy idea. And it worked.\n\nWhat was supposed to be a 6-month process became a 2-week ramp. Projects shipped faster. Teams learned faster. Everything changed.\n\nThe reason I'm telling you this: {company} is at that same crossroads right now.\n\nYou can keep hiring (and waiting 6 months), or you can do what the smart companies do.\n\nWhich path interests you?\n\nDori"
+      },
+      {
+        "name": "Epiphany / Breakthrough",
+        "emoji": "💡",
+        "sosStep": 3,
+        "subject": "The moment everything clicked for {company}'s {role} problem",
+        "body": "{contact_name},\n\nHere's the aha moment.\n\nWe finally understood: the problem was never finding talent. The problem was {cat_pain}.\n\nOnce we saw that, everything clicked.\n\nCompanies like {customers} stopped asking \"how do we hire?\" and started asking \"how do we solve {cat_expertise} in the next 30 days?\"\n\nThe answer: bring in someone who already knows how.\n\nThat's when we built Develeap's model. Not hiring. Partnership. You get {cat_offer}, we get to solve problems we love. Win-win.\n\nAnd the timeline goes from 6 months to 2 weeks.\n\nThink about that for a second. While your competitors are still interviewing, you're shipping.\n\nThis is what we do for {customers}. This is what could happen at {company}.\n\nThe question is: does {company} want to stay on the hiring cycle, or switch to the partnership path?\n\nLet me show you which way works faster.\n\nDori"
+      },
+      {
+        "name": "Hidden Benefits",
+        "emoji": "🎁",
+        "sosStep": 4,
+        "subject": "{contact_name}, the secret benefit nobody talks about",
+        "body": "{contact_name},\n\nLast email on this, then I'll be quiet.\n\nWhat people don't tell you about hiring: it's not just slow. It's risky.\n\nYou hire a {role}. Great. But:\n- They don't know your stack for 3 months\n- They've built things a different way (conflict)\n- Half the time they leave after 6 months anyway\n\nMeanwhile, {cat_pain}\n\nHere's what nobody advertises: when you partner with Develeap instead, you get something different.\n\nYou get {cat_result_short}. But you also get:\n- Zero ramp time (we know this work already)\n- Zero training overhead (we bring expertise, not a blank slate)\n- Zero hiring risk (if something changes, we adapt; no severance, no months of bad fit)\n\n{customers} came to us for help with {role}. They stayed because of everything else.\n\nThat's the hidden benefit.\n\nWant to see what it looks like for {company}?\n\nDori\nCEO, Develeap\n{cat_audit}"
+      },
+      {
+        "name": "Urgency / CTA",
+        "emoji": "⏰",
+        "sosStep": 5,
+        "subject": "{contact_name}, one slot opening next week",
+        "body": "{contact_name},\n\nQuick note because this matters.\n\nOur next cohort for {cat_expertise} work starts {contact_title} next week. We have one opening left.\n\nGiven what {company} is building, and the fact that you're hiring for this gap, I think you'd be insane not to at least see what the partnership path looks like.\n\nNo pressure. No pitch deck. Just a 15-minute conversation about:\n- What {company} is trying to build\n- Why the traditional hire path takes 6 months\n- How {customers} solved this in weeks, not months\n\nIf it's not a fit, totally cool. But if there's even a 20% chance this could save you 3 months and $150K, isn't it worth 15 minutes?\n\nOnly reason not to: you're 100% committed to the traditional hire, slow-ramp path.\n\nLet's find a time:\n{cat_link}\n\nDori\nCEO, Develeap"
+      }
+    ],
+    "sos_customer": [
+      {
+        "name": "Set the Stage",
+        "emoji": "🎬",
+        "sosStep": 1,
+        "subject": "{contact_name}, a story about deepening partnerships",
+        "body": "{contact_name},\n\nIt's Dori from Develeap. Been a minute.\n\nQuick story. One of our biggest customers called last month with a problem. They wanted to expand the scope of what we're doing together.\n\nThe call went something like this:\n\n\"Dori, we're hiring a whole {role} team. Instead of 6 months of recruiting, what if we just... deepened the partnership with you instead?\"\n\nThat conversation changed everything for them.\n\nSee, the thing about partnerships is: the real value comes later. Year 2. Year 3. When you stop treating the vendor as a vendor and start treating them as an extension of the team.\n\nThat's the stage {company} is at right now.\n\nYou've worked with us on {cat_expertise}. You know we deliver. The question is: do you want to level that up?\n\nI'm reaching out because I think it's time.\n\nLet me share what we're seeing with other customers.\n\nDori"
+      },
+      {
+        "name": "High Drama / Backstory",
+        "emoji": "😱",
+        "sosStep": 2,
+        "subject": "The call that almost lost our biggest partnership",
+        "body": "{contact_name},\n\nI need to be honest about something.\n\nLast quarter, one of our longest customers came to us. They said: \"Dori, we love Develeap, but we're thinking of bringing this {role} hire in-house. We need to own this competency.\"\n\nMy stomach dropped.\n\nNot because they were leaving. But because I realized: they thought we were just a vendor who does work. They didn't see what we could become together.\n\nSo I asked them one question: \"What if instead of replacing us with an internal hire, we became your {cat_expertise} squad?\"\n\nEverything changed in that moment.\n\nThe internal hire talk went away. Instead, they asked: \"What does that look like?\"\n\nWe showed them.\n\nNow, 6 months later, they're shipping 3x faster. They've scaled {cat_expertise} without the headcount. And they're asking us to do more.\n\nHere's why I'm telling you this: {company} is at that same moment right now.\n\nYou can keep us as a vendor (one project at a time), or you can deepen the partnership.\n\nOne path keeps you stuck. The other accelerates everything.\n\nWhich version of Develeap do you want to be with?\n\nDori"
+      },
+      {
+        "name": "Epiphany / Breakthrough",
+        "emoji": "💡",
+        "sosStep": 3,
+        "subject": "{contact_name}, the insight that changed everything",
+        "body": "{contact_name},\n\nHere's what I learned from that conversation.\n\nWhen you're good at {cat_expertise}, you should never hire for it. You should partner for it.\n\nWhy? Because {customers} figured something out:\n\nExternal hires take 6 months to ramp. Partnerships (with teams who already know your stack) take 2 weeks.\n\nBut here's the deeper insight: partnerships compound.\n\nEvery project we do for {customers}, we learn more. The next project is faster. The one after that is even faster. By month 12, we're not just delivering {cat_offer}  -  we're thinking like an extension of your team.\n\nThat's the hidden value.\n\n{company} is past the \"vendor\" stage with Develeap. You're in the \"partnership\" stage. The question is: are you going to level it up, or keep it flat?\n\nLeveling it up means: instead of hiring a {role}, you deepen what we do. You get {cat_result_short} without the headcount, the hiring risk, or the ramp time.\n\nNot ready to decide yet? That's cool. But at least see what the next level looks like.\n\nWorth a call?\n\nDori"
+      },
+      {
+        "name": "Hidden Benefits",
+        "emoji": "🎁",
+        "sosStep": 4,
+        "subject": "{contact_name}, what nobody tells you about true partnerships",
+        "body": "{contact_name},\n\nLast email on this, promise.\n\nThere's a benefit to deepening partnerships that doesn't show up in spreadsheets.\n\nWhen {company} came to us talking about bringing {cat_expertise} in-house, we didn't fight it. We just asked: \"What if you didn't have to hire?\"\n\nThe conversation shifted immediately.\n\nSuddenly, it wasn't about finding a {role}. It was about: how do we solve the problem in the smartest way?\n\nAnd the smartest way for {customers} (and now your peers in the space) is: partner deeper with a team that already knows your tech stack, your problems, and your goals.\n\nThe benefits?\n- Zero hiring risk\n- Zero ramp time\n- Zero HR overhead\n- 3x faster delivery (because we know you)\n- Flexibility to scale up/down without headcount commitments\n\nBut the real hidden benefit: {cat_result}.\n\nFaster. Cheaper. With less organizational risk.\n\nThat's what happened with our customers when they said yes to deepening the partnership.\n\nWhat could it look like for {company}?\n\nDori"
+      },
+      {
+        "name": "Urgency / CTA",
+        "emoji": "⏰",
+        "sosStep": 5,
+        "subject": "Let's schedule this call  -  {contact_title} next week?",
+        "body": "{contact_name},\n\nI'm going to be direct.\n\n{company} is hiring. We already work with you. This is a \"why not\" moment.\n\nThe \"why not deepen the partnership instead of hiring?\" conversation.\n\nI've got 2 slots next week to walk through what this could look like for {company}:\n- Tuesday, 2pm: deep-dive on {cat_expertise} roadmap\n- Thursday, 10am: show how other customers scaled this way\n\nPick whichever works:\n{cat_link}\n\n20 minutes. That's all I'm asking.\n\nIf it's not a fit, cool  -  we keep doing what we're doing. But if there's a chance to level up the partnership and solve the {role} problem faster... I think you'd want to know what that looks like.\n\n{company} is too smart to keep hiring the hard way.\n\nLet's talk.\n\nDori\nCEO, Develeap"
+      }
+    ],
+    "sos_past": [
+      {
+        "name": "Set the Stage",
+        "emoji": "🎬",
+        "sosStep": 1,
+        "subject": "{contact_name}, the story I've been meaning to tell",
+        "body": "{contact_name},\n\nIt's Dori from Develeap.\n\nIt's been a while since we worked together, and I owe you something: a real conversation.\n\nHere's what I've been thinking about lately: we had a great partnership with {company}. It ended. But I realized... I never told you the full story of what happened after.\n\nSee, I watch what happens when companies stop partnering with us on {cat_expertise}. Some thrive. Some struggle.\n\nAnd the ones who struggle? They always say the same thing: \"We thought we could solve {cat_pain} ourselves.\"\n\nThen reality hits. {cat_expertise} is harder than it looks when you're building it from scratch.\n\nI'm not writing this to sell you back. I'm writing it because I saw {company} is hiring a {role}. And I want to tell you something that might matter.\n\nThere's a path that's faster than hiring. A path we pioneered with {customers}.\n\nInterested in hearing about it?\n\nDori"
+      },
+      {
+        "name": "High Drama / Backstory",
+        "emoji": "😱",
+        "sosStep": 2,
+        "subject": "{contact_name}, the call that haunted me",
+        "body": "{contact_name},\n\nI need to tell you about a call that stuck with me.\n\nOne of our past customers  -  you'd know them, great company  -  they came to Develeap because they needed {cat_expertise} help fast. We partnered. We delivered {cat_result}. Everyone was happy.\n\nThen... they went internal.\n\n\"Thanks Develeap, but we're building this ourselves,\" they said. Totally fair decision.\n\n18 months later, they called me back.\n\nTheir tone was different. They said: \"{cat_pain}. Hiring hasn't worked. Building internally is taking forever. We made a mistake.\"\n\nThat call broke my heart, honestly. Because I'd seen it coming.\n\nHere's what happened: they thought {cat_expertise} could be solved by hiring a {role}. It can't. It requires deep experience. Infrastructure. A track record.\n\nAll the things that take years to build, but weeks to access through partnership.\n\nThey came back to Develeap. Now they're thriving again.\n\nI'm telling you this story because {company} is at that same fork right now.\n\nHire the slow way. Hope it works. Or take a shortcut.\n\nYou know which one we'd choose.\n\nDori"
+      },
+      {
+        "name": "Epiphany / Breakthrough",
+        "emoji": "💡",
+        "sosStep": 3,
+        "subject": "The moment I realized why partnerships matter more than hiring",
+        "body": "{contact_name},\n\nThat same company who came back to us taught me something.\n\nThey said: \"Dori, we realized too late  -  building {cat_expertise} in-house requires context. You already have it. Instead of us trying to replicate 15 years of learning, we should just access it from you.\"\n\nThat's when it clicked.\n\n{customers} didn't hire for {cat_expertise}. They partnered for it. Because partnership compressed 6 months of ramp into 2 weeks.\n\nAnd the compounding effect: every month with us, they got smarter. Every quarter, they shipped faster.\n\nThere's a reason {customers} keep expanding what they do with Develeap.\n\nIt's not because we're charming (we're okay 😄). It's because {cat_offer} is faster through partnership than through hiring.\n\n{company} left us once. You didn't have the context then. But now you do.\n\nNow you know: the hard way takes 6 months. The smart way takes 2 weeks.\n\nAnd we've gotten way better since you last worked with us.\n\nWorth reconnecting?\n\nDori"
+      },
+      {
+        "name": "Hidden Benefits",
+        "emoji": "🎁",
+        "sosStep": 4,
+        "subject": "{contact_name}, what we've built since you left",
+        "body": "{contact_name},\n\nWhen you and I last worked together, Develeap was good.\n\nNow, 2+ years later, we're way better.\n\nOur {cat_expertise} squad has grown. Our customers have 5x multiplied. We've shipped projects that would have seemed impossible back when we worked together.\n\nThe reason I'm mentioning this: comeback stories work better when the other side has improved too.\n\nYou used to know Develeap. Now, you should know who we've become.\n\n{customers} and 100+ companies are seeing: Develeap in 2024 is not the same team you knew. We're faster. We're deeper. We know more.\n\nAnd the partnership would be different this time. Better.\n\nNo \"hoping it works out.\" Just: here's what {cat_result_short} looks like now. Here's the speed. Here's the risk (which is zero).\n\nWorth seeing what the upgraded version of Develeap brings to {company}?\n\nDori"
+      },
+      {
+        "name": "Urgency / CTA",
+        "emoji": "⏰",
+        "sosStep": 5,
+        "subject": "{contact_name}, one week to reconnect",
+        "body": "{contact_name},\n\nLast email, and then I'll back off.\n\n{company} is hiring. We've worked before. Your customer for 2 years is now hiring with us, shipping {cat_result}, and scaling {cat_expertise} without the headcount.\n\nThe path is clear.\n\nYou can:\n1. Start the {role} search (6 months, good luck)\n2. Or reconnect with us (2 weeks, proven path, {customers} can vouch)\n\nI've got space next week for a no-pressure catch-up call. Not a sales pitch. Just: \"What's {company} building now? How have things changed? Is there a partnership that makes sense?\"\n\nWednesday or Friday work?\n{cat_link}\n\nYou know the work we do. You know we deliver. The question now is: do you want the easier path this time?\n\nLet's reconnect.\n\nDori\nCEO, Develeap"
+      }
+    ]
+  },
+  "categories": {
+    "labels": {
+      "devops": "DevOps",
+      "ai": "AI/ML",
+      "agentic": "Agentic",
+      "finops": "FinOps",
+      "cloud": "Cloud & Infrastructure",
+      "security": "Security & DevSecOps",
+      "data": "Data Engineering",
+      "platform": "Platform Engineering",
+      "sre": "SRE"
+    },
+    "colors": {
+      "devops": "#FDAB3D",
+      "ai": "#579BFC",
+      "agentic": "#A25DDC",
+      "finops": "#00897B",
+      "cloud": "#0288D1",
+      "security": "#D32F2F",
+      "data": "#7B1FA2",
+      "platform": "#00695C",
+      "sre": "#E64A19"
+    },
+    "valueProps": {
+      "devops": {
+        "pain": "your existing engineers are drowning in infra work they shouldn't be doing. Releases slow down. Tech debt piles up.",
+        "result": "cut deployment cycles from 2 weeks to 45 minutes",
+        "offer": "CI/CD pipelines, Kubernetes, Terraform, IaC  -  the whole stack",
+        "audit": "CI/CD pipeline and infrastructure",
+        "expertise": "DevOps",
+        "link": "https://www.develeap.com/devops-consulting/"
+      },
+      "ai": {
+        "pain": "your team is stuck building ML infrastructure from scratch instead of shipping models. Training pipelines break. GPU costs spiral.",
+        "result": "cut model-to-production time from months to days with production-grade MLOps",
+        "offer": "ML pipelines, model serving, GPU optimization, and end-to-end MLOps",
+        "audit": "ML infrastructure and model deployment pipeline",
+        "expertise": "AI/ML infrastructure",
+        "link": "https://www.develeap.com/"
+      },
+      "agentic": {
+        "pain": "building reliable AI agents is harder than it looks  -  hallucinations, orchestration failures, and scaling issues slow everything down.",
+        "result": "helped teams deploy production-grade AI agents with proper guardrails in under 4 weeks",
+        "offer": "agent orchestration, LLM pipelines, RAG systems, and production guardrails",
+        "audit": "AI agent architecture and LLM pipeline",
+        "expertise": "Agentic AI",
+        "link": "https://www.develeap.com/"
+      },
+      "finops": {
+        "pain": "cloud spend is growing faster than revenue. Nobody owns cost optimization, and engineers keep spinning up resources without visibility.",
+        "result": "helped teams cut cloud spend by 30-40% while maintaining performance",
+        "offer": "cloud cost optimization, FinOps frameworks, showback/chargeback models, and automated cost governance",
+        "audit": "cloud spending and cost optimization opportunities",
+        "expertise": "FinOps & Cloud Cost",
+        "link": "https://www.develeap.com/"
+      },
+      "cloud": {
+        "pain": "managing multi-cloud complexity without dedicated platform teams",
+        "result": "reduced cloud provisioning time by 80% with self-service infrastructure",
+        "offer": "AWS/Azure/GCP architecture, cloud migration, IaC, landing zones",
+        "audit": "cloud infrastructure and multi-cloud strategy",
+        "expertise": "cloud infrastructure",
+        "link": "https://www.develeap.com/"
+      },
+      "security": {
+        "pain": "security vulnerabilities discovered too late in the development cycle",
+        "result": "shifted security left and reduced critical vulnerabilities by 90%",
+        "offer": "DevSecOps pipelines, SAST/DAST, container security, compliance automation",
+        "audit": "security posture and DevSecOps pipeline",
+        "expertise": "security engineering",
+        "link": "https://www.develeap.com/"
+      },
+      "data": {
+        "pain": "data pipelines breaking constantly and analysts waiting days for fresh data",
+        "result": "built real-time data pipelines processing 10M+ events/day with 99.9% uptime",
+        "offer": "data pipelines, ETL/ELT, data lakes, streaming architecture, dbt",
+        "audit": "data pipeline and architecture",
+        "expertise": "data engineering",
+        "link": "https://www.develeap.com/"
+      },
+      "platform": {
+        "pain": "developers spending 40% of time on infrastructure instead of features",
+        "result": "built an internal developer platform that cut onboarding from weeks to hours",
+        "offer": "internal developer platforms, golden paths, service catalogs, developer portals",
+        "audit": "developer experience and platform engineering",
+        "expertise": "platform engineering",
+        "link": "https://www.develeap.com/"
+      },
+      "sre": {
+        "pain": "firefighting production incidents instead of building reliability",
+        "result": "achieved 99.99% uptime and reduced MTTR from hours to minutes",
+        "offer": "SLO/SLI frameworks, incident management, chaos engineering, observability",
+        "audit": "reliability engineering and incident response",
+        "expertise": "site reliability",
+        "link": "https://www.develeap.com/"
+      }
+    }
+  },
+  "customers": {
+    "current": [
+      "Akamai",
+      "Alzai",
+      "Amsalem Tours",
+      "Apester",
+      "Aqua",
+      "Armo",
+      "Automarky",
+      "Beacon Security",
+      "Bluespine",
+      "Bond",
+      "BYON",
+      "Cal",
+      "Cellebrite",
+      "Cellosign",
+      "Checkin Travels",
+      "Checkpoint",
+      "Cibus",
+      "CitrusX",
+      "Cloudzone",
+      "Ctera",
+      "Curated-ai",
+      "CyberArk",
+      "CyberRidge",
+      "Cylus",
+      "DriveTech",
+      "Edwards",
+      "eXLGx",
+      "Ezbob",
+      "Flexor",
+      "Foretellix",
+      "Grain Finance",
+      "Hyp",
+      "Imagry",
+      "Infinpoint",
+      "Inuitive",
+      "Isracard",
+      "Jedify",
+      "Legion",
+      "Linx security",
+      "Matrix",
+      "Megureit",
+      "Mobileye",
+      "Monday.com",
+      "N2WS",
+      "Ness",
+      "NetNut",
+      "Networx",
+      "Nuvo cares",
+      "Odysight",
+      "OwlDuet",
+      "Per-me",
+      "Philips",
+      "Planet9",
+      "Plus500",
+      "PrettyDamnQuick",
+      "Proceed",
+      "ProofPoint",
+      "Puzzlesoft",
+      "R.R Systems",
+      "Redis",
+      "Redwood",
+      "RSI",
+      "Scytale",
+      "Sightec",
+      "Simplex3d",
+      "SkyCash",
+      "Solidus",
+      "Tactile",
+      "TailorMed",
+      "Transmit Security",
+      "Tufin",
+      "Vcita",
+      "Verifood",
+      "Vorlon",
+      "XMCyber",
+      "Zafran",
+      "Zerto",
+      "Zimark"
+    ],
+    "past": [
+      "AppsFlyer",
+      "Autodesk",
+      "Blink Aid",
+      "BridgeOver",
+      "Carebox",
+      "Checkmarx",
+      "Civ Robotics",
+      "CurveTech",
+      "Elmodis",
+      "Empathy",
+      "Evogene",
+      "Fireblocks",
+      "Gloat",
+      "Harmonic",
+      "Hexagon",
+      "Honeywell",
+      "InfluenceAI",
+      "JFrog",
+      "Knostic",
+      "LedderTech",
+      "mPrest",
+      "NeoTech",
+      "Nintex",
+      "NSO",
+      "OwnPlay",
+      "Pillar Security",
+      "RapidAPI",
+      "Rapyd",
+      "Revelator",
+      "Sentrycs",
+      "Verbit",
+      "WalkMe"
+    ],
+    "famous": [
+      "CyberArk",
+      "Monday.com",
+      "JFrog",
+      "Mobileye",
+      "AppsFlyer",
+      "Autodesk",
+      "Fireblocks",
+      "WalkMe",
+      "Checkmarx",
+      "Cellebrite",
+      "Plus500",
+      "Honeywell",
+      "RapidAPI",
+      "Rapyd",
+      "Aqua"
+    ]
+  },
+  "sources": {
+    "labels": {
+      "linkedin": "LinkedIn",
+      "alljobs": "AllJobs",
+      "drushim": "Drushim",
+      "glassdoor": "Glassdoor",
+      "facebook": "Facebook",
+      "telegram": "Telegram",
+      "builtin": "BuiltIn",
+      "goozali": "Goozali",
+      "greenhouse": "Greenhouse",
+      "lever": "Lever",
+      "ashby": "Ashby",
+      "comeet": "Comeet",
+      "workday": "Workday",
+      "other": "Other"
+    },
+    "domains": {
+      "linkedin": "linkedin.com",
+      "glassdoor": "glassdoor.com",
+      "alljobs": "alljobs.co.il",
+      "drushim": "drushim.co.il",
+      "builtin": "builtin.com",
+      "goozali": "goozali.com",
+      "greenhouse": "greenhouse.io",
+      "lever": "lever.co",
+      "ashby": "ashbyhq.com",
+      "comeet": "comeet.com",
+      "workday": "workday.com",
+      "facebook": "facebook.com",
+      "telegram": "telegram.org"
+    }
+  },
+  "integrations": {
+    "provider": "hubspot",
+    "enrichCards": true,
+    "enrichDetail": true,
+    "autoMatch": true,
+    "pipelineFilter": "",
+    "portalId": "25695560",
+    "dealStageMap": {
+      "85616068": {
+        "label": "Waiting for budget",
+        "pipeline": "Gardening",
+        "color": "#FFB100"
+      },
+      "85616069": {
+        "label": "Untapped lead A",
+        "pipeline": "Gardening",
+        "color": "#32BBD7"
+      },
+      "85616070": {
+        "label": "Untapped lead B",
+        "pipeline": "Gardening",
+        "color": "#E44258"
+      },
+      "85616071": {
+        "label": "Active customer",
+        "pipeline": "Gardening",
+        "color": "#9B59B6"
+      },
+      "85616072": {
+        "label": "Past customer",
+        "pipeline": "Gardening",
+        "color": "#3498DB"
+      },
+      "85640677": {
+        "label": "Waiting for us",
+        "pipeline": "Gardening",
+        "color": "#00CA72"
+      },
+      "85640896": {
+        "label": "Almost Won (Sales Israel)",
+        "pipeline": "SALES POLAND",
+        "color": "#00CA72"
+      },
+      "85640897": {
+        "label": "Closed Won",
+        "pipeline": "SALES POLAND",
+        "color": "#32BBD7"
+      },
+      "85640898": {
+        "label": "Work started",
+        "pipeline": "SALES POLAND",
+        "color": "#9B59B6"
+      },
+      "90301422": {
+        "label": "Initial Stage (Sales Israel)",
+        "pipeline": "SALES POLAND",
+        "color": "#95A5A6"
+      },
+      "90301423": {
+        "label": "Advanced Stage (Sales Israel)",
+        "pipeline": "SALES POLAND",
+        "color": "#2ECC71"
+      },
+      "90301424": {
+        "label": "Contract Negotiation",
+        "pipeline": "SALES POLAND",
+        "color": "#FFB100"
+      },
+      "90301425": {
+        "label": "Closed Lost",
+        "pipeline": "SALES POLAND",
+        "color": "#E44258"
+      },
+      "96829147": {
+        "label": "Create Contact",
+        "pipeline": "SALES POLAND",
+        "color": "#E44258"
+      },
+      "96829148": {
+        "label": "Follow-Up",
+        "pipeline": "SALES POLAND",
+        "color": "#9B59B6"
+      },
+      "97360070": {
+        "label": "Stop Follow-Up",
+        "pipeline": "SALES POLAND",
+        "color": "#3498DB"
+      },
+      "98045423": {
+        "label": "Engaged -develeap",
+        "pipeline": "SALES POLAND",
+        "color": "#E67E22"
+      },
+      "98792383": {
+        "label": "Not Interested",
+        "pipeline": "SALES ISRAEL",
+        "color": "#FFB100"
+      },
+      "98792384": {
+        "label": "On Hold",
+        "pipeline": "SALES ISRAEL",
+        "color": "#00CA72"
+      },
+      "98792385": {
+        "label": "Initial Stage ",
+        "pipeline": "SALES ISRAEL",
+        "color": "#E44258"
+      },
+      "98792386": {
+        "label": "Advanced Stage",
+        "pipeline": "SALES ISRAEL",
+        "color": "#9B59B6"
+      },
+      "98792387": {
+        "label": "Almost Won",
+        "pipeline": "SALES ISRAEL",
+        "color": "#3498DB"
+      },
+      "98792389": {
+        "label": "Closed Won",
+        "pipeline": "SALES ISRAEL",
+        "color": "#E67E22"
+      },
+      "98812116": {
+        "label": "Closed Lost",
+        "pipeline": "SALES ISRAEL",
+        "color": "#1ABC9C"
+      },
+      "98812117": {
+        "label": "Work started",
+        "pipeline": "SALES ISRAEL",
+        "color": "#2ECC71"
+      },
+      "119800030": {
+        "label": "Appointment scheduled",
+        "pipeline": "Training",
+        "color": "#9B59B6"
+      },
+      "119800031": {
+        "label": "Qualified to buy",
+        "pipeline": "Training",
+        "color": "#3498DB"
+      },
+      "119800032": {
+        "label": "Presentation scheduled",
+        "pipeline": "Training",
+        "color": "#E67E22"
+      },
+      "119800033": {
+        "label": "Decision Maker Bought-In",
+        "pipeline": "Training",
+        "color": "#1ABC9C"
+      },
+      "119800034": {
+        "label": "Contract sent",
+        "pipeline": "Training",
+        "color": "#95A5A6"
+      },
+      "119800035": {
+        "label": "Closed won",
+        "pipeline": "Training",
+        "color": "#2ECC71"
+      },
+      "119800036": {
+        "label": "Closed lost",
+        "pipeline": "Training",
+        "color": "#00CA72"
+      },
+      "131694568": {
+        "label": "Gardening (mailing)",
+        "pipeline": "GADRENING POLAND",
+        "color": "#FFB100"
+      },
+      "131694572": {
+        "label": "Check in ",
+        "pipeline": "GADRENING POLAND",
+        "color": "#32BBD7"
+      },
+      "131694576": {
+        "label": "Not answering after 3rd message",
+        "pipeline": "GADRENING POLAND",
+        "color": "#E44258"
+      },
+      "133447626": {
+        "label": "RESELLER",
+        "pipeline": "GADRENING POLAND",
+        "color": "#9B59B6"
+      },
+      "139773670": {
+        "label": "Not Responding After 3rd Message",
+        "pipeline": "SALES POLAND",
+        "color": "#3498DB"
+      },
+      "144799191": {
+        "label": "Catching up",
+        "pipeline": "SALES ISRAEL",
+        "color": "#95A5A6"
+      },
+      "153501431": {
+        "label": "Demo meeting scheduled",
+        "pipeline": "Sales NEW",
+        "color": "#E67E22"
+      },
+      "153501432": {
+        "label": "Deep dive meeting scheduled",
+        "pipeline": "Sales NEW",
+        "color": "#1ABC9C"
+      },
+      "153501433": {
+        "label": "Contact negotiation",
+        "pipeline": "Sales NEW",
+        "color": "#2ECC71"
+      },
+      "153501626": {
+        "label": "New",
+        "pipeline": "Sales NEW",
+        "color": "#3498DB"
+      },
+      "153501627": {
+        "label": "Contract sent",
+        "pipeline": "Sales NEW",
+        "color": "#95A5A6"
+      },
+      "153501628": {
+        "label": "Closed won",
+        "pipeline": "Sales NEW",
+        "color": "#00CA72"
+      },
+      "153501629": {
+        "label": "Closed lost",
+        "pipeline": "Sales NEW",
+        "color": "#FFB100"
+      },
+      "153501635": {
+        "label": "Follow up",
+        "pipeline": "Sales NEW",
+        "color": "#32BBD7"
+      },
+      "211885002": {
+        "label": "Lead",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#1ABC9C"
+      },
+      "211885003": {
+        "label": "Passed to UP ",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#E67E22"
+      },
+      "211885004": {
+        "label": "Presentation scheduled",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#95A5A6"
+      },
+      "211885005": {
+        "label": "Decision Maker Bought-In",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#2ECC71"
+      },
+      "211885006": {
+        "label": "Contract sent",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#00CA72"
+      },
+      "211885007": {
+        "label": "Closed won",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#FFB100"
+      },
+      "211885008": {
+        "label": "Closed lost",
+        "pipeline": "POLAND OFFICIAL",
+        "color": "#32BBD7"
+      },
+      "254768068": {
+        "label": "Engaged -United Perfectum",
+        "pipeline": "SALES POLAND",
+        "color": "#1ABC9C"
+      },
+      "1923288300": {
+        "label": "Closed Won, waiting for start",
+        "pipeline": "SALES ISRAEL",
+        "color": "#E44258"
+      },
+      "1923478772": {
+        "label": "Advanced, Low probability",
+        "pipeline": "SALES ISRAEL",
+        "color": "#32BBD7"
+      },
+      "2574713039": {
+        "label": "Application Review",
+        "pipeline": "Course",
+        "color": "#1ABC9C"
+      },
+      "2574713040": {
+        "label": "Phone Screen \\ Recuriter",
+        "pipeline": "Course",
+        "color": "#95A5A6"
+      },
+      "2574713041": {
+        "label": "Technical Advisor call",
+        "pipeline": "Course",
+        "color": "#2ECC71"
+      },
+      "2574713042": {
+        "label": "Send notification",
+        "pipeline": "Course",
+        "color": "#E67E22"
+      },
+      "2574713043": {
+        "label": "Contract Sent",
+        "pipeline": "Course",
+        "color": "#00CA72"
+      },
+      "2574713044": {
+        "label": "Closed Won",
+        "pipeline": "Course",
+        "color": "#FFB100"
+      },
+      "2574713045": {
+        "label": "Closed Lost",
+        "pipeline": "Course",
+        "color": "#32BBD7"
+      }
+    }
+  }
+}
