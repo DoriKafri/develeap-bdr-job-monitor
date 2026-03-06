@@ -1,139 +1,130 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T22:00:00.000Z",
+  "lastUpdated": "2026-03-06T20:54:43.796Z",
   "nodes": {
     "discovery": {
       "enabled": true,
-      "label": "Job Discovery",
-      "description": "Scrapes 50+ job board queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby and more.",
-      "type": "auto",
       "schedule": "every_15m_daytime",
-      "sources": ["linkedin", "lever", "greenhouse", "comeet", "ashby", "workday"]
+      "sources": [
+        "linkedin",
+        "lever",
+        "greenhouse",
+        "comeet",
+        "ashby",
+        "workday"
+      ],
+      "label": "Job Discovery",
+      "description": "Scrapes 50+ queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby.",
+      "type": "auto"
     },
     "dedup": {
       "enabled": true,
       "label": "Dedup & Categorize",
-      "description": "Removes duplicate listings and categorizes by DevOps, AI/ML, FinOps, etc.",
+      "description": "Removes duplicate listings, categorizes by DevOps, AI/ML, FinOps, etc.",
       "type": "auto"
     },
     "customerMatch": {
       "enabled": true,
-      "label": "Customer Matching",
-      "description": "Matches companies against Develeap's 123 current and 32 past customer accounts.",
+      "label": "Customer Match",
+      "description": "Matches companies against 123 Develeap customers and 32 past customers.",
       "type": "auto"
     },
     "enrichment": {
       "enabled": true,
-      "label": "Contact Enrichment",
-      "description": "Enriches stakeholder contacts with verified emails, phones, titles via Apollo.io.",
-      "type": "auto",
       "provider": "apollo",
-      "rateLimit": 600
+      "rateLimit": 600,
+      "label": "Enrichment",
+      "description": "Enriches contacts with emails, phones, titles via Apollo.io.",
+      "type": "auto"
     },
     "crmSync": {
       "enabled": true,
-      "label": "CRM Sync",
-      "description": "Syncs company/deal/contact data from HubSpot every 2 hours during business hours.",
-      "type": "auto",
       "provider": "hubspot",
-      "schedule": "every_2h_business"
+      "schedule": "every_2h_business",
+      "label": "CRM Sync",
+      "description": "Syncs company/deal/contact data from HubSpot every 2h.",
+      "type": "auto"
     },
     "review": {
       "enabled": true,
-      "label": "Review & Select",
-      "description": "User reviews new listings, selects contacts for outreach, picks message templates.",
-      "type": "human",
       "mode": "manual",
       "autoApproveCustomers": false,
-      "autoApproveCategories": []
+      "autoApproveCategories": [],
+      "label": "Review & Select",
+      "description": "User reviews new listings, selects contacts, picks templates.",
+      "type": "human"
     },
     "throttle": {
       "enabled": true,
-      "label": "Queue & Throttle",
-      "description": "Queues outreach messages with human-like timing to avoid LinkedIn detection and spam.",
-      "type": "throttled",
       "preset": "smart",
       "maxConnectionsPerDay": 20,
       "maxMessagesPerDay": 50,
-      "minDelaySeconds": 45,
-      "maxDelaySeconds": 180,
-      "activeHours": { "start": 8, "end": 18 },
-      "timezone": "Asia/Jerusalem",
+      "minDelay": 45,
+      "maxDelay": 180,
+      "activeHoursStart": "08:00",
+      "activeHoursEnd": "18:00",
       "weekendPause": true,
       "cooldownAfterN": 10,
       "cooldownMinutes": 30,
-      "humanVariance": true
+      "humanVariance": true,
+      "humanVariancePct": 30,
+      "label": "Queue & Throttle",
+      "description": "Queues outreach with human-like timing to avoid LinkedIn detection.",
+      "type": "throttled",
+      "minDelaySeconds": 45,
+      "maxDelaySeconds": 180,
+      "activeHours": {
+        "start": 8,
+        "end": 18
+      },
+      "timezone": "Asia/Jerusalem"
     },
     "outreach": {
       "enabled": true,
-      "label": "LinkedIn Outreach",
-      "description": "Sends connection requests and personalized messages via LinkedIn with throttled delivery.",
-      "type": "throttled",
       "autoSendOnApproval": false,
-      "requireReview": true
+      "requireReview": true,
+      "label": "LinkedIn Outreach",
+      "description": "Sends connection requests and messages with throttled delivery.",
+      "type": "throttled"
     },
     "followUp": {
       "enabled": true,
+      "enableSequences": true,
+      "sequenceDays": [
+        0,
+        3,
+        7,
+        14
+      ],
       "label": "Follow-up Sequences",
-      "description": "Automated Soap Opera Sequences: Day 0 → Day 3 → Day 7 → Day 14 follow-ups.",
+      "description": "Soap Opera Sequences: Day 0 → Day 3 → Day 7 → Day 14.",
       "type": "auto",
       "sequences": true,
-      "defaultSequenceDays": [0, 3, 7, 14]
+      "defaultSequenceDays": [
+        0,
+        3,
+        7,
+        14
+      ]
     },
     "responseTracking": {
       "enabled": true,
       "label": "Response Tracking",
-      "description": "Track responses, mark connections, qualify leads, update outreach statuses.",
+      "description": "Track responses, mark connections, qualify leads.",
       "type": "human"
+    },
+    "scoring": {
+      "enabled": true,
+      "label": "Lead Scoring",
+      "description": "Score leads by relevance and fit",
+      "type": "auto"
     },
     "crmUpdate": {
       "enabled": true,
+      "autoLog": true,
       "label": "CRM Update",
-      "description": "Logs outreach activity back to HubSpot — deals, contacts, engagement timeline.",
-      "type": "auto",
-      "autoLog": true
-    }
-  },
-  "presets": {
-    "conservative": {
-      "label": "Conservative",
-      "description": "Safe for new accounts. Low volume, high delays.",
-      "maxConnectionsPerDay": 10,
-      "maxMessagesPerDay": 25,
-      "minDelaySeconds": 90,
-      "maxDelaySeconds": 300,
-      "cooldownAfterN": 5,
-      "cooldownMinutes": 45
-    },
-    "moderate": {
-      "label": "Moderate",
-      "description": "Balanced approach. Good for established accounts.",
-      "maxConnectionsPerDay": 20,
-      "maxMessagesPerDay": 50,
-      "minDelaySeconds": 45,
-      "maxDelaySeconds": 180,
-      "cooldownAfterN": 10,
-      "cooldownMinutes": 30
-    },
-    "aggressive": {
-      "label": "Aggressive",
-      "description": "High volume. Only for well-established accounts with Sales Navigator.",
-      "maxConnectionsPerDay": 40,
-      "maxMessagesPerDay": 100,
-      "minDelaySeconds": 15,
-      "maxDelaySeconds": 60,
-      "cooldownAfterN": 20,
-      "cooldownMinutes": 15
-    },
-    "smart": {
-      "label": "Smart (Recommended)",
-      "description": "Auto-adjusts based on account activity and LinkedIn response signals.",
-      "maxConnectionsPerDay": 20,
-      "maxMessagesPerDay": 50,
-      "minDelaySeconds": 45,
-      "maxDelaySeconds": 180,
-      "cooldownAfterN": 10,
-      "cooldownMinutes": 30
+      "description": "Logs outreach activity back to HubSpot.",
+      "type": "auto"
     }
   }
 }
