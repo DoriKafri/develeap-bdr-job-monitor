@@ -313,7 +313,7 @@ def main():
                 contacts = []
                 for c in contacts_raw:
                     cp = c.get("properties", {})
-                        phone = cp.get("mobilephone") or cp.get("phone") or ""
+                    phone = cp.get("mobilephone") or cp.get("phone") or ""
                     contact_entry = {
                         "id": c["id"],
                         "name": f'{cp.get("firstname", "")} {cp.get("lastname", "")}'.strip(),
