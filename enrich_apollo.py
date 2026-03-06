@@ -306,15 +306,25 @@ def main():
     print(f"  Found {len(stakeholders)} stakeholders, {len(companies)} companies")
 
     # 2. Enrich contacts (skip already-enriched, retry not-found from previous runs)
+    #    If webhook is available, re-enrich contacts missing phone numbers
+    has_webhook = bool(APOLLO_WEBHOOK_URL)
     contacts_enriched = {k: v for k, v in existing.items() if v.get("apolloId")}
     skipped_contacts = len(contacts_enriched)
+    phone_re_enrich = 0
     new_contacts = 0
     for i, sh in enumerate(stakeholders):
         key = sh["key"]
         if key in contacts_enriched:
-            continue  # already enriched
+            # If webhook available and contact has no phone, re-enrich for phone
+            if has_webhook and not contacts_enriched[key].get("phone"):
+                phone_re_enrich += 1
+                print(f"  [{i+1}/{len(stakeholders)}] Re-enriching for phone: {sh['name']} @ {sh['company']}")
+            else:
+                continue  # already enriched with phone or no webhook
 
-        print(f"  [{i+1}/{len(stakeholders)}] Enriching: {sh['name']} @ {sh['company']}")
+        is_re_enrich = key in contacts_enriched and contacts_enriched[key].get("apolloId")
+        if not is_re_enrich:
+            print(f"  [{i+1}/{len(stakeholders)}] Enriching: {sh['name']} @ {sh['company']}")
         result = enrich_person(
             sh["name"],
             sh["company"],
@@ -322,13 +332,24 @@ def main():
             linkedin_url=sh.get("linkedin"),
         )
         if result:
-            contacts_enriched[key] = result
-            new_contacts += 1
-            print(f"    -> Found: {result.get('email', 'no email')} | {result.get('title', 'no title')}")
+            if is_re_enrich:
+                # Merge: keep existing data, add/update phone fields
+                existing_entry = contacts_enriched[key]
+                for field in ("phone", "phoneType", "allPhones"):
+                    if result.get(field):
+                        existing_entry[field] = result[field]
+                print(f"    -> Phone request sent via webhook")
+            else:
+                contacts_enriched[key] = result
+                new_contacts += 1
+                print(f"    -> Found: {result.get('email', 'no email')} | {result.get('title', 'no title')}")
         else:
-            # Store empty marker so we don't retry next time
-            contacts_enriched[key] = {"apolloId": "", "_notFound": True}
-            print(f"    -> Not found")
+            if not is_re_enrich:
+                # Store empty marker so we don't retry next time
+                contacts_enriched[key] = {"apolloId": "", "_notFound": True}
+                print(f"    -> Not found")
+            else:
+                print(f"    -> Re-enrich failed, keeping existing data")
 
         time.sleep(REQUEST_DELAY)
 
@@ -377,6 +398,8 @@ def main():
 
     print(f"\nApollo enrichment complete!")
     print(f"  Contacts enriched: {total_contacts} ({new_contacts} new)")
+    if phone_re_enrich > 0:
+        print(f"  Phone re-enrichments: {phone_re_enrich} (via webhook)")
     print(f"  Organizations enriched: {total_orgs} ({new_orgs} new)")
     print(f"  Output: {OUTPUT_FILE}")
 
