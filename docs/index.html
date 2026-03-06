@@ -775,9 +775,7 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters();updateUrlHash()">
     </div>
-    <div class="filter-chip active" data-filter="all" onclick="toggleFilter(this)">All</div>
-    <div id="categoryFilterContainer"></div>
-    <div class="filter-chip develeap-filter" data-filter="develeap" onclick="toggleFilter(this)">&starf; Develeap Customers</div>
+    <!-- Category filter chips removed — stat cards above serve the same purpose -->
     <div class="source-dropdown-wrap" id="sourceDropdownWrap">
       <button class="source-dropdown-btn" id="sourceDropdownBtn" onclick="toggleSourceDropdown(event)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -8148,7 +8146,7 @@ function filterByStat(el){
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   const matchChip=document.querySelector('.filter-chip[data-filter="'+filterVal+'"]');
   if(matchChip)matchChip.classList.add('active');
-  else document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
+  else { const allChip=document.querySelector('.filter-chip[data-filter="all"]'); if(allChip)allChip.classList.add('active'); }
   syncStatCardHighlight();
   applyAllFilters();
   updateUrlHash();
