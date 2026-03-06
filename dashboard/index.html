@@ -7798,6 +7798,13 @@ function buildCategoryFilters() {
     chip.textContent = label;
     container.appendChild(chip);
   }
+  // Sync active chip with currentFilter (supports URL deep linking)
+  if (currentFilter && currentFilter !== 'all') {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    const matchChip = document.querySelector('.filter-chip[data-filter="' + currentFilter + '"]');
+    if (matchChip) matchChip.classList.add('active');
+    syncStatCardHighlight();
+  }
 }
 
 function updateSourceBtnLabel() {
