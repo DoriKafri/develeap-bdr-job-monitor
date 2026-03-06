@@ -1,4 +1,4 @@
-name: HubSpot CRM Sync
+name: CRM & Enrichment Sync
 
 on:
   # Run every 2 hours during business hours (Israel time UTC+2)
@@ -18,17 +18,17 @@ concurrency:
 jobs:
   sync-crm:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
-    # Only run if HUBSPOT_TOKEN secret exists
     env:
       HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+      APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
 
     steps:
-      - name: Check if HubSpot is configured
+      - name: Check if any integration is configured
         run: |
-          if [ -z "$HUBSPOT_TOKEN" ]; then
-            echo "HUBSPOT_TOKEN secret not set, skipping"
+          if [ -z "$HUBSPOT_TOKEN" ] && [ -z "$APOLLO_API_KEY" ]; then
+            echo "No integration secrets set, skipping"
             exit 0
           fi
 
@@ -46,16 +46,23 @@ jobs:
         run: pip install requests
 
       - name: Run HubSpot CRM sync
+        if: env.HUBSPOT_TOKEN != ''
         env:
           HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
         run: python sync_hubspot.py
 
-      - name: Commit CRM data
+      - name: Run Apollo.io enrichment
+        if: env.APOLLO_API_KEY != ''
+        env:
+          APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+        run: python enrich_apollo.py
+
+      - name: Commit data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add crm_data.json
-          git diff --staged --quiet || git commit -m "chore: sync HubSpot CRM data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git add crm_data.json apollo_data.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: sync CRM & enrichment data $(date -u '+%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push

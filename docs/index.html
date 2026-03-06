@@ -914,6 +914,62 @@
               </div>
             </div>
           </div>
+
+          <!-- Apollo.io Enrichment Section -->
+          <div style="margin-top:28px;border-top:1px solid var(--border);padding-top:20px">
+            <h3 class="settings-section-title" style="margin-bottom:0">🚀 Contact & Company Enrichment</h3>
+            <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Enrich stakeholders with verified emails, phone numbers, LinkedIn URLs, and company intel via Apollo.io.</p>
+
+            <!-- Apollo Status Banner -->
+            <div id="apolloStatusBanner" style="border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8">
+              <span style="font-size:18px">🔮</span>
+              <div>
+                <div style="font-weight:600" id="apolloStatusTitle">Apollo.io not configured</div>
+                <div style="font-size:12px;opacity:0.8" id="apolloStatusDetail">Add your Apollo API key below to enable contact enrichment</div>
+              </div>
+            </div>
+
+            <!-- Save Apollo API Key -->
+            <div style="background:#F3E5F5;border-radius:12px;padding:16px;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="background:#7B1FA2;color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
+                <div style="font-weight:600;font-size:14px;color:#7B1FA2">Connect Apollo.io</div>
+              </div>
+              <p style="font-size:12px;color:var(--text-light);margin-bottom:4px;margin-left:32px">Go to <a href="https://app.apollo.io/#/settings/integrations/api-keys" target="_blank" style="color:#7B1FA2">Apollo Settings &gt; Integrations &gt; API Keys</a>, create an API key and paste it below.</p>
+              <p style="font-size:11px;color:var(--text-lighter);margin-bottom:10px;margin-left:32px">The key will be encrypted and stored as a GitHub Secret. It is never visible in the browser.</p>
+              <div style="margin-left:32px;margin-bottom:8px">
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Apollo API Key</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <input type="password" id="apolloApiKeyInput" placeholder="Your Apollo.io API key" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
+                  <button type="button" onclick="document.getElementById('apolloApiKeyInput').type = document.getElementById('apolloApiKeyInput').type === 'password' ? 'text' : 'password'" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px" title="Toggle visibility">👁</button>
+                </div>
+              </div>
+              <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <button class="btn btn-primary" onclick="_saveApolloKeyFromUI()" id="saveApolloBtn" style="font-size:12px;padding:6px 14px;display:inline-flex;align-items:center;gap:4px;background:#7B1FA2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  Save Key Securely
+                </button>
+                <span id="saveApolloResult" style="font-size:12px;color:var(--text-light)"></span>
+              </div>
+              <div style="margin-left:32px;margin-top:6px;font-size:11px;color:var(--text-lighter)">
+                Your key is encrypted and stored as a GitHub Actions secret. The enrichment runs server-side every 2h alongside CRM sync.
+              </div>
+            </div>
+
+            <!-- Enrichment Options -->
+            <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
+              <div style="font-weight:600;font-size:14px;margin-bottom:8px">Enrichment Settings</div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloEnrichContacts" checked> Enrich contacts (email, phone, title)</label>
+                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloEnrichOrgs" checked> Enrich company data (tech stack, size)</label>
+                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloShowBadges" checked> Show Apollo badges on cards</label>
+              </div>
+              <div id="apolloSyncStats" style="font-size:12px;color:var(--text-lighter);display:none">
+                <div style="font-weight:600;color:var(--text-light);margin-bottom:4px">Last Sync Stats</div>
+                <div id="apolloStatsContent"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Templates Section -->
@@ -5932,7 +5988,59 @@ function _mergeStakeholdersWithCrm(job) {
     });
   });
 
+  // 3. Enrich with Apollo data if available
+  _enrichWithApollo(stakeholders, job);
+
   return stakeholders;
+}
+
+function _enrichWithApollo(stakeholders, job) {
+  if (!_apolloCache || !_apolloCache.contacts) return;
+  const companyKey = (job.company || '').toLowerCase().trim();
+
+  // Enrich individual contacts
+  stakeholders.forEach(s => {
+    const contactKey = ((s.name || '').toLowerCase().trim() + '|' + companyKey);
+    const apollo = _apolloCache.contacts[contactKey];
+    if (apollo && apollo.apolloId) {
+      if (!s.email && apollo.email) s.email = apollo.email;
+      if (!s.title && apollo.title) s.title = apollo.title;
+      if (!s.linkedin && apollo.linkedin_url) s.linkedin = apollo.linkedin_url;
+      s._apolloEnriched = true;
+      s._apolloData = {
+        email: apollo.email || '',
+        emailStatus: apollo.emailStatus || '',
+        phone: apollo.phone || '',
+        seniority: apollo.seniority || '',
+        departments: apollo.departments || [],
+        headline: apollo.headline || '',
+        city: apollo.city || '',
+        country: apollo.country || '',
+        photoUrl: apollo.photoUrl || ''
+      };
+      // Use Apollo photo if we don't have one
+      if (!s.photo && apollo.photoUrl) s.photo = apollo.photoUrl;
+    }
+  });
+
+  // Attach org-level Apollo data to each stakeholder
+  const orgData = (_apolloCache.organizations || {})[companyKey];
+  if (orgData && orgData.apolloId) {
+    stakeholders.forEach(s => {
+      s._apolloOrg = {
+        domain: orgData.domain || '',
+        industry: orgData.industry || '',
+        employeeCount: orgData.employeeCount,
+        annualRevenue: orgData.annualRevenue,
+        technologies: orgData.technologies || [],
+        linkedinUrl: orgData.linkedinUrl || '',
+        shortDescription: orgData.shortDescription || '',
+        logoUrl: orgData.logoUrl || '',
+        city: orgData.city || '',
+        country: orgData.country || ''
+      };
+    });
+  }
 }
 
 function buildOutreachSection(job) {
@@ -5983,15 +6091,21 @@ function buildOutreachSection(job) {
       const crmOnlyBadge = s._crmOnly ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600">HubSpot</span>' : '';
       const hubspotLink = s._crmContactUrl ? `<a href="${s._crmContactUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--teal);text-decoration:none;margin-left:4px" title="View in HubSpot">HS&rarr;</a>` : '';
 
+      // Apollo enrichment indicators
+      const apolloBadge = s._apolloEnriched ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2;font-weight:600">Apollo</span>' : '';
+      const apolloPhone = (s._apolloData && s._apolloData.phone) ? `<span style="font-size:10px;color:var(--text-light)" title="Phone from Apollo">📞 ${s._apolloData.phone}</span>` : '';
+      const apolloEmail = (s._apolloEnriched && s._apolloData && s._apolloData.email && s._apolloData.emailStatus === 'verified') ? '<span style="font-size:10px;color:#2E7D32" title="Email verified by Apollo">✓</span>' : '';
+
       return `
       <div class="stakeholder-card" data-idx="${i}">
         <div class="stakeholder-avatar">${_stakeholderAvatar(s)}</div>
         <div class="stakeholder-info">
           <div class="stakeholder-name">${s.name} ${connBadge}${hubspotLink}</div>
-          <div class="stakeholder-role">${s.title}</div>
+          <div class="stakeholder-role">${s.title}${s._apolloData && s._apolloData.seniority ? ` <span style="font-size:10px;color:var(--text-lighter)">(${s._apolloData.seniority})</span>` : ''}</div>
           <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px">
             <span class="stakeholder-source">${s.source}</span>
-            ${crmBadge}${crmOnlyBadge}
+            ${crmBadge}${crmOnlyBadge}${apolloBadge}
+            ${apolloEmail}${apolloPhone}
             ${toggleBtn}
           </div>
         </div>
@@ -6980,6 +7094,7 @@ function openDetail(id){
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
     ${_buildCrmDetailHtml(j.company)}
+    ${_buildApolloDetailHtml(j.company)}
     <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
     <div style="margin-top:12px;text-align:center"><button onclick="hideCompany('${j.company.replace(/'/g,"\\\\'")}',event);closeSidebar()" style="background:none;border:none;color:var(--text-lighter);font-size:12px;cursor:pointer;padding:4px 8px">&#10005; Hide all ${j.company} listings</button></div>
     ${buildOutreachSection(j)}`;
@@ -7519,6 +7634,91 @@ async function _saveHubSpotSecretsFromUI() {
   setTimeout(() => { btn.disabled = false; }, 3000);
 }
 
+// ── Apollo.io Save Key & Data Loading ────────────────────────────────
+var _apolloCache = null;
+var _apolloDataUrl = 'https://raw.githubusercontent.com/DoriKafri/develeap-bdr-job-monitor/main/apollo_data.json';
+
+async function _saveApolloKeyFromUI() {
+  const input = document.getElementById('apolloApiKeyInput');
+  const resultEl = document.getElementById('saveApolloResult');
+  const btn = document.getElementById('saveApolloBtn');
+  const key = (input.value || '').trim();
+
+  if (!key) {
+    resultEl.textContent = 'Please paste your Apollo API key first.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+
+  btn.disabled = true;
+  resultEl.textContent = 'Saving secret...';
+  resultEl.style.color = 'var(--text-light)';
+
+  try {
+    await _saveGitHubSecret('APOLLO_API_KEY', key);
+    input.value = '';
+    resultEl.innerHTML = '&#10003; Apollo key saved! It will be used on the next sync run.';
+    resultEl.style.color = 'var(--success)';
+    _showToast('Apollo API key saved to GitHub');
+    _updateApolloStatusBanner(true);
+  } catch (e) {
+    resultEl.textContent = 'Failed: ' + e.message;
+    resultEl.style.color = 'var(--danger)';
+  }
+  setTimeout(() => { btn.disabled = false; }, 3000);
+}
+
+async function _loadApolloData() {
+  try {
+    const resp = await fetch(_apolloDataUrl, { cache: 'no-store' });
+    if (!resp.ok) {
+      console.warn('Apollo data not available (HTTP ' + resp.status + '). Run the sync workflow with APOLLO_API_KEY configured.');
+      return null;
+    }
+    const data = await resp.json();
+    _apolloCache = data;
+    console.log('Apollo data loaded: ' + Object.keys(data.contacts || {}).length + ' contacts, ' + Object.keys(data.organizations || {}).length + ' orgs, synced ' + data.syncedAt);
+    _updateApolloStatusBanner(true);
+    _updateApolloSyncStats(data);
+    return data;
+  } catch (e) {
+    console.warn('Failed to load Apollo data:', e);
+    return null;
+  }
+}
+
+function _updateApolloStatusBanner(configured) {
+  const banner = document.getElementById('apolloStatusBanner');
+  const title = document.getElementById('apolloStatusTitle');
+  const detail = document.getElementById('apolloStatusDetail');
+  if (!banner) return;
+  if (_apolloCache && _apolloCache.syncedAt) {
+    banner.style.background = '#E8F5E9';
+    banner.style.color = '#2E7D32';
+    banner.style.borderColor = '#A5D6A7';
+    banner.querySelector('span').textContent = '✅';
+    title.textContent = 'Apollo.io enrichment active';
+    const syncDate = new Date(_apolloCache.syncedAt);
+    detail.textContent = 'Last synced: ' + syncDate.toLocaleString() + ' — ' + (_apolloCache.stats?.contactsEnriched || 0) + ' contacts, ' + (_apolloCache.stats?.orgsEnriched || 0) + ' orgs enriched';
+  } else if (configured) {
+    banner.style.background = '#FFF3D6';
+    banner.style.color = '#9A7B00';
+    banner.style.borderColor = '#FFE08A';
+    banner.querySelector('span').textContent = '⏳';
+    title.textContent = 'Apollo key saved — waiting for first sync';
+    detail.textContent = 'Trigger a sync or wait for the next automatic run (every 2h)';
+  }
+}
+
+function _updateApolloSyncStats(data) {
+  const container = document.getElementById('apolloSyncStats');
+  const content = document.getElementById('apolloStatsContent');
+  if (!container || !content || !data || !data.stats) return;
+  container.style.display = 'block';
+  const s = data.stats;
+  content.innerHTML = `Stakeholders found: ${s.totalStakeholders || 0} · Contacts enriched: ${s.contactsEnriched || 0} (${s.newContactsThisRun || 0} new) · Companies: ${s.totalCompanies || 0} · Orgs enriched: ${s.orgsEnriched || 0} (${s.newOrgsThisRun || 0} new)`;
+}
+
 // ── Trigger HubSpot Sync GitHub Action ─────────────────────────────────
 async function _triggerHubSpotSync() {
   const btn = document.getElementById('triggerSyncBtn');
@@ -7810,6 +8010,49 @@ function _buildCrmDetailHtml(companyName) {
   return html;
 }
 
+function _buildApolloDetailHtml(companyName) {
+  if (!_apolloCache) return '';
+  const key = (companyName || '').toLowerCase().trim();
+  const org = (_apolloCache.organizations || {})[key];
+  if (!org || !org.apolloId) return '';
+
+  let html = '<div class="detail-section" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">';
+  html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:14px">🚀</span> Apollo Intel</div>';
+
+  // Company summary
+  if (org.shortDescription) {
+    html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px">' + org.shortDescription + '</div>';
+  }
+
+  // Key metrics
+  const metrics = [];
+  if (org.employeeCount) metrics.push(org.employeeCount.toLocaleString() + ' employees');
+  if (org.annualRevenue) metrics.push('$' + (org.annualRevenue / 1e6).toFixed(0) + 'M revenue');
+  if (org.industry) metrics.push(org.industry);
+  if (org.city && org.country) metrics.push(org.city + ', ' + org.country);
+  if (metrics.length > 0) {
+    html += '<div style="font-size:12px;color:var(--text);margin-bottom:8px">' + metrics.join(' · ') + '</div>';
+  }
+
+  // Tech stack
+  if (org.technologies && org.technologies.length > 0) {
+    html += '<div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--text-light)">Tech Stack</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">';
+    org.technologies.forEach(t => {
+      html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
+    });
+    html += '</div>';
+  }
+
+  // Apollo link
+  if (org.linkedinUrl) {
+    html += '<a href="' + org.linkedinUrl + '" target="_blank" style="font-size:11px;color:#7B1FA2;text-decoration:none">Company LinkedIn &rarr;</a>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
 // ── Auto-match on data load ────────────────────────────────────────────
 function _initCrmIntegration() {
   // Load CRM config from localStorage
@@ -7819,6 +8062,8 @@ function _initCrmIntegration() {
   }
   // Auto-load CRM data from file if enabled
   _crmAutoLoadFromFile();
+  // Auto-load Apollo enrichment data (non-blocking)
+  _apolloAutoLoad();
 }
 
 // Also save CRM config to localStorage when saving settings
@@ -7843,6 +8088,18 @@ async function _crmAutoLoadFromFile() {
       console.warn('CRM auto-load skipped:', e);
     }
   }, 1500);
+}
+
+async function _apolloAutoLoad() {
+  if (_apolloCache) return;
+  setTimeout(async () => {
+    try {
+      const data = await _loadApolloData();
+      if (data) renderJobs(); // Re-render to show Apollo badges
+    } catch (e) {
+      console.warn('Apollo auto-load skipped:', e);
+    }
+  }, 2500); // Slightly after CRM load
 }
 
 async function _saveSettingsToGitHub() {
