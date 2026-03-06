@@ -291,6 +291,19 @@
   .stakeholder-role { font-size:12px; color:var(--text-light); }
   .stakeholder-source { font-size:10px; padding:2px 6px; border-radius:4px; background:var(--primary-light); color:var(--primary); font-weight:600; margin-top:3px; display:inline-block; }
   .stakeholder-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; align-items:flex-end; }
+  .add-contact-btn { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px; border:2px dashed var(--border); border-radius:10px; background:none; color:var(--text-light); font-size:13px; cursor:pointer; transition:all .15s; }
+  .add-contact-btn:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
+  .add-contact-form { padding:12px; border:1px solid var(--border); border-radius:10px; background:var(--bg); display:flex; flex-direction:column; gap:8px; }
+  .add-contact-form input { padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; outline:none; transition:border .15s; }
+  .add-contact-form input:focus { border-color:var(--primary); }
+  .add-contact-form .form-row { display:flex; gap:8px; }
+  .add-contact-form .form-row input { flex:1; }
+  .add-contact-form .form-actions { display:flex; gap:8px; justify-content:flex-end; }
+  .add-contact-form .form-actions button { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; }
+  .add-contact-form .btn-save { background:var(--primary); color:white; }
+  .add-contact-form .btn-save:hover { filter:brightness(1.1); }
+  .add-contact-form .btn-cancel { background:var(--bg); color:var(--text-light); border:1px solid var(--border); }
+  .add-contact-form .btn-cancel:hover { background:white; }
   .btn-linkedin { background:#0A66C2; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; text-decoration:none; transition:background 0.15s; }
   .btn-linkedin:hover { background:#004182; }
   .btn-msg { background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; transition:background 0.15s; }
@@ -6605,6 +6618,43 @@ function _stakeholderAvatar(s) {
   return initials;
 }
 
+// ── Manual contacts (localStorage) ──────────────────────────────────────
+const _MANUAL_CONTACTS_KEY = 'bdr_manual_contacts';
+function _getManualContacts() { try { return JSON.parse(localStorage.getItem(_MANUAL_CONTACTS_KEY) || '{}'); } catch { return {}; } }
+function _saveManualContacts(data) { localStorage.setItem(_MANUAL_CONTACTS_KEY, JSON.stringify(data)); }
+
+function _addManualContact(jobId) {
+  const nameEl = document.getElementById('_mcName');
+  const linkedinEl = document.getElementById('_mcLinkedin');
+  const titleEl = document.getElementById('_mcTitle');
+  const name = (nameEl ? nameEl.value : '').trim();
+  const linkedin = (linkedinEl ? linkedinEl.value : '').trim();
+  const title = (titleEl ? titleEl.value : '').trim();
+  if (!name) { if (nameEl) nameEl.style.borderColor='#EF5350'; return; }
+  const contact = { name, title, linkedin, email:'', phone:'', source:'Manual', connectMsg:'', followUpMsg:'' };
+  const all = _getManualContacts();
+  if (!all[jobId]) all[jobId] = [];
+  all[jobId].push(contact);
+  _saveManualContacts(all);
+  // Refresh the detail panel
+  openDetail(jobId);
+}
+
+function _showAddContactForm(jobId) {
+  const container = document.getElementById('_addContactArea');
+  if (!container) return;
+  container.innerHTML = `<div class="add-contact-form">
+    <div class="form-row"><input id="_mcName" placeholder="Full name *" autofocus><input id="_mcTitle" placeholder="Title (optional)"></div>
+    <input id="_mcLinkedin" placeholder="LinkedIn URL (optional)">
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="event.stopPropagation();document.getElementById('_addContactArea').innerHTML='<button class=\\'add-contact-btn\\' onclick=\\'event.stopPropagation();_showAddContactForm(&quot;${jobId}&quot;)\\'>+ Add Contact</button>'">Cancel</button>
+      <button class="btn-save" onclick="event.stopPropagation();_addManualContact('${jobId}')">Add Contact</button>
+    </div>
+  </div>`;
+  const nameInput = document.getElementById('_mcName');
+  if (nameInput) nameInput.focus();
+}
+
 // ── Merge job stakeholders with CRM contacts ────────────────────────────
 function _mergeStakeholdersWithCrm(job) {
   const stakeholders = (job.stakeholders || []).map(s => Object.assign({}, s));
@@ -6663,7 +6713,17 @@ function _mergeStakeholdersWithCrm(job) {
     });
   });
 
-  // 3. Enrich with Apollo data if available
+  // 3. Add manually added contacts
+  const manualContacts = _getManualContacts()[job.id] || [];
+  manualContacts.forEach(mc => {
+    const mcNameNorm = (mc.name || '').toLowerCase().trim();
+    const alreadyExists = stakeholders.some(s => (s.name||'').toLowerCase().trim() === mcNameNorm);
+    if (!alreadyExists) {
+      stakeholders.push(Object.assign({}, mc));
+    }
+  });
+
+  // 4. Enrich with Apollo data if available
   _enrichWithApollo(stakeholders, job);
 
   return stakeholders;
@@ -6832,6 +6892,9 @@ function buildOutreachSection(job) {
       <small>Try searching LinkedIn for "${job.company} CTO" or "VP Engineering"${CRM_CONFIG.provider ? '<br>CRM contacts will appear here once HubSpot data is synced.' : ''}</small>
     </div>`;
   }
+
+  // Add Contact button
+  stakeholderHTML += `<div id="_addContactArea" style="margin-top:8px"><button class="add-contact-btn" onclick="event.stopPropagation();_showAddContactForm('${job.id}')">+ Add Contact</button></div>`;
 
   // Filter templates based on first stakeholder's connected status
   const firstKey = stakeholders[0] ? _contactKey(stakeholders[0]) : '';
