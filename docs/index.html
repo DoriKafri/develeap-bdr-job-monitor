@@ -814,27 +814,29 @@
             <!-- HubSpot Config -->
             <div id="hubspotConfig" class="crm-config-block">
               <div style="background:var(--primary-light);border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px">HubSpot API Configuration</div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Enter your HubSpot Private App access token. Create one at Settings > Integrations > Private Apps in HubSpot. Required scopes: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.contacts.read</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.companies.read</code>, <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">crm.objects.deals.read</code></p>
+                <div style="font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px">HubSpot Configuration</div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">CRM data is synced via a GitHub Action (no API keys needed in the browser). To set up:</p>
+                <ol style="font-size:12px;color:var(--text-light);margin-bottom:12px;padding-left:20px;line-height:1.8">
+                  <li>Go to your repo <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/settings/secrets/actions" target="_blank" style="color:var(--teal)">Settings > Secrets and variables > Actions</a></li>
+                  <li>Add secret <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">HUBSPOT_TOKEN</code> with your HubSpot Personal Access Key</li>
+                  <li>Add secret <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">HUBSPOT_PORTAL_ID</code> with value <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">25695560</code></li>
+                  <li>Run the <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/actions/workflows/hubspot-sync.yml" target="_blank" style="color:var(--teal)">HubSpot CRM Sync</a> workflow manually (it auto-runs every 2h)</li>
+                </ol>
                 <div style="margin-bottom:12px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Access Token</label>
-                  <input type="password" id="hubspotApiToken" class="api-key-input" placeholder="pat-na1-..." style="width:100%" />
-                </div>
-                <div style="margin-bottom:12px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID)</label>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID) - for building HubSpot links</label>
                   <input type="text" id="hubspotPortalId" class="api-key-input" placeholder="e.g. 25695560" style="width:200px" />
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
                   <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichCards" checked> Show CRM badges on job cards</label>
                   <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichDetail" checked> Show CRM info in detail panel</label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmAutoMatch" checked> Auto-match companies on load</label>
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmAutoMatch" checked> Auto-load CRM data on page load</label>
                 </div>
                 <div style="margin-bottom:12px">
                   <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Match Pipeline (optional - leave empty for all)</label>
                   <input type="text" id="hubspotPipelineFilter" class="api-key-input" placeholder="e.g. SALES ISRAEL" style="width:300px" />
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
-                  <button class="btn btn-primary" onclick="testCrmConnection()" style="font-size:12px;padding:6px 16px">Test Connection</button>
+                  <button class="btn btn-primary" onclick="testCrmConnection()" style="font-size:12px;padding:6px 16px">Load CRM Data</button>
                   <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
                 </div>
               </div>
@@ -7126,17 +7128,11 @@ function _getCrmIntegrationConfig() {
 }
 
 function _saveCrmSecretsToLocal() {
-  const tokenEl = document.getElementById('hubspotApiToken');
-  if (tokenEl && tokenEl.value) {
-    localStorage.setItem('crm_hubspot_token', tokenEl.value);
-  }
+  // No-op: tokens are stored as GitHub Secrets, not in browser
 }
 
 function _loadCrmSecretsFromLocal() {
-  const token = localStorage.getItem('crm_hubspot_token') || '';
-  const tokenEl = document.getElementById('hubspotApiToken');
-  if (tokenEl && token) tokenEl.value = token;
-  return token;
+  // No-op: tokens are stored as GitHub Secrets, not in browser
 }
 
 function _applyCrmConfigFromSettings(cfg) {
@@ -7165,7 +7161,6 @@ function renderIntegrationsSection() {
   if (chk2) chk2.checked = CRM_CONFIG.enrichDetail;
   const chk3 = document.getElementById('crmAutoMatch');
   if (chk3) chk3.checked = CRM_CONFIG.autoMatch;
-  _loadCrmSecretsFromLocal();
   _renderDealStageMapping();
 }
 
@@ -7185,132 +7180,57 @@ function _collectCrmConfigFromUI() {
   CRM_CONFIG.autoMatch = document.getElementById('crmAutoMatch').checked;
 }
 
-// ── HubSpot API adapter ────────────────────────────────────────────────
-function _hubspotHeaders() {
-  const token = document.getElementById('hubspotApiToken')?.value || localStorage.getItem('crm_hubspot_token') || '';
-  return {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json'
-  };
-}
+// ── CRM Data Loading (from pre-built crm_data.json) ───────────────────
+// HubSpot API cannot be called directly from browser (CORS).
+// Instead, a GitHub Action (hubspot-sync.yml) runs sync_hubspot.py
+// which fetches CRM data server-side and writes crm_data.json to the repo.
+// The dashboard loads this static JSON file - no API keys needed client-side.
 
-async function _hubspotSearchCompanies(companyName) {
-  const resp = await fetch('https://api.hubapi.com/crm/v3/objects/companies/search', {
-    method: 'POST',
-    headers: _hubspotHeaders(),
-    body: JSON.stringify({
-      filterGroups: [{
-        filters: [{ propertyName: 'name', operator: 'CONTAINS_TOKEN', value: companyName }]
-      }],
-      properties: ['name', 'domain', 'industry', 'lifecyclestage', 'num_associated_deals', 'num_associated_contacts'],
-      limit: 5
-    })
-  });
-  if (!resp.ok) throw new Error('HubSpot API error: ' + resp.status);
-  return (await resp.json()).results || [];
-}
+var _crmDataUrl = 'https://raw.githubusercontent.com/DoriKafri/develeap-bdr-job-monitor/main/crm_data.json';
 
-async function _hubspotGetDealsForCompany(companyId) {
-  // Get associated deals
-  const assocResp = await fetch('https://api.hubapi.com/crm/v4/objects/companies/' + companyId + '/associations/deals', {
-    headers: _hubspotHeaders()
-  });
-  if (!assocResp.ok) return [];
-  const assocData = await assocResp.json();
-  const dealIds = (assocData.results || []).map(r => r.toObjectId);
-  if (!dealIds.length) return [];
-
-  // Batch-read deal details
-  const batchResp = await fetch('https://api.hubapi.com/crm/v3/objects/deals/batch/read', {
-    method: 'POST',
-    headers: _hubspotHeaders(),
-    body: JSON.stringify({
-      inputs: dealIds.slice(0, 10).map(id => ({ id: String(id) })),
-      properties: ['dealname', 'dealstage', 'pipeline', 'amount', 'closedate', 'hubspot_owner_id']
-    })
-  });
-  if (!batchResp.ok) return [];
-  return (await batchResp.json()).results || [];
-}
-
-async function _hubspotGetContactsForCompany(companyId) {
-  const assocResp = await fetch('https://api.hubapi.com/crm/v4/objects/companies/' + companyId + '/associations/contacts', {
-    headers: _hubspotHeaders()
-  });
-  if (!assocResp.ok) return [];
-  const assocData = await assocResp.json();
-  const contactIds = (assocData.results || []).map(r => r.toObjectId);
-  if (!contactIds.length) return [];
-
-  const batchResp = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/batch/read', {
-    method: 'POST',
-    headers: _hubspotHeaders(),
-    body: JSON.stringify({
-      inputs: contactIds.slice(0, 10).map(id => ({ id: String(id) })),
-      properties: ['firstname', 'lastname', 'email', 'jobtitle', 'lifecyclestage']
-    })
-  });
-  if (!batchResp.ok) return [];
-  return (await batchResp.json()).results || [];
-}
-
-async function _hubspotGetDealStages() {
-  const resp = await fetch('https://api.hubapi.com/crm/v3/pipelines/deals', {
-    headers: _hubspotHeaders()
-  });
-  if (!resp.ok) throw new Error('Failed to fetch pipelines: ' + resp.status);
-  return await resp.json();
-}
-
-// ── Provider-agnostic CRM interface ────────────────────────────────────
-async function crmLookupCompany(companyName) {
-  if (!CRM_CONFIG.provider) return null;
-  const cacheKey = companyName.toLowerCase().trim();
-  if (_crmCache[cacheKey] && (Date.now() - _crmCache[cacheKey].lastFetched < 30 * 60 * 1000)) {
-    return _crmCache[cacheKey];
-  }
-
+async function _loadCrmDataFromFile() {
   try {
-    if (CRM_CONFIG.provider === 'hubspot') {
-      const companies = await _hubspotSearchCompanies(companyName);
-      if (!companies.length) {
-        _crmCache[cacheKey] = { companyId: null, companyName, deals: [], contacts: [], lastFetched: Date.now() };
-        return _crmCache[cacheKey];
-      }
-      // Take best match
-      const match = companies[0];
-      const deals = await _hubspotGetDealsForCompany(match.id);
-      const contacts = await _hubspotGetContactsForCompany(match.id);
-      _crmCache[cacheKey] = {
-        companyId: match.id,
-        companyName: match.properties.name,
-        domain: match.properties.domain,
-        industry: match.properties.industry,
-        lifecyclestage: match.properties.lifecyclestage,
-        deals: deals.map(d => ({
-          id: d.id,
-          name: d.properties.dealname,
-          stage: d.properties.dealstage,
-          stageName: _resolveStageName(d.properties.dealstage),
-          pipeline: d.properties.pipeline,
-          amount: d.properties.amount,
-          closedate: d.properties.closedate
-        })),
-        contacts: contacts.map(c => ({
-          id: c.id,
-          name: ((c.properties.firstname || '') + ' ' + (c.properties.lastname || '')).trim(),
-          email: c.properties.email,
-          title: c.properties.jobtitle
-        })),
-        lastFetched: Date.now()
-      };
-      return _crmCache[cacheKey];
+    const resp = await fetch(_crmDataUrl, { cache: 'no-store' });
+    if (!resp.ok) {
+      console.warn('CRM data not available (HTTP ' + resp.status + '). Run the HubSpot sync workflow first.');
+      return null;
     }
-    // Future providers go here
+    return await resp.json();
   } catch (e) {
-    console.warn('CRM lookup failed for', companyName, e);
+    console.warn('Failed to load CRM data:', e);
     return null;
   }
+}
+
+function _populateCacheFromCrmData(data) {
+  if (!data || !data.companies) return;
+  CRM_CONFIG.provider = data.provider || 'hubspot';
+  CRM_CONFIG.portalId = data.portalId || CRM_CONFIG.portalId;
+  CRM_CONFIG.dealStageMap = data.dealStageMap || {};
+  _crmCache = {};
+  Object.entries(data.companies).forEach(([key, company]) => {
+    _crmCache[key] = {
+      companyId: company.companyId,
+      companyName: company.companyName,
+      domain: company.domain || '',
+      industry: company.industry || '',
+      lifecyclestage: company.lifecyclestage || '',
+      deals: (company.deals || []).map(d => ({
+        id: d.id,
+        name: d.name,
+        stage: d.stage,
+        stageName: d.stageName || _resolveStageName(d.stage),
+        stageColor: d.stageColor || _resolveStageColor(d.stage),
+        pipeline: d.pipeline,
+        pipelineName: d.pipelineName || '',
+        amount: d.amount,
+        closedate: d.closedate
+      })),
+      contacts: company.contacts || [],
+      lastFetched: Date.now()
+    };
+  });
+  _crmCacheBuilt = true;
 }
 
 function _resolveStageName(stageId) {
@@ -7323,42 +7243,26 @@ function _resolveStageColor(stageId) {
   return '#999';
 }
 
-// ── Test Connection ────────────────────────────────────────────────────
+// ── Test Connection (loads crm_data.json) ──────────────────────────────
 async function testCrmConnection() {
   _collectCrmConfigFromUI();
   const resultEl = document.getElementById('crmTestResult');
-  resultEl.textContent = 'Testing...';
+  resultEl.textContent = 'Loading CRM data...';
   resultEl.style.color = 'var(--text-light)';
 
   try {
-    if (CRM_CONFIG.provider === 'hubspot') {
-      // Test with a simple companies search
-      const resp = await fetch('https://api.hubapi.com/crm/v3/objects/companies?limit=1', {
-        headers: _hubspotHeaders()
-      });
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await _loadCrmDataFromFile();
+    if (!data) throw new Error('crm_data.json not found. Add HUBSPOT_TOKEN secret and run the HubSpot Sync workflow in GitHub Actions.');
 
-      // Also load pipelines/stages
-      const pipelines = await _hubspotGetDealStages();
-      const stageMap = {};
-      const stageColors = ['#00CA72','#FFB100','#32BBD7','#E44258','#9B59B6','#3498DB','#E67E22','#1ABC9C','#95A5A6','#2ECC71'];
-      let colorIdx = 0;
-      (pipelines.results || []).forEach(p => {
-        (p.stages || []).forEach(s => {
-          stageMap[s.id] = {
-            label: s.label,
-            pipeline: p.label,
-            color: stageColors[colorIdx % stageColors.length]
-          };
-          colorIdx++;
-        });
-      });
-      CRM_CONFIG.dealStageMap = stageMap;
-      _renderDealStageMapping();
+    _populateCacheFromCrmData(data);
+    _renderDealStageMapping();
+    renderJobs();
 
-      resultEl.textContent = 'Connected! Found ' + Object.keys(stageMap).length + ' deal stages across ' + (pipelines.results || []).length + ' pipelines.';
-      resultEl.style.color = 'var(--success)';
-    }
+    const stats = data.stats || {};
+    const syncedAt = data.syncedAt ? new Date(data.syncedAt).toLocaleString() : 'unknown';
+    resultEl.textContent = 'Loaded! ' + (stats.matchedInCrm || 0) + ' companies matched, ' +
+      (stats.withDeals || 0) + ' with deals. Last sync: ' + syncedAt;
+    resultEl.style.color = 'var(--success)';
   } catch (e) {
     resultEl.textContent = 'Failed: ' + e.message;
     resultEl.style.color = 'var(--danger)';
@@ -7394,30 +7298,23 @@ function _renderDealStageMapping() {
 
 // ── CRM Cache management ───────────────────────────────────────────────
 async function refreshCrmCache() {
-  if (!CRM_CONFIG.provider) { _showToast('No CRM provider configured'); return; }
   const statusEl = document.getElementById('crmCacheStatus');
-  if (statusEl) statusEl.textContent = 'Building cache...';
+  if (statusEl) statusEl.textContent = 'Reloading CRM data...';
 
-  _crmCache = {};
-  const uniqueCompanies = [...new Set(ALL_JOBS.map(j => j.company))];
-  let done = 0;
-  const total = uniqueCompanies.length;
-
-  for (const company of uniqueCompanies) {
-    try {
-      await crmLookupCompany(company);
-    } catch (e) { /* skip */ }
-    done++;
-    if (statusEl && done % 5 === 0) statusEl.textContent = 'Processing ' + done + '/' + total + '...';
-    // Rate limit: small delay between batches
-    if (done % 5 === 0) await new Promise(r => setTimeout(r, 200));
+  try {
+    const data = await _loadCrmDataFromFile();
+    if (!data) {
+      if (statusEl) statusEl.textContent = 'No CRM data file found. Run the GitHub Action first.';
+      return;
+    }
+    _populateCacheFromCrmData(data);
+    renderJobs();
+    const stats = data.stats || {};
+    if (statusEl) statusEl.textContent = 'Loaded: ' + (stats.matchedInCrm || 0) + '/' + (stats.totalCompanies || 0) + ' companies matched. Synced ' + new Date(data.syncedAt).toLocaleString();
+    _showToast('CRM data reloaded - ' + (stats.matchedInCrm || 0) + ' companies matched');
+  } catch (e) {
+    if (statusEl) statusEl.textContent = 'Error: ' + e.message;
   }
-
-  _crmCacheBuilt = true;
-  if (statusEl) statusEl.textContent = 'Cache built: ' + total + ' companies checked at ' + new Date().toLocaleTimeString();
-  // Re-render job cards to show CRM badges
-  renderJobs();
-  _showToast('CRM cache refreshed - ' + total + ' companies checked');
 }
 
 // ── CRM badge for job table rows ───────────────────────────────────────
@@ -7434,7 +7331,7 @@ function _getCrmBadgeHtml(companyName) {
 
   if (activeDeals.length > 0) {
     const topDeal = activeDeals[0];
-    const stageColor = _resolveStageColor(topDeal.stage);
+    const stageColor = topDeal.stageColor || _resolveStageColor(topDeal.stage);
     const amount = topDeal.amount ? ' $' + Number(topDeal.amount).toLocaleString() : '';
     return '<span class="badge" style="background:' + stageColor + '22;color:' + stageColor + ';font-size:10px;white-space:nowrap" title="' + topDeal.name + amount + '">' +
       'CRM: ' + (topDeal.stageName || 'Deal') + '</span>';
@@ -7472,7 +7369,7 @@ function _buildCrmDetailHtml(companyName) {
   if (data.deals.length > 0) {
     html += '<div style="font-size:12px;font-weight:600;margin-bottom:4px">Deals (' + data.deals.length + ')</div>';
     data.deals.forEach(d => {
-      const stageColor = _resolveStageColor(d.stage);
+      const stageColor = d.stageColor || _resolveStageColor(d.stage);
       const amount = d.amount ? ' - $' + Number(d.amount).toLocaleString() : '';
       const dealUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-3/' + d.id : '#';
       html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
@@ -7507,10 +7404,8 @@ function _initCrmIntegration() {
   if (savedConfig) {
     try { _applyCrmConfigFromSettings(JSON.parse(savedConfig)); } catch(e) {}
   }
-  // Load token
-  _loadCrmSecretsFromLocal();
-  // Trigger auto-match if enabled
-  _crmAutoMatchOnLoad();
+  // Auto-load CRM data from file if enabled
+  _crmAutoLoadFromFile();
 }
 
 // Also save CRM config to localStorage when saving settings
@@ -7518,22 +7413,22 @@ function _persistCrmConfigLocally() {
   localStorage.setItem('crm_integration_config', JSON.stringify(_getCrmIntegrationConfig()));
 }
 
-async function _crmAutoMatchOnLoad() {
-  if (!CRM_CONFIG.provider || !CRM_CONFIG.autoMatch || _crmCacheBuilt) return;
-  // Build cache in background, don't block UI
+async function _crmAutoLoadFromFile() {
+  if (_crmCacheBuilt) return;
+  // Try to load CRM data from the repo JSON file (non-blocking)
   setTimeout(async () => {
-    const statusEl = document.getElementById('crmCacheStatus');
-    const uniqueCompanies = [...new Set(ALL_JOBS.map(j => j.company))];
-    let done = 0;
-    for (const company of uniqueCompanies) {
-      try { await crmLookupCompany(company); } catch(e) {}
-      done++;
-      if (done % 10 === 0) await new Promise(r => setTimeout(r, 300));
+    try {
+      const data = await _loadCrmDataFromFile();
+      if (!data || !data.companies) return;
+      _populateCacheFromCrmData(data);
+      CRM_CONFIG.provider = data.provider || 'hubspot';
+      _persistCrmConfigLocally();
+      renderJobs();
+      console.log('CRM data loaded: ' + Object.keys(data.companies).length + ' companies, synced ' + data.syncedAt);
+    } catch (e) {
+      console.warn('CRM auto-load skipped:', e);
     }
-    _crmCacheBuilt = true;
-    if (statusEl) statusEl.textContent = 'Auto-matched ' + uniqueCompanies.length + ' companies';
-    renderJobs();
-  }, 2000);
+  }, 1500);
 }
 
 async function _saveSettingsToGitHub() {
