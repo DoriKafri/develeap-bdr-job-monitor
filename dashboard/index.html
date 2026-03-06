@@ -6615,8 +6615,9 @@ function buildOutreachSection(job) {
         </div>`;
       }
       if (hasEmail) {
+        const shortEmail = s.email.length > 16 ? s.email.slice(0, 14) + '…' : s.email;
         actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #EA4335;flex:1 1 auto">
-          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer;border-radius:0;padding:6px 10px">${MAIL_ICON} ${s.email}</button>
+          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer;border-radius:0;padding:6px 10px" title="${s.email}">${MAIL_ICON} ${shortEmail}</button>
           <select style="font-size:11px;padding:6px 4px;border:none;background:#FFEBEE;color:#C62828;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value)">
             ${tplOpts}
           </select>
