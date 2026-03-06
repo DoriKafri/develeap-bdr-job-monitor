@@ -21,7 +21,31 @@ from datetime import datetime
 
 HUBSPOT_TOKEN = os.environ.get("HUBSPOT_TOKEN", "")
 HUBSPOT_PORTAL_ID = os.environ.get("HUBSPOT_PORTAL_ID", "")
-BASE_URL = "https://api.hubapi.com"
+HUBSPOT_REGION = os.environ.get("HUBSPOT_REGION", "eu1")  # "eu1" or "na1"
+BASE_URL = f"https://api.hubapi.com" if HUBSPOT_REGION == "na1" else f"https://api.hubapi.com"
+
+
+def _detect_region():
+    """Auto-detect region by trying a simple API call."""
+    global BASE_URL
+    for base in ["https://api.hubapi.com", "https://api-eu1.hubapi.com"]:
+        try:
+            resp = requests.get(
+                f"{base}/crm/v3/pipelines/deals",
+                headers=hubspot_headers(),
+                timeout=10,
+            )
+            if resp.status_code == 200:
+                BASE_URL = base
+                print(f"  Detected API region: {base}")
+                return
+            elif resp.status_code != 401:
+                continue
+        except Exception:
+            continue
+    # Default to EU since the account is EU
+    BASE_URL = "https://api-eu1.hubapi.com"
+    print(f"  Defaulting to EU region: {BASE_URL}")
 OUTPUT_FILE = "crm_data.json"
 
 # Read existing job listings to know which companies to look up
@@ -195,6 +219,8 @@ def main():
         sys.exit(0)
 
     print("Starting HubSpot CRM sync...")
+    print("Detecting API region...")
+    _detect_region()
 
     # 1. Get deal stages
     print("Fetching deal stages...")
