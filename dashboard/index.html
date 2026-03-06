@@ -129,9 +129,11 @@
   .source-dropdown-footer { border-top:1px solid var(--border); margin-top:4px; padding:8px 16px 4px; }
   .source-dropdown-footer button { background:none; border:none; color:var(--primary); font-size:12px; cursor:pointer; padding:4px 0; }
   .source-dropdown-footer button:hover { text-decoration:underline; }
-  .alt-sources-indicator { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:18px; padding:0 5px; margin-left:4px; border-radius:9px; background:#E3F2FD; color:#1565C0; font-size:10px; font-weight:700; cursor:pointer; vertical-align:middle; transition:all .15s; }
-  .alt-sources-indicator:hover { background:#1565C0; color:white; }
-  .alt-sources-panel { position:absolute; z-index:100; margin-top:4px; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.12); padding:6px 8px; display:flex; flex-direction:column; gap:4px; min-width:120px; }
+  .alt-sources-wrap { display:inline-flex; align-items:center; position:relative; vertical-align:middle; }
+  .alt-sources-indicator { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:18px; padding:0 5px; margin-left:4px; border-radius:9px; background:#E3F2FD; color:#1565C0; font-size:10px; font-weight:700; cursor:default; vertical-align:middle; transition:all .15s; }
+  .alt-sources-wrap:hover .alt-sources-indicator { background:#1565C0; color:white; }
+  .alt-sources-panel { position:absolute; left:0; top:100%; z-index:100; margin-top:4px; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.12); padding:6px 8px; display:none; flex-direction:column; gap:4px; min-width:120px; }
+  .alt-sources-wrap:hover .alt-sources-panel { display:flex; }
   .alt-source-link { text-decoration:none; }
   .alt-source-link:hover .source-badge { filter:brightness(0.92); }
 
@@ -7933,26 +7935,14 @@ function renderJobs() {
       <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
       <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
-      <td><span class="badge badge-${j.source} source-badge">${sourceIcon(j.source)}${SOURCE_LABELS[j.source]||j.source}</span>${(j.altSources&&j.altSources.length)?'<span class="alt-sources-indicator" onclick="event.stopPropagation();_toggleAltSources(this)" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel" style="display:none">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div>':''}</td>
+      <td>${(j.altSources&&j.altSources.length)?'<div class="alt-sources-wrap" onclick="event.stopPropagation()"><span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span><span class="alt-sources-indicator" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div></div>':'<span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span>'}</td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
       <td>${formatDate(j.posted)}</td>
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">Customer</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':'<span style="color:var(--text-lighter);font-size:12px">\u2014</span>')}</td>
     </tr>`).join('');
 }
 
-function _toggleAltSources(indicator) {
-  const panel = indicator.nextElementSibling;
-  if (!panel) return;
-  const isOpen = panel.style.display !== 'none';
-  // Close all other open panels first
-  document.querySelectorAll('.alt-sources-panel').forEach(p => p.style.display = 'none');
-  panel.style.display = isOpen ? 'none' : 'flex';
-  // Close on outside click
-  if (!isOpen) {
-    const close = (e) => { if (!panel.contains(e.target) && e.target !== indicator) { panel.style.display = 'none'; document.removeEventListener('click', close); } };
-    setTimeout(() => document.addEventListener('click', close), 0);
-  }
-}
+/* _toggleAltSources removed — hover is now CSS-only via .alt-sources-wrap:hover */
 
 function formatDate(d){const diff=(new Date().setHours(0,0,0,0)-new Date(d).setHours(0,0,0,0))/864e5;if(diff===0)return'<span class="date-cell today">Today</span>';if(diff===1)return'<span class="date-cell">Yesterday</span>';if(diff<7)return'<span class="date-cell">'+Math.floor(diff)+'d ago</span>';return'<span class="date-cell">'+new Date(d).toLocaleDateString('en-IL',{month:'short',day:'numeric'})+'</span>';}
 
