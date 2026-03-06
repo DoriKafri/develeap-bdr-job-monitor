@@ -10150,6 +10150,7 @@ async function _crmAutoLoadFromFile() {
       _populateCacheFromCrmData(data);
       CRM_CONFIG.provider = data.provider || 'hubspot';
       _persistCrmConfigLocally();
+      if (_apolloCache) _preloadAllStakeholders(); // Pre-merge if Apollo already loaded
       renderJobs();
       _updateCrmStatusBanner();
       console.log('CRM data loaded: ' + Object.keys(data.companies).length + ' companies, synced ' + data.syncedAt);
@@ -10164,11 +10165,26 @@ async function _apolloAutoLoad() {
   setTimeout(async () => {
     try {
       const data = await _loadApolloData();
-      if (data) renderJobs(); // Re-render to show Apollo badges
+      if (data) {
+        _preloadAllStakeholders(); // Pre-merge CRM+Apollo for all jobs
+        renderJobs(); // Re-render to show Apollo badges + WhatsApp buttons
+      }
     } catch (e) {
       console.warn('Apollo auto-load skipped:', e);
     }
   }, 2500); // Slightly after CRM load
+}
+
+// Pre-compute merged stakeholders (CRM + Apollo) for ALL jobs at once,
+// so WhatsApp buttons and enrichment data are ready before opening detail.
+function _preloadAllStakeholders() {
+  if (!ALL_JOBS || !ALL_JOBS.length) return;
+  let enriched = 0;
+  ALL_JOBS.forEach(j => {
+    j._mergedStakeholders = _mergeStakeholdersWithCrm(j);
+    if (j._mergedStakeholders.some(s => (s._apolloData && s._apolloData.phone) || s.phone)) enriched++;
+  });
+  console.log('Pre-loaded stakeholders for ' + ALL_JOBS.length + ' jobs (' + enriched + ' with phone contacts)');
 }
 
 // ── User Management ─────────────────────────────────────────────────
