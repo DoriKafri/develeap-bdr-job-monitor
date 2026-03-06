@@ -3014,6 +3014,38 @@
       "status": "paused",
       "createdAt": "2026-03-06T15:08:00.950Z",
       "completedAt": null
+    },
+    {
+      "id": "mmf576w1auve",
+      "contactName": "Ilan Sokolov",
+      "contactTitle": "CTO",
+      "contactKey": "ilan sokolov",
+      "contactPhoto": "https://media.licdn.com/dms/image/v2/D4D03AQHOa_jZ5lAD9w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1697281804260?e=2147483647&v=beta&t=ixyu7s97GptaVj9ANuGduwuF91MbdqeQVrGmJ34wOKQ",
+      "company": "Commit",
+      "companyLogo": "https://www.google.com/s2/favicons?domain=commit.com&sz=128",
+      "linkedinUrl": "https://www.linkedin.com/in/ilan-sokolov/",
+      "message": "Ilan, I help companies like Commit solve the #1 reason FinOps & Cloud Cost hires fail  -  they take 6 months and burn $200K before producing anything.\n\nWe've embedded FinOps & Cloud Cost squads at Fireblocks, Checkmarx, Aqua that ship in 2 weeks  -  not 6 months.\n\nThat FinOps Engineer role you're hiring for? I have a faster path. Open to hearing it?",
+      "isConnected": false,
+      "customerType": "prospect",
+      "status": "paused",
+      "createdAt": "2026-03-06T17:02:27.745Z",
+      "completedAt": null
+    },
+    {
+      "id": "mmf576w1lku5",
+      "contactName": "Blazej Pastuszka",
+      "contactTitle": "CEO/CTO ",
+      "contactKey": "blazej pastuszka",
+      "contactPhoto": "",
+      "company": "Commit",
+      "companyLogo": "https://www.google.com/s2/favicons?domain=commit.com&sz=128",
+      "linkedinUrl": "https://www.linkedin.com/search/results/people/?keywords=Blazej%20Pastuszka",
+      "message": "Blazej, I help companies like Commit solve the #1 reason FinOps & Cloud Cost hires fail  -  they take 6 months and burn $200K before producing anything.\n\nWe've embedded FinOps & Cloud Cost squads at Mobileye, RapidAPI, Plus500 that ship in 2 weeks  -  not 6 months.\n\nThat FinOps Engineer role you're hiring for? I have a faster path. Open to hearing it?",
+      "isConnected": false,
+      "customerType": "prospect",
+      "status": "paused",
+      "createdAt": "2026-03-06T17:02:27.745Z",
+      "completedAt": null
     }
   ],
   "lastProcessed": ""
