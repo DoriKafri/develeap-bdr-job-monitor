@@ -483,17 +483,11 @@
   .intg-checkbox-row label { font-size:12px; display:flex; align-items:center; gap:5px; cursor:pointer; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
 
-  /* Mobile: settings sidebar collapses to horizontal scroll tabs */
+  /* Mobile layout overrides */
   @media (max-width:768px) {
     #settingsView.active { position:fixed; top:48px; left:0; right:0; bottom:0; display:flex; flex-direction:column; padding:0; overflow:hidden; z-index:5; background:#fff; }
     .settings-header { padding:12px 16px; margin-bottom:0; flex-shrink:0; }
     .settings-header h2 { font-size:17px; }
-    .settings-container { flex-direction:column; flex:1; min-height:0; }
-    .settings-sidebar { width:100%; padding:0; display:flex; flex-direction:row; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -webkit-overflow-scrolling:touch; border-right:none; background:#032229; gap:0; flex-shrink:0; }
-    .settings-sidebar::-webkit-scrollbar { display:none; }
-    .settings-sidebar-item { padding:10px 14px; border-left:none; border-bottom:3px solid transparent; white-space:nowrap; font-size:12px; flex-shrink:0; }
-    .settings-sidebar-item.active { border-left:none; border-bottom-color:#32BBD7; }
-    .settings-content-area { padding:16px; overflow-y:auto; flex:1; min-height:0; }
     /* Mobile job detail sidebar */
     .sidebar { width:100% !important; max-width:100vw; }
     .sidebar-header { padding:14px 16px; position:sticky; top:0; z-index:1; }
@@ -623,6 +617,15 @@
   .settings-sidebar-item:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.95); }
   .settings-sidebar-item.active { background:rgba(255,255,255,0.1); border-left-color:#32BBD7; font-weight:600; color:white; }
   .settings-content-area { flex:1; padding:24px 32px; overflow-y:auto; background:#fff; }
+  /* Mobile settings overrides — MUST be after desktop rules to win specificity */
+  @media (max-width:768px) {
+    .settings-container { flex-direction:column !important; flex:1; min-height:0; }
+    .settings-sidebar { width:100% !important; padding:0 !important; display:flex !important; flex-direction:row !important; overflow-x:auto !important; overflow-y:hidden !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; border-right:none !important; background:#032229; gap:0; flex-shrink:0; }
+    .settings-sidebar::-webkit-scrollbar { display:none; }
+    .settings-sidebar-item { padding:10px 14px !important; border-left:none !important; border-bottom:3px solid transparent; white-space:nowrap; font-size:12px !important; flex-shrink:0; }
+    .settings-sidebar-item.active { border-left:none !important; border-bottom-color:#32BBD7; background:rgba(255,255,255,0.1); }
+    .settings-content-area { padding:16px !important; overflow-y:auto; flex:1; min-height:0; }
+  }
   .settings-section-title { font-size:18px; font-weight:700; margin-bottom:20px; }
   .category-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; margin-bottom:24px; }
   .category-card { background:white; border:1px solid var(--border); border-radius:12px; padding:16px; }
