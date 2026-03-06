@@ -7329,14 +7329,14 @@ function buildOutreachSection(job) {
       const liLang = _templateLang.linkedin || 'en';
       const emailLang = _templateLang.email || 'en';
       const waLang = _templateLang.whatsapp || 'he';
-      const liTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===liLang).map(({t,ti}) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
-      const emailTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===emailLang).map(({t,ti}) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
+      const liTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===liLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||t.subject||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
+      const emailTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===emailLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||t.subject||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
       const liFlag = (TEMPLATE_LANGS.find(l=>l.code===liLang)||{}).flag||'🇬🇧';
       const emailFlag = (TEMPLATE_LANGS.find(l=>l.code===emailLang)||{}).flag||'🇬🇧';
       if (connected) {
         actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #0A66C2;flex:1 1 auto">
           <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})" style="border:none;cursor:pointer;border-radius:0;padding:6px 10px">${MSG_ICON} Message</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value)">
+          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
             ${liTplOpts}
           </select>
           <button onclick="event.stopPropagation();_toggleLang('linkedin',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E3F2FD;cursor:pointer;line-height:1" title="Switch language">${liFlag}</button>
@@ -7344,7 +7344,7 @@ function buildOutreachSection(job) {
       } else if (hasLI) {
         actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #0A66C2;flex:1 1 auto">
           <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})" style="border:none;cursor:pointer;border-radius:0;padding:6px 10px">${LI_ICON} Connect</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value)">
+          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
             ${liTplOpts}
           </select>
           <button onclick="event.stopPropagation();_toggleLang('linkedin',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E3F2FD;cursor:pointer;line-height:1" title="Switch language">${liFlag}</button>
@@ -7354,7 +7354,7 @@ function buildOutreachSection(job) {
         const shortEmail = s.email.length > 16 ? s.email.slice(0, 14) + '…' : s.email;
         actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #EA4335;flex:1 1 auto">
           <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer;border-radius:0;padding:6px 10px" title="${s.email}">${MAIL_ICON} ${shortEmail}</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#FFEBEE;color:#C62828;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value)">
+          <select style="font-size:11px;padding:6px 4px;border:none;background:#FFEBEE;color:#C62828;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
             ${emailTplOpts}
           </select>
           <button onclick="event.stopPropagation();_toggleLang('email',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#FFEBEE;cursor:pointer;line-height:1" title="Switch language">${emailFlag}</button>
@@ -7364,17 +7364,17 @@ function buildOutreachSection(job) {
       const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
       if (hasPhone) {
         const waFlag = (TEMPLATE_LANGS.find(l=>l.code===waLang)||{}).flag||'🇮🇱';
-        const waTemplateOpts = WHATSAPP_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===waLang).map(({t,ti}) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
+        const waTemplateOpts = WHATSAPP_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===waLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
         actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #25D366;flex:1 1 auto">
           <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})" style="background:#25D366;border:none;cursor:pointer;border-radius:0;padding:6px 10px;color:white">${WA_ICON} WhatsApp</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E8F8F0;color:#128C7E;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();_activeWhatsAppTemplateIdx=+this.value">
+          <select style="font-size:11px;padding:6px 4px;border:none;background:#E8F8F0;color:#128C7E;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();_activeWhatsAppTemplateIdx=+this.value;_updateTplSelectTooltip(this,WHATSAPP_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,WHATSAPP_TEMPLATES)">
             ${waTemplateOpts}
           </select>
           <button onclick="event.stopPropagation();_toggleLang('whatsapp',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E8F8F0;cursor:pointer;line-height:1" title="Switch language">${waFlag}</button>
         </div>`;
       }
       if (!connected && !hasLI && !hasEmail) {
-        actionBtns += `<select class="template-select" style="font-size:11px;padding:4px 28px 4px 8px;margin:0;width:auto;min-width:130px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);scrollToTemplates()"><option value="" disabled selected>\uD83D\uDCAC Pick Template</option>${liTplOpts}</select>`;
+        actionBtns += `<select class="template-select" style="font-size:11px;padding:4px 28px 4px 8px;margin:0;width:auto;min-width:130px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);scrollToTemplates();_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)"><option value="" disabled selected>\uD83D\uDCAC Pick Template</option>${liTplOpts}</select>`;
       }
 
       // Toggle connected status button
@@ -7916,6 +7916,21 @@ function sendEmail() {
 }
 
 var _activeWhatsAppTemplateIdx = 0;
+
+// Return a truncated plain-text preview of a template body for tooltip display
+function _tplPreview(body, maxLen) {
+  if (!body) return '';
+  var t = body.replace(/\n+/g, ' ↵ ').trim();
+  if (t.length > (maxLen || 180)) t = t.slice(0, maxLen || 180) + '…';
+  return t;
+}
+
+// Update the title/tooltip of a template select to show the selected template's body
+function _updateTplSelectTooltip(sel, templates) {
+  var idx = +sel.value;
+  var tpl = templates[idx];
+  if (tpl) sel.title = (tpl.emoji || '') + ' ' + (tpl.name || '') + ':\n' + _tplPreview(tpl.body || tpl.subject || '', 250);
+}
 
 function sendWhatsApp(stakeholderIdx) {
   const job = _activeJobForOutreach;
