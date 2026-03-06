@@ -7410,6 +7410,16 @@ function initApp() {
   _initCrmIntegration();
   // Restore state from URL hash (deep linking)
   restoreFromHash();
+  // Re-sync UI after async inits complete (settings load rebuilds chips)
+  setTimeout(() => {
+    if (currentFilter && currentFilter !== 'all') {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      const matchChip = document.querySelector('.filter-chip[data-filter="' + currentFilter + '"]');
+      if (matchChip) matchChip.classList.add('active');
+      syncStatCardHighlight();
+      applyAllFilters();
+    }
+  }, 2000);
 }
 
 function updateFreshnessDisplay() {
