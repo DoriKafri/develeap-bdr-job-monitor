@@ -5947,8 +5947,64 @@ function _stakeholderAvatar(s) {
   return initials;
 }
 
+// ── Merge job stakeholders with CRM contacts ────────────────────────────
+function _mergeStakeholdersWithCrm(job) {
+  const stakeholders = (job.stakeholders || []).map(s => Object.assign({}, s));
+  if (!CRM_CONFIG.provider || !_crmCacheBuilt) return stakeholders;
+  const cacheKey = (job.company || '').toLowerCase().trim();
+  const crmData = _crmCache[cacheKey];
+  if (!crmData || !crmData.companyId || !crmData.contacts || !crmData.contacts.length) return stakeholders;
+
+  const portalId = CRM_CONFIG.portalId;
+  const matched = new Set();
+
+  // 1. Enrich existing stakeholders with CRM data
+  stakeholders.forEach(s => {
+    const sNameNorm = (s.name || '').toLowerCase().trim();
+    const sEmailNorm = (s.email || '').toLowerCase().trim();
+    for (let ci = 0; ci < crmData.contacts.length; ci++) {
+      const c = crmData.contacts[ci];
+      const cNameNorm = (c.name || '').toLowerCase().trim();
+      const cEmailNorm = (c.email || '').toLowerCase().trim();
+      // Match by email or by name similarity
+      const emailMatch = sEmailNorm && cEmailNorm && sEmailNorm === cEmailNorm;
+      const nameMatch = sNameNorm && cNameNorm && (sNameNorm === cNameNorm || sNameNorm.includes(cNameNorm) || cNameNorm.includes(sNameNorm));
+      if (emailMatch || nameMatch) {
+        matched.add(ci);
+        // Enrich: fill in missing fields from CRM
+        if (!s.email && c.email) s.email = c.email;
+        if (!s.title && c.title) s.title = c.title;
+        s._crmContactId = c.id;
+        s._crmContactUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-1/' + c.id : '';
+        s._crmEnriched = true;
+        break;
+      }
+    }
+  });
+
+  // 2. Add CRM-only contacts (not already matched)
+  crmData.contacts.forEach((c, ci) => {
+    if (matched.has(ci)) return;
+    if (!c.name || !c.name.trim()) return;
+    stakeholders.push({
+      name: c.name,
+      title: c.title || '',
+      email: c.email || '',
+      linkedin: '',
+      source: 'HubSpot',
+      connectMsg: '',
+      followUpMsg: '',
+      _crmContactId: c.id,
+      _crmContactUrl: portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-1/' + c.id : '',
+      _crmOnly: true
+    });
+  });
+
+  return stakeholders;
+}
+
 function buildOutreachSection(job) {
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || _mergeStakeholdersWithCrm(job);
   const hasStakeholders = stakeholders.length > 0;
 
   let stakeholderHTML = '';
@@ -5989,14 +6045,20 @@ function buildOutreachSection(job) {
         ? `<button onclick="event.stopPropagation();toggleConnected('${key.replace(/'/g,"\\'")}',${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--text-lighter);padding:2px 4px;margin-top:2px" title="${connected?'Mark as not connected':'Mark as connected'}">${connected?'✓ mark not connected':'+ mark connected'}</button>`
         : '';
 
+      // CRM enrichment indicators
+      const crmBadge = s._crmEnriched ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#E8F5E9;color:#2E7D32;font-weight:600">CRM</span>' : '';
+      const crmOnlyBadge = s._crmOnly ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600">HubSpot</span>' : '';
+      const hubspotLink = s._crmContactUrl ? `<a href="${s._crmContactUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--teal);text-decoration:none;margin-left:4px" title="View in HubSpot">HS&rarr;</a>` : '';
+
       return `
       <div class="stakeholder-card" data-idx="${i}">
         <div class="stakeholder-avatar">${_stakeholderAvatar(s)}</div>
         <div class="stakeholder-info">
-          <div class="stakeholder-name">${s.name} ${connBadge}</div>
+          <div class="stakeholder-name">${s.name} ${connBadge}${hubspotLink}</div>
           <div class="stakeholder-role">${s.title}</div>
           <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px">
             <span class="stakeholder-source">${s.source}</span>
+            ${crmBadge}${crmOnlyBadge}
             ${toggleBtn}
           </div>
         </div>
@@ -6006,7 +6068,7 @@ function buildOutreachSection(job) {
   } else {
     stakeholderHTML = `<div class="no-stakeholders">
       <p>No contacts found yet for ${job.company}</p>
-      <small>Try searching LinkedIn for "${job.company} CTO" or "VP Engineering"</small>
+      <small>Try searching LinkedIn for "${job.company} CTO" or "VP Engineering"${CRM_CONFIG.provider ? '<br>CRM contacts will appear here once HubSpot data is synced.' : ''}</small>
     </div>`;
   }
 
@@ -6024,7 +6086,7 @@ function buildOutreachSection(job) {
     <div class="outreach-section">
       <div class="outreach-title">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
-        Outreach (${stakeholders.length} contacts)
+        Outreach (${stakeholders.length} contact${stakeholders.length !== 1 ? 's' : ''}${stakeholders.some(s => s._crmOnly || s._crmEnriched) ? ' - incl. CRM' : ''})
       </div>
       ${stakeholderHTML}
       <div class="template-picker">
@@ -6082,7 +6144,7 @@ function switchTemplate(idx) {
   document.querySelectorAll('.template-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   const job = _activeJobForOutreach;
   if (!job) return;
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const stakeholder = stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
   const msg = fillTemplate(OUTREACH_TEMPLATES[idx].body, job, stakeholder);
   document.getElementById('templatePreview').textContent = msg;
@@ -6099,7 +6161,7 @@ function selectStakeholderForMsg(idx) {
   _activeStakeholderIdx = idx;
   const job = _activeJobForOutreach;
   if (!job) return;
-  const stakeholder = (job.stakeholders || [])[idx];
+  const stakeholder = (job._mergedStakeholders || job.stakeholders || [])[idx];
   const msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, stakeholder);
   document.getElementById('templatePreview').textContent = msg;
   // Update button labels based on connected status
@@ -6140,7 +6202,7 @@ function messageOnLinkedIn(stakeholderIdx) {
   const job = _activeJobForOutreach;
   if (!job) return;
   _activeStakeholderIdx = stakeholderIdx;
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const s = stakeholders[stakeholderIdx];
   if (!s) return;
 
@@ -6257,7 +6319,7 @@ async function _pushToLinkedInQueue(entry) {
 function sendOnLinkedIn() {
   const job = _activeJobForOutreach;
   if (!job) return;
-  const s = (job.stakeholders || [])[_activeStakeholderIdx || 0];
+  const s = (job._mergedStakeholders || job.stakeholders || [])[_activeStakeholderIdx || 0];
   if (s) messageOnLinkedIn(_activeStakeholderIdx || 0);
 }
 
@@ -6462,7 +6524,7 @@ function _showToast(msg) {
 function sendEmail() {
   const job = _activeJobForOutreach;
   if (!job) return;
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const s = stakeholders[_activeStakeholderIdx || 0];
   if (s && s.email && s.email.includes('@')) {
     const tpl = OUTREACH_TEMPLATES[_activeTemplateIdx || 0];
@@ -6959,6 +7021,7 @@ document.addEventListener('click', function(e) {
 
 function openDetail(id){
   const j=ALL_JOBS.find(x=>x.id===id);if(!j)return;
+  j._mergedStakeholders = _mergeStakeholdersWithCrm(j);
   _activeJobForOutreach = j;
   _activeTemplateIdx = 0;
   _activeStakeholderIdx = 0;
@@ -7790,17 +7853,9 @@ function _buildCrmDetailHtml(companyName) {
     });
   }
 
-  // Contacts
+  // Contacts are now merged into the Outreach section above
   if (data.contacts.length > 0) {
-    html += '<div style="font-size:12px;font-weight:600;margin-top:8px;margin-bottom:4px">Contacts (' + data.contacts.length + ')</div>';
-    data.contacts.forEach(c => {
-      const contactUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-1/' + c.id : '#';
-      html += '<div style="font-size:12px;margin-bottom:2px">';
-      html += '<a href="' + contactUrl + '" target="_blank" style="color:var(--text);text-decoration:none">' + c.name + '</a>';
-      html += c.title ? ' <span style="color:var(--text-lighter)">(' + c.title + ')</span>' : '';
-      html += c.email ? ' <span style="color:var(--text-lighter)">' + c.email + '</span>' : '';
-      html += '</div>';
-    });
+    html += '<div style="font-size:11px;color:var(--text-lighter);margin-top:8px">' + data.contacts.length + ' CRM contact' + (data.contacts.length > 1 ? 's' : '') + ' merged into Outreach section above</div>';
   }
 
   html += '</div>';
@@ -8441,8 +8496,9 @@ function previewSOSTemplate(setId, idx) {
 function openSOSQueueModal(sosType) {
   const typeLabels = { prospect: 'Prospect', customer: 'Customer', past: 'Past Customer' };
   const contacts = ALL_JOBS.reduce((acc, job) => {
-    if (job.stakeholders && job.stakeholders.length > 0) {
-      job.stakeholders.forEach(s => {
+    const mergedSH = job._mergedStakeholders || job.stakeholders || [];
+    if (mergedSH.length > 0) {
+      mergedSH.forEach(s => {
         const key = _contactKey(s);
         if (!acc.find(c => _contactKey(c) === key)) {
           acc.push({...s, company: job.company, contactKey: key});
@@ -8690,8 +8746,8 @@ var refreshQueueView = async function() {
       for (const job of ALL_JOBS) {
         if (job.company !== entry.company) continue;
         if (!entry.companyLogo && job.logo) entry.companyLogo = job.logo;
-        if (!entry.contactPhoto && job.stakeholders) {
-          const match = job.stakeholders.find(s => _contactKey(s) === entry.contactKey);
+        if (!entry.contactPhoto && (job._mergedStakeholders || job.stakeholders)) {
+          const match = (job._mergedStakeholders || job.stakeholders).find(s => _contactKey(s) === entry.contactKey);
           if (match && match.photo) entry.contactPhoto = match.photo;
         }
         if (entry.contactPhoto && entry.companyLogo) break;
@@ -9039,8 +9095,8 @@ var switchQueueTemplate = async function(idx, templateIdx) {
   // Find matching job and stakeholder to fill template
   const job = ALL_JOBS.find(j => j.company === entry.company);
   let stakeholder = null;
-  if (job && job.stakeholders) {
-    stakeholder = job.stakeholders.find(s => _contactKey(s) === entry.contactKey);
+  if (job && (job._mergedStakeholders || job.stakeholders)) {
+    stakeholder = (job._mergedStakeholders || job.stakeholders).find(s => _contactKey(s) === entry.contactKey);
   }
   // Fallback stakeholder object if not found in current jobs
   if (!stakeholder) {
@@ -9107,7 +9163,7 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
   const job = _activeJobForOutreach;
   if (!job) return;
   _activeStakeholderIdx = stakeholderIdx;
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const s = stakeholders[stakeholderIdx];
   if (!s) return;
 
@@ -9216,7 +9272,7 @@ var buildOutreachSectionV2 = function(job) {
   let html = _origBuildOutreach(job);
 
   // Add connect templates section if there are non-connected stakeholders
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const hasNonConnected = stakeholders.some(s => {
     const key = _contactKey(s);
     return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
@@ -9263,7 +9319,7 @@ var switchConnectTemplate = function(idx) {
   const job = _activeJobForOutreach;
   if (!job) return;
   const templates = _getConnectTemplates(job);
-  const stakeholders = job.stakeholders || [];
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const s = stakeholders.find(s => {
     const key = _contactKey(s);
     return !_connectedContacts.has(key) && !['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
@@ -9279,7 +9335,8 @@ var switchConnectTemplate = function(idx) {
 // Auto-queue all non-connected contacts when opening a listing detail
 var _autoQueuedJobs = new Set(); // track which jobs we've already auto-queued
 var autoQueueNonConnected = async function(job) {
-  if (!job || !job.stakeholders || job.stakeholders.length === 0) return;
+  const mergedSH = job._mergedStakeholders || job.stakeholders || [];
+  if (!job || mergedSH.length === 0) return;
   if (_autoQueuedJobs.has(job.id)) return; // already auto-queued for this job
 
   const templates = _getConnectTemplates(job);
@@ -9288,7 +9345,7 @@ var autoQueueNonConnected = async function(job) {
 
   // Collect non-connected stakeholders that aren't already queued/invited
   const toQueue = [];
-  for (const s of job.stakeholders) {
+  for (const s of mergedSH) {
     const key = _contactKey(s);
     const isConn = _connectedContacts.has(key) || ['connected','messaged','replied','meeting_set'].includes(_getOutreachStatus(key));
     if (isConn) continue;
@@ -9365,7 +9422,7 @@ var autoQueueNonConnected = async function(job) {
       _showToast(`📋 Auto-queued ${newEntries.length} contact${newEntries.length>1?'s':''} for ${job.company} (paused  -  review in Queue)`);
       // Update the outreach section buttons to show "Queued"
       document.querySelectorAll('.stakeholder-card').forEach((card, i) => {
-        const s = job.stakeholders[i];
+        const s = (job._mergedStakeholders || job.stakeholders || [])[i];
         if (!s) return;
         const k = _contactKey(s);
         if (newEntries.some(e => e.contactKey === k)) {
