@@ -131,7 +131,7 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
         "last_name": last_name,
         "organization_name": company,
         "reveal_personal_emails": False,
-        "reveal_phone_number": False,
+        "reveal_phone_number": True,
     }
 
     if email and "@" in email:
@@ -150,13 +150,30 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
             data = resp.json()
             person = data.get("person")
             if person:
+                # Extract phone numbers — prefer mobile for WhatsApp
+                phones = person.get("phone_numbers") or []
+                mobile_phone = ""
+                primary_phone = ""
+                all_phones = []
+                for ph in phones:
+                    num = ph.get("sanitized_number", "")
+                    ph_type = ph.get("type", "").lower()
+                    if num:
+                        all_phones.append({"number": num, "type": ph_type})
+                        if ph_type == "mobile" and not mobile_phone:
+                            mobile_phone = num
+                        if not primary_phone:
+                            primary_phone = num
+
                 return {
                     "apolloId": person.get("id", ""),
                     "email": person.get("email", ""),
                     "emailStatus": person.get("email_status", ""),
                     "title": person.get("title", ""),
                     "linkedin_url": person.get("linkedin_url", ""),
-                    "phone": (person.get("phone_numbers") or [{}])[0].get("sanitized_number", "") if person.get("phone_numbers") else "",
+                    "phone": mobile_phone or primary_phone,
+                    "phoneType": "mobile" if mobile_phone else ("other" if primary_phone else ""),
+                    "allPhones": all_phones,
                     "photoUrl": person.get("photo_url", ""),
                     "city": person.get("city", ""),
                     "country": person.get("country", ""),
@@ -279,14 +296,17 @@ def main():
     companies = extract_companies_from_html(DOCS_HTML)
     print(f"  Found {len(stakeholders)} stakeholders, {len(companies)} companies")
 
-    # 2. Enrich contacts (skip already-enriched, retry not-found from previous runs)
+    # 2. Enrich contacts (skip already-enriched with phone, retry missing phones)
     contacts_enriched = {k: v for k, v in existing.items() if v.get("apolloId")}
-    skipped_contacts = len(contacts_enriched)
+    needs_phone_update = {k for k, v in contacts_enriched.items() if not v.get("phone")}
+    if needs_phone_update:
+        print(f"  {len(needs_phone_update)} contacts need phone number re-enrichment")
+    skipped_contacts = len(contacts_enriched) - len(needs_phone_update)
     new_contacts = 0
     for i, sh in enumerate(stakeholders):
         key = sh["key"]
-        if key in contacts_enriched:
-            continue  # already enriched
+        if key in contacts_enriched and key not in needs_phone_update:
+            continue  # already enriched with phone
 
         print(f"  [{i+1}/{len(stakeholders)}] Enriching: {sh['name']} @ {sh['company']}")
         result = enrich_person(
