@@ -7285,9 +7285,12 @@ async function _saveHubSpotSecretsFromUI() {
     // Clear the token from the input (security)
     tokenInput.value = '';
 
-    resultEl.innerHTML = '&#10003; Secrets saved! You can now trigger the sync below.';
+    resultEl.innerHTML = '&#10003; Secrets saved! Starting sync...';
     resultEl.style.color = 'var(--success)';
     _showToast('HubSpot secrets saved to GitHub');
+
+    // Auto-trigger sync after saving secrets
+    setTimeout(() => _triggerHubSpotSync(), 500);
   } catch (e) {
     resultEl.textContent = 'Failed: ' + e.message;
     resultEl.style.color = 'var(--danger)';
@@ -7299,9 +7302,11 @@ async function _saveHubSpotSecretsFromUI() {
 async function _triggerHubSpotSync() {
   const btn = document.getElementById('triggerSyncBtn');
   const resultEl = document.getElementById('syncTriggerResult');
-  btn.disabled = true;
-  resultEl.textContent = 'Triggering sync...';
-  resultEl.style.color = 'var(--text-light)';
+  if (btn) btn.disabled = true;
+  if (resultEl) {
+    resultEl.textContent = 'Triggering sync...';
+    resultEl.style.color = 'var(--text-light)';
+  }
 
   try {
     const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/workflows/hubspot-sync.yml/dispatches', {
@@ -7314,16 +7319,104 @@ async function _triggerHubSpotSync() {
       body: JSON.stringify({ ref: 'main' })
     });
     if (resp.ok || resp.status === 204) {
-      resultEl.textContent = 'Sync triggered! Wait ~2 min, then click "Load CRM Data" below.';
-      resultEl.style.color = 'var(--success)';
+      if (resultEl) {
+        resultEl.innerHTML = '&#9203; Sync started -- waiting for completion...';
+        resultEl.style.color = 'var(--primary)';
+      }
+      // Auto-poll for completion, then auto-load data
+      _pollSyncAndLoad();
     } else {
       throw new Error('HTTP ' + resp.status + ' - Make sure the hubspot-sync.yml workflow exists');
     }
   } catch (e) {
-    resultEl.textContent = 'Failed: ' + e.message;
-    resultEl.style.color = 'var(--danger)';
+    if (resultEl) {
+      resultEl.textContent = 'Failed: ' + e.message;
+      resultEl.style.color = 'var(--danger)';
+    }
   }
-  setTimeout(() => { btn.disabled = false; }, 5000);
+  setTimeout(() => { if (btn) btn.disabled = false; }, 5000);
+}
+
+// Poll GitHub Actions for workflow completion, then auto-load CRM data
+async function _pollSyncAndLoad() {
+  const resultEl = document.getElementById('syncTriggerResult');
+  const maxAttempts = 30;   // ~5 min max (10s intervals)
+  let attempt = 0;
+
+  async function _checkRun() {
+    attempt++;
+    try {
+      const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/workflows/hubspot-sync.yml/runs?per_page=1', {
+        headers: {
+          'Authorization': 'token ' + _GH_TOKEN,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const data = await resp.json();
+      const run = data.workflow_runs && data.workflow_runs[0];
+
+      if (run && run.status === 'completed') {
+        if (run.conclusion === 'success') {
+          if (resultEl) {
+            resultEl.innerHTML = '&#10003; Sync complete! Loading CRM data...';
+            resultEl.style.color = 'var(--success)';
+          }
+          // Wait a moment for GitHub Pages cache, then load data
+          setTimeout(async () => {
+            try {
+              const crmData = await _loadCrmDataFromFile();
+              if (crmData && crmData.companies) {
+                _populateCacheFromCrmData(crmData);
+                _renderDealStageMapping();
+                _updateCrmStatusBanner();
+                renderJobs();
+                const stats = crmData.stats || {};
+                if (resultEl) {
+                  resultEl.innerHTML = '&#10003; Done! ' + (stats.matchedInCrm || 0) + ' companies matched, ' + (stats.withDeals || 0) + ' with deals.';
+                  resultEl.style.color = 'var(--success)';
+                }
+                _showToast('HubSpot sync complete -- ' + (stats.matchedInCrm || 0) + ' companies loaded');
+              } else {
+                if (resultEl) resultEl.textContent = 'Sync done but CRM data file not ready yet. Try "Load CRM Data" in a minute.';
+              }
+            } catch (e) {
+              if (resultEl) resultEl.textContent = 'Sync done but failed to load data: ' + e.message;
+            }
+          }, 5000);
+          return; // stop polling
+        } else {
+          if (resultEl) {
+            resultEl.textContent = 'Sync finished with status: ' + run.conclusion + '. Check GitHub Actions for details.';
+            resultEl.style.color = 'var(--danger)';
+          }
+          return; // stop polling
+        }
+      }
+
+      // Still running
+      if (attempt >= maxAttempts) {
+        if (resultEl) resultEl.textContent = 'Sync is taking longer than expected. Try "Load CRM Data" manually later.';
+        return;
+      }
+      const dots = '.'.repeat((attempt % 3) + 1);
+      if (resultEl) {
+        resultEl.innerHTML = '&#9203; Sync in progress' + dots + ' (' + (attempt * 10) + 's)';
+        resultEl.style.color = 'var(--primary)';
+      }
+      setTimeout(_checkRun, 10000);
+
+    } catch (e) {
+      if (attempt < maxAttempts) {
+        setTimeout(_checkRun, 10000);
+      } else {
+        if (resultEl) resultEl.textContent = 'Could not check sync status. Try "Load CRM Data" manually.';
+      }
+    }
+  }
+
+  // Start polling after 15s (workflow needs time to queue)
+  setTimeout(_checkRun, 15000);
 }
 
 function _updateCrmStatusBanner() {
