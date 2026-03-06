@@ -1,6 +1,6 @@
 {
   "provider": "apollo",
-  "syncedAt": "2026-03-06T14:23:39.512684Z",
+  "syncedAt": "2026-03-06T14:43:45.466760Z",
   "contacts": {
     "nataly kremer|checkpoint": {
       "apolloId": "54a40c697468693676355028",
@@ -4283,6 +4283,5 @@
     "totalCompanies": 81,
     "orgsEnriched": 60,
     "newOrgsThisRun": 0
-  },
-  "lastPhoneUpdate": "2026-03-06T14:22:23.063Z"
+  }
 }
