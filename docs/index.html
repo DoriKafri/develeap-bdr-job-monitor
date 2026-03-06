@@ -423,7 +423,7 @@
 
   /* ── Settings View ── */
   #settingsView { display:none; margin:0; }
-  #settingsView.active { display:flex; flex-direction:column; height:calc(100vh - 48px - 48px - 24px); }
+  #settingsView.active { display:flex; flex-direction:column; position:fixed; top:48px; left:240px; right:0; bottom:0; padding:24px 32px 0; background:#fff; z-index:5; overflow:hidden; }
   .settings-header { flex-shrink:0; margin-bottom:24px; }
   .settings-header h2 { font-size:20px; font-weight:700; display:flex; align-items:center; gap:10px; margin-bottom:8px; }
   .settings-tabs { display:flex; gap:8px; margin-bottom:24px; border-bottom:2px solid var(--border); }
@@ -475,7 +475,7 @@
 
   /* Mobile: settings sidebar collapses to horizontal scroll tabs */
   @media (max-width:768px) {
-    #settingsView.active { height:auto; display:block; }
+    #settingsView.active { position:relative; top:auto; left:auto; right:auto; bottom:auto; height:auto; display:block; padding:16px; overflow:visible; }
     .settings-container { flex-direction:column; height:auto; }
     .settings-sidebar { width:100%; padding:0; display:flex; flex-direction:row; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; border-right:none; border-bottom:2px solid rgba(255,255,255,0.1); gap:0; flex-shrink:0; }
     .settings-sidebar-item { padding:10px 14px; border-left:none; border-bottom:3px solid transparent; white-space:nowrap; font-size:12px; flex-shrink:0; }
