@@ -5969,7 +5969,8 @@ function buildOutreachSection(job) {
         actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
       }
       if (!connected && !hasLI) {
-        actionBtns += `<button class="btn-msg" onclick="event.stopPropagation();selectStakeholderForMsg(${i});scrollToTemplates()" style="background:var(--primary)">${MSG_ICON} Pick Template</button>`;
+        const tplOpts = OUTREACH_TEMPLATES.map((t, ti) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
+        actionBtns += `<select class="template-select" style="font-size:11px;padding:4px 28px 4px 8px;margin:0;width:auto;min-width:130px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);scrollToTemplates()"><option value="" disabled selected>\uD83D\uDCAC Pick Template</option>${tplOpts}</select>`;
       }
 
       // Toggle connected status button
