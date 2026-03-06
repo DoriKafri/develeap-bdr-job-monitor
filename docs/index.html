@@ -8,6 +8,7 @@
 <link rel="shortcut icon" href="https://www.develeap.com/favicon.ico">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tweetnacl-sealedbox-js@1.2.0/sealedbox.web.js"></script>
 <style>
   :root {
     --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
@@ -7225,7 +7226,7 @@ async function _saveGitHubSecret(secretName, secretValue) {
   }
   const pubKeyBytes = _b64ToBytes(keyData.key);
   const secretBytes = new TextEncoder().encode(secretValue);
-  const encryptedBytes = nacl.box.seal(secretBytes, pubKeyBytes);
+  const encryptedBytes = sealedBox.seal(secretBytes, pubKeyBytes);
   const encryptedBase64 = _bytesToB64(encryptedBytes);
 
   // 3. Create or update the secret
