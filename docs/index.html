@@ -8587,16 +8587,31 @@ async function _loadSettingsFromGitHub() {
       _settingsSha = data.sha;
       const settings = JSON.parse(_base64ToUtf8(data.content));
 
-      // Apply templates
+      // Apply templates (with lang migration: if saved templates lack lang, check if defaults have grown)
       if (settings.templates) {
-        if (settings.templates.prospect) CONNECT_TEMPLATES_PROSPECT.splice(0, Infinity, ...settings.templates.prospect);
-        if (settings.templates.customer) CONNECT_TEMPLATES_CUSTOMER.splice(0, Infinity, ...settings.templates.customer);
-        if (settings.templates.past) CONNECT_TEMPLATES_PAST.splice(0, Infinity, ...settings.templates.past);
-        if (settings.templates.outreach) OUTREACH_TEMPLATES.splice(0, Infinity, ...settings.templates.outreach);
-        if (settings.templates.whatsapp) WHATSAPP_TEMPLATES.splice(0, Infinity, ...settings.templates.whatsapp);
+        const _migrateWithLang = (saved, defaults) => {
+          // If saved templates don't have lang property, it's an old save — use defaults instead (which include all languages)
+          if (saved && saved.length > 0 && !saved[0].lang && defaults.length > saved.length) {
+            return defaults; // Old save without lang — use new defaults with both languages
+          }
+          // If saved has lang, use as-is
+          if (saved && saved.length > 0 && saved[0].lang) return saved;
+          // Otherwise add lang:'en' to saved templates that lack it
+          if (saved) saved.forEach(t => { if (!t.lang) t.lang = 'en'; });
+          return saved;
+        };
+        if (settings.templates.prospect) CONNECT_TEMPLATES_PROSPECT.splice(0, Infinity, ..._migrateWithLang(settings.templates.prospect, DEFAULT_CONNECT_TEMPLATES_PROSPECT));
+        if (settings.templates.customer) CONNECT_TEMPLATES_CUSTOMER.splice(0, Infinity, ..._migrateWithLang(settings.templates.customer, DEFAULT_CONNECT_TEMPLATES_CUSTOMER));
+        if (settings.templates.past) CONNECT_TEMPLATES_PAST.splice(0, Infinity, ..._migrateWithLang(settings.templates.past, DEFAULT_CONNECT_TEMPLATES_PAST));
+        if (settings.templates.outreach) OUTREACH_TEMPLATES.splice(0, Infinity, ..._migrateWithLang(settings.templates.outreach, DEFAULT_OUTREACH_TEMPLATES));
+        if (settings.templates.whatsapp) WHATSAPP_TEMPLATES.splice(0, Infinity, ..._migrateWithLang(settings.templates.whatsapp, DEFAULT_WHATSAPP_TEMPLATES));
         if (settings.templates.sos_prospect) Object.assign(SOS_PROSPECT, settings.templates.sos_prospect);
         if (settings.templates.sos_customer) Object.assign(SOS_CUSTOMER, settings.templates.sos_customer);
         if (settings.templates.sos_past) Object.assign(SOS_PAST, settings.templates.sos_past);
+      }
+      // Apply template language preferences
+      if (settings.templateLang) {
+        Object.assign(_templateLang, settings.templateLang);
       }
 
       // Apply categories
@@ -9822,6 +9837,7 @@ async function _saveSettingsToGitHub() {
     },
     integrations: _getCrmIntegrationConfig(),
     users: _dashboardUsers,
+    templateLang: _templateLang,
     oauth: {
       clientId: localStorage.getItem('_oauthClientId') || '',
       domain: localStorage.getItem('_oauthDomain') || ALLOWED_DOMAIN
