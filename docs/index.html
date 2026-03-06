@@ -8456,6 +8456,8 @@ function getFilteredJobs() {
 function applyAllFilters() { updateStats(); renderJobs(); }
 
 function renderJobs() {
+  // Pre-merge CRM+Apollo stakeholders for all jobs (ensures WhatsApp buttons show)
+  _preloadAllStakeholders();
   const jobs = getFilteredJobs();
   const tbody = document.getElementById('jobsTable');
   document.getElementById('resultCount').textContent = jobs.length+' listings';
@@ -10150,8 +10152,7 @@ async function _crmAutoLoadFromFile() {
       _populateCacheFromCrmData(data);
       CRM_CONFIG.provider = data.provider || 'hubspot';
       _persistCrmConfigLocally();
-      if (_apolloCache) _preloadAllStakeholders(); // Pre-merge if Apollo already loaded
-      renderJobs();
+      renderJobs(); // _preloadAllStakeholders() called inside renderJobs()
       _updateCrmStatusBanner();
       console.log('CRM data loaded: ' + Object.keys(data.companies).length + ' companies, synced ' + data.syncedAt);
     } catch (e) {
@@ -10166,8 +10167,7 @@ async function _apolloAutoLoad() {
     try {
       const data = await _loadApolloData();
       if (data) {
-        _preloadAllStakeholders(); // Pre-merge CRM+Apollo for all jobs
-        renderJobs(); // Re-render to show Apollo badges + WhatsApp buttons
+        renderJobs(); // Re-render — _preloadAllStakeholders() called inside renderJobs()
       }
     } catch (e) {
       console.warn('Apollo auto-load skipped:', e);
@@ -10177,8 +10177,13 @@ async function _apolloAutoLoad() {
 
 // Pre-compute merged stakeholders (CRM + Apollo) for ALL jobs at once,
 // so WhatsApp buttons and enrichment data are ready before opening detail.
+var _preloadVersion = 0; // tracks data changes to avoid redundant re-merges
 function _preloadAllStakeholders() {
   if (!ALL_JOBS || !ALL_JOBS.length) return;
+  // Compute a version key from data sources to avoid redundant work
+  var v = ((_crmCacheBuilt ? 1 : 0) + (_apolloCache ? 2 : 0)) * 1000 + ALL_JOBS.length;
+  if (v === _preloadVersion) return; // already done with same data
+  _preloadVersion = v;
   let enriched = 0;
   ALL_JOBS.forEach(j => {
     j._mergedStakeholders = _mergeStakeholdersWithCrm(j);
