@@ -897,6 +897,11 @@
                 <div class="intg-nav-label"><span>Apollo.io</span><span>Enrichment</span></div>
                 <div class="intg-status-dot inactive" id="apolloStatusDot"></div>
               </button>
+              <button class="intg-nav-btn" onclick="switchIntgTab('whatsapp')">
+                <div class="intg-nav-icon" style="background:#E8F8F0;color:#128C7E">📱</div>
+                <div class="intg-nav-label"><span>WhatsApp</span><span>Messaging</span></div>
+                <div class="intg-status-dot active" id="whatsappStatusDot"></div>
+              </button>
               <button class="intg-nav-btn" onclick="switchIntgTab('sync')">
                 <div class="intg-nav-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
                 <div class="intg-nav-label"><span>Sync</span><span>Run & schedule</span></div>
@@ -906,7 +911,7 @@
 
           <!-- OVERVIEW PANEL -->
           <div class="intg-panel active" id="intgPanel_overview">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
               <!-- HubSpot Status Card -->
               <div id="crmStatusBanner" style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#FFF3D6;color:#9A7B00;border:1px solid #FFE08A;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('hubspot')">
                 <span style="font-size:26px">⏳</span>
@@ -922,6 +927,15 @@
                 <div style="flex:1">
                   <div style="font-weight:700;font-size:14px" id="apolloStatusTitle">Apollo.io</div>
                   <div style="font-size:12px;opacity:0.8" id="apolloStatusDetail">Not configured</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+              <!-- WhatsApp Status Card -->
+              <div style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#E8F8F0;color:#128C7E;border:1px solid #81C784;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('whatsapp')">
+                <span style="font-size:26px">📱</span>
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:14px">WhatsApp</div>
+                  <div style="font-size:12px;opacity:0.8">wa.me deep links · ready</div>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
@@ -1123,6 +1137,81 @@
           </div>
 
           <!-- SYNC PANEL -->
+          <!-- WHATSAPP PANEL -->
+          <div class="intg-panel" id="intgPanel_whatsapp">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+              <div style="width:44px;height:44px;background:#25D366;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:white">📱</div>
+              <div>
+                <div style="font-weight:700;font-size:18px;color:var(--text)">WhatsApp Integration</div>
+                <div style="font-size:13px;color:var(--text-light)">Send messages via wa.me deep links — no API key needed</div>
+              </div>
+            </div>
+
+            <div class="intg-step">
+              <div class="intg-step-number">ℹ️</div>
+              <div class="intg-step-body">
+                <div class="intg-step-title">How it works</div>
+                <p style="font-size:13px;color:var(--text-light);margin:8px 0;line-height:1.6">
+                  WhatsApp integration uses <strong>wa.me deep links</strong> to open WhatsApp with a pre-filled message.
+                  When you click "📱 WhatsApp" on a stakeholder card, it opens WhatsApp (desktop or mobile) with the selected template pre-loaded.
+                </p>
+                <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+                  <div style="flex:1;min-width:180px;background:#F0FFF4;border:1px solid #C6F6D5;border-radius:10px;padding:12px">
+                    <div style="font-weight:600;font-size:13px;color:#22543D;margin-bottom:4px">✅ No API key</div>
+                    <div style="font-size:12px;color:#276749">Works instantly with wa.me links</div>
+                  </div>
+                  <div style="flex:1;min-width:180px;background:#F0FFF4;border:1px solid #C6F6D5;border-radius:10px;padding:12px">
+                    <div style="font-weight:600;font-size:13px;color:#22543D;margin-bottom:4px">📱 Any device</div>
+                    <div style="font-size:12px;color:#276749">Opens WhatsApp Desktop or mobile</div>
+                  </div>
+                  <div style="flex:1;min-width:180px;background:#F0FFF4;border:1px solid #C6F6D5;border-radius:10px;padding:12px">
+                    <div style="font-weight:600;font-size:13px;color:#22543D;margin-bottom:4px">📋 Templates</div>
+                    <div style="font-size:12px;color:#276749">Pre-filled from your WhatsApp templates</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="intg-step">
+              <div class="intg-step-number">1</div>
+              <div class="intg-step-body">
+                <div class="intg-step-title">Phone numbers from Apollo</div>
+                <p style="font-size:13px;color:var(--text-light);margin:8px 0;line-height:1.6">
+                  WhatsApp buttons appear automatically on stakeholder cards when a phone number is available.
+                  Phone numbers come from <strong>Apollo.io enrichment</strong> — configure your Apollo API key in the Apollo.io tab to start enriching contacts.
+                </p>
+                <div style="margin-top:8px">
+                  <button class="intg-save-btn" onclick="switchIntgTab('apollo')" style="background:#7B1FA2">🚀 Configure Apollo</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="intg-step">
+              <div class="intg-step-number">2</div>
+              <div class="intg-step-body">
+                <div class="intg-step-title">Customize templates</div>
+                <p style="font-size:13px;color:var(--text-light);margin:8px 0;line-height:1.6">
+                  Edit your WhatsApp message templates in the <strong>Templates</strong> section.
+                  Templates support all the same variables as email/LinkedIn templates ({contact_name}, {company}, {role}, etc.).
+                </p>
+                <div style="margin-top:8px">
+                  <button class="intg-save-btn" onclick="document.querySelector('[data-view=settings]').click();setTimeout(()=>switchSettingsTab(5),200)" style="background:#25D366">📝 Edit WhatsApp Templates</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="intg-step">
+              <div class="intg-step-number">3</div>
+              <div class="intg-step-body">
+                <div class="intg-step-title">Queue & send</div>
+                <p style="font-size:13px;color:var(--text-light);margin:8px 0;line-height:1.6">
+                  You can either <strong>send directly</strong> (click the WhatsApp button) or <strong>queue messages</strong> for batch sending.
+                  Queued WhatsApp messages appear in the Queue view with a green "📱 Send" button.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div class="intg-panel" id="intgPanel_sync">
             <div class="intg-header">
               <div class="intg-header-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
@@ -1187,6 +1276,7 @@
             <button class="settings-tab" onclick="switchSettingsTab(2)">Connect - Past Customer</button>
             <button class="settings-tab" onclick="switchSettingsTab(3)">Outreach - Email</button>
             <button class="settings-tab" onclick="switchSettingsTab(4)">🎬 Soap Opera Sequences</button>
+            <button class="settings-tab" onclick="switchSettingsTab(5)">📱 WhatsApp</button>
           </div>
           <div id="settingsTabContent"></div>
         </div>
@@ -5648,6 +5738,58 @@ https://www.develeap.com/contact/`
 // Create var version that can be modified
 var OUTREACH_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_OUTREACH_TEMPLATES));
 
+// ── WHATSAPP TEMPLATES ──
+const DEFAULT_WHATSAPP_TEMPLATES = [
+  {
+    name: "Quick Intro",
+    emoji: "👋",
+    body: `Hey {contact_name}, this is Dori from Develeap.
+
+Saw {company} is hiring a {role} — we help companies like {customers} scale their {cat_expertise} teams 3x faster with senior engineers.
+
+Worth a quick chat? 🤝`
+  },
+  {
+    name: "Value Drop",
+    emoji: "💡",
+    body: `Hi {contact_name}! Dori here from Develeap.
+
+Quick thought on the {role} opening at {company}:
+
+Most companies spend 4-6 months hiring for this. We get senior {cat_expertise} engineers embedded in your team within weeks.
+
+{customers} and 100+ companies already work with us. Want to hear how?`
+  },
+  {
+    name: "Follow Up",
+    emoji: "🔄",
+    body: `Hey {contact_name}, following up on {company}'s {role} search.
+
+Still looking for {cat_expertise} talent? We've got senior engineers ready to start.
+
+Happy to send over profiles — just say the word 👍`
+  },
+  {
+    name: "Meeting Ask",
+    emoji: "📅",
+    body: `Hi {contact_name}! Dori from Develeap here.
+
+I'd love 15 min to show you how we help companies like {company} with {cat_offer}.
+
+What does your calendar look like this week?`
+  },
+  {
+    name: "Referral Ask",
+    emoji: "🤝",
+    body: `Hey {contact_name}, quick question —
+
+Who handles the {cat_expertise} hiring decisions at {company}? I've got a solution for the {role} opening that could save months.
+
+Would appreciate a warm intro if you're not the right person! 🙏`
+  }
+];
+var WHATSAPP_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_WHATSAPP_TEMPLATES));
+
 // ── SOAP OPERA SEQUENCES (Brunson SOS) ──
 const DEFAULT_SOS_PROSPECT = [
   {
@@ -6282,6 +6424,17 @@ function buildOutreachSection(job) {
       if (hasEmail) {
         actionBtns += `<button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer">${MAIL_ICON} ${s.email}</button>`;
       }
+      // WhatsApp button (when phone exists from Apollo or direct)
+      const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
+      if (hasPhone) {
+        const waTemplateOpts = WHATSAPP_TEMPLATES.map((t, ti) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
+        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #25D366">
+          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})" style="background:#25D366;border:none;cursor:pointer;border-radius:0;padding:6px 10px">📱 WhatsApp</button>
+          <select style="font-size:11px;padding:6px 4px;border:none;background:#E8F8F0;color:#128C7E;cursor:pointer;border-radius:0;outline:none" onclick="event.stopPropagation()" onchange="event.stopPropagation();_activeWhatsAppTemplateIdx=+this.value">
+            ${waTemplateOpts}
+          </select>
+        </div>`;
+      }
       if (!connected && !hasLI) {
         const tplOpts = OUTREACH_TEMPLATES.map((t, ti) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
         actionBtns += `<select class="template-select" style="font-size:11px;padding:4px 28px 4px 8px;margin:0;width:auto;min-width:130px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);scrollToTemplates()"><option value="" disabled selected>\uD83D\uDCAC Pick Template</option>${tplOpts}</select>`;
@@ -6802,6 +6955,105 @@ function sendEmail() {
   } else {
     alert('No email found for this contact. Try LinkedIn instead.');
   }
+}
+
+var _activeWhatsAppTemplateIdx = 0;
+
+function sendWhatsApp(stakeholderIdx) {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  if (typeof stakeholderIdx === 'number') _activeStakeholderIdx = stakeholderIdx;
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
+  const s = stakeholders[_activeStakeholderIdx || 0];
+  if (!s) return;
+
+  // Get phone number from Apollo data or direct
+  const phone = (s._apolloData && s._apolloData.phone) || s.phone || '';
+  if (!phone) {
+    _showToast('📱 No phone number found for ' + s.name + '. Enrich via Apollo first.');
+    return;
+  }
+
+  // Clean phone number: remove spaces, dashes, parentheses; keep + and digits
+  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '').replace(/^\+/, '');
+
+  // Get WhatsApp template
+  const tpl = WHATSAPP_TEMPLATES[_activeWhatsAppTemplateIdx || 0];
+  const body = fillTemplate(tpl.body, job, s);
+
+  // Open wa.me deep link
+  const waUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(body);
+  window.open(waUrl, '_blank');
+
+  // Track outreach status
+  const key = _contactKey(s);
+  const status = _getOutreachStatus(key);
+  if (!status || status === 'not_contacted') {
+    _setOutreachStatus(key, 'messaged');
+  }
+  _showToast('📱 WhatsApp opened for ' + s.name);
+}
+
+function sendWhatsAppFromQueue(queueIdx) {
+  const entry = _liQueue[queueIdx];
+  if (!entry) return;
+  const phone = entry.whatsappPhone || '';
+  if (!phone) {
+    _showToast('📱 No phone number for this entry');
+    return;
+  }
+  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '').replace(/^\+/, '');
+  const waUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(entry.message);
+  window.open(waUrl, '_blank');
+
+  // Mark as completed
+  entry.status = 'completed';
+  entry.completedAt = new Date().toISOString();
+  _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('📱 WhatsApp sent to ' + entry.contactName);
+}
+
+function queueWhatsApp(stakeholderIdx) {
+  const job = _activeJobForOutreach;
+  if (!job) return;
+  _activeStakeholderIdx = stakeholderIdx;
+  const stakeholders = job._mergedStakeholders || job.stakeholders || [];
+  const s = stakeholders[stakeholderIdx];
+  if (!s) return;
+
+  const phone = (s._apolloData && s._apolloData.phone) || s.phone || '';
+  if (!phone) {
+    _showToast('📱 No phone number found for ' + s.name);
+    return;
+  }
+
+  const key = _contactKey(s);
+  const tpl = WHATSAPP_TEMPLATES[_activeWhatsAppTemplateIdx || 0];
+  const msg = fillTemplate(tpl.body, job, s);
+
+  _pushToLinkedInQueue({
+    id: 'wa_' + Date.now().toString(36) + Math.random().toString(36).substr(2,4),
+    contactName: s.name,
+    contactTitle: s.title || '',
+    contactKey: key,
+    company: job.company,
+    linkedinUrl: s.linkedin || '',
+    whatsappPhone: phone,
+    message: msg,
+    isConnected: true,
+    type: 'whatsapp',
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    completedAt: null,
+    contactPhoto: s.photo || (s._apolloData && s._apolloData.photoUrl) || '',
+    companyLogo: job.logo || ''
+  }).then(() => {
+    _showToast('📱 ' + s.name + ' added to WhatsApp queue');
+  }).catch(err => {
+    console.error('WhatsApp queue push failed:', err);
+    _showToast('❌ Failed to queue WhatsApp message');
+  });
 }
 
 function copyTemplate() {
@@ -7656,7 +7908,7 @@ function renderIntegrationsSection() {
 
 function switchIntgTab(tabId) {
   document.querySelectorAll('.intg-nav-btn').forEach((btn, i) => {
-    const panels = ['overview','hubspot','apollo','sync'];
+    const panels = ['overview','hubspot','apollo','whatsapp','sync'];
     btn.classList.toggle('active', panels[i] === tabId);
   });
   document.querySelectorAll('.intg-panel').forEach(p => p.classList.remove('active'));
@@ -8338,6 +8590,7 @@ async function _saveSettingsToGitHub() {
       customer: CONNECT_TEMPLATES_CUSTOMER,
       past: CONNECT_TEMPLATES_PAST,
       outreach: OUTREACH_TEMPLATES,
+      whatsapp: WHATSAPP_TEMPLATES,
       sos_prospect: SOS_PROSPECT,
       sos_customer: SOS_CUSTOMER,
       sos_past: SOS_PAST
@@ -8632,7 +8885,9 @@ function renderSettingsTab(idx) {
     {name: 'Prospect', templates: CONNECT_TEMPLATES_PROSPECT, id: 'prospect'},
     {name: 'Customer', templates: CONNECT_TEMPLATES_CUSTOMER, id: 'customer'},
     {name: 'Past Customer', templates: CONNECT_TEMPLATES_PAST, id: 'past'},
-    {name: 'Outreach Email', templates: OUTREACH_TEMPLATES, id: 'outreach'}
+    {name: 'Outreach Email', templates: OUTREACH_TEMPLATES, id: 'outreach'},
+    null, // idx 4 = SOS (handled above)
+    {name: 'WhatsApp', templates: WHATSAPP_TEMPLATES, id: 'whatsapp'}
   ];
 
   const set = templateSets[idx];
@@ -8695,7 +8950,8 @@ function updateTemplateEmoji(el) {
     prospect: CONNECT_TEMPLATES_PROSPECT,
     customer: CONNECT_TEMPLATES_CUSTOMER,
     past: CONNECT_TEMPLATES_PAST,
-    outreach: OUTREACH_TEMPLATES
+    outreach: OUTREACH_TEMPLATES,
+    whatsapp: WHATSAPP_TEMPLATES
   }[set];
   if (templates && templates[idx]) {
     templates[idx].emoji = el.value || '📝';
@@ -8709,7 +8965,8 @@ function updateTemplateName(el) {
     prospect: CONNECT_TEMPLATES_PROSPECT,
     customer: CONNECT_TEMPLATES_CUSTOMER,
     past: CONNECT_TEMPLATES_PAST,
-    outreach: OUTREACH_TEMPLATES
+    outreach: OUTREACH_TEMPLATES,
+    whatsapp: WHATSAPP_TEMPLATES
   }[set];
   if (templates && templates[idx]) {
     templates[idx].name = el.value || 'Untitled';
@@ -9091,6 +9348,7 @@ function resetToDefaults() {
   CONNECT_TEMPLATES_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_CONNECT_TEMPLATES_CUSTOMER));
   CONNECT_TEMPLATES_PAST = JSON.parse(JSON.stringify(DEFAULT_CONNECT_TEMPLATES_PAST));
   OUTREACH_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_OUTREACH_TEMPLATES));
+  WHATSAPP_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_WHATSAPP_TEMPLATES));
   SOS_PROSPECT = JSON.parse(JSON.stringify(DEFAULT_SOS_PROSPECT));
   SOS_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_SOS_CUSTOMER));
   SOS_PAST = JSON.parse(JSON.stringify(DEFAULT_SOS_PAST));
@@ -9206,12 +9464,14 @@ var renderQueueView = function() {
   // Stats
   const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0, sos_waiting: 0 };
   q.forEach(e => { counts[e.status] = (counts[e.status] || 0) + 1; });
+  const waCount = q.filter(e => e.type === 'whatsapp').length;
 
   const totalCount = q.length;
   statsEl.innerHTML = `
     <div class="queue-stat${_queueFilter === null ? ' filter-active' : ''}" onclick="filterQueue(null)" style="border-left-color:var(--primary)"><div class="queue-stat-number" style="color:var(--primary)">${totalCount}</div><div class="queue-stat-label">All</div></div>
     <div class="queue-stat pending${_queueFilter === 'pending' ? ' filter-active' : ''}" onclick="filterQueue('pending')"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
     <div class="queue-stat paused${_queueFilter === 'sos_waiting' ? ' filter-active' : ''}" style="border-left-color:#FFB100" onclick="filterQueue('sos_waiting')"><div class="queue-stat-number" style="color:#FFB100">${counts.sos_waiting}</div><div class="queue-stat-label">🎬 Sequenced</div></div>
+    ${waCount > 0 ? `<div class="queue-stat${_queueFilter === 'whatsapp' ? ' filter-active' : ''}" style="border-left-color:#25D366" onclick="filterQueue('whatsapp')"><div class="queue-stat-number" style="color:#25D366">${waCount}</div><div class="queue-stat-label">📱 WhatsApp</div></div>` : ''}
     <div class="queue-stat paused${_queueFilter === 'paused' ? ' filter-active' : ''}" onclick="filterQueue('paused')"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
     <div class="queue-stat${_queueFilter === 'conn_pending' ? ' filter-active' : ''}" style="border-left-color:#7B1FA2" onclick="filterQueue('conn_pending')"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Conn. Pending</div></div>
     <div class="queue-stat completed${_queueFilter === 'completed' ? ' filter-active' : ''}" onclick="filterQueue('completed')"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
@@ -9250,6 +9510,8 @@ var renderQueueView = function() {
   if (_queueFilter) {
     if (_queueFilter === 'pending') {
       sorted = sorted.filter(e => e.status === 'pending' || e.status === 'processing');
+    } else if (_queueFilter === 'whatsapp') {
+      sorted = sorted.filter(e => e.type === 'whatsapp');
     } else {
       sorted = sorted.filter(e => e.status === _queueFilter);
     }
@@ -9267,9 +9529,12 @@ var renderQueueView = function() {
     const origIdx = q.indexOf(entry);
     const initials = entry.contactName.split(' ').map(n => n[0]).join('').substring(0, 2);
     const isConnect = !entry.isConnected;
-    const typeBadge = isConnect
-      ? '<span class="queue-type-badge connect">🔗 Connect</span>'
-      : '<span class="queue-type-badge message">💬 Message</span>';
+    const isWhatsApp = entry.type === 'whatsapp';
+    const typeBadge = isWhatsApp
+      ? '<span class="queue-type-badge" style="background:#E8F8F0;color:#128C7E">📱 WhatsApp</span>'
+      : isConnect
+        ? '<span class="queue-type-badge connect">🔗 Connect</span>'
+        : '<span class="queue-type-badge message">💬 Message</span>';
     const statusLabel = {
       pending: 'Pending', processing: 'Processing...', completed: 'Completed',
       failed: 'Failed', paused: 'Paused', conn_pending: 'Connection Pending'
@@ -9314,8 +9579,10 @@ var renderQueueView = function() {
 
     // Action buttons based on status
     let actions = '';
+    const waBtn = isWhatsApp && entry.whatsappPhone ? `<button onclick="event.stopPropagation();sendWhatsAppFromQueue(${origIdx})" title="Send via WhatsApp" style="background:#25D366;color:white;border-color:#25D366">📱 Send</button>` : '';
     if (entry.status === 'pending' || entry.status === 'processing') {
       actions = `
+        ${waBtn}
         <button onclick="event.stopPropagation();pauseQueueEntry(${origIdx})" title="Pause">⏸ Pause</button>
         <button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
     } else if (entry.status === 'paused') {
@@ -9358,6 +9625,7 @@ var renderQueueView = function() {
         <div class="queue-card-meta">
           <span>🕐 ${timeAgo}${completedInfo}</span>
           ${entry.linkedinUrl ? '<a href="'+entry.linkedinUrl+'" target="_blank" style="font-size:11px;color:#0A66C2;text-decoration:none">🔗 LinkedIn</a>' : ''}
+          ${entry.whatsappPhone ? '<span style="font-size:11px;color:#128C7E">📱 '+entry.whatsappPhone+'</span>' : ''}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
