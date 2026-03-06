@@ -485,13 +485,25 @@
 
   /* Mobile: settings sidebar collapses to horizontal scroll tabs */
   @media (max-width:768px) {
-    #settingsView.active { position:relative; top:auto; left:auto; right:auto; bottom:auto; height:auto; display:block; padding:16px; overflow:visible; }
-    .settings-container { flex-direction:column; height:auto; }
-    .settings-sidebar { width:100%; padding:0; display:flex; flex-direction:row; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; border-right:none; border-bottom:2px solid rgba(255,255,255,0.1); gap:0; flex-shrink:0; }
+    #settingsView.active { position:fixed; top:48px; left:0; right:0; bottom:0; display:flex; flex-direction:column; padding:0; overflow:hidden; z-index:5; background:#fff; }
+    .settings-header { padding:12px 16px; margin-bottom:0; flex-shrink:0; }
+    .settings-header h2 { font-size:17px; }
+    .settings-container { flex-direction:column; flex:1; min-height:0; }
+    .settings-sidebar { width:100%; padding:0; display:flex; flex-direction:row; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -webkit-overflow-scrolling:touch; border-right:none; background:#032229; gap:0; flex-shrink:0; }
+    .settings-sidebar::-webkit-scrollbar { display:none; }
     .settings-sidebar-item { padding:10px 14px; border-left:none; border-bottom:3px solid transparent; white-space:nowrap; font-size:12px; flex-shrink:0; }
     .settings-sidebar-item.active { border-left:none; border-bottom-color:#32BBD7; }
-    .settings-content-area { padding:16px; overflow-y:visible; }
-    .settings-header h2 { font-size:17px; }
+    .settings-content-area { padding:16px; overflow-y:auto; flex:1; min-height:0; }
+    /* Mobile job detail sidebar */
+    .sidebar { width:100% !important; max-width:100vw; }
+    .sidebar-header { padding:14px 16px; position:sticky; top:0; z-index:1; }
+    .sidebar-header h3 { font-size:16px; }
+    .sidebar-body { padding:16px; }
+    .stakeholder-card { flex-direction:column; align-items:stretch; gap:8px; }
+    .stakeholder-actions { flex-direction:row; flex-wrap:wrap; gap:6px; }
+    .btn-linkedin { font-size:12px; padding:8px 12px; flex:1 1 auto; justify-content:center; min-width:0; }
+    .template-preview { font-size:12px; min-height:80px; max-height:180px; }
+    .detail-section { margin-bottom:12px; }
     /* Integration sub-tabs stack vertically on mobile */
     .intg-nav-wrap { position:sticky; top:0; z-index:10; margin:0 -16px 12px; padding:8px 16px 12px; background:#fff; border-bottom:1px solid var(--border); box-shadow:none; }
     .intg-nav { flex-direction:column; gap:4px; border-radius:12px; }
@@ -6329,7 +6341,7 @@ function buildOutreachSection(job) {
       const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
       if (hasPhone) {
         const waTemplateOpts = WHATSAPP_TEMPLATES.map((t, ti) => `<option value="${ti}">${t.emoji} ${t.name}</option>`).join('');
-        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #25D366">
+        actionBtns += `<div class="wa-combo" style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #25D366;flex:1 1 auto">
           <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})" style="background:#25D366;border:none;cursor:pointer;border-radius:0;padding:6px 10px">📱 WhatsApp</button>
           <select style="font-size:11px;padding:6px 4px;border:none;background:#E8F8F0;color:#128C7E;cursor:pointer;border-radius:0;outline:none" onclick="event.stopPropagation()" onchange="event.stopPropagation();_activeWhatsAppTemplateIdx=+this.value">
             ${waTemplateOpts}
