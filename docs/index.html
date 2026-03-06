@@ -430,6 +430,47 @@
   .settings-tab { padding:12px 20px; font-size:14px; font-weight:600; border:none; background:transparent; color:var(--text-light); cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; }
   .settings-tab:hover { color:var(--text); }
   .settings-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+
+  /* Integration tabs */
+  .intg-nav { display:flex; gap:0; margin-bottom:24px; background:var(--bg); border-radius:14px; padding:4px; border:1px solid var(--border); }
+  .intg-nav-btn { flex:1; display:flex; align-items:center; gap:10px; padding:12px 16px; border:none; background:transparent; border-radius:10px; cursor:pointer; transition:all 0.2s; color:var(--text-light); font-size:13px; font-weight:600; position:relative; }
+  .intg-nav-btn:hover { background:white; color:var(--text); }
+  .intg-nav-btn.active { background:white; color:var(--text); box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+  .intg-nav-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .intg-nav-label { display:flex; flex-direction:column; gap:1px; text-align:left; }
+  .intg-nav-label span:first-child { font-size:13px; font-weight:700; }
+  .intg-nav-label span:last-child { font-size:11px; font-weight:400; opacity:0.7; }
+  .intg-status-dot { width:8px; height:8px; border-radius:50%; position:absolute; top:8px; right:8px; }
+  .intg-status-dot.active { background:var(--success); box-shadow:0 0 6px rgba(0,202,114,0.4); }
+  .intg-status-dot.inactive { background:#ccc; }
+  .intg-status-dot.pending { background:var(--warning); box-shadow:0 0 6px rgba(253,171,61,0.4); }
+  .intg-panel { display:none; animation:fadeIn 0.2s ease; }
+  .intg-panel.active { display:block; }
+  .intg-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+  .intg-header-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .intg-header-text h4 { font-size:16px; font-weight:700; margin:0; }
+  .intg-header-text p { font-size:12px; color:var(--text-light); margin:2px 0 0; }
+  .intg-step { background:var(--bg); border-radius:12px; padding:16px; margin-bottom:12px; border:1px solid transparent; transition:border-color 0.2s; }
+  .intg-step:hover { border-color:var(--border); }
+  .intg-step-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .intg-step-num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0; }
+  .intg-step-title { font-weight:600; font-size:14px; }
+  .intg-step-body { margin-left:36px; }
+  .intg-step-body p { font-size:12px; color:var(--text-light); margin-bottom:8px; }
+  .intg-step-body .hint { font-size:11px; color:var(--text-lighter); }
+  .intg-input-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+  .intg-input { flex:1; max-width:400px; padding:9px 12px; border-radius:10px; border:1px solid var(--border); font-size:13px; font-family:monospace; transition:border-color 0.15s; }
+  .intg-input:focus { outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(50,187,215,0.12); }
+  .intg-toggle-vis { background:none; border:1px solid var(--border); border-radius:10px; padding:7px 10px; cursor:pointer; font-size:12px; transition:background 0.15s; }
+  .intg-toggle-vis:hover { background:var(--bg); }
+  .intg-save-btn { font-size:12px; padding:7px 16px; border-radius:10px; border:none; color:white; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:5px; transition:opacity 0.15s; }
+  .intg-save-btn:hover { opacity:0.9; }
+  .intg-save-btn:disabled { opacity:0.5; cursor:default; }
+  .intg-settings-grid { display:flex; flex-direction:column; gap:10px; }
+  .intg-checkbox-row { display:flex; gap:16px; flex-wrap:wrap; }
+  .intg-checkbox-row label { font-size:12px; display:flex; align-items:center; gap:5px; cursor:pointer; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
   .settings-content { display:none; }
   .settings-content.active { display:block; }
   .template-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:16px; margin-bottom:24px; }
@@ -804,169 +845,302 @@
 
         <!-- Integrations Section -->
         <div id="integrationsSection" class="settings-section" style="display:none">
-          <h3 class="settings-section-title">🔗 CRM Integrations</h3>
-          <p style="color:var(--text-light);font-size:13px;margin-bottom:20px">Connect your CRM to enrich job listings with company and deal data.</p>
+          <h3 class="settings-section-title">🔗 Integrations</h3>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Connect your tools to enrich job listings with company data, contacts, and enrichment intel.</p>
 
-          <!-- CRM Status Banner -->
-          <div id="crmStatusBanner" style="border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13px;background:#FFF3D6;color:#9A7B00;border:1px solid #FFE08A">
-            <span style="font-size:18px">⏳</span>
-            <div>
-              <div style="font-weight:600">CRM not connected yet</div>
-              <div style="font-size:12px;opacity:0.8">Follow the setup steps below to connect HubSpot</div>
+          <!-- Integration Nav Tabs -->
+          <div class="intg-nav" id="intgNav">
+            <button class="intg-nav-btn active" onclick="switchIntgTab('overview')">
+              <div class="intg-nav-icon" style="background:var(--primary-light);color:var(--primary)">📊</div>
+              <div class="intg-nav-label"><span>Overview</span><span>Status & sync</span></div>
+            </button>
+            <button class="intg-nav-btn" onclick="switchIntgTab('hubspot')">
+              <div class="intg-nav-icon" style="background:#FFF0E6;color:#FF7A59">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.29 6.42V4.42c.56-.28.94-.84.94-1.5 0-.93-.76-1.69-1.69-1.69s-1.69.76-1.69 1.69c0 .66.38 1.22.94 1.5v2c-.6.09-1.16.3-1.64.61l-5.49-4.27a1.89 1.89 0 00.05-.43c0-1.06-.86-1.92-1.92-1.92S4.87.97 4.87 2.03s.86 1.92 1.92 1.92c.34 0 .65-.09.93-.25l5.38 4.19A4.15 4.15 0 0012.54 10c0 .67.16 1.31.44 1.87l-1.47 1.47a2.15 2.15 0 00-.72-.13c-1.15 0-2.09.93-2.09 2.09s.93 2.09 2.09 2.09 2.09-.93 2.09-2.09c0-.26-.05-.51-.14-.74l1.44-1.44A4.15 4.15 0 0020.88 10c0-2.3-1.86-4.16-4.16-4.16-.47 0-.92.08-1.34.22l.01-.01-.1-.05v.01z"/></svg>
+              </div>
+              <div class="intg-nav-label"><span>HubSpot</span><span>CRM & deals</span></div>
+              <div class="intg-status-dot inactive" id="hubspotStatusDot"></div>
+            </button>
+            <button class="intg-nav-btn" onclick="switchIntgTab('apollo')">
+              <div class="intg-nav-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
+              <div class="intg-nav-label"><span>Apollo.io</span><span>Enrichment</span></div>
+              <div class="intg-status-dot inactive" id="apolloStatusDot"></div>
+            </button>
+            <button class="intg-nav-btn" onclick="switchIntgTab('sync')">
+              <div class="intg-nav-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
+              <div class="intg-nav-label"><span>Sync</span><span>Run & schedule</span></div>
+            </button>
+          </div>
+
+          <!-- OVERVIEW PANEL -->
+          <div class="intg-panel active" id="intgPanel_overview">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+              <!-- HubSpot Status Card -->
+              <div id="crmStatusBanner" style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#FFF3D6;color:#9A7B00;border:1px solid #FFE08A;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('hubspot')">
+                <span style="font-size:26px">⏳</span>
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:14px">HubSpot CRM</div>
+                  <div style="font-size:12px;opacity:0.8">Not connected yet</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+              <!-- Apollo Status Card -->
+              <div id="apolloStatusBanner" style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('apollo')">
+                <span style="font-size:26px">🔮</span>
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:14px" id="apolloStatusTitle">Apollo.io</div>
+                  <div style="font-size:12px;opacity:0.8" id="apolloStatusDetail">Not configured</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+            <!-- Quick actions -->
+            <div style="background:var(--bg);border-radius:14px;padding:16px;border:1px solid var(--border)">
+              <div style="font-weight:700;font-size:14px;margin-bottom:12px">Quick Actions</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-primary" onclick="_triggerHubSpotSync()" id="triggerSyncBtn" style="font-size:12px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;background:var(--success);border-radius:10px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Trigger Sync Now
+                </button>
+                <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:8px 16px;border-radius:10px">Load CRM Data</button>
+                <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:12px;padding:8px 16px;border-radius:10px">Reload Cache</button>
+              </div>
+              <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap">
+                <span id="syncTriggerResult" style="font-size:12px;color:var(--text-light)"></span>
+                <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
+                <span id="crmCacheStatus" style="font-size:11px;color:var(--text-lighter)"></span>
+              </div>
             </div>
           </div>
 
-          <div class="integration-provider-select" style="margin-bottom:20px">
-            <label style="font-weight:600;font-size:13px;display:block;margin-bottom:8px">CRM Provider</label>
-            <select id="crmProvider" onchange="onCrmProviderChange()" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;width:220px">
-              <option value="">None (disabled)</option>
-              <option value="hubspot">HubSpot</option>
-            </select>
-          </div>
-
-          <div id="crmConfigPanel" style="display:none">
+          <!-- HUBSPOT PANEL -->
+          <div class="intg-panel" id="intgPanel_hubspot">
             <div id="hubspotConfig" class="crm-config-block">
-              <!-- Step 1: Save HubSpot Token -->
-              <div style="background:var(--primary-light);border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                  <span style="background:var(--primary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
-                  <div style="font-weight:600;font-size:14px;color:var(--primary)">Connect your HubSpot account</div>
+              <div class="intg-header">
+                <div class="intg-header-icon" style="background:#FFF0E6;color:#FF7A59">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.29 6.42V4.42c.56-.28.94-.84.94-1.5 0-.93-.76-1.69-1.69-1.69s-1.69.76-1.69 1.69c0 .66.38 1.22.94 1.5v2c-.6.09-1.16.3-1.64.61l-5.49-4.27a1.89 1.89 0 00.05-.43c0-1.06-.86-1.92-1.92-1.92S4.87.97 4.87 2.03s.86 1.92 1.92 1.92c.34 0 .65-.09.93-.25l5.38 4.19A4.15 4.15 0 0012.54 10c0 .67.16 1.31.44 1.87l-1.47 1.47a2.15 2.15 0 00-.72-.13c-1.15 0-2.09.93-2.09 2.09s.93 2.09 2.09 2.09 2.09-.93 2.09-2.09c0-.26-.05-.51-.14-.74l1.44-1.44A4.15 4.15 0 0020.88 10c0-2.3-1.86-4.16-4.16-4.16-.47 0-.92.08-1.34.22l.01-.01-.1-.05v.01z"/></svg>
                 </div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:4px;margin-left:32px">Go to <a href="https://app-eu1.hubspot.com/portal-recommend/l?slug=private-apps" target="_blank" style="color:var(--primary)">HubSpot Settings &gt; Integrations &gt; Private Apps</a>, create a Private App (or open an existing one), and copy the <strong>Access Token</strong>.</p>
-                <p style="font-size:11px;color:var(--text-lighter);margin-bottom:10px;margin-left:32px">The token starts with <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">pat-eu1-</code> or <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">pat-na1-</code>. It will be saved securely as an encrypted GitHub Secret (never stored in the browser).</p>
-                <div style="margin-left:32px;margin-bottom:8px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Private App Access Token</label>
-                  <div style="display:flex;gap:8px;align-items:center">
-                    <input type="password" id="hubspotTokenInput" placeholder="pat-eu1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
-                    <button type="button" onclick="document.getElementById('hubspotTokenInput').type = document.getElementById('hubspotTokenInput').type === 'password' ? 'text' : 'password'" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px" title="Toggle visibility">👁</button>
-                  </div>
-                </div>
-                <div style="margin-left:32px;margin-bottom:8px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID)</label>
-                  <input type="text" id="hubspotPortalIdStep1" placeholder="e.g. 25695560" value="25695560" style="width:180px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px" />
-                </div>
-                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                  <button class="btn btn-primary" onclick="_saveHubSpotSecretsFromUI()" id="saveSecretsBtn" style="font-size:12px;padding:6px 14px;display:inline-flex;align-items:center;gap:4px">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    Save Token Securely
-                  </button>
-                  <span id="saveSecretResult" style="font-size:12px;color:var(--text-light)"></span>
-                </div>
-                <div style="margin-left:32px;margin-top:6px;font-size:11px;color:var(--text-lighter)">
-                  Your token is encrypted and stored as a GitHub Actions secret. It is never visible in the browser or source code.
+                <div class="intg-header-text">
+                  <h4>HubSpot CRM</h4>
+                  <p>Connect your CRM to enrich job listings with company, deal, and contact data</p>
                 </div>
               </div>
 
-              <!-- Step 2: Run Sync -->
-              <div style="background:#f0faf0;border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                  <span style="background:var(--success);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</span>
-                  <div style="font-weight:600;font-size:14px;color:#1a7a1a">Run the first sync</div>
+              <!-- CRM Provider Toggle -->
+              <div class="intg-step" style="background:white;border:1px solid var(--border)">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:16px">🔌</span>
+                    <div>
+                      <div style="font-weight:600;font-size:13px">CRM Provider</div>
+                      <div style="font-size:11px;color:var(--text-lighter)">Select your CRM to enable the integration</div>
+                    </div>
+                  </div>
+                  <select id="crmProvider" onchange="onCrmProviderChange()" style="padding:8px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;width:180px;background:white">
+                    <option value="">None (disabled)</option>
+                    <option value="hubspot">HubSpot</option>
+                  </select>
                 </div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">After adding the secrets, trigger the sync. It runs automatically every 2h after that.</p>
-                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                  <button class="btn btn-primary" onclick="_triggerHubSpotSync()" style="font-size:12px;padding:6px 14px;background:var(--success);display:inline-flex;align-items:center;gap:4px" id="triggerSyncBtn">
+              </div>
+
+              <div id="crmConfigPanel" style="display:none">
+                <!-- Step 1: Token -->
+                <div class="intg-step">
+                  <div class="intg-step-header">
+                    <div class="intg-step-num" style="background:var(--primary)">1</div>
+                    <div class="intg-step-title" style="color:var(--primary)">Connect your HubSpot account</div>
+                  </div>
+                  <div class="intg-step-body">
+                    <p>Go to <a href="https://app-eu1.hubspot.com/portal-recommend/l?slug=private-apps" target="_blank" style="color:var(--primary);font-weight:500">HubSpot &gt; Settings &gt; Private Apps</a>, create a Private App and copy the <strong>Access Token</strong>.</p>
+                    <p class="hint">Token starts with <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">pat-eu1-</code> or <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">pat-na1-</code> — encrypted as a GitHub Secret.</p>
+                    <div style="margin-top:10px">
+                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Private App Access Token</label>
+                      <div class="intg-input-row">
+                        <input type="password" id="hubspotTokenInput" placeholder="pat-eu1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" class="intg-input" />
+                        <button type="button" onclick="document.getElementById('hubspotTokenInput').type = document.getElementById('hubspotTokenInput').type === 'password' ? 'text' : 'password'" class="intg-toggle-vis" title="Toggle visibility">👁</button>
+                      </div>
+                    </div>
+                    <div>
+                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Portal ID (Hub ID)</label>
+                      <input type="text" id="hubspotPortalIdStep1" placeholder="e.g. 25695560" value="25695560" class="intg-input" style="width:180px;max-width:180px" />
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px">
+                      <button class="intg-save-btn" onclick="_saveHubSpotSecretsFromUI()" id="saveSecretsBtn" style="background:var(--primary)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        Save Token Securely
+                      </button>
+                      <span id="saveSecretResult" style="font-size:12px;color:var(--text-light)"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 2: Load -->
+                <div class="intg-step">
+                  <div class="intg-step-header">
+                    <div class="intg-step-num" style="background:var(--teal)">2</div>
+                    <div class="intg-step-title" style="color:var(--teal)">Load CRM data</div>
+                  </div>
+                  <div class="intg-step-body">
+                    <p>After sync completes (~2 min), data loads automatically on each page load. You can also load manually.</p>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                      <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:6px 14px;border-radius:10px">Load CRM Data</button>
+                      <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:11px;padding:5px 12px;border-radius:10px">Reload</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Display Settings -->
+                <div class="intg-step">
+                  <div class="intg-step-header">
+                    <span style="font-size:16px">⚙️</span>
+                    <div class="intg-step-title">Display Settings</div>
+                  </div>
+                  <div class="intg-step-body">
+                    <div style="margin-bottom:10px">
+                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Portal ID (Hub ID) — for building HubSpot links</label>
+                      <input type="text" id="hubspotPortalId" class="intg-input" placeholder="e.g. 25695560" style="width:200px;max-width:200px" />
+                    </div>
+                    <div class="intg-checkbox-row" style="margin-bottom:10px">
+                      <label><input type="checkbox" id="crmEnrichCards" checked> Show CRM badges on cards</label>
+                      <label><input type="checkbox" id="crmEnrichDetail" checked> Show CRM info in detail panel</label>
+                      <label><input type="checkbox" id="crmAutoMatch" checked> Auto-load on page load</label>
+                    </div>
+                    <div>
+                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Match Pipeline (optional)</label>
+                      <input type="text" id="hubspotPipelineFilter" class="intg-input" placeholder="e.g. SALES ISRAEL" style="width:280px;max-width:280px" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Deal Stages -->
+                <div class="intg-step">
+                  <div class="intg-step-header">
+                    <span style="font-size:16px">🏷️</span>
+                    <div class="intg-step-title">Deal Stages</div>
+                  </div>
+                  <div class="intg-step-body">
+                    <p>Loaded automatically from CRM data.</p>
+                    <div id="dealStageMappingContainer" style="font-size:12px;color:var(--text-lighter)">Load CRM data first to see deal stages.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- APOLLO PANEL -->
+          <div class="intg-panel" id="intgPanel_apollo">
+            <div class="intg-header">
+              <div class="intg-header-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
+              <div class="intg-header-text">
+                <h4>Apollo.io Enrichment</h4>
+                <p>Enrich stakeholders with verified emails, phone numbers, LinkedIn URLs, and company intel</p>
+              </div>
+            </div>
+
+            <!-- Step 1: API Key -->
+            <div class="intg-step">
+              <div class="intg-step-header">
+                <div class="intg-step-num" style="background:#7B1FA2">1</div>
+                <div class="intg-step-title" style="color:#7B1FA2">Connect Apollo.io</div>
+              </div>
+              <div class="intg-step-body">
+                <p>Go to <a href="https://app.apollo.io/#/settings/integrations/api-keys" target="_blank" style="color:#7B1FA2;font-weight:500">Apollo &gt; Settings &gt; API Keys</a>, create a key and paste it below.</p>
+                <p class="hint">Encrypted as a GitHub Secret — never visible in the browser.</p>
+                <div style="margin-top:10px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Apollo API Key</label>
+                  <div class="intg-input-row">
+                    <input type="password" id="apolloApiKeyInput" placeholder="Your Apollo.io API key" class="intg-input" />
+                    <button type="button" onclick="document.getElementById('apolloApiKeyInput').type = document.getElementById('apolloApiKeyInput').type === 'password' ? 'text' : 'password'" class="intg-toggle-vis" title="Toggle visibility">👁</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px">
+                  <button class="intg-save-btn" onclick="_saveApolloKeyFromUI()" id="saveApolloBtn" style="background:#7B1FA2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    Save Key Securely
+                  </button>
+                  <span id="saveApolloResult" style="font-size:12px;color:var(--text-light)"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Enrichment Settings -->
+            <div class="intg-step">
+              <div class="intg-step-header">
+                <span style="font-size:16px">⚙️</span>
+                <div class="intg-step-title">Enrichment Settings</div>
+              </div>
+              <div class="intg-step-body">
+                <div class="intg-checkbox-row" style="margin-bottom:10px">
+                  <label><input type="checkbox" id="apolloEnrichContacts" checked> Enrich contacts (email, phone, title)</label>
+                  <label><input type="checkbox" id="apolloEnrichOrgs" checked> Enrich companies (tech stack, size)</label>
+                  <label><input type="checkbox" id="apolloShowBadges" checked> Show Apollo badges on cards</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sync Stats -->
+            <div class="intg-step" id="apolloSyncStats" style="display:none">
+              <div class="intg-step-header">
+                <span style="font-size:16px">📈</span>
+                <div class="intg-step-title">Sync Statistics</div>
+              </div>
+              <div class="intg-step-body">
+                <div id="apolloStatsContent" style="font-size:12px;color:var(--text-light)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SYNC PANEL -->
+          <div class="intg-panel" id="intgPanel_sync">
+            <div class="intg-header">
+              <div class="intg-header-icon" style="background:#E8F5E9;color:#2E7D32">⚡</div>
+              <div class="intg-header-text">
+                <h4>Sync & Schedule</h4>
+                <p>Manage data synchronization between your integrations and the dashboard</p>
+              </div>
+            </div>
+
+            <div class="intg-step">
+              <div class="intg-step-header">
+                <span style="font-size:16px">🔄</span>
+                <div class="intg-step-title">Run Sync</div>
+              </div>
+              <div class="intg-step-body">
+                <p>Triggers the GitHub Actions workflow that syncs HubSpot CRM data and Apollo enrichment. Runs automatically every 2 hours.</p>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+                  <button class="intg-save-btn" onclick="_triggerHubSpotSync()" style="background:var(--success)">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     Trigger Sync Now
                   </button>
-                  <span id="syncTriggerResult" style="font-size:12px;color:var(--text-light)"></span>
+                  <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:7px 14px;border-radius:10px">Reload CRM Data</button>
+                  <button class="btn btn-outline" onclick="_loadApolloData().then(()=>renderJobs())" style="font-size:12px;padding:7px 14px;border-radius:10px">Reload Apollo Data</button>
                 </div>
-              </div>
-
-              <!-- Step 3: Load Data -->
-              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                  <span style="background:var(--teal);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</span>
-                  <div style="font-weight:600;font-size:14px;color:var(--teal)">Load CRM data into dashboard</div>
+                <div style="margin-top:8px;font-size:12px;color:var(--text-lighter)">
+                  <span id="syncTriggerResult2"></span>
                 </div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">After the sync completes (~2 min), load the data. This happens automatically on every page load.</p>
-                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                  <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:6px 14px">Load CRM Data</button>
-                  <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:11px;padding:4px 12px">Reload</button>
-                  <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
-                  <span id="crmCacheStatus" style="font-size:11px;color:var(--text-lighter)"></span>
-                </div>
-              </div>
-
-              <!-- Display Settings -->
-              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="font-weight:600;font-size:14px;margin-bottom:8px">Display Settings</div>
-                <div style="margin-bottom:12px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID) - for building HubSpot links</label>
-                  <input type="text" id="hubspotPortalId" class="api-key-input" placeholder="e.g. 25695560" style="width:200px" />
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichCards" checked> Show CRM badges on job cards</label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmEnrichDetail" checked> Show CRM info in detail panel</label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="crmAutoMatch" checked> Auto-load CRM data on page load</label>
-                </div>
-                <div style="margin-bottom:12px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Match Pipeline (optional - leave empty for all)</label>
-                  <input type="text" id="hubspotPipelineFilter" class="api-key-input" placeholder="e.g. SALES ISRAEL" style="width:300px" />
-                </div>
-              </div>
-
-              <!-- Deal Stages -->
-              <div style="background:#f8f9fb;border-radius:12px;padding:16px">
-                <div style="font-weight:600;font-size:14px;margin-bottom:4px">Deal Stages</div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px">Loaded automatically from CRM data.</p>
-                <div id="dealStageMappingContainer" style="font-size:12px;color:var(--text-lighter)">Load CRM data first to see deal stages.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Apollo.io Enrichment Section -->
-          <div style="margin-top:28px;border-top:1px solid var(--border);padding-top:20px">
-            <h3 class="settings-section-title" style="margin-bottom:0">🚀 Contact & Company Enrichment</h3>
-            <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Enrich stakeholders with verified emails, phone numbers, LinkedIn URLs, and company intel via Apollo.io.</p>
-
-            <!-- Apollo Status Banner -->
-            <div id="apolloStatusBanner" style="border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8">
-              <span style="font-size:18px">🔮</span>
-              <div>
-                <div style="font-weight:600" id="apolloStatusTitle">Apollo.io not configured</div>
-                <div style="font-size:12px;opacity:0.8" id="apolloStatusDetail">Add your Apollo API key below to enable contact enrichment</div>
               </div>
             </div>
 
-            <!-- Save Apollo API Key -->
-            <div style="background:#F3E5F5;border-radius:12px;padding:16px;margin-bottom:16px">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <span style="background:#7B1FA2;color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
-                <div style="font-weight:600;font-size:14px;color:#7B1FA2">Connect Apollo.io</div>
+            <div class="intg-step">
+              <div class="intg-step-header">
+                <span style="font-size:16px">📋</span>
+                <div class="intg-step-title">How it works</div>
               </div>
-              <p style="font-size:12px;color:var(--text-light);margin-bottom:4px;margin-left:32px">Go to <a href="https://app.apollo.io/#/settings/integrations/api-keys" target="_blank" style="color:#7B1FA2">Apollo Settings &gt; Integrations &gt; API Keys</a>, create an API key and paste it below.</p>
-              <p style="font-size:11px;color:var(--text-lighter);margin-bottom:10px;margin-left:32px">The key will be encrypted and stored as a GitHub Secret. It is never visible in the browser.</p>
-              <div style="margin-left:32px;margin-bottom:8px">
-                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Apollo API Key</label>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <input type="password" id="apolloApiKeyInput" placeholder="Your Apollo.io API key" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
-                  <button type="button" onclick="document.getElementById('apolloApiKeyInput').type = document.getElementById('apolloApiKeyInput').type === 'password' ? 'text' : 'password'" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px" title="Toggle visibility">👁</button>
+              <div class="intg-step-body">
+                <div style="font-size:12px;color:var(--text-light);line-height:1.7">
+                  <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+                    <span style="background:var(--primary);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+                    <span>GitHub Actions runs <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">sync_hubspot.py</code> to fetch CRM data &rarr; writes <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">crm_data.json</code></span>
+                  </div>
+                  <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+                    <span style="background:#7B1FA2;color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+                    <span>If Apollo is configured, runs <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">enrich_apollo.py</code> &rarr; writes <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">apollo_data.json</code></span>
+                  </div>
+                  <div style="display:flex;align-items:flex-start;gap:8px">
+                    <span style="background:var(--teal);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+                    <span>Dashboard auto-loads both JSON files on page load. Data merges into job cards and the side panel.</span>
+                  </div>
                 </div>
-              </div>
-              <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                <button class="btn btn-primary" onclick="_saveApolloKeyFromUI()" id="saveApolloBtn" style="font-size:12px;padding:6px 14px;display:inline-flex;align-items:center;gap:4px;background:#7B1FA2">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                  Save Key Securely
-                </button>
-                <span id="saveApolloResult" style="font-size:12px;color:var(--text-light)"></span>
-              </div>
-              <div style="margin-left:32px;margin-top:6px;font-size:11px;color:var(--text-lighter)">
-                Your key is encrypted and stored as a GitHub Actions secret. The enrichment runs server-side every 2h alongside CRM sync.
-              </div>
-            </div>
-
-            <!-- Enrichment Options -->
-            <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
-              <div style="font-weight:600;font-size:14px;margin-bottom:8px">Enrichment Settings</div>
-              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloEnrichContacts" checked> Enrich contacts (email, phone, title)</label>
-                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloEnrichOrgs" checked> Enrich company data (tech stack, size)</label>
-                <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="apolloShowBadges" checked> Show Apollo badges on cards</label>
-              </div>
-              <div id="apolloSyncStats" style="font-size:12px;color:var(--text-lighter);display:none">
-                <div style="font-weight:600;color:var(--text-light);margin-bottom:4px">Last Sync Stats</div>
-                <div id="apolloStatsContent"></div>
               </div>
             </div>
           </div>
@@ -7448,6 +7622,27 @@ function renderIntegrationsSection() {
   _updateCrmStatusBanner();
 }
 
+function switchIntgTab(tabId) {
+  document.querySelectorAll('.intg-nav-btn').forEach((btn, i) => {
+    const panels = ['overview','hubspot','apollo','sync'];
+    btn.classList.toggle('active', panels[i] === tabId);
+  });
+  document.querySelectorAll('.intg-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('intgPanel_' + tabId);
+  if (panel) panel.classList.add('active');
+}
+
+function _updateIntgStatusDots() {
+  const hsDot = document.getElementById('hubspotStatusDot');
+  const apDot = document.getElementById('apolloStatusDot');
+  if (hsDot) {
+    hsDot.className = 'intg-status-dot ' + (_crmCacheBuilt ? 'active' : 'inactive');
+  }
+  if (apDot) {
+    apDot.className = 'intg-status-dot ' + (_apolloCache && _apolloCache.syncedAt ? 'active' : (_apolloCache ? 'pending' : 'inactive'));
+  }
+}
+
 function onCrmProviderChange() {
   const prov = document.getElementById('crmProvider').value;
   CRM_CONFIG.provider = prov;
@@ -7691,23 +7886,23 @@ function _updateApolloStatusBanner(configured) {
   const banner = document.getElementById('apolloStatusBanner');
   const title = document.getElementById('apolloStatusTitle');
   const detail = document.getElementById('apolloStatusDetail');
-  if (!banner) return;
+  if (!title || !detail) return;
+  const arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>';
   if (_apolloCache && _apolloCache.syncedAt) {
-    banner.style.background = '#E8F5E9';
-    banner.style.color = '#2E7D32';
-    banner.style.borderColor = '#A5D6A7';
-    banner.querySelector('span').textContent = '✅';
-    title.textContent = 'Apollo.io enrichment active';
+    if (banner) { banner.style.background = '#E8F5E9'; banner.style.color = '#2E7D32'; banner.style.borderColor = '#A5D6A7'; }
+    const iconSpan = banner ? banner.querySelector('span:first-child') : null;
+    if (iconSpan) iconSpan.textContent = '✅';
+    title.textContent = 'Apollo.io';
     const syncDate = new Date(_apolloCache.syncedAt);
-    detail.textContent = 'Last synced: ' + syncDate.toLocaleString() + ' — ' + (_apolloCache.stats?.contactsEnriched || 0) + ' contacts, ' + (_apolloCache.stats?.orgsEnriched || 0) + ' orgs enriched';
+    detail.textContent = (_apolloCache.stats?.contactsEnriched || 0) + ' contacts, ' + (_apolloCache.stats?.orgsEnriched || 0) + ' orgs enriched';
   } else if (configured) {
-    banner.style.background = '#FFF3D6';
-    banner.style.color = '#9A7B00';
-    banner.style.borderColor = '#FFE08A';
-    banner.querySelector('span').textContent = '⏳';
-    title.textContent = 'Apollo key saved — waiting for first sync';
-    detail.textContent = 'Trigger a sync or wait for the next automatic run (every 2h)';
+    if (banner) { banner.style.background = '#FFF3D6'; banner.style.color = '#9A7B00'; banner.style.borderColor = '#FFE08A'; }
+    const iconSpan = banner ? banner.querySelector('span:first-child') : null;
+    if (iconSpan) iconSpan.textContent = '⏳';
+    title.textContent = 'Apollo.io';
+    detail.textContent = 'Key saved — waiting for first sync';
   }
+  _updateIntgStatusDots();
 }
 
 function _updateApolloSyncStats(data) {
@@ -7843,24 +8038,26 @@ async function _pollSyncAndLoad() {
 function _updateCrmStatusBanner() {
   const banner = document.getElementById('crmStatusBanner');
   if (!banner) return;
+  const arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>';
   if (_crmCacheBuilt && Object.keys(_crmCache).length > 0) {
     const matched = Object.values(_crmCache).filter(c => c.companyId).length;
     const total = Object.keys(_crmCache).length;
     banner.style.background = '#E8F5E9';
     banner.style.color = '#2E7D32';
     banner.style.borderColor = '#A5D6A7';
-    banner.innerHTML = '<span style="font-size:18px">&#10003;</span><div><div style="font-weight:600">HubSpot Connected</div><div style="font-size:12px;opacity:0.8">' + matched + ' of ' + total + ' companies matched in CRM</div></div>';
+    banner.innerHTML = '<span style="font-size:26px">✅</span><div style="flex:1"><div style="font-weight:700;font-size:14px">HubSpot CRM</div><div style="font-size:12px;opacity:0.8">' + matched + ' of ' + total + ' companies matched</div></div>' + arrow;
   } else if (CRM_CONFIG.provider) {
     banner.style.background = '#FFF3D6';
     banner.style.color = '#9A7B00';
     banner.style.borderColor = '#FFE08A';
-    banner.innerHTML = '<span style="font-size:18px">&#9203;</span><div><div style="font-weight:600">CRM configured but no data loaded</div><div style="font-size:12px;opacity:0.8">Run the sync and click "Load CRM Data"</div></div>';
+    banner.innerHTML = '<span style="font-size:26px">⏳</span><div style="flex:1"><div style="font-weight:700;font-size:14px">HubSpot CRM</div><div style="font-size:12px;opacity:0.8">Configured — no data loaded yet</div></div>' + arrow;
   } else {
     banner.style.background = '#FFF3D6';
     banner.style.color = '#9A7B00';
     banner.style.borderColor = '#FFE08A';
-    banner.innerHTML = '<span style="font-size:18px">&#9203;</span><div><div style="font-weight:600">CRM not connected yet</div><div style="font-size:12px;opacity:0.8">Select a CRM provider and follow the setup steps below</div></div>';
+    banner.innerHTML = '<span style="font-size:26px">⏳</span><div style="flex:1"><div style="font-weight:700;font-size:14px">HubSpot CRM</div><div style="font-size:12px;opacity:0.8">Not connected yet</div></div>' + arrow;
   }
+  _updateIntgStatusDots();
 }
 
 // ── Test Connection (loads crm_data.json) ──────────────────────────────
