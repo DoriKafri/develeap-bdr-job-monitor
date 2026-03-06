@@ -489,6 +489,13 @@
     .settings-header { padding:12px 16px; margin-bottom:0; flex-shrink:0; }
     .settings-header h2 { font-size:17px; }
     /* Mobile job detail sidebar */
+    .settings-content-area { padding:0 !important; overflow-y:auto; flex:1; min-height:0; }
+    .settings-section { padding:16px; }
+    .category-grid { grid-template-columns:1fr !important; }
+    .template-grid { grid-template-columns:1fr !important; }
+    .settings-tabs { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
+    .settings-tabs::-webkit-scrollbar { display:none; }
+    .settings-tab { white-space:nowrap; flex-shrink:0; padding:10px 14px; font-size:12px; }
     .sidebar { width:100% !important; max-width:100vw; }
     .sidebar-header { padding:14px 16px; position:sticky; top:0; z-index:1; }
     .sidebar-header h3 { font-size:16px; }
@@ -498,12 +505,14 @@
     .btn-linkedin { font-size:12px; padding:8px 12px; flex:1 1 auto; justify-content:center; min-width:0; }
     .template-preview { font-size:12px; min-height:80px; max-height:180px; }
     .detail-section { margin-bottom:12px; }
-    /* Integration sub-tabs stack vertically on mobile */
-    .intg-nav-wrap { position:sticky; top:0; z-index:10; margin:0 -16px 12px; padding:8px 16px 12px; background:#fff; border-bottom:1px solid var(--border); box-shadow:none; }
-    .intg-nav { flex-direction:column; gap:4px; border-radius:12px; }
-    .intg-nav-btn { padding:10px 14px; }
-    .intg-nav-icon { width:28px; height:28px; font-size:14px; }
-    .intg-nav-label span:first-child { font-size:12px; }
+    /* Integration sub-tabs horizontal scroll on mobile */
+    .intg-nav-wrap { position:sticky; top:0; z-index:10; margin:0 -16px 12px; padding:8px 16px 12px; background:#fff; border-bottom:1px solid var(--border); box-shadow:none; overflow-x:auto; }
+    .intg-nav { flex-direction:row; gap:4px; border-radius:12px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
+    .intg-nav::-webkit-scrollbar { display:none; }
+    .intg-nav-btn { padding:8px 12px; flex-shrink:0; min-width:0; }
+    .intg-nav-icon { width:24px; height:24px; font-size:12px; }
+    .intg-nav-label span:first-child { font-size:11px; }
+    .intg-nav-label span:last-child { display:none; }
     .intg-step-body { margin-left:0; }
     .intg-input { max-width:100%; }
     .intg-input-row { flex-direction:column; align-items:stretch; }
@@ -617,15 +626,20 @@
   .settings-sidebar-item:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.95); }
   .settings-sidebar-item.active { background:rgba(255,255,255,0.1); border-left-color:#32BBD7; font-weight:600; color:white; }
   .settings-content-area { flex:1; padding:24px 32px; overflow-y:auto; background:#fff; }
-  /* Mobile settings overrides — MUST be after desktop rules to win specificity */
+  /* Mobile settings: vertical drill-down — sidebar shows as full menu, tap to drill into section */
   @media (max-width:768px) {
-    .settings-container { flex-direction:column !important; flex:1; min-height:0; }
-    .settings-sidebar { width:100% !important; padding:0 !important; display:flex !important; flex-direction:row !important; overflow-x:auto !important; overflow-y:hidden !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; border-right:none !important; background:#032229; gap:0; flex-shrink:0; }
-    .settings-sidebar::-webkit-scrollbar { display:none; }
-    .settings-sidebar-item { padding:10px 14px !important; border-left:none !important; border-bottom:3px solid transparent; white-space:nowrap; font-size:12px !important; flex-shrink:0; }
-    .settings-sidebar-item.active { border-left:none !important; border-bottom-color:#32BBD7; background:rgba(255,255,255,0.1); }
-    .settings-content-area { padding:16px !important; overflow-y:auto; flex:1; min-height:0; }
+    .settings-container { flex-direction:column !important; flex:1; min-height:0; overflow:hidden; }
+    .settings-sidebar { width:100% !important; padding:8px 0 !important; display:flex !important; flex-direction:column !important; overflow-y:auto !important; border-right:none !important; background:#032229; gap:0; flex-shrink:0; }
+    .settings-sidebar.mobile-hidden { display:none !important; }
+    .settings-sidebar-item { padding:14px 20px !important; border-left:3px solid transparent !important; border-bottom:none !important; white-space:nowrap; font-size:14px !important; flex-shrink:0; display:flex !important; align-items:center; gap:10px; color:rgba(255,255,255,0.7); }
+    .settings-sidebar-item::after { content:'›'; margin-left:auto; font-size:18px; opacity:0.4; }
+    .settings-sidebar-item.active { border-left-color:#32BBD7 !important; background:rgba(255,255,255,0.1); color:white; font-weight:600; }
+    .settings-content-area { padding:0 !important; overflow-y:auto; flex:1; min-height:0; }
+    .settings-content-area.mobile-hidden { display:none !important; }
+    .settings-mobile-back { display:flex !important; }
   }
+  .settings-mobile-back { display:none; align-items:center; gap:6px; padding:12px 16px; background:#f8f9fa; border-bottom:1px solid var(--border); cursor:pointer; font-size:13px; font-weight:600; color:var(--primary); }
+  .settings-mobile-back:hover { background:#f0f1f2; }
   .settings-section-title { font-size:18px; font-weight:700; margin-bottom:20px; }
   .category-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; margin-bottom:24px; }
   .category-card { background:white; border:1px solid var(--border); border-radius:12px; padding:16px; }
@@ -841,9 +855,18 @@
           <span>🔗</span>
           <span>Integrations</span>
         </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('users')">
+          <span>👤</span>
+          <span>Users</span>
+        </div>
       </div>
 
       <div class="settings-content-area">
+        <div class="settings-mobile-back" onclick="_settingsMobileBack()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Settings
+        </div>
+        <div style="padding:16px" class="settings-content-inner">
         <div class="api-key-section" style="margin-bottom:24px">
           <h3>🔑 Anthropic API Key (for AI Polish)</h3>
           <input type="password" id="anthropicApiKey" class="api-key-input" placeholder="sk-ant-..." />
@@ -1300,6 +1323,109 @@
           </div>
         </div>
 
+        <!-- Users Section -->
+        <div id="usersSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">👤 User Management</h3>
+
+          <!-- Auth Status Banner -->
+          <div id="authStatusBanner" style="border-radius:14px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9">
+            <span style="font-size:24px">🔐</span>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:14px" id="authStatusTitle">Google OAuth</div>
+              <div style="font-size:12px;opacity:0.8" id="authStatusDetail">Configure Google Sign-In to restrict dashboard access</div>
+            </div>
+          </div>
+
+          <!-- Google OAuth Config -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:36px;height:36px;border-radius:10px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;font-size:18px">🔑</div>
+              <div>
+                <div style="font-weight:700;font-size:14px">Google OAuth Configuration</div>
+                <div style="font-size:12px;color:var(--text-light)">Control who can access this dashboard</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Google Client ID</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <input type="text" id="googleClientIdInput" class="intg-input" placeholder="123456789.apps.googleusercontent.com" style="flex:1;max-width:100%">
+                </div>
+                <div style="font-size:11px;color:var(--text-lighter);margin-top:4px">From <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--primary)">Google Cloud Console</a> → Credentials → OAuth 2.0 Client ID. Restrict to @develeap.com domain.</div>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Allowed Domain</label>
+                <input type="text" id="allowedDomainInput" class="intg-input" value="develeap.com" style="max-width:300px">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="intg-save-btn" style="background:var(--primary)" onclick="_saveOAuthConfig()">Save OAuth Config</button>
+                <span id="oauthSaveResult" style="font-size:12px"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Users List -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px">👥</div>
+                <div>
+                  <div style="font-weight:700;font-size:14px">Team Members</div>
+                  <div style="font-size:12px;color:var(--text-light)" id="userCountLabel">0 users</div>
+                </div>
+              </div>
+              <button class="intg-save-btn" style="background:var(--success)" onclick="_showInviteUserDialog()">+ Invite User</button>
+            </div>
+            <div id="usersListContainer" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <!-- Invite User Dialog (hidden by default) -->
+          <div id="inviteUserDialog" style="display:none;background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:36px;height:36px;border-radius:10px;background:#F3E5F5;display:flex;align-items:center;justify-content:center;font-size:18px">✉️</div>
+              <div>
+                <div style="font-weight:700;font-size:14px">Invite New User</div>
+                <div style="font-size:12px;color:var(--text-light)">Send a dashboard invitation via email</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Email Address</label>
+                <input type="email" id="inviteEmailInput" class="intg-input" placeholder="colleague@develeap.com" style="max-width:100%">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Name (optional)</label>
+                <input type="text" id="inviteNameInput" class="intg-input" placeholder="John Doe" style="max-width:300px">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Role</label>
+                <select id="inviteRoleSelect" class="intg-input" style="max-width:200px">
+                  <option value="viewer">Viewer</option>
+                  <option value="editor">Editor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <button class="intg-save-btn" style="background:var(--primary)" onclick="_inviteUser()">Send Invitation</button>
+                <button class="intg-save-btn" style="background:#6B7280" onclick="_copyInviteLink()">Copy Invite Link</button>
+                <button class="intg-save-btn" style="background:transparent;color:var(--text-light);border:1px solid var(--border)" onclick="document.getElementById('inviteUserDialog').style.display='none'">Cancel</button>
+                <span id="inviteResult" style="font-size:12px"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Access Control Info -->
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:16px;font-size:12px;color:#92400E">
+            <div style="font-weight:700;margin-bottom:6px">💡 How access control works</div>
+            <div style="line-height:1.6">
+              When Google OAuth is configured with a Client ID, only users from the allowed domain can sign in.
+              The user list below controls fine-grained roles: <strong>Admin</strong> can manage settings and users,
+              <strong>Editor</strong> can modify templates and outreach, <strong>Viewer</strong> has read-only access to job listings.
+              Without OAuth configured, the dashboard is open to anyone with the link.
+            </div>
+          </div>
+        </div>
+
         <!-- Templates Section -->
         <div id="templatesSection" class="settings-section" style="display:none">
           <h3 class="settings-section-title">📝 Message Templates</h3>
@@ -1318,6 +1444,7 @@
           <button class="btn-save" onclick="saveAllSettings()">💾 Save All to GitHub</button>
           <button class="btn-reset" onclick="resetToDefaults()">↻ Reset to Defaults</button>
         </div>
+        </div><!-- end settings-content-inner -->
       </div>
     </div>
   </div>
@@ -1378,6 +1505,7 @@ function initGoogleAuth() {
 function handleCredentialResponse(r) {
   const p=JSON.parse(atob(r.credential.split('.')[1]));
   if((p.email||'').split('@')[1]!==ALLOWED_DOMAIN){const e=document.getElementById('authError');e.textContent='Access restricted to @develeap.com. You signed in with '+p.email;e.style.display='block';return;}
+  _currentAuthUser = { email: p.email, name: p.name, picture: p.picture };
   document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block';
   document.getElementById('userInfo').innerHTML=(p.picture?'<img src="'+p.picture+'" class="user-avatar">':'')+'<span>'+p.name+'</span>';
   initApp();
@@ -7905,6 +8033,17 @@ async function _loadSettingsFromGitHub() {
         Object.assign(CRM_CONFIG, settings.integrations);
       }
 
+      // Apply users
+      if (settings.users && Array.isArray(settings.users)) {
+        _dashboardUsers = settings.users;
+      }
+
+      // Apply OAuth config
+      if (settings.oauth) {
+        if (settings.oauth.clientId) localStorage.setItem('_oauthClientId', settings.oauth.clientId);
+        if (settings.oauth.domain) localStorage.setItem('_oauthDomain', settings.oauth.domain);
+      }
+
       // Re-flag develeap customers with updated lists
       ALL_JOBS.forEach(j => {
         j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
@@ -8693,6 +8832,211 @@ async function _apolloAutoLoad() {
   }, 2500); // Slightly after CRM load
 }
 
+// ── User Management ─────────────────────────────────────────────────
+var _dashboardUsers = [
+  { email: 'dori.kafri@develeap.com', name: 'Dori Kafri', role: 'admin', addedAt: '2026-03-06T00:00:00Z', status: 'active' }
+];
+var _currentAuthUser = null; // set after Google sign-in
+
+function _getCurrentUserRole() {
+  if (!_currentAuthUser) return 'admin'; // no auth = full access
+  const u = _dashboardUsers.find(u => u.email.toLowerCase() === _currentAuthUser.email.toLowerCase());
+  return u ? u.role : 'viewer';
+}
+
+function _isAdmin() {
+  return _getCurrentUserRole() === 'admin';
+}
+
+function renderUsersSection() {
+  const container = document.getElementById('usersListContainer');
+  const countLabel = document.getElementById('userCountLabel');
+  if (!container) return;
+
+  countLabel.textContent = _dashboardUsers.length + ' user' + (_dashboardUsers.length !== 1 ? 's' : '');
+
+  // Update auth status banner
+  const authTitle = document.getElementById('authStatusTitle');
+  const authDetail = document.getElementById('authStatusDetail');
+  const banner = document.getElementById('authStatusBanner');
+  if (AUTH_ENABLED) {
+    banner.style.background = '#E8F5E9';
+    banner.style.color = '#2E7D32';
+    banner.style.borderColor = '#81C784';
+    banner.querySelector('span').textContent = '✅';
+    authTitle.textContent = 'OAuth Active';
+    authDetail.textContent = 'Google Sign-In is enabled — only @' + ALLOWED_DOMAIN + ' users can access';
+  } else {
+    banner.style.background = '#FFF3E0';
+    banner.style.color = '#E65100';
+    banner.style.borderColor = '#FFB74D';
+    banner.querySelector('span').textContent = '⚠️';
+    authTitle.textContent = 'OAuth Not Configured';
+    authDetail.textContent = 'Dashboard is open to anyone with the link. Add a Google Client ID to enable access control.';
+  }
+
+  // Pre-fill OAuth inputs
+  const clientIdInput = document.getElementById('googleClientIdInput');
+  if (clientIdInput && AUTH_ENABLED) clientIdInput.value = GOOGLE_CLIENT_ID;
+  const domainInput = document.getElementById('allowedDomainInput');
+  if (domainInput) domainInput.value = ALLOWED_DOMAIN;
+
+  // Render user cards
+  container.innerHTML = '';
+  const roleColors = { admin: '#DC2626', editor: '#2563EB', viewer: '#6B7280' };
+  const roleLabels = { admin: 'Admin', editor: 'Editor', viewer: 'Viewer' };
+
+  _dashboardUsers.forEach((user, idx) => {
+    const initials = (user.name || user.email).split(/[\s@]/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+    const isCurrentUser = _currentAuthUser && user.email.toLowerCase() === _currentAuthUser.email.toLowerCase();
+    const roleColor = roleColors[user.role] || '#6B7280';
+
+    const card = document.createElement('div');
+    card.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;background:#FAFBFC;border:1px solid var(--border);border-radius:12px;transition:background 0.15s';
+    card.innerHTML = `
+      <div style="width:40px;height:40px;border-radius:50%;background:${roleColor}15;color:${roleColor};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0">${initials}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px">
+          ${user.name || user.email.split('@')[0]}
+          ${isCurrentUser ? '<span style="font-size:10px;background:#E3F2FD;color:#1565C0;padding:1px 6px;border-radius:4px">You</span>' : ''}
+        </div>
+        <div style="font-size:12px;color:var(--text-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${user.email}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <select class="intg-input" style="padding:4px 8px;font-size:11px;width:90px;border-radius:8px" onchange="_changeUserRole(${idx}, this.value)" ${user.email === 'dori.kafri@develeap.com' ? 'disabled title="Primary admin cannot be changed"' : ''}>
+          <option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option>
+          <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
+          <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+        </select>
+        <span style="font-size:10px;padding:2px 8px;border-radius:6px;font-weight:600;background:${roleColor}15;color:${roleColor}">${roleLabels[user.role]}</span>
+        ${user.email === 'dori.kafri@develeap.com' ? '' : `<button onclick="_removeUser(${idx})" style="background:none;border:none;cursor:pointer;padding:4px;color:#DC2626;font-size:16px;line-height:1" title="Remove user">&times;</button>`}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  if (_dashboardUsers.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-light);font-size:13px">No users configured. Add your first team member above.</div>';
+  }
+}
+
+function _showInviteUserDialog() {
+  document.getElementById('inviteUserDialog').style.display = 'block';
+  document.getElementById('inviteEmailInput').value = '';
+  document.getElementById('inviteNameInput').value = '';
+  document.getElementById('inviteRoleSelect').value = 'viewer';
+  document.getElementById('inviteResult').textContent = '';
+  document.getElementById('inviteEmailInput').focus();
+}
+
+function _inviteUser() {
+  const email = (document.getElementById('inviteEmailInput').value || '').trim().toLowerCase();
+  const name = (document.getElementById('inviteNameInput').value || '').trim();
+  const role = document.getElementById('inviteRoleSelect').value;
+  const resultEl = document.getElementById('inviteResult');
+
+  if (!email || !email.includes('@')) {
+    resultEl.textContent = 'Please enter a valid email address.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+  if (_dashboardUsers.find(u => u.email.toLowerCase() === email)) {
+    resultEl.textContent = 'This user is already in the team.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+
+  // Add user to list
+  _dashboardUsers.push({
+    email: email,
+    name: name || email.split('@')[0],
+    role: role,
+    addedAt: new Date().toISOString(),
+    status: 'invited'
+  });
+
+  // Save to GitHub
+  _saveSettingsToGitHub();
+
+  // Send invitation via mailto link
+  const dashUrl = window.location.href.split('?')[0];
+  const subject = encodeURIComponent('You\'re invited to Develeap Job Monitor');
+  const body = encodeURIComponent(
+    'Hi ' + (name || 'there') + ',\n\n' +
+    'You\'ve been invited to access the Develeap BDR Job Monitor dashboard.\n\n' +
+    'Access the dashboard here:\n' + dashUrl + '\n\n' +
+    'Sign in with your ' + ALLOWED_DOMAIN + ' Google account.\n' +
+    'Your role: ' + role.charAt(0).toUpperCase() + role.slice(1) + '\n\n' +
+    'Best,\nDeveleap BDR Team'
+  );
+  window.open('mailto:' + email + '?subject=' + subject + '&body=' + body, '_blank');
+
+  resultEl.innerHTML = '&#10003; Invitation sent to ' + email;
+  resultEl.style.color = 'var(--success)';
+  _showToast('User ' + email + ' invited as ' + role);
+
+  // Re-render
+  renderUsersSection();
+  document.getElementById('inviteUserDialog').style.display = 'none';
+}
+
+function _copyInviteLink() {
+  const email = (document.getElementById('inviteEmailInput').value || '').trim();
+  const dashUrl = window.location.href.split('?')[0];
+  const link = dashUrl + (email ? '?invite=' + encodeURIComponent(email) : '');
+  navigator.clipboard.writeText(link).then(() => {
+    _showToast('Invite link copied to clipboard');
+    document.getElementById('inviteResult').innerHTML = '&#10003; Link copied!';
+    document.getElementById('inviteResult').style.color = 'var(--success)';
+  });
+}
+
+function _changeUserRole(idx, newRole) {
+  if (idx >= 0 && idx < _dashboardUsers.length) {
+    _dashboardUsers[idx].role = newRole;
+    _saveSettingsToGitHub();
+    renderUsersSection();
+    _showToast('Role updated to ' + newRole);
+  }
+}
+
+function _removeUser(idx) {
+  if (idx >= 0 && idx < _dashboardUsers.length) {
+    const user = _dashboardUsers[idx];
+    if (!confirm('Remove ' + user.email + ' from the team?')) return;
+    _dashboardUsers.splice(idx, 1);
+    _saveSettingsToGitHub();
+    renderUsersSection();
+    _showToast(user.email + ' removed');
+  }
+}
+
+function _saveOAuthConfig() {
+  const clientId = (document.getElementById('googleClientIdInput').value || '').trim();
+  const domain = (document.getElementById('allowedDomainInput').value || '').trim();
+  const resultEl = document.getElementById('oauthSaveResult');
+
+  if (!clientId) {
+    resultEl.textContent = 'Please enter a Google Client ID.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+  if (!clientId.includes('.apps.googleusercontent.com')) {
+    resultEl.textContent = 'Client ID should end with .apps.googleusercontent.com';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+
+  // Save to settings — will be stored in template_settings.json
+  localStorage.setItem('_oauthClientId', clientId);
+  localStorage.setItem('_oauthDomain', domain);
+  _saveSettingsToGitHub();
+
+  resultEl.innerHTML = '&#10003; OAuth config saved. Reload the page to activate sign-in.';
+  resultEl.style.color = 'var(--success)';
+  _showToast('OAuth configuration saved');
+}
+
 async function _saveSettingsToGitHub() {
   const allSettings = {
     templates: {
@@ -8720,7 +9064,12 @@ async function _saveSettingsToGitHub() {
       labels: SOURCE_LABELS,
       domains: SOURCE_DOMAINS
     },
-    integrations: _getCrmIntegrationConfig()
+    integrations: _getCrmIntegrationConfig(),
+    users: _dashboardUsers,
+    oauth: {
+      clientId: localStorage.getItem('_oauthClientId') || '',
+      domain: localStorage.getItem('_oauthDomain') || ALLOWED_DOMAIN
+    }
   };
 
   // Also save API key to localStorage
@@ -8783,6 +9132,13 @@ function switchSettingsSection(section) {
   const contentArea = document.querySelector('.settings-content-area');
   if (contentArea) contentArea.scrollTop = 0;
 
+  // Mobile drill-down: hide sidebar, show content area
+  if (window.innerWidth <= 768) {
+    const sidebar = document.querySelector('.settings-sidebar');
+    if (sidebar) sidebar.classList.add('mobile-hidden');
+    if (contentArea) contentArea.classList.remove('mobile-hidden');
+  }
+
   // Show the selected section
   const sectionEl = document.getElementById(section + 'Section');
   if (sectionEl) {
@@ -8792,7 +9148,17 @@ function switchSettingsSection(section) {
     else if (section === 'sources') renderSourcesSection();
     else if (section === 'integrations') renderIntegrationsSection();
     else if (section === 'templates') renderSettingsTab(_currentSettingsTab);
+    else if (section === 'users') renderUsersSection();
   }
+}
+
+function _settingsMobileBack() {
+  const sidebar = document.querySelector('.settings-sidebar');
+  const contentArea = document.querySelector('.settings-content-area');
+  if (sidebar) sidebar.classList.remove('mobile-hidden');
+  if (contentArea) contentArea.classList.add('mobile-hidden');
+  // Hide all sections
+  document.querySelectorAll('.settings-section').forEach(sec => { sec.style.display = 'none'; });
 }
 
 function renderCategoriesSection() {
@@ -9051,7 +9417,17 @@ function renderSettingsTab(idx) {
 }
 
 function renderSettingsView() {
-  // Render the currently active settings section
+  // On mobile: always start at the menu (sidebar visible, content hidden)
+  if (window.innerWidth <= 768) {
+    const sidebar = document.querySelector('.settings-sidebar');
+    const contentArea = document.querySelector('.settings-content-area');
+    if (sidebar) sidebar.classList.remove('mobile-hidden');
+    if (contentArea) contentArea.classList.add('mobile-hidden');
+    // Hide all sections on entry
+    document.querySelectorAll('.settings-section').forEach(sec => { sec.style.display = 'none'; });
+    return;
+  }
+  // Desktop: render the currently active settings section
   var activeSection = document.querySelector('.settings-sidebar-item.active');
   var sectionName = 'categories';
   if (activeSection) {
@@ -9061,13 +9437,9 @@ function renderSettingsView() {
     else if (txt.includes('sources')) sectionName = 'sources';
     else if (txt.includes('integrations')) sectionName = 'integrations';
     else if (txt.includes('templates')) sectionName = 'templates';
+    else if (txt.includes('users')) sectionName = 'users';
   }
-  // Render the section content
-  if (sectionName === 'categories') renderCategoriesSection();
-  else if (sectionName === 'customers') renderCustomersSection();
-  else if (sectionName === 'sources') renderSourcesSection();
-  else if (sectionName === 'integrations') renderIntegrationsSection();
-  else if (sectionName === 'templates') renderSettingsTab(_currentSettingsTab);
+  switchSettingsSection(sectionName);
 }
 
 function updateTemplateEmoji(el) {
