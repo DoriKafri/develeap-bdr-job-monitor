@@ -3718,6 +3718,22 @@
       "status": "paused",
       "createdAt": "2026-03-06T19:48:10.772Z",
       "completedAt": null
+    },
+    {
+      "id": "mmfbe8qug3ao",
+      "contactName": "Dana Cohen Vp",
+      "contactTitle": "",
+      "contactKey": "dana cohen vp",
+      "contactPhoto": "",
+      "company": "Zenity",
+      "companyLogo": "https://www.google.com/s2/favicons?domain=zenity.io&sz=128",
+      "linkedinUrl": "https://www.linkedin.com/in/dana-cohen-vp/",
+      "message": "Dana, I help companies like Zenity solve the #1 reason Agentic AI hires fail  -  they take 6 months and burn $200K before producing anything.\n\nWe've embedded Agentic AI squads at Plus500, Aqua, CyberArk that ship in 2 weeks  -  not 6 months.\n\nThat AI Agent Security role you're hiring for? I have a faster path. Open to hearing it?",
+      "isConnected": false,
+      "customerType": "prospect",
+      "status": "paused",
+      "createdAt": "2026-03-06T19:55:54.438Z",
+      "completedAt": null
     }
   ],
   "lastProcessed": ""
