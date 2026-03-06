@@ -7336,15 +7336,29 @@ function restoreFromHash() {
   _skipHashUpdate = true;
   try {
     const params = new URLSearchParams(hash);
-    // Restore view
+    // 1. Set all state variables BEFORE triggering any UI updates
+    const cat = params.get('cat');
+    if (cat) currentFilter = cat;
+    const q = params.get('q');
+    if (q) {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = q;
+    }
+    const sort = params.get('sort');
+    const dir = params.get('dir');
+    if (sort) sortCol = sort;
+    if (dir) sortDir = dir;
+
+    // 2. Now switch view (this calls applyAllFilters with correct state)
     const view = params.get('view');
     if (view && ['all','develeap','new','queue','settings'].includes(view)) {
       setView(view);
+    } else {
+      applyAllFilters();
     }
-    // Restore category filter
-    const cat = params.get('cat');
+
+    // 3. Sync category filter chip UI
     if (cat) {
-      currentFilter = cat;
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
       const matchChip = document.querySelector('.filter-chip[data-filter="' + cat + '"]');
       if (matchChip) matchChip.classList.add('active');
@@ -7354,30 +7368,17 @@ function restoreFromHash() {
       }
       syncStatCardHighlight();
     }
-    // Restore search
-    const q = params.get('q');
-    if (q) {
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = q;
-    }
-    // Restore sort
-    const sort = params.get('sort');
-    const dir = params.get('dir');
-    if (sort) sortCol = sort;
-    if (dir) sortDir = dir;
-    // Apply filters after restoring state
-    if (!view || !['queue','settings'].includes(view)) {
-      applyAllFilters();
-    }
-    // Restore detail panel (open job)
+
+    // 4. Restore detail panel (open job) — delay to let render complete
     const jobId = params.get('job');
     if (jobId) {
-      setTimeout(() => openDetail(jobId), 300);
+      setTimeout(() => { _skipHashUpdate = true; openDetail(jobId); _skipHashUpdate = false; }, 600);
     }
-    // Restore settings sub-section
+
+    // 5. Restore settings sub-section
     if (view === 'settings') {
       const section = params.get('section');
-      if (section) setTimeout(() => switchSettingsSection(section), 200);
+      if (section) setTimeout(() => { _skipHashUpdate = true; switchSettingsSection(section); _skipHashUpdate = false; }, 400);
     }
   } finally {
     _skipHashUpdate = false;
