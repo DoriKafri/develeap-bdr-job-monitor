@@ -7709,6 +7709,79 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
 
+// ===== MOBILE BACK BUTTON (Android / PWA) =================================
+// Pushes history state when panels open so the browser back button (or Android
+// hardware back) closes them instead of navigating away from the app.
+(function() {
+  var _panelStack = [];
+
+  function _pushPanel(name) {
+    _panelStack.push(name);
+    history.pushState({ panel: name }, '');
+  }
+
+  function _popPanel() {
+    _panelStack.pop();
+  }
+
+  // Close the topmost open panel; returns true if something was closed
+  function _closeTopPanel() {
+    // Priority order: modals > detail sidebar > settings/queue view > nav sidebar
+    var el;
+    el = document.querySelector('.sos-queue-modal.open');
+    if (el) { closeSOSQueueModal(); return true; }
+    el = document.querySelector('.modal-overlay.open');
+    if (el) { closePreviewModal(); return true; }
+    el = document.querySelector('.hidden-panel.open');
+    if (el) { closeHiddenPanel(); return true; }
+    el = document.getElementById('sidebarOverlay');
+    if (el && el.classList.contains('active')) { el.classList.remove('active'); return true; }
+    el = document.getElementById('settingsView');
+    if (el && el.classList.contains('active')) { setView('all'); return true; }
+    el = document.getElementById('queueView');
+    if (el && el.classList.contains('active')) { setView('all'); return true; }
+    el = document.querySelector('.sidebar-nav.open');
+    if (el) { toggleSidebar(false); return true; }
+    return false;
+  }
+
+  // Intercept panel-opening functions to push history state
+  var _origToggleSidebar = window.toggleSidebar;
+  window.toggleSidebar = function(show) {
+    var sidebar = document.querySelector('.sidebar-nav');
+    var isOpen = sidebar && sidebar.classList.contains('open');
+    _origToggleSidebar.apply(this, arguments);
+    var nowOpen = sidebar && sidebar.classList.contains('open');
+    if (!isOpen && nowOpen) _pushPanel('nav');
+  };
+
+  var _origOpenDetail = window.openDetail;
+  window.openDetail = function() {
+    _origOpenDetail.apply(this, arguments);
+    _pushPanel('detail');
+  };
+
+  var _origSetView = window.setView;
+  window.setView = function(v) {
+    // Only push if going TO settings/queue FROM a different view
+    var prev = window.currentView;
+    _origSetView.apply(this, arguments);
+    if ((v === 'settings' || v === 'queue') && prev !== v) _pushPanel(v);
+  };
+
+  var _origOpenHidden = window.openHiddenPanel;
+  window.openHiddenPanel = function() {
+    _origOpenHidden.apply(this, arguments);
+    _pushPanel('hidden');
+  };
+
+  // Handle popstate (back button)
+  window.addEventListener('popstate', function(e) {
+    _popPanel();
+    _closeTopPanel();
+  });
+})();
+
 // ===== CONNECTION REQUEST TEMPLATES BY CUSTOMER TYPE =====
 const DEFAULT_CONNECT_TEMPLATES_PROSPECT = [
   {
