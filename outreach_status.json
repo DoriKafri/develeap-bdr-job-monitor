@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T08:54:40.937Z",
+  "lastUpdated": "2026-03-06T08:55:33.550Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -140,7 +140,25 @@
     "jordan yefet": "invited",
     "oren ben-shimol": "not_contacted",
     "michael mesguich": "invited",
-    "adam schneider": "invited"
+    "adam schneider": "invited",
+    "gadi mazor": "invited",
+    "avi turgeman": "invited",
+    "inbal faina rotburd": "invited",
+    "tomer aharon": "invited",
+    "dan robinson": "invited",
+    "tomer parnasa": "invited",
+    "racheli agam": "invited",
+    "ofer peer": "invited",
+    "tamir amram": "invited",
+    "nurit eldar": "invited",
+    "micha bitton": "invited",
+    "oren medina": "invited",
+    "or moshayoff": "invited",
+    "idan hay": "invited",
+    "itai alzaradel": "invited",
+    "shira mintz": "invited",
+    "moshe levine": "invited",
+    "mordechai shalev": "invited"
   },
   "connected": [
     "check point|nataly kremer"
