@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T20:55:11.164Z",
+  "lastUpdated": "2026-03-06T21:16:26.308Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -112,6 +112,22 @@
       "label": "Response Tracking",
       "description": "Track responses, mark connections, qualify leads.",
       "type": "human"
+    },
+    "if_branch": {
+      "enabled": true,
+      "label": "IF Condition",
+      "description": "Branch workflow based on a condition",
+      "type": "logic",
+      "conditionMode": "rules",
+      "rules": [
+        {
+          "field": "job.title",
+          "op": "contains",
+          "value": ""
+        }
+      ],
+      "ruleLogic": "AND",
+      "falseBehavior": "skip"
     },
     "crmUpdate": {
       "enabled": true,
