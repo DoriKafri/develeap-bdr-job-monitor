@@ -77,9 +77,20 @@
   /* ── MAIN CONTENT ── */
   .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
 
-  .stats-bar { display:flex; gap:8px; padding:12px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
+  .stats-bar-wrap { position:relative; padding:12px 0; }
+  .stats-bar { display:flex; gap:8px; background:transparent; border-bottom:none; flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; padding:2px 0 6px; }
+  .stats-bar::-webkit-scrollbar { display:none; }
+  .stats-bar-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.95); border:1px solid var(--border); box-shadow:0 2px 8px rgba(0,0,0,0.1); cursor:pointer; display:none; align-items:center; justify-content:center; font-size:14px; color:var(--text-light); transition:opacity 0.2s,box-shadow 0.2s; }
+  .stats-bar-arrow:hover { box-shadow:0 2px 12px rgba(0,0,0,0.18); color:var(--text); }
+  .stats-bar-arrow.left { left:-4px; }
+  .stats-bar-arrow.right { right:-4px; }
+  .stats-bar-arrow.visible { display:flex; }
+  .stats-bar-fade { position:absolute; top:0; bottom:0; width:32px; z-index:2; pointer-events:none; }
+  .stats-bar-fade.left { left:0; background:linear-gradient(to right, var(--bg-page) 0%, transparent 100%); }
+  .stats-bar-fade.right { right:0; background:linear-gradient(to left, var(--bg-page) 0%, transparent 100%); }
+  .stats-bar-fade.hidden { opacity:0; }
   #categoryStatsContainer, #categoryFilterContainer { display:contents; }
-  .stat-card { flex:0 1 auto; padding:10px 14px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+  .stat-card { flex:0 0 auto; padding:10px 14px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
   .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
   .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
   .stat-card.develeap { border-left-color:var(--accent); }
@@ -294,8 +305,6 @@
 
   /* Tablet (768px-1024px) */
   @media (max-width:1024px) {
-    .stats-bar { flex-wrap:wrap; gap:12px; }
-    .stat-card { min-width:calc(50% - 6px); padding:12px 16px; }
     .filters-bar { gap:8px; }
   }
 
@@ -308,8 +317,9 @@
     .top-bar { left:0; }
     .top-bar .hamburger { display:flex; }
     .main-content { margin-left:0; margin-top:48px; padding:16px; }
-    .stats-bar { padding:16px 0; gap:8px; flex-wrap:wrap; }
-    .stat-card { min-width:calc(50% - 4px); padding:10px 12px; }
+    .stats-bar { padding:16px 0; gap:8px; flex-wrap:wrap; overflow-x:visible; }
+    .stat-card { min-width:calc(50% - 4px); padding:10px 12px; flex:0 1 auto; }
+    .stats-bar-arrow, .stats-bar-fade { display:none !important; }
     .stat-number { font-size:22px; }
     .stat-label { font-size:11px; }
     .filters-bar { padding:12px 0; gap:6px; }
@@ -717,12 +727,18 @@
   <div class="main-content">
     <div class="new-listings-banner" id="newListingsBanner" onclick="reloadNewListings()"></div>
 
-    <div class="stats-bar" id="statsBar" style="display:flex;gap:8px;flex-wrap:wrap;">
-    <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
-    <div class="stat-card new" data-stat="new" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
-    <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)" style="flex:0 1 auto;"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
-    <div id="categoryStatsContainer"></div>
-  </div>
+    <div class="stats-bar-wrap">
+      <div class="stats-bar-fade left hidden" id="statsBarFadeL"></div>
+      <div class="stats-bar-fade right hidden" id="statsBarFadeR"></div>
+      <button class="stats-bar-arrow left" id="statsBarArrowL" onclick="scrollStatsBar(-1)">&#9664;</button>
+      <button class="stats-bar-arrow right" id="statsBarArrowR" onclick="scrollStatsBar(1)">&#9654;</button>
+      <div class="stats-bar" id="statsBar">
+        <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
+        <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
+        <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
+        <div id="categoryStatsContainer"></div>
+      </div>
+    </div>
 
   <div class="filters-bar">
     <div class="search-box">
@@ -7139,6 +7155,7 @@ function initApp() {
   buildSourceDropdown();
   buildCategoryFilters();
   updateStats(); renderJobs();
+  _initStatsBarScroll();
   updateFreshnessDisplay();
   setInterval(updateFreshnessDisplay, 60000); // refresh relative time every minute
   setInterval(checkForNewListings, 5 * 60 * 1000); // check for updates every 5 min
@@ -7252,12 +7269,13 @@ function updateStats() {
     statDiv.setAttribute('data-stat', key);
     statDiv.setAttribute('onclick', 'filterByStat(this)');
     statDiv.style.borderLeftColor = color;
-    statDiv.style.flex = '0 1 auto';
     statDiv.innerHTML = `<div class="stat-number" style="color:${color}">${count}</div><div class="stat-label">${label} Listings</div>`;
     catStatsDivs.push(statDiv);
   }
   catStatsContainer.innerHTML = '';
   catStatsDivs.forEach(div => catStatsContainer.appendChild(div));
+  // Update scroll arrows after stat cards change
+  setTimeout(_updateStatsBarArrows, 50);
 }
 
 // ===== COLUMN FILTER LOGIC =====
@@ -7450,6 +7468,30 @@ function syncStatCardHighlight(){
   const card=document.querySelector('.stat-card[data-stat="'+statVal+'"]');
   if(card)card.classList.add('stat-active');
   else document.querySelector('.stat-card[data-stat="all"]').classList.add('stat-active');
+}
+
+// ── Stats Bar Scroll ────────────────────────────────────────────────────
+function scrollStatsBar(dir) {
+  const bar = document.getElementById('statsBar');
+  if (!bar) return;
+  bar.scrollBy({ left: dir * 260, behavior: 'smooth' });
+}
+function _updateStatsBarArrows() {
+  const bar = document.getElementById('statsBar');
+  if (!bar) return;
+  const canLeft = bar.scrollLeft > 4;
+  const canRight = bar.scrollLeft < bar.scrollWidth - bar.clientWidth - 4;
+  document.getElementById('statsBarArrowL').classList.toggle('visible', canLeft);
+  document.getElementById('statsBarArrowR').classList.toggle('visible', canRight);
+  document.getElementById('statsBarFadeL').classList.toggle('hidden', !canLeft);
+  document.getElementById('statsBarFadeR').classList.toggle('hidden', !canRight);
+}
+function _initStatsBarScroll() {
+  const bar = document.getElementById('statsBar');
+  if (!bar) return;
+  bar.addEventListener('scroll', _updateStatsBarArrows);
+  new ResizeObserver(_updateStatsBarArrows).observe(bar);
+  _updateStatsBarArrows();
 }
 
 // ── Source Dropdown ──────────────────────────────────────────────────────
