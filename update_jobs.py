@@ -2240,6 +2240,32 @@ def load_existing_jobs(html: str) -> list[dict]:
     return []
 
 
+# ── Company name normalization ──────────────────────────────────────────────
+# Maps variant/alternate company names to a single canonical form.
+# Keys are lowercase; values are the canonical display name.
+COMPANY_ALIASES = {
+    "checkpoint":           "Check Point Software",
+    "check point software": "Check Point Software",
+    "check point":          "Check Point Software",
+    "vastdata":             "VAST Data",
+    "vast data":            "VAST Data",
+    "wizinc":               "Wiz",
+    "wiz":                  "Wiz",
+    "doitintl":             "DoiT International",
+    "doit international":   "DoiT International",
+    "tikalk":               "Tikal",
+    "tikal":                "Tikal",
+    "somekhchaikin":        "KPMG Israel",
+    "kpmg":                 "KPMG Israel",
+    "kpmg israel":          "KPMG Israel",
+}
+
+
+def _normalize_company(name: str) -> str:
+    """Return the canonical company name, or the original if no alias."""
+    return COMPANY_ALIASES.get(name.lower().strip(), name)
+
+
 def _normalize_title(title: str) -> str:
     """Normalize job title for dedup matching.
 
@@ -2255,7 +2281,12 @@ def _normalize_title(title: str) -> str:
     t = re.sub(r'\s*-\s*(?:comeet|lever|greenhouse|jobgether|myworkdayjobs\.com)\s*$', '', t)
     # 3. Remove "- CAREERS AT <company>" suffix
     t = re.sub(r'\s*-\s*careers\s+at\s+\S+\s*$', '', t)
-    # Remove parenthetical job IDs like (25020)
+    # 4. Remove LinkedIn-style "Company Name גיוס עובדים" prefix (Hebrew for "hiring")
+    #    e.g. "Check Point Software גיוס עובדים Senior FinOps Engineer" → "Senior FinOps Engineer"
+    t = re.sub(r'^.*?גיוס\s*עובדים\s*', '', t)
+    # 5. Remove "דרושים" (wanted) prefix patterns: "דרושים Role ל..." → "Role"
+    t = re.sub(r'^דרושים\s*', '', t)
+    # 6. Remove parenthetical job IDs like (25020)
     t = re.sub(r'\s*\(\d+\)\s*', ' ', t)
     t = re.sub(r'\s+', ' ', t).strip()
     return t
@@ -2272,12 +2303,16 @@ def _is_company_page(j: dict) -> bool:
     t_lower = title.lower()
     c_lower = company.lower()
 
-    # "Jobs at X" or "Jobs at X - Comeet"
-    if re.match(r'^jobs\s+at\s+', t_lower):
+    # "Jobs at X" or "Jobs at X - Comeet" or "Careers at X"
+    if re.match(r'^(?:jobs|careers)\s+at\s+', t_lower):
         return True
-    # Title == company name (with optional source suffix)
-    cleaned = re.sub(r'\s*-\s*(comeet|lever|greenhouse|jobgether)\s*$', '', t_lower).strip()
+    # Title == company name (with optional source suffix like "- Lever", "- Careers")
+    cleaned = re.sub(r'\s*-\s*(comeet|lever|greenhouse|jobgether|careers)\s*$', '', t_lower).strip()
     if cleaned == c_lower and cleaned:
+        return True
+    # Also check against normalized company name
+    norm_lower = _normalize_company(company).lower()
+    if cleaned == norm_lower and cleaned:
         return True
     return False
 
@@ -2293,7 +2328,7 @@ def _consolidate_duplicates(jobs: list[dict]) -> list[dict]:
 
     groups = defaultdict(list)
     for j in jobs:
-        comp = j.get("company", "").lower().strip()
+        comp = _normalize_company(j.get("company", "")).lower().strip()
         norm = _normalize_title(j.get("title", ""))
         groups[(comp, norm)].append(j)
 
@@ -2469,13 +2504,17 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} closed)")
     existing = cleaned
 
+    # Normalize company names (e.g. "Checkpoint" → "Check Point Software")
+    for j in existing:
+        j["company"] = _normalize_company(j.get("company", ""))
+
     # Consolidate duplicates within existing listings before processing new ones
     existing = _consolidate_duplicates(existing)
 
-    # Index existing by URL, by exact company+title, AND by company+normalized_title
+    # Index existing by URL, by exact company+title, AND by normalized_company+normalized_title
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
-    existing_norm = {f'{j.get("company","").lower()}|{_normalize_title(j.get("title",""))}': j for j in existing}
+    existing_norm = {f'{_normalize_company(j.get("company","")).lower()}|{_normalize_title(j.get("title",""))}': j for j in existing}
 
     # Mark existing jobs as not new; update stakeholders (preserve enrichment)
     for j in existing:
@@ -2512,14 +2551,18 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
 
     truly_new = []
     for j in new_jobs:
+        # Normalize company name on incoming jobs
+        j["company"] = _normalize_company(j.get("company", ""))
+
         # Skip company-page listings from new jobs too
         if _is_company_page(j):
             log.info(f"  Skipping company-page listing: \"{j.get('title', '')}\" ({j.get('company', '')})")
             continue
 
         url = j.get("sourceUrl", "")
-        key = f'{j.get("company","").lower()}|{j.get("title","").lower()}'
-        norm_key = f'{j.get("company","").lower()}|{_normalize_title(j.get("title",""))}'
+        comp_lower = j.get("company", "").lower()
+        key = f'{comp_lower}|{j.get("title","").lower()}'
+        norm_key = f'{comp_lower}|{_normalize_title(j.get("title",""))}'
 
         # Check all three indexes: URL, exact key, and normalized key
         if url not in existing_urls and key not in existing_keys and norm_key not in existing_norm:
