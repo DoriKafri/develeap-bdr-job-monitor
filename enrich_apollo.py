@@ -25,9 +25,18 @@ DOCS_HTML = "docs/index.html"
 REQUEST_DELAY = 0.25  # seconds between API calls
 
 
-def apollo_headers():
+def apollo_post_headers():
+    """Headers for POST requests (people match)."""
     return {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+        "x-api-key": APOLLO_API_KEY,
+    }
+
+
+def apollo_get_headers():
+    """Headers for GET requests (org enrichment) — no Content-Type."""
+    return {
         "Cache-Control": "no-cache",
         "x-api-key": APOLLO_API_KEY,
     }
@@ -42,8 +51,8 @@ def extract_stakeholders_from_html(path):
         with open(path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        # Find ALL_JOBS array
-        match = re.search(r'const\s+ALL_JOBS\s*=\s*\[', content)
+        # Find ALL_JOBS array (may use let or const)
+        match = re.search(r'(?:let|const|var)\s+ALL_JOBS\s*=\s*\[', content)
         if not match:
             print("Warning: Could not find ALL_JOBS in HTML")
             return []
@@ -111,7 +120,7 @@ def extract_companies_from_html(path):
     return sorted(companies)
 
 
-def enrich_person(name, company, email=None, linkedin_url=None):
+def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
     """Enrich a person via Apollo People Match API."""
     parts = name.strip().split(" ", 1)
     first_name = parts[0]
@@ -133,7 +142,7 @@ def enrich_person(name, company, email=None, linkedin_url=None):
     try:
         resp = requests.post(
             f"{APOLLO_BASE}/people/match",
-            headers=apollo_headers(),
+            headers=apollo_post_headers(),
             json=payload,
             timeout=15,
         )
@@ -157,27 +166,51 @@ def enrich_person(name, company, email=None, linkedin_url=None):
                 }
             else:
                 return None
-        elif resp.status_code == 429:
+        elif resp.status_code == 429 and not _retried:
             print("    Rate limited, waiting 60s...")
             time.sleep(60)
-            return enrich_person(name, company, email, linkedin_url)  # retry once
+            return enrich_person(name, company, email, linkedin_url, _retried=True)
         else:
-            print(f"    People match failed: HTTP {resp.status_code}")
+            try:
+                err_body = resp.text[:200]
+            except Exception:
+                err_body = ""
+            print(f"    People match failed: HTTP {resp.status_code} {err_body}")
             return None
     except Exception as e:
         print(f"    People match error: {e}")
         return None
 
 
-def enrich_organization(company_name):
-    """Enrich a company via Apollo Organization Enrichment API."""
+def enrich_organization(company_name, domain=None, _retried=False):
+    """Enrich a company via Apollo Organization Enrichment API.
+    Tries domain first (preferred), falls back to organization_name."""
     try:
+        # Apollo prefers domain for org enrichment; fall back to name
+        params = {}
+        if domain:
+            params["domain"] = domain
+        else:
+            # Try common domain patterns as a guess
+            clean = company_name.lower().strip().replace(" ", "")
+            params["domain"] = f"{clean}.com"
+
         resp = requests.get(
             f"{APOLLO_BASE}/organizations/enrich",
-            headers=apollo_headers(),
-            params={"organization_name": company_name},
+            headers=apollo_get_headers(),
+            params=params,
             timeout=15,
         )
+
+        # If domain guess failed, retry with organization_name
+        if resp.status_code != 200 and not domain:
+            resp = requests.get(
+                f"{APOLLO_BASE}/organizations/enrich",
+                headers=apollo_get_headers(),
+                params={"domain": company_name.lower().strip()},
+                timeout=15,
+            )
+
         if resp.status_code == 200:
             data = resp.json()
             org = data.get("organization")
@@ -204,12 +237,16 @@ def enrich_organization(company_name):
                 }
             else:
                 return None
-        elif resp.status_code == 429:
+        elif resp.status_code == 429 and not _retried:
             print("    Rate limited, waiting 60s...")
             time.sleep(60)
-            return enrich_organization(company_name)  # retry once
+            return enrich_organization(company_name, domain, _retried=True)
         else:
-            print(f"    Org enrichment failed: HTTP {resp.status_code}")
+            try:
+                err_body = resp.text[:200]
+            except Exception:
+                err_body = ""
+            print(f"    Org enrichment failed: HTTP {resp.status_code} {err_body}")
             return None
     except Exception as e:
         print(f"    Org enrichment error: {e}")
@@ -242,12 +279,13 @@ def main():
     companies = extract_companies_from_html(DOCS_HTML)
     print(f"  Found {len(stakeholders)} stakeholders, {len(companies)} companies")
 
-    # 2. Enrich contacts
-    contacts_enriched = dict(existing)  # preserve existing
+    # 2. Enrich contacts (skip already-enriched, retry not-found from previous runs)
+    contacts_enriched = {k: v for k, v in existing.items() if v.get("apolloId")}
+    skipped_contacts = len(contacts_enriched)
     new_contacts = 0
     for i, sh in enumerate(stakeholders):
         key = sh["key"]
-        if key in contacts_enriched and contacts_enriched[key].get("apolloId"):
+        if key in contacts_enriched:
             continue  # already enriched
 
         print(f"  [{i+1}/{len(stakeholders)}] Enriching: {sh['name']} @ {sh['company']}")
@@ -268,12 +306,13 @@ def main():
 
         time.sleep(REQUEST_DELAY)
 
-    # 3. Enrich organizations
-    orgs_enriched = dict(existing_orgs)
+    # 3. Enrich organizations (skip already-enriched, retry not-found)
+    orgs_enriched = {k: v for k, v in existing_orgs.items() if v.get("apolloId")}
+    skipped_orgs = len(orgs_enriched)
     new_orgs = 0
     for i, company in enumerate(companies):
         key = company.lower().strip()
-        if key in orgs_enriched and orgs_enriched[key].get("apolloId"):
+        if key in orgs_enriched:
             continue  # already enriched
 
         print(f"  [{i+1}/{len(companies)}] Enriching org: {company}")
