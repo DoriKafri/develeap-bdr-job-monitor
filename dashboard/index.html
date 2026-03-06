@@ -701,7 +701,32 @@
   .wf-save-status.unsaved { color:var(--warning); }
   .wf-body { display:flex; flex:1; overflow:hidden; }
   .wf-canvas { flex:1; background:linear-gradient(135deg,rgba(226,239,244,0.4) 0%,rgba(224,242,245,0.3) 100%); overflow:auto; position:relative; padding:40px; display:flex; align-items:center; justify-content:center; }
-  .wf-canvas svg { display:block; }
+  .wf-canvas svg { display:block; transform-origin:center center; transition:transform 0.15s ease-out; }
+  /* Zoom controls */
+  .wf-zoom-controls { position:absolute; bottom:20px; right:20px; display:flex; gap:4px; background:white; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.12); padding:4px; z-index:10; }
+  .wf-zoom-btn { width:36px; height:36px; border:none; background:transparent; cursor:pointer; border-radius:6px; font-size:18px; color:var(--text); display:flex; align-items:center; justify-content:center; transition:all 0.15s; font-weight:600; }
+  .wf-zoom-btn:hover { background:var(--bg); color:var(--accent-dark); }
+  .wf-zoom-btn:active { background:var(--primary-light); }
+  .wf-zoom-label { font-size:11px; font-weight:600; color:var(--text-light); min-width:42px; text-align:center; display:flex; align-items:center; justify-content:center; user-select:none; }
+  .wf-zoom-divider { width:1px; background:var(--border); margin:4px 0; }
+  /* Toolbar */
+  .wf-toolbar { position:absolute; top:12px; left:12px; display:flex; gap:6px; z-index:10; }
+  .wf-toolbar-btn { display:flex; align-items:center; gap:6px; padding:8px 14px; background:white; border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:12px; font-weight:600; color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:all 0.2s; font-family:inherit; }
+  .wf-toolbar-btn:hover { border-color:var(--accent); background:var(--accent-light); color:var(--accent-dark); box-shadow:0 2px 12px rgba(255,177,0,0.15); }
+  .wf-toolbar-btn .icon { font-size:14px; }
+  .wf-add-menu { position:absolute; top:42px; left:0; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.12); padding:6px; min-width:260px; z-index:20; animation:wfSlideIn 0.15s ease-out; max-height:400px; overflow-y:auto; }
+  .wf-add-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; cursor:pointer; transition:background 0.15s; }
+  .wf-add-item:hover { background:var(--bg); }
+  .wf-add-item .icon { font-size:18px; width:28px; text-align:center; flex-shrink:0; }
+  .wf-add-item .info { flex:1; }
+  .wf-add-item .name { font-size:13px; font-weight:600; color:var(--text); }
+  .wf-add-item .desc { font-size:11px; color:var(--text-light); margin-top:2px; line-height:1.3; }
+  .wf-add-item .type-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; flex-shrink:0; }
+  .wf-add-item .type-badge.auto { background:#e0f7f0; color:#0d7a5f; }
+  .wf-add-item .type-badge.human { background:#fff3e0; color:#e65100; }
+  .wf-add-item .type-badge.throttled { background:#fce4ec; color:#c62828; }
+  .wf-add-sep { height:1px; background:var(--border); margin:6px 0; }
+  .wf-add-section-label { font-size:10px; font-weight:700; text-transform:uppercase; color:var(--text-lighter); letter-spacing:0.5px; padding:6px 12px 4px; }
   .wf-config-panel { width:340px; background:white; border-left:1px solid var(--border); overflow-y:auto; padding:24px; box-shadow:-2px 0 8px rgba(0,0,0,0.04); animation:wfSlideIn 0.3s ease-out; }
   @keyframes wfSlideIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
   .wf-config-empty { text-align:center; color:var(--text-light); padding:60px 20px; font-size:14px; }
@@ -1586,7 +1611,21 @@
     </div>
   </div>
   <div class="wf-body">
-    <div class="wf-canvas" id="wfCanvas"></div>
+    <div class="wf-canvas" id="wfCanvas">
+      <div class="wf-toolbar" id="wfToolbar">
+        <button class="wf-toolbar-btn" onclick="_wfToggleAddMenu(event)"><span class="icon">＋</span> Add Node</button>
+        <button class="wf-toolbar-btn" onclick="_wfFitCanvas()" title="Fit to screen"><span class="icon">⊞</span> Fit</button>
+      </div>
+      <div class="wf-zoom-controls" id="wfZoomControls">
+        <button class="wf-zoom-btn" onclick="_wfZoom(-0.1)" title="Zoom out">−</button>
+        <div class="wf-zoom-divider"></div>
+        <span class="wf-zoom-label" id="wfZoomLabel">100%</span>
+        <div class="wf-zoom-divider"></div>
+        <button class="wf-zoom-btn" onclick="_wfZoom(0.1)" title="Zoom in">＋</button>
+        <div class="wf-zoom-divider"></div>
+        <button class="wf-zoom-btn" onclick="_wfZoomReset()" title="Reset zoom" style="font-size:13px">↺</button>
+      </div>
+    </div>
     <div class="wf-config-panel" id="wfConfigPanel">
       <div class="wf-config-empty">Click a node to configure</div>
     </div>
@@ -11692,6 +11731,8 @@ var _WF_DIRTY = false;
 var _WF_SAVE_TIMEOUT = null;
 var _WF_GITHUB_SHA = null;
 var _WF_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/contents/workflow_config.json';
+var _WF_ZOOM = 1.0;
+var _WF_ADD_MENU_OPEN = false;
 
 var _WF_NODE_ORDER = [
   'discovery','dedup','customerMatch','enrichment','crmSync',
@@ -11766,7 +11807,12 @@ async function _saveWorkflowConfig() {
 function renderWorkflowView() {
   var canvas = document.getElementById('wfCanvas');
   if (!canvas || !_WF_CONFIG) return;
-  canvas.innerHTML = '';
+  // Remove old SVG and add-menu but keep toolbar and zoom controls
+  var oldSvg = canvas.querySelector('svg');
+  if(oldSvg) oldSvg.remove();
+  var oldMenu = canvas.querySelector('.wf-add-menu');
+  if(oldMenu) oldMenu.remove();
+  _WF_ADD_MENU_OPEN = false;
   _wfDrawCanvas(canvas);
 }
 
@@ -11853,7 +11899,18 @@ function _wfDrawCanvas(container) {
     svg.appendChild(fo);
   });
 
+  svg.style.transform = 'scale('+_WF_ZOOM+')';
   container.appendChild(svg);
+  // Attach wheel zoom if not already attached
+  if(!container._wfWheelAttached){
+    container._wfWheelAttached = true;
+    container.addEventListener('wheel', function(e){
+      if(e.ctrlKey || e.metaKey){
+        e.preventDefault();
+        _wfZoom(e.deltaY < 0 ? 0.05 : -0.05);
+      }
+    }, {passive:false});
+  }
 }
 
 function _wfMetric(id) {
@@ -12006,9 +12063,13 @@ function _wfFollowUpCfg(c) {
 
 function _wfSimpleCfg(id, c) {
   var nd = _WF_NODES[id];
+  var coreNodes = ['discovery','dedup','customerMatch','enrichment','crmSync','review','throttle','outreach','followUp','responseTracking','crmUpdate'];
+  var isCustom = coreNodes.indexOf(id) < 0;
   return '<div class="wf-section"><div class="wf-section-title">Status</div>'+
     '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.enabled?'checked':'')+' onchange="_wfToggle(\''+id+'\',this.checked)"> Enabled</label></div>'+
-    '<p class="wf-form-hint" style="margin-top:12px">'+nd.desc+'</p></div>';
+    '<p class="wf-form-hint" style="margin-top:12px">'+nd.desc+'</p></div>'+
+    (isCustom ? '<div class="wf-section"><div class="wf-section-title">Actions</div>'+
+    '<button onclick="_wfRemoveNode(\''+id+'\')" style="width:100%;padding:10px;background:#fce4ec;color:#c62828;border:1px solid #ef9a9a;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;transition:all 0.2s" onmouseover="this.style.background=\'#ef9a9a\'" onmouseout="this.style.background=\'#fce4ec\'">🗑 Remove Node</button></div>' : '');
 }
 
 /* ---- Helpers ---- */
@@ -12085,6 +12146,126 @@ function _wfMsg(type, msg) {
   d.textContent = msg;
   panel.insertBefore(d, panel.firstChild);
   setTimeout(function(){d.remove()}, 3000);
+}
+
+/* ---- Zoom Controls ---- */
+function _wfZoom(delta) {
+  _WF_ZOOM = Math.min(2.0, Math.max(0.3, _WF_ZOOM + delta));
+  _wfApplyZoom();
+}
+function _wfZoomReset() {
+  _WF_ZOOM = 1.0;
+  _wfApplyZoom();
+}
+function _wfFitCanvas() {
+  var canvas = document.getElementById('wfCanvas');
+  var svg = canvas ? canvas.querySelector('svg') : null;
+  if(!svg) return;
+  var cw = canvas.clientWidth - 80, ch = canvas.clientHeight - 80;
+  var sw = parseFloat(svg.getAttribute('width')), sh = parseFloat(svg.getAttribute('height'));
+  if(!sw || !sh) return;
+  _WF_ZOOM = Math.min(cw/sw, ch/sh, 1.5);
+  _WF_ZOOM = Math.round(_WF_ZOOM * 100) / 100;
+  _wfApplyZoom();
+}
+function _wfApplyZoom() {
+  var canvas = document.getElementById('wfCanvas');
+  var svg = canvas ? canvas.querySelector('svg') : null;
+  if(svg) svg.style.transform = 'scale('+_WF_ZOOM+')';
+  var label = document.getElementById('wfZoomLabel');
+  if(label) label.textContent = Math.round(_WF_ZOOM*100)+'%';
+}
+
+/* ---- Add Node Toolbar ---- */
+var _WF_NODE_TEMPLATES = [
+  { section:'Pipeline Steps' },
+  { id:'webhook',        icon:'🔗', label:'Webhook',         type:'auto',      desc:'Call external API or trigger webhook' },
+  { id:'filter',         icon:'🔎', label:'Filter / Gate',    type:'auto',      desc:'Filter listings by custom criteria' },
+  { id:'scoring',        icon:'📊', label:'Lead Scoring',     type:'auto',      desc:'Score leads by relevance and fit' },
+  { id:'notification',   icon:'🔔', label:'Notification',     type:'auto',      desc:'Send Slack/email notification' },
+  { id:'approval',       icon:'✅', label:'Approval Gate',    type:'human',     desc:'Require human approval to proceed' },
+  { id:'delay',          icon:'⏱️', label:'Delay / Wait',     type:'throttled', desc:'Wait for a set period before continuing' },
+  { section:'Integrations' },
+  { id:'slack_notify',   icon:'💬', label:'Slack Message',    type:'auto',      desc:'Post to a Slack channel' },
+  { id:'email_send',     icon:'📧', label:'Send Email',       type:'throttled', desc:'Send email via SMTP/API' },
+  { id:'crm_lookup',     icon:'🏢', label:'CRM Lookup',       type:'auto',      desc:'Look up data from CRM' },
+  { id:'ai_enrich',      icon:'🤖', label:'AI Enrichment',    type:'auto',      desc:'Enrich with AI-generated insights' },
+];
+
+function _wfToggleAddMenu(e) {
+  e.stopPropagation();
+  var canvas = document.getElementById('wfCanvas');
+  var existing = canvas.querySelector('.wf-add-menu');
+  if(existing) { existing.remove(); _WF_ADD_MENU_OPEN=false; return; }
+  _WF_ADD_MENU_OPEN = true;
+  var menu = document.createElement('div');
+  menu.className = 'wf-add-menu';
+  var html = '';
+  _WF_NODE_TEMPLATES.forEach(function(t){
+    if(t.section) {
+      html += '<div class="wf-add-section-label">'+t.section+'</div>';
+      return;
+    }
+    // Check if already added (exists in _WF_NODE_ORDER)
+    var exists = _WF_NODE_ORDER.indexOf(t.id) >= 0;
+    html += '<div class="wf-add-item'+(exists?' disabled':'')+'" '+(exists?'title="Already in workflow"':'onclick="_wfAddNode(\''+t.id+'\')"')+' style="'+(exists?'opacity:0.4;cursor:default;':'')+'">'+
+      '<span class="icon">'+t.icon+'</span>'+
+      '<div class="info"><div class="name">'+t.label+(exists?' ✓':'')+'</div><div class="desc">'+t.desc+'</div></div>'+
+      '<span class="type-badge '+t.type+'">'+t.type+'</span></div>';
+  });
+  menu.innerHTML = html;
+  // Position relative to toolbar
+  var toolbar = document.getElementById('wfToolbar');
+  menu.style.top = (toolbar ? toolbar.offsetHeight + 16 : 48)+'px';
+  menu.style.left = '12px';
+  canvas.appendChild(menu);
+  // Close on outside click
+  setTimeout(function(){
+    document.addEventListener('click', _wfCloseAddMenu, {once:true});
+  }, 10);
+}
+
+function _wfCloseAddMenu() {
+  var canvas = document.getElementById('wfCanvas');
+  var m = canvas ? canvas.querySelector('.wf-add-menu') : null;
+  if(m) m.remove();
+  _WF_ADD_MENU_OPEN = false;
+}
+
+function _wfAddNode(templateId) {
+  // Find template
+  var tmpl = _WF_NODE_TEMPLATES.find(function(t){ return t.id === templateId; });
+  if(!tmpl) return;
+  // Don't add duplicates
+  if(_WF_NODE_ORDER.indexOf(templateId) >= 0) return;
+
+  // Add to registry
+  _WF_NODES[templateId] = { icon:tmpl.icon, label:tmpl.label, type:tmpl.type, desc:tmpl.desc };
+  // Add to order (insert before the last node, typically 'crmUpdate')
+  _WF_NODE_ORDER.splice(_WF_NODE_ORDER.length - 1, 0, templateId);
+  // Add default config
+  _WF_CONFIG[templateId] = { enabled:true, label:tmpl.label, description:tmpl.desc, type:tmpl.type };
+  // Close menu, mark dirty, re-render
+  _wfCloseAddMenu();
+  _wfMarkDirty();
+  renderWorkflowView();
+  // Select the new node
+  _wfSelectNode(templateId);
+}
+
+function _wfRemoveNode(nodeId) {
+  // Prevent removing core nodes
+  var coreNodes = ['discovery','dedup','customerMatch','enrichment','crmSync','review','throttle','outreach','followUp','responseTracking','crmUpdate'];
+  if(coreNodes.indexOf(nodeId) >= 0) { _wfMsg('error','Cannot remove core pipeline node'); return; }
+  var idx = _WF_NODE_ORDER.indexOf(nodeId);
+  if(idx >= 0) _WF_NODE_ORDER.splice(idx, 1);
+  delete _WF_NODES[nodeId];
+  delete _WF_CONFIG[nodeId];
+  _WF_SELECTED_NODE = null;
+  _wfMarkDirty();
+  renderWorkflowView();
+  var panel = document.getElementById('wfConfigPanel');
+  if(panel) panel.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>';
 }
 </script>
 </body>
