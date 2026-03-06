@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T21:18:01.553Z",
+  "lastUpdated": "2026-03-06T21:28:57.136Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -118,7 +118,7 @@
       "label": "IF Condition",
       "description": "Branch workflow based on a condition",
       "type": "logic",
-      "conditionMode": "vibe",
+      "conditionMode": "rules",
       "rules": [
         {
           "field": "job.title",
@@ -129,24 +129,6 @@
       "ruleLogic": "AND",
       "falseBehavior": "skip"
     },
-    "while_loop": {
-      "enabled": true,
-      "label": "While Loop",
-      "description": "Repeat until condition is met",
-      "type": "logic",
-      "conditionMode": "rules",
-      "rules": [
-        {
-          "field": "job.title",
-          "op": "contains",
-          "value": ""
-        }
-      ],
-      "ruleLogic": "AND",
-      "maxIterations": 10,
-      "timeoutMinutes": 5,
-      "breakOnError": true
-    },
     "crmUpdate": {
       "enabled": true,
       "autoLog": true,
@@ -154,5 +136,20 @@
       "description": "Logs outreach activity back to HubSpot.",
       "type": "auto"
     }
-  }
+  },
+  "nodeOrder": [
+    "discovery",
+    "dedup",
+    "customerMatch",
+    "enrichment",
+    "crmSync",
+    "review",
+    "throttle",
+    "outreach",
+    "followUp",
+    "responseTracking",
+    "if_branch",
+    "crmUpdate"
+  ],
+  "connections": []
 }
