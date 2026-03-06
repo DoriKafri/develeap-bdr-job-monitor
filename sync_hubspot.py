@@ -200,6 +200,8 @@ def get_contacts_for_company(company_id):
                 "email",
                 "jobtitle",
                 "lifecyclestage",
+                "phone",
+                "mobilephone",
             ],
         },
     )
@@ -311,12 +313,16 @@ def main():
                 contacts = []
                 for c in contacts_raw:
                     cp = c.get("properties", {})
-                    contacts.append({
+                        phone = cp.get("mobilephone") or cp.get("phone") or ""
+                    contact_entry = {
                         "id": c["id"],
                         "name": f'{cp.get("firstname", "")} {cp.get("lastname", "")}'.strip(),
                         "email": cp.get("email", ""),
                         "title": cp.get("jobtitle", ""),
-                    })
+                    }
+                    if phone:
+                        contact_entry["phone"] = phone
+                    contacts.append(contact_entry)
 
                 crm_companies[key] = {
                     "companyId": company_id,
