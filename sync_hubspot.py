@@ -25,22 +25,31 @@ BASE_URL = "https://api.hubapi.com"
 
 
 def _decode_token(raw):
-    """HubSpot tokens normally start with 'pat-' or 'eu1-' or 'na1-'.
-    If the value looks base64-encoded, decode it first."""
+    """HubSpot Personal Access Keys start with 'pat-eu1-' or 'pat-na1-'.
+    If the value is base64-encoded (e.g. from HubSpot's internal UI),
+    try to extract the embedded UUID and construct a proper token."""
     import base64 as b64mod
-    # If it already looks like a raw token, use it as-is
-    if raw.startswith("pat-") or raw.startswith("eu1-") or raw.startswith("na1-"):
+    # Already a proper PAT
+    if raw.startswith("pat-"):
         return raw
-    # Try base64 decode
+    # Try base64 decode to extract embedded token ID
     try:
-        decoded = b64mod.b64decode(raw).decode("utf-8", errors="replace")
-        # Strip any leading non-printable / protobuf framing bytes
-        cleaned = decoded.lstrip("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f $\"")
-        if cleaned.startswith("eu1-") or cleaned.startswith("na1-") or cleaned.startswith("pat-"):
-            print(f"  Token was base64-encoded, decoded to {len(cleaned)} chars starting with {cleaned[:10]}...")
-            return cleaned
+        decoded = b64mod.b64decode(raw + "==", validate=False)
+        text = decoded.decode("utf-8", errors="replace")
+        # Look for UUID pattern like eu1-2d31-7140-4bbb-ab6b-8838d53331ed
+        import re
+        uuid_match = re.search(r'(eu1|na1)-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', text)
+        if uuid_match:
+            print(f"  WARNING: Token appears to be a base64-encoded session token, not a Personal Access Key.")
+            print(f"  Found embedded ID: {uuid_match.group(0)}")
+            print(f"  Please use your HubSpot Personal Access Key (starts with 'pat-eu1-' or 'pat-na1-').")
+            print(f"  Go to: HubSpot Settings > Integrations > Private Apps > Your app > Access Token")
     except Exception:
         pass
+    # If not a recognized format, warn but use as-is
+    if not raw.startswith("pat-"):
+        print(f"  WARNING: Token does not start with 'pat-'. Expected a HubSpot Personal Access Key.")
+        print(f"  Token starts with: {raw[:10]}...")
     return raw
 
 

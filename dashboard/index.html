@@ -829,11 +829,12 @@
                   <span style="background:var(--primary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
                   <div style="font-weight:600;font-size:14px;color:var(--primary)">Connect your HubSpot account</div>
                 </div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:10px;margin-left:32px">Paste your <a href="https://app-eu1.hubspot.com/portal-recommend/l?slug=integrations-api-key" target="_blank" style="color:var(--primary)">HubSpot Personal Access Key</a>. It will be saved securely as an encrypted GitHub Secret (never stored in the browser).</p>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:4px;margin-left:32px">Go to <a href="https://app-eu1.hubspot.com/portal-recommend/l?slug=private-apps" target="_blank" style="color:var(--primary)">HubSpot Settings &gt; Integrations &gt; Private Apps</a>, create a Private App (or open an existing one), and copy the <strong>Access Token</strong>.</p>
+                <p style="font-size:11px;color:var(--text-lighter);margin-bottom:10px;margin-left:32px">The token starts with <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">pat-eu1-</code> or <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">pat-na1-</code>. It will be saved securely as an encrypted GitHub Secret (never stored in the browser).</p>
                 <div style="margin-left:32px;margin-bottom:8px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">HubSpot Token</label>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Private App Access Token</label>
                   <div style="display:flex;gap:8px;align-items:center">
-                    <input type="password" id="hubspotTokenInput" placeholder="Paste your Personal Access Key here" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
+                    <input type="password" id="hubspotTokenInput" placeholder="pat-eu1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
                     <button type="button" onclick="document.getElementById('hubspotTokenInput').type = document.getElementById('hubspotTokenInput').type === 'password' ? 'text' : 'password'" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px" title="Toggle visibility">👁</button>
                   </div>
                 </div>
@@ -7460,7 +7461,12 @@ async function _saveHubSpotSecretsFromUI() {
   const portalId = (portalInput.value || '').trim();
 
   if (!token) {
-    resultEl.textContent = 'Please paste your HubSpot token first.';
+    resultEl.textContent = 'Please paste your HubSpot Private App access token first.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+  if (!token.startsWith('pat-')) {
+    resultEl.innerHTML = 'Token should start with <code>pat-eu1-</code> or <code>pat-na1-</code>. Go to HubSpot > Settings > Integrations > Private Apps and copy the Access Token.';
     resultEl.style.color = 'var(--danger)';
     return;
   }
