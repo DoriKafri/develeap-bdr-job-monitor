@@ -773,7 +773,7 @@
   <div class="filters-bar">
     <div class="search-box">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters()">
+      <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters();updateUrlHash()">
     </div>
     <div class="filter-chip active" data-filter="all" onclick="toggleFilter(this)">All</div>
     <div id="categoryFilterContainer"></div>
@@ -7301,6 +7301,93 @@ function toggleSidebar(show) {
   }
 }
 
+// ===== URL HASH ROUTING (deep linking & shareable URLs) =====
+var _skipHashUpdate = false; // prevent loops when restoring from hash
+
+function updateUrlHash() {
+  if (_skipHashUpdate) return;
+  const params = new URLSearchParams();
+  params.set('view', currentView);
+  if (currentFilter && currentFilter !== 'all') params.set('cat', currentFilter);
+  const search = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+  if (search) params.set('q', search);
+  if (sortCol && sortCol !== 'posted') params.set('sort', sortCol);
+  if (sortDir && sortDir !== 'desc') params.set('dir', sortDir);
+  if (_activeJobForOutreach && document.getElementById('sidebarOverlay').classList.contains('active')) {
+    params.set('job', _activeJobForOutreach.id);
+  }
+  // Settings sub-section
+  if (currentView === 'settings') {
+    const activeSec = document.querySelector('.settings-section[style*="display: block"], .settings-section[style*="display:block"]');
+    if (activeSec && activeSec.id) {
+      const secName = activeSec.id.replace('Section', '');
+      if (secName) params.set('section', secName);
+    }
+  }
+  const hash = params.toString();
+  if (window.location.hash !== '#' + hash) {
+    history.replaceState(null, '', '#' + hash);
+  }
+}
+
+function restoreFromHash() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+  _skipHashUpdate = true;
+  try {
+    const params = new URLSearchParams(hash);
+    // Restore view
+    const view = params.get('view');
+    if (view && ['all','develeap','new','queue','settings'].includes(view)) {
+      setView(view);
+    }
+    // Restore category filter
+    const cat = params.get('cat');
+    if (cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      const matchChip = document.querySelector('.filter-chip[data-filter="' + cat + '"]');
+      if (matchChip) matchChip.classList.add('active');
+      else {
+        const allChip = document.querySelector('.filter-chip[data-filter="all"]');
+        if (allChip) allChip.classList.add('active');
+      }
+      syncStatCardHighlight();
+    }
+    // Restore search
+    const q = params.get('q');
+    if (q) {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = q;
+    }
+    // Restore sort
+    const sort = params.get('sort');
+    const dir = params.get('dir');
+    if (sort) sortCol = sort;
+    if (dir) sortDir = dir;
+    // Apply filters after restoring state
+    if (!view || !['queue','settings'].includes(view)) {
+      applyAllFilters();
+    }
+    // Restore detail panel (open job)
+    const jobId = params.get('job');
+    if (jobId) {
+      setTimeout(() => openDetail(jobId), 300);
+    }
+    // Restore settings sub-section
+    if (view === 'settings') {
+      const section = params.get('section');
+      if (section) setTimeout(() => switchSettingsSection(section), 200);
+    }
+  } finally {
+    _skipHashUpdate = false;
+  }
+}
+
+window.addEventListener('hashchange', function() {
+  restoreFromHash();
+});
+
 function initApp() {
   ALL_JOBS.forEach(j => {
     j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
@@ -7320,6 +7407,8 @@ function initApp() {
   _loadSettingsFromGitHub();
   // Load CRM integration config from localStorage and trigger auto-match
   _initCrmIntegration();
+  // Restore state from URL hash (deep linking)
+  restoreFromHash();
 }
 
 function updateFreshnessDisplay() {
@@ -7520,6 +7609,7 @@ function sortBy(col) {
   const activeHeader = document.querySelector(`th[data-col="${col}"] .th-inner`);
   if (activeHeader) activeHeader.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
   applyAllFilters();
+  updateUrlHash();
 }
 
 // ===== COMBINED FILTER + SORT =====
@@ -7591,7 +7681,7 @@ function renderJobs() {
 function formatDate(d){const diff=(new Date().setHours(0,0,0,0)-new Date(d).setHours(0,0,0,0))/864e5;if(diff===0)return'<span class="date-cell today">Today</span>';if(diff===1)return'<span class="date-cell">Yesterday</span>';if(diff<7)return'<span class="date-cell">'+Math.floor(diff)+'d ago</span>';return'<span class="date-cell">'+new Date(d).toLocaleDateString('en-IL',{month:'short',day:'numeric'})+'</span>';}
 
 let activeSourceFilters = new Set();
-function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;syncStatCardHighlight();applyAllFilters();}
+function toggleFilter(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=el.dataset.filter;syncStatCardHighlight();applyAllFilters();updateUrlHash();}
 
 function filterByStat(el){
   const stat=el.dataset.stat;
@@ -7612,6 +7702,7 @@ function filterByStat(el){
   else document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
   syncStatCardHighlight();
   applyAllFilters();
+  updateUrlHash();
 }
 
 function syncStatCardHighlight(){
@@ -7754,8 +7845,9 @@ function openDetail(id){
   document.getElementById('sidebarOverlay').classList.add('active');
   // Auto-queue non-connected contacts with default connection message
   setTimeout(() => autoQueueNonConnected(j), 500);
+  updateUrlHash();
 }
-function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverlay'))return;document.getElementById('sidebarOverlay').classList.remove('active');}
+function closeSidebar(e){if(e&&e.target!==document.getElementById('sidebarOverlay'))return;document.getElementById('sidebarOverlay').classList.remove('active');updateUrlHash();}
 
 function exportCSV(){
   const jobs=getFilteredJobs();
@@ -9427,6 +9519,7 @@ function switchSettingsSection(section) {
     else if (section === 'templates') renderSettingsTab(_currentSettingsTab);
     else if (section === 'users') renderUsersSection();
   }
+  updateUrlHash();
 }
 
 function _settingsMobileBack() {
@@ -10181,6 +10274,7 @@ var setView = function(v) {
     if (filtersBar) filtersBar.style.display = '';
     applyAllFilters();
   }
+  updateUrlHash();
 }
 
 var refreshQueueView = async function() {
