@@ -5769,6 +5769,173 @@ let CAT_VALUE_PROPS = {
   }
 };
 
+// ===== HEBREW NAME MAPPING =====
+const HEBREW_NAMES = {
+  'erez': 'ארז', 'yaakov': 'יעקב', 'jacob': 'יעקב', 'nir': 'ניר', 'udi': 'אודי',
+  'gal': 'גל', 'adar': 'אדר', 'nimrod': 'נמרוד', 'raphael': 'רפאל', 'gabriel': 'גבריאל',
+  'kostya': 'קוסטיה', 'johai': 'יוחאי', 'eugene': 'יוג\'ין', 'alon': 'אלון',
+  'david': 'דוד', 'daniel': 'דניאל', 'dan': 'דן', 'yoav': 'יואב', 'oren': 'אורן',
+  'amit': 'עמית', 'avi': 'אבי', 'aviad': 'אביעד', 'moshe': 'משה', 'eli': 'אלי',
+  'elad': 'אלעד', 'itai': 'איתי', 'itay': 'איתי', 'guy': 'גיא', 'ido': 'עידו',
+  'tal': 'טל', 'ron': 'רון', 'ronen': 'רונן', 'ran': 'רן', 'ilan': 'אילן',
+  'yossi': 'יוסי', 'yoni': 'יוני', 'yonatan': 'יונתן', 'jonathan': 'יונתן',
+  'michael': 'מיכאל', 'mike': 'מייק', 'ori': 'אורי', 'omri': 'עמרי', 'noam': 'נועם',
+  'gilad': 'גלעד', 'barak': 'ברק', 'assaf': 'אסף', 'asaf': 'אסף', 'lior': 'ליאור',
+  'rotem': 'רותם', 'chen': 'חן', 'ofir': 'אופיר', 'ofer': 'עופר', 'matan': 'מתן',
+  'shai': 'שי', 'shay': 'שי', 'yuval': 'יובל', 'zohar': 'זוהר', 'tomer': 'תומר',
+  'niv': 'ניב', 'omer': 'עומר', 'adam': 'אדם', 'yaron': 'ירון', 'boaz': 'בועז',
+  'dor': 'דור', 'harel': 'הראל', 'shahar': 'שחר', 'ariel': 'אריאל', 'eyal': 'אייל',
+  'maya': 'מאיה', 'noa': 'נועה', 'shira': 'שירה', 'dana': 'דנה', 'yael': 'יעל',
+  'tamar': 'תמר', 'michal': 'מיכל', 'liron': 'לירון', 'maor': 'מאור', 'bar': 'בר',
+  'sapir': 'ספיר', 'keren': 'קרן', 'lee': 'לי', 'li': 'לי', 'tom': 'תום',
+  'ben': 'בן', 'liran': 'לירן', 'dori': 'דורי', 'doron': 'דורון', 'eran': 'ערן',
+  'omer': 'עומר', 'hillel': 'הלל', 'nadav': 'נדב', 'roi': 'רועי', 'roi': 'רועי',
+  'alex': 'אלכס', 'alexander': 'אלכסנדר', 'max': 'מקס', 'mark': 'מארק',
+  'sergey': 'סרגיי', 'igor': 'איגור', 'roman': 'רומן', 'vlad': 'ולאד',
+  'simon': 'סיימון', 'peter': 'פיטר', 'john': 'ג\'ון', 'james': 'ג\'יימס'
+};
+function _hebrewName(englishName) {
+  if (!englishName) return englishName;
+  const lower = englishName.toLowerCase().trim();
+  return HEBREW_NAMES[lower] || englishName;
+}
+
+// ===== HEBREW VALUE PROPS =====
+let CAT_VALUE_PROPS_HE = {
+  devops: {
+    pain: "המהנדסים הקיימים שלכם טובעים בעבודת תשתיות שלא אמורה להיות שלהם. הרילוסים נהיים איטיים. חוב טכני מצטבר.",
+    result: "קיצרנו מחזורי פריסה משבועיים ל-45 דקות",
+    offer: "צינורות CI/CD, קוברנטיס, טראפורם, IaC — כל הסטאק",
+    audit: "צינור ה-CI/CD והתשתיות",
+    expertise: "DevOps",
+    link: "https://www.develeap.com/devops-consulting/"
+  },
+  ai: {
+    pain: "הצוות שלכם תקוע בבניית תשתית ML מאפס במקום לשלוח מודלים לפרודקשן. צינורות אימון נשברים. עלויות GPU מתפוצצות.",
+    result: "קיצרנו זמן מודל-לפרודקשן מחודשים לימים עם MLOps ברמת פרודקשן",
+    offer: "צינורות ML, הגשת מודלים, אופטימיזציית GPU, ו-MLOps מקצה לקצה",
+    audit: "תשתית ה-ML וצינור הפריסה של המודלים",
+    expertise: "תשתיות AI/ML",
+    link: "https://www.develeap.com/"
+  },
+  agentic: {
+    pain: "לבנות סוכני AI אמינים זה קשה יותר ממה שנראה — הזיות, כשלי אורקסטרציה ובעיות סקייל מאטים הכל.",
+    result: "עזרנו לצוותים לפרוס סוכני AI ברמת פרודקשן עם גארדריילס תוך פחות מ-4 שבועות",
+    offer: "אורקסטרציית סוכנים, צינורות LLM, מערכות RAG, וגארדריילס לפרודקשן",
+    audit: "ארכיטקטורת סוכני ה-AI וצינור ה-LLM",
+    expertise: "AI אגנטי",
+    link: "https://www.develeap.com/"
+  },
+  finops: {
+    pain: "הוצאות הענן גדלות מהר יותר מההכנסות. אף אחד לא אחראי על אופטימיזציית עלויות, ומהנדסים ממשיכים להרים משאבים בלי שקיפות.",
+    result: "עזרנו לצוותים לחתוך הוצאות ענן ב-30-40% תוך שמירה על ביצועים",
+    offer: "אופטימיזציית עלויות ענן, מסגרות FinOps, מודלי showback/chargeback, וממשל עלויות אוטומטי",
+    audit: "הוצאות הענן והזדמנויות לאופטימיזציית עלויות",
+    expertise: "FinOps ועלויות ענן",
+    link: "https://www.develeap.com/"
+  },
+  cloud: {
+    pain: "ניהול מורכבות מולטי-ענן בלי צוותי פלטפורמה ייעודיים",
+    result: "קיצרנו זמן הקצאת ענן ב-80% עם תשתית בשירות עצמי",
+    offer: "ארכיטקטורת AWS/Azure/GCP, מיגרציה לענן, IaC, landing zones",
+    audit: "תשתית הענן ואסטרטגיית מולטי-ענן",
+    expertise: "תשתיות ענן",
+    link: "https://www.develeap.com/"
+  },
+  security: {
+    pain: "פרצות אבטחה מתגלות מאוחר מדי במחזור הפיתוח",
+    result: "הזזנו אבטחה שמאלה וצמצמנו פרצות קריטיות ב-90%",
+    offer: "צינורות DevSecOps, SAST/DAST, אבטחת קונטיינרים, אוטומציית compliance",
+    audit: "מצב האבטחה וצינור ה-DevSecOps",
+    expertise: "הנדסת אבטחה",
+    link: "https://www.develeap.com/"
+  },
+  data: {
+    pain: "צינורות דאטה נשברים כל הזמן ואנליסטים מחכים ימים לדאטה טרי",
+    result: "בנינו צינורות דאטה בזמן אמת שמעבדים 10M+ אירועים ביום עם 99.9% זמינות",
+    offer: "צינורות דאטה, ETL/ELT, data lakes, ארכיטקטורת סטרימינג, dbt",
+    audit: "צינור הדאטה והארכיטקטורה",
+    expertise: "הנדסת דאטה",
+    link: "https://www.develeap.com/"
+  },
+  platform: {
+    pain: "מפתחים מבזבזים 40% מהזמן על תשתיות במקום פיצ'רים",
+    result: "בנינו פלטפורמת מפתחים פנימית שקיצרה אונבורדינג משבועות לשעות",
+    offer: "פלטפורמות מפתחים פנימיות, golden paths, קטלוגי שירותים, פורטלים למפתחים",
+    audit: "חוויית המפתח והנדסת פלטפורמה",
+    expertise: "הנדסת פלטפורמה",
+    link: "https://www.develeap.com/"
+  },
+  sre: {
+    pain: "כיבוי שריפות בפרודקשן במקום לבנות אמינות",
+    result: "הגענו ל-99.99% זמינות וקיצרנו MTTR משעות לדקות",
+    offer: "מסגרות SLO/SLI, ניהול תקריות, chaos engineering, observability",
+    audit: "הנדסת אמינות ותגובה לתקריות",
+    expertise: "אמינות אתר",
+    link: "https://www.develeap.com/"
+  }
+};
+
+// ===== HEBREW ROLE TRANSLATIONS =====
+const ROLE_TRANSLATIONS_HE = {
+  'senior devops engineer': 'מהנדס DevOps בכיר',
+  'devops engineer': 'מהנדס DevOps',
+  'junior devops engineer': 'מהנדס DevOps ג\'וניור',
+  'lead devops engineer': 'מהנדס DevOps מוביל',
+  'staff devops engineer': 'מהנדס DevOps Staff',
+  'principal devops engineer': 'מהנדס DevOps ראשי',
+  'senior software engineer': 'מהנדס תוכנה בכיר',
+  'software engineer': 'מהנדס תוכנה',
+  'senior cloud engineer': 'מהנדס ענן בכיר',
+  'cloud engineer': 'מהנדס ענן',
+  'cloud architect': 'ארכיטקט ענן',
+  'senior cloud architect': 'ארכיטקט ענן בכיר',
+  'site reliability engineer': 'מהנדס SRE',
+  'sre engineer': 'מהנדס SRE',
+  'senior sre': 'מהנדס SRE בכיר',
+  'platform engineer': 'מהנדס פלטפורמה',
+  'senior platform engineer': 'מהנדס פלטפורמה בכיר',
+  'data engineer': 'מהנדס דאטה',
+  'senior data engineer': 'מהנדס דאטה בכיר',
+  'ml engineer': 'מהנדס ML',
+  'machine learning engineer': 'מהנדס למידת מכונה',
+  'ai engineer': 'מהנדס AI',
+  'generative ai engineer': 'מהנדס AI גנרטיבי',
+  'security engineer': 'מהנדס אבטחה',
+  'devsecops engineer': 'מהנדס DevSecOps',
+  'infrastructure engineer': 'מהנדס תשתיות',
+  'senior infrastructure engineer': 'מהנדס תשתיות בכיר',
+  'backend engineer': 'מהנדס Backend',
+  'senior backend engineer': 'מהנדס Backend בכיר',
+  'fullstack engineer': 'מהנדס Fullstack',
+  'full stack engineer': 'מהנדס Fullstack',
+  'frontend engineer': 'מהנדס Frontend',
+  'vp engineering': 'VP הנדסה',
+  'vp r&d': 'VP פיתוח',
+  'cto': 'CTO',
+  'head of engineering': 'ראש הנדסה',
+  'head of devops': 'ראש DevOps',
+  'director of engineering': 'דירקטור הנדסה',
+  'engineering manager': 'מנהל הנדסה',
+  'devops team lead': 'טים ליד DevOps',
+  'team lead': 'טים ליד',
+  'tech lead': 'טק ליד',
+  'finops engineer': 'מהנדס FinOps',
+  'finops analyst': 'אנליסט FinOps',
+  'kubernetes engineer': 'מהנדס Kubernetes',
+  'solutions architect': 'ארכיטקט פתרונות'
+};
+function _translateRole(role, lang) {
+  if (lang !== 'he' || !role) return role;
+  const lower = role.toLowerCase().trim();
+  if (ROLE_TRANSLATIONS_HE[lower]) return ROLE_TRANSLATIONS_HE[lower];
+  // Try partial match
+  for (const [eng, heb] of Object.entries(ROLE_TRANSLATIONS_HE)) {
+    if (lower.includes(eng)) return heb;
+  }
+  return role; // fallback to English if no translation
+}
+
 // ===== OUTREACH MESSAGE TEMPLATES =====
 // Language/tone config per channel
 var _templateLang = { linkedin: 'en', email: 'en', whatsapp: 'he' };
@@ -6923,8 +7090,11 @@ function buildOutreachSection(job) {
     </div>`;
 }
 
-function fillTemplate(tpl, job, stakeholder) {
-  const name = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
+function fillTemplate(tpl, job, stakeholder, lang) {
+  // Auto-detect Hebrew if lang not explicitly passed
+  if (!lang) lang = /[\u0590-\u05FF]/.test(tpl) ? 'he' : 'en';
+  const firstName = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
+  const name = (lang === 'he') ? _hebrewName(firstName) : firstName;
   const title = stakeholder ? stakeholder.title : 'leader';
   const role = job.title
     .replace(/at\s+.*$/i, '')           // strip "at Company..."
@@ -6935,15 +7105,19 @@ function fillTemplate(tpl, job, stakeholder) {
     .replace(/\(\d+\)/, '')              // strip job ID like (25020)
     .replace(/\s{2,}/g, ' ')            // collapse multiple spaces
     .trim();
+  const translatedRole = (lang === 'he') ? _translateRole(role, 'he') : role;
   const cat = job.category || 'devops';
-  const vp = CAT_VALUE_PROPS[cat] || CAT_VALUE_PROPS.devops;
+  // Use Hebrew value props for Hebrew templates
+  const vp = (lang === 'he')
+    ? (CAT_VALUE_PROPS_HE[cat] || CAT_VALUE_PROPS_HE.devops)
+    : (CAT_VALUE_PROPS[cat] || CAT_VALUE_PROPS.devops);
   const custs = _pickCustomers(job.company, 3).join(', ');
   const resultShort = vp.result.length > 50 ? vp.result.substring(0, 50).replace(/\s\S*$/, '...') : vp.result;
   return tpl
     .replace(/\{contact_name\}/g, name)
     .replace(/\{contact_title\}/g, title)
     .replace(/\{company\}/g, job.company)
-    .replace(/\{role\}/g, role)
+    .replace(/\{role\}/g, translatedRole)
     .replace(/\{customers\}/g, custs)
     .replace(/\{cat_pain\}/g, vp.pain)
     .replace(/\{cat_result\}/g, vp.result)
@@ -8646,6 +8820,7 @@ async function _loadSettingsFromGitHub() {
         if (settings.categories.labels) { Object.keys(CAT_LABELS).forEach(k => delete CAT_LABELS[k]); Object.assign(CAT_LABELS, settings.categories.labels); }
         if (settings.categories.colors) { Object.keys(CAT_COLORS).forEach(k => delete CAT_COLORS[k]); Object.assign(CAT_COLORS, settings.categories.colors); }
         if (settings.categories.valueProps) { Object.keys(CAT_VALUE_PROPS).forEach(k => delete CAT_VALUE_PROPS[k]); Object.assign(CAT_VALUE_PROPS, settings.categories.valueProps); }
+        if (settings.categories.valuePropsHe) { Object.keys(CAT_VALUE_PROPS_HE).forEach(k => delete CAT_VALUE_PROPS_HE[k]); Object.assign(CAT_VALUE_PROPS_HE, settings.categories.valuePropsHe); }
         if (settings.categories.keywords) { Object.keys(CAT_KEYWORDS).forEach(k => delete CAT_KEYWORDS[k]); Object.assign(CAT_KEYWORDS, settings.categories.keywords); }
       }
 
@@ -9867,6 +10042,7 @@ async function _saveSettingsToGitHub() {
       labels: CAT_LABELS,
       colors: CAT_COLORS,
       valueProps: CAT_VALUE_PROPS,
+      valuePropsHe: CAT_VALUE_PROPS_HE,
       keywords: CAT_KEYWORDS
     },
     customers: {
