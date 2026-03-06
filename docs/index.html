@@ -6293,6 +6293,7 @@ const _GH_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_GH_PATH}`;
 _LI_QUEUE_PATH = 'linkedin_queue.json';
 _LI_QUEUE_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_LI_QUEUE_PATH}`;
 // Initialize settings API
+_SETTINGS_PATH = 'template_settings.json';
 _SETTINGS_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_SETTINGS_PATH}`;
 let _ghSyncTimer = null;
 let _ghFileSha = null;
@@ -7218,7 +7219,7 @@ const CONNECT_TEMPLATES = CONNECT_TEMPLATES_PROSPECT;
 
 // ===== SETTINGS & TEMPLATES MANAGEMENT =====
 var _SETTINGS_PATH = 'template_settings.json';
-var _SETTINGS_API = '';
+// _SETTINGS_API is initialized near _GH_REPO definition above
 var _settingsSha = null;
 var _currentSettingsTab = 0;
 var _settingsInitialized = false;
