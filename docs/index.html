@@ -7,6 +7,8 @@
 <link rel="icon" type="image/x-icon" href="https://www.develeap.com/favicon.ico">
 <link rel="shortcut icon" href="https://www.develeap.com/favicon.ico">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl-util/0.15.1/nacl-util.min.js"></script>
 <style>
   :root {
     --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
@@ -821,23 +823,33 @@
 
           <div id="crmConfigPanel" style="display:none">
             <div id="hubspotConfig" class="crm-config-block">
-              <!-- Step 1: Add GitHub Secret -->
+              <!-- Step 1: Save HubSpot Token -->
               <div style="background:var(--primary-light);border-radius:12px;padding:16px;margin-bottom:16px">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
                   <span style="background:var(--primary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
-                  <div style="font-weight:600;font-size:14px;color:var(--primary)">Add your HubSpot token as a GitHub Secret</div>
+                  <div style="font-weight:600;font-size:14px;color:var(--primary)">Connect your HubSpot account</div>
                 </div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">Your token is stored securely on GitHub (never in the browser). This only needs to be done once.</p>
-                <div style="margin-left:32px;display:flex;gap:8px;flex-wrap:wrap">
-                  <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/settings/secrets/actions/new" target="_blank" class="btn btn-primary" style="font-size:12px;padding:6px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:4px">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    Add Secret on GitHub
-                  </a>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:10px;margin-left:32px">Paste your <a href="https://app-eu1.hubspot.com/portal-recommend/l?slug=integrations-api-key" target="_blank" style="color:var(--primary)">HubSpot Personal Access Key</a>. It will be saved securely as an encrypted GitHub Secret (never stored in the browser).</p>
+                <div style="margin-left:32px;margin-bottom:8px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">HubSpot Token</label>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <input type="password" id="hubspotTokenInput" placeholder="Paste your Personal Access Key here" style="flex:1;max-width:400px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:monospace" />
+                    <button type="button" onclick="document.getElementById('hubspotTokenInput').type = document.getElementById('hubspotTokenInput').type === 'password' ? 'text' : 'password'" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px" title="Toggle visibility">👁</button>
+                  </div>
                 </div>
-                <div style="margin-left:32px;margin-top:8px;font-size:11px;color:var(--text-lighter);line-height:1.6">
-                  Name: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">HUBSPOT_TOKEN</code><br>
-                  Value: Your HubSpot Personal Access Key<br>
-                  Then add a second secret: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">HUBSPOT_PORTAL_ID</code> = <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">25695560</code>
+                <div style="margin-left:32px;margin-bottom:8px">
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID)</label>
+                  <input type="text" id="hubspotPortalIdStep1" placeholder="e.g. 25695560" value="25695560" style="width:180px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px" />
+                </div>
+                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <button class="btn btn-primary" onclick="_saveHubSpotSecretsFromUI()" id="saveSecretsBtn" style="font-size:12px;padding:6px 14px;display:inline-flex;align-items:center;gap:4px">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    Save Token Securely
+                  </button>
+                  <span id="saveSecretResult" style="font-size:12px;color:var(--text-light)"></span>
+                </div>
+                <div style="margin-left:32px;margin-top:6px;font-size:11px;color:var(--text-lighter)">
+                  Your token is encrypted and stored as a GitHub Actions secret. It is never visible in the browser or source code.
                 </div>
               </div>
 
@@ -7091,6 +7103,8 @@ function renderIntegrationsSection() {
   onCrmProviderChange();
   const portalEl = document.getElementById('hubspotPortalId');
   if (portalEl) portalEl.value = CRM_CONFIG.portalId || '';
+  const portalStep1 = document.getElementById('hubspotPortalIdStep1');
+  if (portalStep1) portalStep1.value = CRM_CONFIG.portalId || '25695560';
   const pipeEl = document.getElementById('hubspotPipelineFilter');
   if (pipeEl) pipeEl.value = CRM_CONFIG.pipelineFilter || '';
   const chk1 = document.getElementById('crmEnrichCards');
@@ -7180,6 +7194,92 @@ function _resolveStageName(stageId) {
 function _resolveStageColor(stageId) {
   if (CRM_CONFIG.dealStageMap[stageId]) return CRM_CONFIG.dealStageMap[stageId].color;
   return '#999';
+}
+
+// ── Save GitHub Secret via API ──────────────────────────────────────────
+// Uses tweetnacl-js to encrypt secrets with the repo's public key,
+// then stores them via GitHub's Actions Secrets API.
+async function _saveGitHubSecret(secretName, secretValue) {
+  // 1. Get the repo public key for encrypting secrets
+  const keyResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/public-key', {
+    headers: {
+      'Authorization': 'token ' + _GH_TOKEN,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+  if (!keyResp.ok) throw new Error('Failed to get repo public key (HTTP ' + keyResp.status + ')');
+  const keyData = await keyResp.json();
+
+  // 2. Encrypt the secret using tweetnacl sealed box
+  const pubKeyBytes = nacl.util.decodeBase64(keyData.key);
+  const secretBytes = nacl.util.decodeUTF8(secretValue);
+  const encryptedBytes = nacl.box.seal(secretBytes, pubKeyBytes);
+  const encryptedBase64 = nacl.util.encodeBase64(encryptedBytes);
+
+  // 3. Create or update the secret
+  const putResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/' + secretName, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token ' + _GH_TOKEN,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      encrypted_value: encryptedBase64,
+      key_id: keyData.key_id
+    })
+  });
+  if (!putResp.ok && putResp.status !== 201 && putResp.status !== 204) {
+    throw new Error('Failed to save secret ' + secretName + ' (HTTP ' + putResp.status + ')');
+  }
+  return true;
+}
+
+async function _saveHubSpotSecretsFromUI() {
+  const tokenInput = document.getElementById('hubspotTokenInput');
+  const portalInput = document.getElementById('hubspotPortalIdStep1');
+  const resultEl = document.getElementById('saveSecretResult');
+  const btn = document.getElementById('saveSecretsBtn');
+  const token = (tokenInput.value || '').trim();
+  const portalId = (portalInput.value || '').trim();
+
+  if (!token) {
+    resultEl.textContent = 'Please paste your HubSpot token first.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+  if (!portalId) {
+    resultEl.textContent = 'Please enter your Portal ID.';
+    resultEl.style.color = 'var(--danger)';
+    return;
+  }
+
+  btn.disabled = true;
+  resultEl.textContent = 'Saving secrets...';
+  resultEl.style.color = 'var(--text-light)';
+
+  try {
+    await _saveGitHubSecret('HUBSPOT_TOKEN', token);
+    await _saveGitHubSecret('HUBSPOT_PORTAL_ID', portalId);
+
+    // Update local config too
+    CRM_CONFIG.portalId = portalId;
+    CRM_CONFIG.provider = 'hubspot';
+    const portalDisplayEl = document.getElementById('hubspotPortalId');
+    if (portalDisplayEl) portalDisplayEl.value = portalId;
+    _persistCrmConfigLocally();
+
+    // Clear the token from the input (security)
+    tokenInput.value = '';
+
+    resultEl.innerHTML = '&#10003; Secrets saved! You can now trigger the sync below.';
+    resultEl.style.color = 'var(--success)';
+    _showToast('HubSpot secrets saved to GitHub');
+  } catch (e) {
+    resultEl.textContent = 'Failed: ' + e.message;
+    resultEl.style.color = 'var(--danger)';
+  }
+  setTimeout(() => { btn.disabled = false; }, 3000);
 }
 
 // ── Trigger HubSpot Sync GitHub Action ─────────────────────────────────
