@@ -19,33 +19,9 @@ import re
 import requests
 from datetime import datetime
 
-HUBSPOT_TOKEN = os.environ.get("HUBSPOT_TOKEN", "")
-HUBSPOT_PORTAL_ID = os.environ.get("HUBSPOT_PORTAL_ID", "")
-HUBSPOT_REGION = os.environ.get("HUBSPOT_REGION", "eu1")  # "eu1" or "na1"
-BASE_URL = f"https://api.hubapi.com" if HUBSPOT_REGION == "na1" else f"https://api.hubapi.com"
-
-
-def _detect_region():
-    """Auto-detect region by trying a simple API call."""
-    global BASE_URL
-    for base in ["https://api.hubapi.com", "https://api-eu1.hubapi.com"]:
-        try:
-            resp = requests.get(
-                f"{base}/crm/v3/pipelines/deals",
-                headers=hubspot_headers(),
-                timeout=10,
-            )
-            if resp.status_code == 200:
-                BASE_URL = base
-                print(f"  Detected API region: {base}")
-                return
-            elif resp.status_code != 401:
-                continue
-        except Exception:
-            continue
-    # Default to EU since the account is EU
-    BASE_URL = "https://api-eu1.hubapi.com"
-    print(f"  Defaulting to EU region: {BASE_URL}")
+HUBSPOT_TOKEN = os.environ.get("HUBSPOT_TOKEN", "").strip()
+HUBSPOT_PORTAL_ID = os.environ.get("HUBSPOT_PORTAL_ID", "").strip()
+BASE_URL = "https://api.hubapi.com"
 OUTPUT_FILE = "crm_data.json"
 
 # Read existing job listings to know which companies to look up
@@ -57,6 +33,32 @@ def hubspot_headers():
         "Authorization": f"Bearer {HUBSPOT_TOKEN}",
         "Content-Type": "application/json",
     }
+
+
+def _detect_region():
+    """Auto-detect region by trying a simple API call on both US and EU endpoints."""
+    global BASE_URL
+    print(f"  Token length: {len(HUBSPOT_TOKEN)}, starts with: {HUBSPOT_TOKEN[:10]}..., ends with: ...{HUBSPOT_TOKEN[-6:]}")
+    for base in ["https://api.hubapi.com", "https://api-eu1.hubapi.com"]:
+        try:
+            print(f"  Trying {base}...")
+            resp = requests.get(
+                f"{base}/crm/v3/pipelines/deals",
+                headers=hubspot_headers(),
+                timeout=10,
+            )
+            print(f"    -> HTTP {resp.status_code}")
+            if resp.status_code == 200:
+                BASE_URL = base
+                print(f"  Detected API region: {base}")
+                return
+        except Exception as e:
+            print(f"    -> Error: {e}")
+            continue
+    # Default to EU since the account is EU
+    BASE_URL = "https://api-eu1.hubapi.com"
+    print(f"  WARNING: Both endpoints returned errors. Defaulting to: {BASE_URL}")
+    print(f"  This usually means the HUBSPOT_TOKEN is invalid or expired.")
 
 
 def extract_companies_from_html(path):
