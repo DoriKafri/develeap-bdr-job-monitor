@@ -800,7 +800,16 @@
         <!-- Integrations Section -->
         <div id="integrationsSection" class="settings-section" style="display:none">
           <h3 class="settings-section-title">🔗 CRM Integrations</h3>
-          <p style="color:var(--text-light);font-size:13px;margin-bottom:20px">Connect your CRM to enrich job listings with company and deal data. The integration is provider-agnostic - configure any supported CRM below.</p>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:20px">Connect your CRM to enrich job listings with company and deal data.</p>
+
+          <!-- CRM Status Banner -->
+          <div id="crmStatusBanner" style="border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13px;background:#FFF3D6;color:#9A7B00;border:1px solid #FFE08A">
+            <span style="font-size:18px">⏳</span>
+            <div>
+              <div style="font-weight:600">CRM not connected yet</div>
+              <div style="font-size:12px;opacity:0.8">Follow the setup steps below to connect HubSpot</div>
+            </div>
+          </div>
 
           <div class="integration-provider-select" style="margin-bottom:20px">
             <label style="font-weight:600;font-size:13px;display:block;margin-bottom:8px">CRM Provider</label>
@@ -811,17 +820,61 @@
           </div>
 
           <div id="crmConfigPanel" style="display:none">
-            <!-- HubSpot Config -->
             <div id="hubspotConfig" class="crm-config-block">
+              <!-- Step 1: Add GitHub Secret -->
               <div style="background:var(--primary-light);border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px">HubSpot Configuration</div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">CRM data is synced via a GitHub Action (no API keys needed in the browser). To set up:</p>
-                <ol style="font-size:12px;color:var(--text-light);margin-bottom:12px;padding-left:20px;line-height:1.8">
-                  <li>Go to your repo <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/settings/secrets/actions" target="_blank" style="color:var(--teal)">Settings > Secrets and variables > Actions</a></li>
-                  <li>Add secret <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">HUBSPOT_TOKEN</code> with your HubSpot Personal Access Key</li>
-                  <li>Add secret <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">HUBSPOT_PORTAL_ID</code> with value <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">25695560</code></li>
-                  <li>Run the <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/actions/workflows/hubspot-sync.yml" target="_blank" style="color:var(--teal)">HubSpot CRM Sync</a> workflow manually (it auto-runs every 2h)</li>
-                </ol>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="background:var(--primary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
+                  <div style="font-weight:600;font-size:14px;color:var(--primary)">Add your HubSpot token as a GitHub Secret</div>
+                </div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">Your token is stored securely on GitHub (never in the browser). This only needs to be done once.</p>
+                <div style="margin-left:32px;display:flex;gap:8px;flex-wrap:wrap">
+                  <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/settings/secrets/actions/new" target="_blank" class="btn btn-primary" style="font-size:12px;padding:6px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:4px">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Add Secret on GitHub
+                  </a>
+                </div>
+                <div style="margin-left:32px;margin-top:8px;font-size:11px;color:var(--text-lighter);line-height:1.6">
+                  Name: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">HUBSPOT_TOKEN</code><br>
+                  Value: Your HubSpot Personal Access Key<br>
+                  Then add a second secret: <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">HUBSPOT_PORTAL_ID</code> = <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;font-size:11px">25695560</code>
+                </div>
+              </div>
+
+              <!-- Step 2: Run Sync -->
+              <div style="background:#f0faf0;border-radius:12px;padding:16px;margin-bottom:16px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="background:var(--success);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</span>
+                  <div style="font-weight:600;font-size:14px;color:#1a7a1a">Run the first sync</div>
+                </div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">After adding the secrets, trigger the sync. It runs automatically every 2h after that.</p>
+                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <button class="btn btn-primary" onclick="_triggerHubSpotSync()" style="font-size:12px;padding:6px 14px;background:var(--success);display:inline-flex;align-items:center;gap:4px" id="triggerSyncBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Trigger Sync Now
+                  </button>
+                  <span id="syncTriggerResult" style="font-size:12px;color:var(--text-light)"></span>
+                </div>
+              </div>
+
+              <!-- Step 3: Load Data -->
+              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="background:var(--teal);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</span>
+                  <div style="font-weight:600;font-size:14px;color:var(--teal)">Load CRM data into dashboard</div>
+                </div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px;margin-left:32px">After the sync completes (~2 min), load the data. This happens automatically on every page load.</p>
+                <div style="margin-left:32px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:6px 14px">Load CRM Data</button>
+                  <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:11px;padding:4px 12px">Reload</button>
+                  <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
+                  <span id="crmCacheStatus" style="font-size:11px;color:var(--text-lighter)"></span>
+                </div>
+              </div>
+
+              <!-- Display Settings -->
+              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
+                <div style="font-weight:600;font-size:14px;margin-bottom:8px">Display Settings</div>
                 <div style="margin-bottom:12px">
                   <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Portal ID (Hub ID) - for building HubSpot links</label>
                   <input type="text" id="hubspotPortalId" class="api-key-input" placeholder="e.g. 25695560" style="width:200px" />
@@ -835,25 +888,13 @@
                   <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Match Pipeline (optional - leave empty for all)</label>
                   <input type="text" id="hubspotPipelineFilter" class="api-key-input" placeholder="e.g. SALES ISRAEL" style="width:300px" />
                 </div>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <button class="btn btn-primary" onclick="testCrmConnection()" style="font-size:12px;padding:6px 16px">Load CRM Data</button>
-                  <span id="crmTestResult" style="font-size:12px;color:var(--text-light)"></span>
-                </div>
               </div>
 
-              <div style="background:#f8f9fb;border-radius:12px;padding:16px;margin-bottom:16px">
-                <div style="font-weight:600;font-size:14px;margin-bottom:4px">Deal Stage Mapping</div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Map HubSpot deal stages to dashboard display labels and colors. Loaded automatically after a successful connection test.</p>
-                <div id="dealStageMappingContainer" style="font-size:12px;color:var(--text-lighter)">Connect to HubSpot first to load deal stages.</div>
-              </div>
-
+              <!-- Deal Stages -->
               <div style="background:#f8f9fb;border-radius:12px;padding:16px">
-                <div style="font-weight:600;font-size:14px;margin-bottom:8px">CRM Cache</div>
-                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px">Company matches are cached to avoid repeated API calls. Cache auto-refreshes every session.</p>
-                <div style="display:flex;gap:8px">
-                  <button class="btn btn-outline" onclick="refreshCrmCache()" style="font-size:11px;padding:4px 12px">Refresh Cache Now</button>
-                  <span id="crmCacheStatus" style="font-size:11px;color:var(--text-lighter);align-self:center"></span>
-                </div>
+                <div style="font-weight:600;font-size:14px;margin-bottom:4px">Deal Stages</div>
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:8px">Loaded automatically from CRM data.</p>
+                <div id="dealStageMappingContainer" style="font-size:12px;color:var(--text-lighter)">Load CRM data first to see deal stages.</div>
               </div>
             </div>
           </div>
@@ -7059,6 +7100,7 @@ function renderIntegrationsSection() {
   const chk3 = document.getElementById('crmAutoMatch');
   if (chk3) chk3.checked = CRM_CONFIG.autoMatch;
   _renderDealStageMapping();
+  _updateCrmStatusBanner();
 }
 
 function onCrmProviderChange() {
@@ -7140,6 +7182,60 @@ function _resolveStageColor(stageId) {
   return '#999';
 }
 
+// ── Trigger HubSpot Sync GitHub Action ─────────────────────────────────
+async function _triggerHubSpotSync() {
+  const btn = document.getElementById('triggerSyncBtn');
+  const resultEl = document.getElementById('syncTriggerResult');
+  btn.disabled = true;
+  resultEl.textContent = 'Triggering sync...';
+  resultEl.style.color = 'var(--text-light)';
+
+  try {
+    const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/workflows/hubspot-sync.yml/dispatches', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'token ' + _GH_TOKEN,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ref: 'main' })
+    });
+    if (resp.ok || resp.status === 204) {
+      resultEl.textContent = 'Sync triggered! Wait ~2 min, then click "Load CRM Data" below.';
+      resultEl.style.color = 'var(--success)';
+    } else {
+      throw new Error('HTTP ' + resp.status + ' - Make sure the hubspot-sync.yml workflow exists');
+    }
+  } catch (e) {
+    resultEl.textContent = 'Failed: ' + e.message;
+    resultEl.style.color = 'var(--danger)';
+  }
+  setTimeout(() => { btn.disabled = false; }, 5000);
+}
+
+function _updateCrmStatusBanner() {
+  const banner = document.getElementById('crmStatusBanner');
+  if (!banner) return;
+  if (_crmCacheBuilt && Object.keys(_crmCache).length > 0) {
+    const matched = Object.values(_crmCache).filter(c => c.companyId).length;
+    const total = Object.keys(_crmCache).length;
+    banner.style.background = '#E8F5E9';
+    banner.style.color = '#2E7D32';
+    banner.style.borderColor = '#A5D6A7';
+    banner.innerHTML = '<span style="font-size:18px">&#10003;</span><div><div style="font-weight:600">HubSpot Connected</div><div style="font-size:12px;opacity:0.8">' + matched + ' of ' + total + ' companies matched in CRM</div></div>';
+  } else if (CRM_CONFIG.provider) {
+    banner.style.background = '#FFF3D6';
+    banner.style.color = '#9A7B00';
+    banner.style.borderColor = '#FFE08A';
+    banner.innerHTML = '<span style="font-size:18px">&#9203;</span><div><div style="font-weight:600">CRM configured but no data loaded</div><div style="font-size:12px;opacity:0.8">Run the sync and click "Load CRM Data"</div></div>';
+  } else {
+    banner.style.background = '#FFF3D6';
+    banner.style.color = '#9A7B00';
+    banner.style.borderColor = '#FFE08A';
+    banner.innerHTML = '<span style="font-size:18px">&#9203;</span><div><div style="font-weight:600">CRM not connected yet</div><div style="font-size:12px;opacity:0.8">Select a CRM provider and follow the setup steps below</div></div>';
+  }
+}
+
 // ── Test Connection (loads crm_data.json) ──────────────────────────────
 async function testCrmConnection() {
   _collectCrmConfigFromUI();
@@ -7153,6 +7249,7 @@ async function testCrmConnection() {
 
     _populateCacheFromCrmData(data);
     _renderDealStageMapping();
+    _updateCrmStatusBanner();
     renderJobs();
 
     const stats = data.stats || {};
@@ -7321,6 +7418,7 @@ async function _crmAutoLoadFromFile() {
       CRM_CONFIG.provider = data.provider || 'hubspot';
       _persistCrmConfigLocally();
       renderJobs();
+      _updateCrmStatusBanner();
       console.log('CRM data loaded: ' + Object.keys(data.companies).length + ' companies, synced ' + data.syncedAt);
     } catch (e) {
       console.warn('CRM auto-load skipped:', e);
