@@ -2406,6 +2406,21 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         key = f'{j.get("company","").lower()}|{j.get("title","").lower()}'
         if url not in existing_urls and key not in existing_keys:
             truly_new.append(j)
+        else:
+            # Duplicate listing found on a different source — record the alternate source
+            match = existing_urls.get(url) or existing_keys.get(key)
+            if match and url and url != match.get("sourceUrl", ""):
+                alt_source = detect_source(url)
+                alt_sources = match.get("altSources", [])
+                # Avoid adding the same source URL twice
+                if not any(a.get("sourceUrl") == url for a in alt_sources):
+                    alt_sources.append({
+                        "source": alt_source,
+                        "sourceUrl": url,
+                        "title": j.get("title", "")[:80]
+                    })
+                    match["altSources"] = alt_sources
+                    log.info(f"  Alt source added: {match.get('company','')} — {alt_source} ({url[:60]})")
 
     merged = existing + truly_new
 
