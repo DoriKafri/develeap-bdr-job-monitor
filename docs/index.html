@@ -8,7 +8,6 @@
 <link rel="shortcut icon" href="https://www.develeap.com/favicon.ico">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl-util/0.15.1/nacl-util.min.js"></script>
 <style>
   :root {
     --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
@@ -7211,10 +7210,23 @@ async function _saveGitHubSecret(secretName, secretValue) {
   const keyData = await keyResp.json();
 
   // 2. Encrypt the secret using tweetnacl sealed box
-  const pubKeyBytes = nacl.util.decodeBase64(keyData.key);
-  const secretBytes = nacl.util.decodeUTF8(secretValue);
+  // Helper: base64 decode to Uint8Array (replaces nacl.util.decodeBase64)
+  function _b64ToBytes(b64) {
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+  // Helper: Uint8Array to base64 (replaces nacl.util.encodeBase64)
+  function _bytesToB64(bytes) {
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+  const pubKeyBytes = _b64ToBytes(keyData.key);
+  const secretBytes = new TextEncoder().encode(secretValue);
   const encryptedBytes = nacl.box.seal(secretBytes, pubKeyBytes);
-  const encryptedBase64 = nacl.util.encodeBase64(encryptedBytes);
+  const encryptedBase64 = _bytesToB64(encryptedBytes);
 
   // 3. Create or update the secret
   const putResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/' + secretName, {
