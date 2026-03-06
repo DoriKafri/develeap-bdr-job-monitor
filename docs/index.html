@@ -8344,7 +8344,7 @@ var _crmDataUrl = 'https://raw.githubusercontent.com/DoriKafri/develeap-bdr-job-
 
 async function _loadCrmDataFromFile() {
   try {
-    const resp = await fetch(_crmDataUrl, { cache: 'no-store' });
+    const resp = await fetch(_crmDataUrl + '?t=' + Date.now(), { cache: 'no-store' });
     if (!resp.ok) {
       console.warn('CRM data not available (HTTP ' + resp.status + '). Run the HubSpot sync workflow first.');
       return null;
@@ -8701,7 +8701,7 @@ async function _testApolloConnection() {
 
 async function _loadApolloData() {
   try {
-    const resp = await fetch(_apolloDataUrl, { cache: 'no-store' });
+    const resp = await fetch(_apolloDataUrl + '?t=' + Date.now(), { cache: 'no-store' });
     if (!resp.ok) {
       console.warn('Apollo data not available (HTTP ' + resp.status + '). Run the sync workflow with APOLLO_API_KEY configured.');
       return null;
