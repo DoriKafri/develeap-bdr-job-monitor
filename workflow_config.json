@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T21:42:19.822Z",
+  "lastUpdated": "2026-03-06T21:42:30.270Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -129,12 +129,6 @@
       "ruleLogic": "AND",
       "falseBehavior": "skip"
     },
-    "scoring": {
-      "enabled": true,
-      "label": "Lead Scoring",
-      "description": "Score leads by relevance and fit",
-      "type": "auto"
-    },
     "crmUpdate": {
       "enabled": true,
       "autoLog": true,
@@ -155,7 +149,6 @@
     "followUp",
     "responseTracking",
     "if_branch",
-    "scoring",
     "crmUpdate"
   ],
   "connections": [
