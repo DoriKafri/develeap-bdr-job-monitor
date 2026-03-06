@@ -5784,6 +5784,19 @@ function _filteredTemplates(templates, channel) {
   return filtered.length > 0 ? filtered : templates;
 }
 
+// Helper: apply RTL/LTR direction to a preview element based on channel language
+function _applyTextDir(el, channel) {
+  if (!el) return;
+  const lang = _templateLang[channel] || 'en';
+  if (lang === 'he') {
+    el.style.direction = 'rtl';
+    el.style.textAlign = 'right';
+  } else {
+    el.style.direction = 'ltr';
+    el.style.textAlign = 'left';
+  }
+}
+
 // Helper: build language toggle button HTML
 function _langToggleBtn(channel, idx) {
   const lang = _templateLang[channel] || 'en';
@@ -5817,7 +5830,10 @@ function _refreshConnectTemplateSelect(job) {
   }) || stakeholders[0];
   if (s && templates.length > 0) {
     const preview = document.getElementById('connectTemplatePreview');
-    if (preview) preview.textContent = fillTemplate(templates[0].body, job, s);
+    if (preview) {
+      preview.textContent = fillTemplate(templates[0].body, job, s);
+      _applyTextDir(preview, 'linkedin');
+    }
     const styleLabel = preview?.parentElement?.querySelector('strong');
     if (styleLabel) styleLabel.textContent = templates[0].style;
   }
@@ -6891,7 +6907,7 @@ function buildOutreachSection(job) {
       <div class="template-picker">
         <div class="template-picker-label" style="display:flex;align-items:center;gap:6px">Message Templates <button onclick="_toggleLang('linkedin');if(_activeJobForOutreach)openDetail(_activeJobForOutreach.id)" style="font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px;background:var(--bg);cursor:pointer" title="Switch language">${_mainFlag}</button></div>
         <select class="template-select" id="templateSelect" onchange="event.stopPropagation();switchTemplate(+this.value)">${templateOptions}</select>
-        <div class="template-preview" id="templatePreview">${firstMsg}</div>
+        <div class="template-preview" id="templatePreview" style="${_mainLang==='he'?'direction:rtl;text-align:right':''}">${firstMsg}</div>
         <div class="template-actions">
           <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2" id="btnLinkedInAction">
             ${LI_ICON} ${isConn ? 'Send Message' : 'Connect on LinkedIn'}
@@ -6946,8 +6962,14 @@ function switchTemplate(idx) {
   if (!job) return;
   const stakeholders = job._mergedStakeholders || job.stakeholders || [];
   const stakeholder = stakeholders[_activeStakeholderIdx || 0] || stakeholders[0];
-  const msg = fillTemplate(OUTREACH_TEMPLATES[idx].body, job, stakeholder);
-  document.getElementById('templatePreview').textContent = msg;
+  const tpl = OUTREACH_TEMPLATES[idx];
+  const msg = fillTemplate(tpl.body, job, stakeholder);
+  const preview = document.getElementById('templatePreview');
+  preview.textContent = msg;
+  // Apply RTL for Hebrew templates
+  const isRtl = (tpl.lang || 'en') === 'he';
+  preview.style.direction = isRtl ? 'rtl' : 'ltr';
+  preview.style.textAlign = isRtl ? 'right' : 'left';
 }
 
 function scrollToTemplates() {
@@ -6962,8 +6984,13 @@ function selectStakeholderForMsg(idx) {
   const job = _activeJobForOutreach;
   if (!job) return;
   const stakeholder = (job._mergedStakeholders || job.stakeholders || [])[idx];
-  const msg = fillTemplate(OUTREACH_TEMPLATES[_activeTemplateIdx].body, job, stakeholder);
-  document.getElementById('templatePreview').textContent = msg;
+  const tpl = OUTREACH_TEMPLATES[_activeTemplateIdx];
+  const msg = fillTemplate(tpl.body, job, stakeholder);
+  const preview = document.getElementById('templatePreview');
+  preview.textContent = msg;
+  const isRtl = (tpl.lang || 'en') === 'he';
+  preview.style.direction = isRtl ? 'rtl' : 'ltr';
+  preview.style.textAlign = isRtl ? 'right' : 'left';
   // Update button labels based on connected status
   if (stakeholder) {
     const sKey = _contactKey(stakeholder);
@@ -7018,7 +7045,7 @@ function messageOnLinkedIn(stakeholderIdx) {
 
   // Update template preview
   const preview = document.getElementById('templatePreview');
-  if (preview) preview.textContent = msg;
+  if (preview) { preview.textContent = msg; _applyTextDir(preview, 'linkedin'); }
 
   // Highlight selected stakeholder card
   document.querySelectorAll('.stakeholder-card').forEach((c,i) => {
@@ -11179,7 +11206,7 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
 
   // Update template preview
   const preview = document.getElementById('templatePreview');
-  if (preview) preview.textContent = msg;
+  if (preview) { preview.textContent = msg; _applyTextDir(preview, 'linkedin'); }
 
   // Highlight selected stakeholder card
   document.querySelectorAll('.stakeholder-card').forEach((c,i) => {
@@ -11293,7 +11320,7 @@ var buildOutreachSectionV2 = function(job) {
         <button onclick="_toggleLang('linkedin');if(_activeJobForOutreach){_refreshConnectTemplateSelect(_activeJobForOutreach)}" style="font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px;background:var(--bg);cursor:pointer" title="Switch language">${connLangFlag}</button>
       </div>
       <select class="template-select" id="connectTemplateSelect" onchange="event.stopPropagation();switchConnectTemplate(+this.value)">${connectOptions}</select>
-      <div class="template-preview" id="connectTemplatePreview" style="max-height:160px;font-size:12px">${firstConnMsg}</div>
+      <div class="template-preview" id="connectTemplatePreview" style="max-height:160px;font-size:12px;${(_templateLang.linkedin||'en')==='he'?'direction:rtl;text-align:right':''}">${firstConnMsg}</div>
       <div style="font-size:10px;color:var(--text-lighter);margin-top:6px;text-align:right">
         Style: <strong>${templates[0].style}</strong> · Max 300 chars for LinkedIn notes
       </div>
@@ -11322,7 +11349,12 @@ var switchConnectTemplate = function(idx) {
   const tpl = templates[Math.min(idx, templates.length - 1)];
   const msg = fillTemplate(tpl.body, job, s);
   const preview = document.getElementById('connectTemplatePreview');
-  if (preview) preview.textContent = msg;
+  if (preview) {
+    preview.textContent = msg;
+    const isRtl = (tpl.lang || 'en') === 'he';
+    preview.style.direction = isRtl ? 'rtl' : 'ltr';
+    preview.style.textAlign = isRtl ? 'right' : 'left';
+  }
   // Update style label
   const styleLabel = preview?.parentElement?.querySelector('strong');
   if (styleLabel) styleLabel.textContent = tpl.style;
