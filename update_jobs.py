@@ -663,7 +663,7 @@ SEARCH_QUERIES = [
     "site:linkedin.com/jobs/view Sales Engineer Israel cloud OR DevOps OR infrastructure",
 ]
 
-CATEGORY_KEYWORDS = {
+_DEFAULT_CATEGORY_KEYWORDS = {
     "agentic": ["agentic", "agent", "llm agent", "autonomous agent", "ai agent", "sales agent"],
     "ai": ["ai engineer", "machine learning", "ml engineer", "mlops", "data scientist",
             "deep learning", "nlp", "llm", "generative ai", "genai", "artificial intelligence",
@@ -691,6 +691,23 @@ CATEGORY_KEYWORDS = {
                "infrastructure as code", "iac", "jenkins", "gitops", "argocd",
                "helm", "ansible", "puppet", "chef"],
 }
+
+def _load_category_keywords() -> dict:
+    """Load category keywords from template_settings.json if available, else use defaults."""
+    settings_path = os.path.join(os.path.dirname(__file__), "template_settings.json")
+    try:
+        with open(settings_path, "r") as f:
+            settings = json.load(f)
+        kw = settings.get("categories", {}).get("keywords")
+        if kw and isinstance(kw, dict):
+            logging.info(f"Loaded {len(kw)} category keyword sets from template_settings.json")
+            return kw
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    logging.info("Using default category keywords")
+    return _DEFAULT_CATEGORY_KEYWORDS
+
+CATEGORY_KEYWORDS = _load_category_keywords()
 
 SOURCE_MAP = {
     "linkedin.com": "linkedin",
@@ -1317,7 +1334,9 @@ def detect_category(title: str, snippet: str) -> str:
     title_lower = title.lower()
     text = f"{title} {snippet}".lower()
     # Check most specific categories first, then broader ones
-    priority = ["agentic", "finops", "security", "sre", "platform", "data", "ai", "cloud", "devops"]
+    # devops is always last (broadest catch-all), other categories in natural order
+    all_cats = list(CATEGORY_KEYWORDS.keys())
+    priority = [c for c in all_cats if c != "devops"] + (["devops"] if "devops" in all_cats else [])
     # Pass 1: Check TITLE only (strongest signal)
     for cat in priority:
         for kw in CATEGORY_KEYWORDS.get(cat, []):

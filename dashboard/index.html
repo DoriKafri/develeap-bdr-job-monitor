@@ -7095,6 +7095,17 @@ let SOURCE_DOMAINS = {linkedin:'linkedin.com',glassdoor:'glassdoor.com',alljobs:
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
 let CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps',cloud:'Cloud & Infrastructure',security:'Security & DevSecOps',data:'Data Engineering',platform:'Platform Engineering',sre:'SRE'};
 let CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC',finops:'#00897B',cloud:'#0288D1',security:'#D32F2F',data:'#7B1FA2',platform:'#00695C',sre:'#E64A19'};
+let CAT_KEYWORDS = {
+  agentic:['agentic','agent','llm agent','autonomous agent','ai agent','sales agent'],
+  ai:['ai engineer','machine learning','ml engineer','mlops','data scientist','deep learning','nlp','llm','generative ai','genai','artificial intelligence','ai ops','large scale training'],
+  finops:['finops','fin ops','cloud cost','cloud financial','cost optimization','cloud economics','cloud spend','cost management','cloud billing','cost engineer','cloud finance','cost analyst'],
+  security:['devsecops','security engineer','appsec','application security','cybersecurity','infosec','information security','cloud security','security architect','penetration test','soc analyst','threat','vulnerability','compliance engineer','security operations'],
+  sre:['sre','site reliability','reliability engineer','production engineer','availability engineer','incident management','on-call','observability'],
+  platform:['platform engineer','platform team','internal developer platform','developer experience','developer platform','idp ','backstage','platform infrastructure','developer productivity'],
+  data:['data engineer','data pipeline','data platform','etl','elt ','data warehouse','data lake','apache spark','apache kafka','data infrastructure','analytics engineer','dbt ','airflow','databricks','snowflake engineer'],
+  cloud:['cloud engineer','cloud architect','cloud infrastructure','aws engineer','azure engineer','gcp engineer','multi-cloud','cloud migration','cloud native','cloud operations'],
+  devops:['devops','ci/cd','kubernetes','terraform','docker','infrastructure as code','iac','jenkins','gitops','argocd','helm','ansible','puppet','chef']
+};
 
 function _companyMatches(company, list) {
   const cl = company.toLowerCase().trim();
@@ -7810,16 +7821,78 @@ const TEMPLATE_VARIABLES = [
   {var: 'cat_result_short', desc: 'Short result'}
 ];
 
-function _loadSettingsFromGitHub() {
-  if (!_settingsInitialized) {
-    _settingsInitialized = true;
-    const key = localStorage.getItem('anthropicApiKey');
-    if (key) document.getElementById('anthropicApiKey').value = key;
+async function _loadSettingsFromGitHub() {
+  if (_settingsInitialized) return;
+  _settingsInitialized = true;
+  const key = localStorage.getItem('anthropicApiKey');
+  if (key) document.getElementById('anthropicApiKey').value = key;
 
-    // Load other settings from localStorage (if available) or set defaults
-    // This will be expanded when we add GitHub persistence
-    renderCategoriesSection();
+  // Fetch saved settings from GitHub
+  try {
+    const resp = await fetch(_SETTINGS_API, {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      _settingsSha = data.sha;
+      const settings = JSON.parse(_base64ToUtf8(data.content));
+
+      // Apply templates
+      if (settings.templates) {
+        if (settings.templates.prospect) CONNECT_TEMPLATES_PROSPECT.splice(0, Infinity, ...settings.templates.prospect);
+        if (settings.templates.customer) CONNECT_TEMPLATES_CUSTOMER.splice(0, Infinity, ...settings.templates.customer);
+        if (settings.templates.past) CONNECT_TEMPLATES_PAST.splice(0, Infinity, ...settings.templates.past);
+        if (settings.templates.outreach) OUTREACH_TEMPLATES.splice(0, Infinity, ...settings.templates.outreach);
+        if (settings.templates.whatsapp) WHATSAPP_TEMPLATES.splice(0, Infinity, ...settings.templates.whatsapp);
+        if (settings.templates.sos_prospect) Object.assign(SOS_PROSPECT, settings.templates.sos_prospect);
+        if (settings.templates.sos_customer) Object.assign(SOS_CUSTOMER, settings.templates.sos_customer);
+        if (settings.templates.sos_past) Object.assign(SOS_PAST, settings.templates.sos_past);
+      }
+
+      // Apply categories
+      if (settings.categories) {
+        if (settings.categories.labels) { Object.keys(CAT_LABELS).forEach(k => delete CAT_LABELS[k]); Object.assign(CAT_LABELS, settings.categories.labels); }
+        if (settings.categories.colors) { Object.keys(CAT_COLORS).forEach(k => delete CAT_COLORS[k]); Object.assign(CAT_COLORS, settings.categories.colors); }
+        if (settings.categories.valueProps) { Object.keys(CAT_VALUE_PROPS).forEach(k => delete CAT_VALUE_PROPS[k]); Object.assign(CAT_VALUE_PROPS, settings.categories.valueProps); }
+        if (settings.categories.keywords) { Object.keys(CAT_KEYWORDS).forEach(k => delete CAT_KEYWORDS[k]); Object.assign(CAT_KEYWORDS, settings.categories.keywords); }
+      }
+
+      // Apply customers
+      if (settings.customers) {
+        if (settings.customers.current) DEVELEAP_CUSTOMERS.splice(0, Infinity, ...settings.customers.current);
+        if (settings.customers.past) DEVELEAP_PAST_CUSTOMERS.splice(0, Infinity, ...settings.customers.past);
+        if (settings.customers.famous) FAMOUS_CUSTOMERS.splice(0, Infinity, ...settings.customers.famous);
+      }
+
+      // Apply sources
+      if (settings.sources) {
+        if (settings.sources.labels) Object.assign(SOURCE_LABELS, settings.sources.labels);
+        if (settings.sources.domains) Object.assign(SOURCE_DOMAINS, settings.sources.domains);
+      }
+
+      // Apply CRM integration config
+      if (settings.integrations) {
+        Object.assign(CRM_CONFIG, settings.integrations);
+      }
+
+      // Re-flag develeap customers with updated lists
+      ALL_JOBS.forEach(j => {
+        j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
+        j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);
+      });
+
+      // Rebuild UI with loaded settings
+      buildCategoryFilters();
+      buildSourceDropdown();
+      updateStats();
+      renderJobs();
+      console.log('Settings loaded from GitHub');
+    }
+  } catch (e) {
+    console.warn('Failed to load settings from GitHub:', e);
   }
+  renderCategoriesSection();
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -8606,7 +8679,8 @@ async function _saveSettingsToGitHub() {
     categories: {
       labels: CAT_LABELS,
       colors: CAT_COLORS,
-      valueProps: CAT_VALUE_PROPS
+      valueProps: CAT_VALUE_PROPS,
+      keywords: CAT_KEYWORDS
     },
     customers: {
       current: DEVELEAP_CUSTOMERS,
@@ -8736,6 +8810,10 @@ function renderCategoriesSection() {
         <label>Link</label>
         <input type="text" value="${vp.link || ''}" onchange="updateCategoryValueProp('${key}', 'link', this.value)">
       </div>
+      <div class="category-card-field">
+        <label>Keywords <span style="font-weight:400;color:var(--text-lighter)">(comma-separated, used to match jobs)</span></label>
+        <input type="text" value="${(CAT_KEYWORDS[key] || []).join(', ')}" onchange="updateCategoryKeywords('${key}', this.value)" placeholder="e.g. devops, ci/cd, kubernetes">
+      </div>
       <div class="category-card-actions">
         <button onclick="removeCategoryCard('${key}')">Delete</button>
       </div>
@@ -8760,11 +8838,16 @@ function updateCategoryValueProp(key, prop, value) {
   CAT_VALUE_PROPS[key][prop] = value;
 }
 
+function updateCategoryKeywords(key, value) {
+  CAT_KEYWORDS[key] = value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+}
+
 function removeCategoryCard(key) {
   if (confirm(`Remove category "${CAT_LABELS[key]}"?`)) {
     delete CAT_LABELS[key];
     delete CAT_COLORS[key];
     delete CAT_VALUE_PROPS[key];
+    delete CAT_KEYWORDS[key];
     renderCategoriesSection();
     buildCategoryFilters();
     updateStats();
@@ -8776,11 +8859,14 @@ function addNewCategory() {
   if (!key) return;
   const label = prompt('Enter category label:');
   if (!label) return;
+  const kwStr = prompt('Enter keywords for matching job titles (comma-separated):', key);
   CAT_LABELS[key] = label;
-  CAT_COLORS[key] = '#' + Math.floor(Math.random()*16777215).toString(16);
+  CAT_COLORS[key] = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
   CAT_VALUE_PROPS[key] = {pain:'', result:'', offer:'', audit:'', expertise:'', link:''};
+  CAT_KEYWORDS[key] = kwStr ? kwStr.split(',').map(s => s.trim().toLowerCase()).filter(Boolean) : [key];
   renderCategoriesSection();
   buildCategoryFilters();
+  updateStats();
 }
 
 function renderCustomersSection() {
