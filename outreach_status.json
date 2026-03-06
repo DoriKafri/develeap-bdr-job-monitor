@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T09:04:40.781Z",
+  "lastUpdated": "2026-03-06T09:04:45.305Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -165,7 +165,13 @@
     "alexander eriksson": "invited",
     "aaron zammit": "invited",
     "nikola hansson": "invited",
-    "johan nilsson": "invited"
+    "johan nilsson": "invited",
+    "yamit sivak": "invited",
+    "tal levy": "invited",
+    "maya ludmer": "invited",
+    "bat chen sabag": "invited",
+    "orly rapaport": "invited",
+    "zohar berkovitz": "invited"
   },
   "connected": [
     "check point|nataly kremer"
