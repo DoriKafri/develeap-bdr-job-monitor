@@ -33,6 +33,25 @@ SLACK_POSTED_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sl
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
+# ── Workflow Config ───────────────────────────────────────────────────────
+WORKFLOW_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workflow_config.json")
+
+def _load_workflow_config():
+    """Load workflow_config.json if it exists. Returns dict or empty dict."""
+    if os.path.exists(WORKFLOW_CONFIG_PATH):
+        try:
+            with open(WORKFLOW_CONFIG_PATH, "r") as f:
+                return json.load(f)
+        except Exception as e:
+            log.warning(f"Could not load workflow config: {e}")
+    return {}
+
+def _is_node_enabled(config, node_id):
+    """Check if a workflow node is enabled. Defaults to True if not configured."""
+    nodes = config.get("nodes", {})
+    node = nodes.get(node_id, {})
+    return node.get("enabled", True)
+
 # ── Develeap customers (case-insensitive partial match) ────────────────────
 DEVELEAP_CUSTOMERS = [
     "Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky",
@@ -2815,6 +2834,14 @@ def main():
     _stakeholder_cache.clear()
 
     log.info("=== Develeap BDR Job Monitor Update ===")
+
+    # Load workflow config to check which nodes are enabled
+    wf_config = _load_workflow_config()
+    if wf_config:
+        log.info("Loaded workflow config (version %s)", wf_config.get("version", "?"))
+        if not _is_node_enabled(wf_config, "discovery"):
+            log.info("Job Discovery node is DISABLED in workflow config — skipping run")
+            return
 
     # 1. Search for jobs
     log.info(f"Searching with {len(SEARCH_QUERIES)} queries...")

@@ -23,6 +23,23 @@ HUBSPOT_TOKEN_RAW = os.environ.get("HUBSPOT_TOKEN", "").strip()
 HUBSPOT_PORTAL_ID = os.environ.get("HUBSPOT_PORTAL_ID", "").strip()
 BASE_URL = "https://api.hubapi.com"
 
+# ── Workflow Config ───────────────────────────────────────────────────────
+WORKFLOW_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workflow_config.json")
+
+def _load_workflow_config():
+    """Load workflow_config.json if it exists."""
+    if os.path.exists(WORKFLOW_CONFIG_PATH):
+        try:
+            with open(WORKFLOW_CONFIG_PATH, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def _is_node_enabled(config, node_id):
+    """Check if a workflow node is enabled. Defaults to True if not configured."""
+    return config.get("nodes", {}).get(node_id, {}).get("enabled", True)
+
 
 def _decode_token(raw):
     """HubSpot Personal Access Keys start with 'pat-eu1-' or 'pat-na1-'.
@@ -252,6 +269,12 @@ def best_match(company_name, results):
 def main():
     if not HUBSPOT_TOKEN:
         print("HUBSPOT_TOKEN not set, skipping sync")
+        sys.exit(0)
+
+    # Check workflow config
+    wf_config = _load_workflow_config()
+    if wf_config and not _is_node_enabled(wf_config, "crmSync"):
+        print("CRM Sync node is DISABLED in workflow config — skipping")
         sys.exit(0)
 
     print("Starting HubSpot CRM sync...")

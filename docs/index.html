@@ -690,6 +690,93 @@
   .settings-footer { display:flex; gap:12px; margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
   .btn-add-category { padding:10px 20px; background:var(--primary); color:white; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
   .btn-add-category:hover { background:var(--primary-dark); }
+
+  /* ── Workflow Editor ── */
+  #workflowView { display:none; position:fixed; top:48px; left:240px; right:0; bottom:0; background:var(--bg); z-index:5; flex-direction:column; overflow:hidden; }
+  #workflowView.active { display:flex; }
+  .wf-header { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; background:white; border-bottom:1px solid var(--border); box-shadow:var(--shadow); gap:20px; flex-shrink:0; }
+  .wf-header h2 { margin:0; font-size:20px; font-weight:600; color:var(--text); letter-spacing:-0.3px; }
+  .wf-header-actions { display:flex; align-items:center; gap:16px; }
+  .wf-save-status { font-size:13px; font-weight:500; color:var(--success); transition:color 0.3s ease; }
+  .wf-save-status.unsaved { color:var(--warning); }
+  .wf-body { display:flex; flex:1; overflow:hidden; }
+  .wf-canvas { flex:1; background:linear-gradient(135deg,rgba(226,239,244,0.4) 0%,rgba(224,242,245,0.3) 100%); overflow:auto; position:relative; padding:40px; display:flex; align-items:center; justify-content:center; }
+  .wf-canvas svg { display:block; }
+  .wf-config-panel { width:340px; background:white; border-left:1px solid var(--border); overflow-y:auto; padding:24px; box-shadow:-2px 0 8px rgba(0,0,0,0.04); animation:wfSlideIn 0.3s ease-out; }
+  @keyframes wfSlideIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+  .wf-config-empty { text-align:center; color:var(--text-light); padding:60px 20px; font-size:14px; }
+  .wf-config-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid var(--primary-light); }
+  .wf-config-header .icon { font-size:28px; line-height:1; flex-shrink:0; }
+  .wf-config-header h3 { margin:0; font-size:16px; font-weight:600; color:var(--text); }
+  .wf-config-header p { margin:4px 0 0; font-size:12px; color:var(--text-light); line-height:1.4; }
+  .wf-node { width:200px; min-height:120px; background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden; cursor:pointer; transition:all 0.25s ease; box-shadow:var(--shadow); display:flex; flex-direction:column; }
+  .wf-node:hover { box-shadow:0 4px 20px rgba(0,0,0,0.12); transform:translateY(-3px); }
+  .wf-node.selected { border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,177,0,0.15),0 4px 20px rgba(0,0,0,0.12); }
+  .wf-node.disabled { opacity:0.5; }
+  .wf-node-bar { width:100%; height:5px; background:var(--teal); flex-shrink:0; }
+  .wf-node[data-type="human"] .wf-node-bar { background:var(--accent); }
+  .wf-node[data-type="throttled"] .wf-node-bar { background:var(--danger); }
+  .wf-node-header { display:flex; align-items:center; gap:8px; padding:12px 12px 8px; }
+  .wf-node-icon { font-size:20px; line-height:1; flex-shrink:0; }
+  .wf-node-title { font-size:12px; font-weight:600; color:var(--text); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wf-node-metric { font-size:11px; color:var(--text-light); padding:0 12px 4px; min-height:14px; line-height:1.3; }
+  .wf-node-status { display:flex; align-items:center; gap:6px; padding:6px 12px 10px; font-size:11px; color:var(--text-light); }
+  .wf-status-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--text-lighter); flex-shrink:0; }
+  .wf-status-dot.active { background:var(--success); animation:wfPulse 2s ease infinite; }
+  @keyframes wfPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .wf-toggle { display:flex; align-items:center; cursor:pointer; user-select:none; flex-shrink:0; }
+  .wf-toggle input { display:none; }
+  .wf-toggle-slider { width:32px; height:18px; background:var(--text-lighter); border-radius:9px; position:relative; transition:background 0.3s; display:block; }
+  .wf-toggle-slider::after { content:''; position:absolute; width:14px; height:14px; background:white; border-radius:50%; top:2px; left:2px; transition:all 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  .wf-toggle input:checked+.wf-toggle-slider { background:var(--success); }
+  .wf-toggle input:checked+.wf-toggle-slider::after { left:16px; }
+  .wf-section { margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+  .wf-section:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .wf-section-title { font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-light); letter-spacing:0.5px; margin-bottom:12px; }
+  .wf-form-group { margin-bottom:14px; }
+  .wf-form-group:last-child { margin-bottom:0; }
+  .wf-form-label { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--text); margin-bottom:6px; cursor:pointer; }
+  .wf-form-hint { font-size:11px; color:var(--text-light); margin-top:4px; line-height:1.4; }
+  .wf-select { width:100%; padding:8px 32px 8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; color:var(--text); background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23676879' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 10px center; appearance:none; cursor:pointer; transition:all 0.2s; font-family:inherit; }
+  .wf-select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,177,0,0.1); }
+  .wf-range-group { display:flex; align-items:center; gap:12px; }
+  .wf-range-slider { flex:1; height:4px; border-radius:2px; background:linear-gradient(to right,var(--accent-light),var(--accent)); outline:none; -webkit-appearance:none; appearance:none; cursor:pointer; }
+  .wf-range-slider::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 2px 6px rgba(255,177,0,0.3); border:2px solid white; }
+  .wf-range-slider::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 2px 6px rgba(255,177,0,0.3); border:2px solid white; }
+  .wf-range-value { min-width:50px; text-align:right; font-size:13px; font-weight:600; color:var(--accent-dark); }
+  .wf-presets { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .wf-preset-card { padding:12px; border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.2s; background:white; text-align:center; position:relative; }
+  .wf-preset-card:hover { border-color:var(--accent); background:var(--accent-light); }
+  .wf-preset-card.active { border-color:var(--accent); background:var(--accent-light); }
+  .wf-preset-card .preset-name { font-weight:600; font-size:12px; color:var(--text); }
+  .wf-preset-card.active .preset-name { color:var(--accent-dark); }
+  .wf-preset-check { display:none; position:absolute; top:6px; right:6px; width:16px; height:16px; background:var(--accent); border-radius:50%; color:white; font-size:10px; line-height:16px; text-align:center; font-weight:bold; }
+  .wf-preset-card.active .wf-preset-check { display:block; }
+  .wf-checkbox-group { display:flex; flex-direction:column; gap:10px; }
+  .wf-checkbox-item { display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; }
+  .wf-checkbox-item input { width:16px; height:16px; cursor:pointer; accent-color:var(--accent); }
+  .wf-checkbox-item label { cursor:pointer; font-size:13px; color:var(--text); flex:1; margin:0; }
+  .wf-time-pair { display:flex; align-items:center; gap:8px; }
+  .wf-time-pair input { flex:1; padding:8px 10px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:inherit; }
+  .wf-time-pair input:focus { outline:none; border-color:var(--accent); }
+  .wf-time-pair span { font-size:12px; color:var(--text-light); white-space:nowrap; }
+  .wf-chip-list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+  .wf-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:var(--accent-light); border:1px solid var(--accent); border-radius:16px; font-size:12px; color:var(--accent-dark); font-weight:600; }
+  .wf-chip-remove { cursor:pointer; font-size:14px; line-height:1; opacity:0.7; transition:opacity 0.2s; }
+  .wf-chip-remove:hover { opacity:1; }
+  .wf-chip-add { display:flex; align-items:center; gap:8px; }
+  .wf-chip-add input { flex:1; max-width:100px; padding:6px 10px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:inherit; }
+  .wf-chip-add button { padding:6px 12px; font-size:12px; background:var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+  .wf-chip-add button:hover { background:var(--accent-dark); }
+  .wf-connection-line { stroke:var(--teal); stroke-width:2; fill:none; stroke-linecap:round; opacity:0.5; }
+  .wf-connection-line.disabled { stroke:var(--text-lighter); opacity:0.3; }
+  .wf-connection-animate { stroke-dasharray:8,4; animation:wfFlowDots 1.5s linear infinite; }
+  @keyframes wfFlowDots { to{stroke-dashoffset:-12} }
+  .wf-error { padding:12px 16px; background:rgba(228,66,88,0.1); border:1px solid var(--danger); border-radius:8px; color:var(--danger); font-size:12px; margin-bottom:16px; }
+  .wf-success { padding:12px 16px; background:rgba(0,202,114,0.1); border:1px solid var(--success); border-radius:8px; color:var(--success); font-size:12px; margin-bottom:16px; }
+  .wf-back-btn { background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-light); padding:4px 8px; border-radius:6px; transition:all 0.15s; }
+  .wf-back-btn:hover { background:var(--bg); color:var(--text); }
+  @media(max-width:768px) { #workflowView { left:0; top:48px; } .wf-body { flex-direction:column; } .wf-config-panel { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } .wf-node { width:160px; min-height:100px; } }
 </style>
 </head>
 <body>
@@ -741,6 +828,12 @@
       <div class="nav-item" data-view="settings" onclick="setView('settings')">
         <span>⚙️</span>
         <span>Settings</span>
+      </div>
+
+      <div class="nav-section">Workflow</div>
+      <div class="nav-item" data-view="workflow" onclick="setView('workflow')">
+        <span>⚡</span>
+        <span>Workflow Editor</span>
       </div>
     </div>
 
@@ -1476,6 +1569,26 @@
         </div>
         </div><!-- end settings-content-inner -->
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow Editor View -->
+<div id="workflowView">
+  <div class="wf-header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="wf-back-btn" onclick="setView('all')" title="Back to listings">←</button>
+      <h2>⚡ Workflow Editor</h2>
+    </div>
+    <div class="wf-header-actions">
+      <span class="wf-save-status" id="wfSaveStatus">✓ Saved</span>
+      <button class="btn btn-primary" onclick="_saveWorkflowConfig()">Save Changes</button>
+    </div>
+  </div>
+  <div class="wf-body">
+    <div class="wf-canvas" id="wfCanvas"></div>
+    <div class="wf-config-panel" id="wfConfigPanel">
+      <div class="wf-config-empty">Click a node to configure</div>
     </div>
   </div>
 </div>
@@ -10755,27 +10868,35 @@ var setView = function(v) {
   const tableContainer = document.querySelector('.table-container');
   const queueView = document.getElementById('queueView');
   const settingsView = document.getElementById('settingsView');
+  const workflowView = document.getElementById('workflowView');
   const statsBar = document.querySelector('.stats-bar');
   const filtersBar = document.querySelector('.filters-bar');
+
+  // Hide all views first
+  if (queueView) queueView.classList.remove('active');
+  if (settingsView) settingsView.classList.remove('active');
+  if (workflowView) workflowView.classList.remove('active');
 
   if (v === 'queue') {
     if (tableContainer) tableContainer.style.display = 'none';
     if (queueView) queueView.classList.add('active');
-    if (settingsView) settingsView.classList.remove('active');
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     refreshQueueView();
   } else if (v === 'settings') {
     if (tableContainer) tableContainer.style.display = 'none';
-    if (queueView) queueView.classList.remove('active');
     if (settingsView) settingsView.classList.add('active');
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     renderSettingsView();
+  } else if (v === 'workflow') {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (workflowView) workflowView.classList.add('active');
+    if (statsBar) statsBar.style.display = 'none';
+    if (filtersBar) filtersBar.style.display = 'none';
+    _ensureWorkflowReady().then(function() { renderWorkflowView(); });
   } else {
     if (tableContainer) tableContainer.style.display = '';
-    if (queueView) queueView.classList.remove('active');
-    if (settingsView) settingsView.classList.remove('active');
     if (statsBar) statsBar.style.display = '';
     if (filtersBar) filtersBar.style.display = '';
     applyAllFilters();
@@ -11560,6 +11681,411 @@ var _initQueueBadge = async function() {
 setTimeout(_initQueueBadge, 2000);
 
 window.onload = initGoogleAuth;
+
+/* ======================================================================
+   WORKFLOW EDITOR
+   ====================================================================== */
+
+var _WF_CONFIG = null;
+var _WF_SELECTED_NODE = null;
+var _WF_DIRTY = false;
+var _WF_SAVE_TIMEOUT = null;
+var _WF_GITHUB_SHA = null;
+var _WF_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/contents/workflow_config.json';
+
+var _WF_NODE_ORDER = [
+  'discovery','dedup','customerMatch','enrichment','crmSync',
+  'review','throttle','outreach','followUp','responseTracking','crmUpdate'
+];
+
+var _WF_NODES = {
+  discovery:        { icon:'🔍', label:'Job Discovery',     type:'auto',      desc:'Scrapes 50+ queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby.' },
+  dedup:            { icon:'🔄', label:'Dedup & Categorize', type:'auto',      desc:'Removes duplicate listings, categorizes by DevOps, AI/ML, FinOps, etc.' },
+  customerMatch:    { icon:'⭐', label:'Customer Match',     type:'auto',      desc:'Matches companies against 123 Develeap customers and 32 past customers.' },
+  enrichment:       { icon:'🧬', label:'Enrichment',         type:'auto',      desc:'Enriches contacts with emails, phones, titles via Apollo.io.' },
+  crmSync:          { icon:'🔗', label:'CRM Sync',           type:'auto',      desc:'Syncs company/deal/contact data from HubSpot every 2h.' },
+  review:           { icon:'👤', label:'Review & Select',    type:'human',     desc:'User reviews new listings, selects contacts, picks templates.' },
+  throttle:         { icon:'🛡️', label:'Queue & Throttle',   type:'throttled', desc:'Queues outreach with human-like timing to avoid LinkedIn detection.' },
+  outreach:         { icon:'📨', label:'LinkedIn Outreach',  type:'throttled', desc:'Sends connection requests and messages with throttled delivery.' },
+  followUp:         { icon:'🔁', label:'Follow-up Sequences',type:'auto',      desc:'Soap Opera Sequences: Day 0 → Day 3 → Day 7 → Day 14.' },
+  responseTracking: { icon:'📊', label:'Response Tracking',  type:'human',     desc:'Track responses, mark connections, qualify leads.' },
+  crmUpdate:        { icon:'💾', label:'CRM Update',         type:'auto',      desc:'Logs outreach activity back to HubSpot.' }
+};
+
+var _WF_DEFAULTS = {
+  discovery:        { enabled:true, schedule:'every_15m_daytime', sources:['linkedin','lever','greenhouse','comeet','ashby','workday'] },
+  dedup:            { enabled:true },
+  customerMatch:    { enabled:true },
+  enrichment:       { enabled:true, provider:'apollo', rateLimit:600 },
+  crmSync:          { enabled:true, provider:'hubspot', schedule:'every_2h_business' },
+  review:           { enabled:true, mode:'manual', autoApproveCustomers:false, autoApproveCategories:false },
+  throttle:         { enabled:true, preset:'smart', maxConnectionsPerDay:20, maxMessagesPerDay:50, minDelay:45, maxDelay:180, activeHoursStart:'08:00', activeHoursEnd:'18:00', weekendPause:true, cooldownAfterN:10, cooldownMinutes:30, humanVariance:true, humanVariancePct:30 },
+  outreach:         { enabled:true, autoSendOnApproval:false, requireReview:true },
+  followUp:         { enabled:true, enableSequences:true, sequenceDays:[0,3,7,14] },
+  responseTracking: { enabled:true },
+  crmUpdate:        { enabled:true, autoLog:true }
+};
+
+async function _ensureWorkflowReady() {
+  if (!_WF_CONFIG) await _wfLoadConfig();
+}
+
+async function _wfLoadConfig() {
+  try {
+    if (!_GH_TOKEN) { _WF_CONFIG = JSON.parse(JSON.stringify(_WF_DEFAULTS)); return; }
+    var r = await fetch(_WF_API, { headers:{'Authorization':'token '+_GH_TOKEN,'Accept':'application/vnd.github.v3+json'}, cache:'no-store' });
+    if (!r.ok) { _WF_CONFIG = JSON.parse(JSON.stringify(_WF_DEFAULTS)); return; }
+    var d = await r.json();
+    _WF_GITHUB_SHA = d.sha;
+    var raw = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
+    // Merge nodes from file into defaults
+    var cfg = JSON.parse(JSON.stringify(_WF_DEFAULTS));
+    if (raw.nodes) { Object.keys(raw.nodes).forEach(function(k){ if(cfg[k]) Object.assign(cfg[k], raw.nodes[k]); }); }
+    _WF_CONFIG = cfg;
+  } catch(e) { console.warn('WF load error:',e); _WF_CONFIG = JSON.parse(JSON.stringify(_WF_DEFAULTS)); }
+}
+
+async function _saveWorkflowConfig() {
+  try {
+    if (!_GH_TOKEN) { _wfMsg('error','No GitHub token'); return; }
+    // Build the file content matching workflow_config.json format
+    var out = { version:1, lastUpdated:new Date().toISOString(), nodes:{} };
+    _WF_NODE_ORDER.forEach(function(k){ out.nodes[k] = Object.assign({}, _WF_CONFIG[k], { label:_WF_NODES[k].label, description:_WF_NODES[k].desc, type:_WF_NODES[k].type }); });
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 2))));
+    var body = { message:'Update workflow config', content:content, branch:'main' };
+    if (_WF_GITHUB_SHA) body.sha = _WF_GITHUB_SHA;
+    var r = await fetch(_WF_API, { method:'PUT', headers:{'Authorization':'token '+_GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'}, body:JSON.stringify(body) });
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    var d = await r.json();
+    _WF_GITHUB_SHA = d.content.sha;
+    _WF_DIRTY = false; _wfUpdateStatus();
+    _wfMsg('success','Saved');
+  } catch(e) { console.error('WF save error:',e); _wfMsg('error','Save failed: '+e.message); }
+}
+
+function renderWorkflowView() {
+  var canvas = document.getElementById('wfCanvas');
+  if (!canvas || !_WF_CONFIG) return;
+  canvas.innerHTML = '';
+  _wfDrawCanvas(canvas);
+}
+
+function _wfDrawCanvas(container) {
+  var W = 200, H = 120, gapH = 40, gapV = 80, pad = 40;
+  var perRow = Math.min(6, _WF_NODE_ORDER.length);
+  // Row 1: first 5, Row 2: next 6 (or fewer)
+  var row1 = _WF_NODE_ORDER.slice(0, 5);
+  var row2 = _WF_NODE_ORDER.slice(5);
+  var maxCols = Math.max(row1.length, row2.length);
+  var svgW = pad*2 + maxCols*W + (maxCols-1)*gapH;
+  var svgH = pad*2 + H*2 + gapV;
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width', svgW);
+  svg.setAttribute('height', svgH);
+  svg.setAttribute('viewBox','0 0 '+svgW+' '+svgH);
+  svg.style.background='white'; svg.style.borderRadius='12px'; svg.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';
+
+  // Grid pattern
+  var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  var pat = document.createElementNS('http://www.w3.org/2000/svg','pattern');
+  pat.setAttribute('id','wfGrid'); pat.setAttribute('width','30'); pat.setAttribute('height','30'); pat.setAttribute('patternUnits','userSpaceOnUse');
+  var dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx','15'); dot.setAttribute('cy','15'); dot.setAttribute('r','1'); dot.setAttribute('fill','rgba(0,0,0,0.04)');
+  pat.appendChild(dot); defs.appendChild(pat); svg.appendChild(defs);
+  var bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width','100%'); bg.setAttribute('height','100%'); bg.setAttribute('fill','url(#wfGrid)');
+  svg.appendChild(bg);
+
+  // Positions
+  var pos = {};
+  row1.forEach(function(id,i){ pos[id] = { x:pad+i*(W+gapH), y:pad }; });
+  row2.forEach(function(id,i){ pos[id] = { x:pad+i*(W+gapH), y:pad+H+gapV }; });
+
+  // Draw connections
+  for(var i=0; i<_WF_NODE_ORDER.length-1; i++){
+    var fromId = _WF_NODE_ORDER[i], toId = _WF_NODE_ORDER[i+1];
+    var f = pos[fromId], t = pos[toId];
+    if(!f||!t) continue;
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    var sameRow = (f.y === t.y);
+    var d;
+    if(sameRow) {
+      // Horizontal: from right edge to left edge
+      d = 'M '+(f.x+W)+' '+(f.y+H/2)+' C '+(f.x+W+gapH/2)+' '+(f.y+H/2)+', '+(t.x-gapH/2)+' '+(t.y+H/2)+', '+t.x+' '+(t.y+H/2);
+    } else {
+      // Row transition: from bottom of last in row1 to top of first in row2
+      var x1=f.x+W/2, y1=f.y+H, x2=t.x+W/2, y2=t.y;
+      var cy = (y1+y2)/2;
+      d = 'M '+x1+' '+y1+' C '+x1+' '+cy+', '+x2+' '+cy+', '+x2+' '+y2;
+    }
+    path.setAttribute('d', d);
+    var enabled = _WF_CONFIG[fromId].enabled && _WF_CONFIG[toId].enabled;
+    path.setAttribute('class','wf-connection-line wf-connection-animate'+(enabled?'':' disabled'));
+    svg.appendChild(path);
+  }
+
+  // Draw nodes
+  _WF_NODE_ORDER.forEach(function(nodeId){
+    var p = pos[nodeId]; if(!p) return;
+    var nd = _WF_NODES[nodeId], cfg = _WF_CONFIG[nodeId];
+    var fo = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
+    fo.setAttribute('x',p.x); fo.setAttribute('y',p.y); fo.setAttribute('width',W); fo.setAttribute('height',H);
+    var div = document.createElement('div');
+    div.className = 'wf-node'+(_WF_SELECTED_NODE===nodeId?' selected':'')+(cfg.enabled?'':' disabled');
+    div.setAttribute('data-node-id',nodeId);
+    div.setAttribute('data-type',nd.type);
+    div.onclick = function(e){ e.stopPropagation(); _wfSelectNode(nodeId); };
+    var metric = _wfMetric(nodeId);
+    var status = _wfStatus(nodeId);
+    div.innerHTML = '<div class="wf-node-bar"></div>'+
+      '<div class="wf-node-header">'+
+        '<span class="wf-node-icon">'+nd.icon+'</span>'+
+        '<span class="wf-node-title">'+nd.label+'</span>'+
+        '<label class="wf-toggle" onclick="event.stopPropagation()">'+
+          '<input type="checkbox" '+(cfg.enabled?'checked':'')+' onchange="_wfToggle(\''+nodeId+'\',this.checked)">'+
+          '<span class="wf-toggle-slider"></span>'+
+        '</label>'+
+      '</div>'+
+      '<div class="wf-node-metric" id="wfMetric_'+nodeId+'">'+metric+'</div>'+
+      '<div class="wf-node-status"><span class="wf-status-dot '+(cfg.enabled?'active':'')+'"></span> '+status+'</div>';
+    fo.appendChild(div);
+    svg.appendChild(fo);
+  });
+
+  container.appendChild(svg);
+}
+
+function _wfMetric(id) {
+  var cfg = _WF_CONFIG[id];
+  if(!cfg.enabled) return 'Disabled';
+  switch(id){
+    case 'discovery': return (typeof ALL_JOBS!=='undefined'?ALL_JOBS.length:0)+' active listings';
+    case 'enrichment': return 'Rate: '+(cfg.rateLimit||600)+'/hr';
+    case 'throttle':
+      var today = new Date().toISOString().split('T')[0];
+      var sent = (_queueData&&_queueData.queue)?_queueData.queue.filter(function(q){return q.completedAt&&q.completedAt.startsWith(today)}).length:0;
+      return sent+' / '+(cfg.maxMessagesPerDay||50)+' today';
+    case 'outreach':
+      var pending = (_queueData&&_queueData.queue)?_queueData.queue.filter(function(q){return q.status==='pending'}).length:0;
+      return pending+' pending';
+    case 'followUp': return cfg.enableSequences?'Days: '+(cfg.sequenceDays||[0,3,7,14]).join('→'):'Sequences off';
+    case 'crmSync': return 'HubSpot — every 2h';
+    case 'review': return cfg.mode==='manual'?'Manual review':'Auto-approve';
+    default: return 'Active';
+  }
+}
+
+function _wfStatus(id) {
+  var cfg = _WF_CONFIG[id];
+  if(!cfg.enabled) return 'Disabled';
+  switch(id){
+    case 'discovery': return cfg.schedule==='every_15m_daytime'?'Every 15m (daytime)':'Custom';
+    case 'enrichment': return 'Apollo.io';
+    case 'throttle': return (cfg.preset||'smart').charAt(0).toUpperCase()+(cfg.preset||'smart').slice(1)+' mode';
+    case 'review': return cfg.mode==='manual'?'Human-in-loop':'Auto';
+    case 'outreach': return cfg.requireReview?'Requires review':'Auto-send';
+    default: return 'Running';
+  }
+}
+
+function _wfSelectNode(id) {
+  _WF_SELECTED_NODE = id;
+  document.querySelectorAll('.wf-node').forEach(function(n){n.classList.remove('selected')});
+  var el = document.querySelector('.wf-node[data-node-id="'+id+'"]');
+  if(el) el.classList.add('selected');
+  _wfRenderConfig(id);
+}
+
+function _wfToggle(id,on) {
+  _WF_CONFIG[id].enabled = on;
+  _wfMarkDirty();
+  renderWorkflowView();
+  if(_WF_SELECTED_NODE===id) _wfRenderConfig(id);
+}
+
+/* ---- Config Panel ---- */
+function _wfRenderConfig(id) {
+  var panel = document.getElementById('wfConfigPanel');
+  if(!panel) return;
+  var nd = _WF_NODES[id], cfg = _WF_CONFIG[id];
+  var h = '<div class="wf-config-header"><span class="icon">'+nd.icon+'</span><div><h3>'+nd.label+'</h3><p>'+nd.desc+'</p></div></div>';
+  switch(id){
+    case 'throttle': h += _wfThrottleCfg(cfg); break;
+    case 'discovery': h += _wfDiscoveryCfg(cfg); break;
+    case 'enrichment': h += _wfEnrichCfg(cfg); break;
+    case 'review': h += _wfReviewCfg(cfg); break;
+    case 'followUp': h += _wfFollowUpCfg(cfg); break;
+    case 'outreach': h += _wfOutreachCfg(cfg); break;
+    default: h += _wfSimpleCfg(id, cfg);
+  }
+  panel.innerHTML = h;
+}
+
+function _wfThrottleCfg(c) {
+  var presets = ['conservative','moderate','smart','aggressive'];
+  return '<div class="wf-section"><div class="wf-section-title">Preset</div><div class="wf-presets">'+
+    presets.map(function(p){
+      return '<div class="wf-preset-card'+(c.preset===p?' active':'')+'" onclick="_wfApplyPreset(\''+p+'\')"><div class="wf-preset-check">✓</div><div class="preset-name">'+p.charAt(0).toUpperCase()+p.slice(1)+'</div></div>';
+    }).join('')+'</div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Rate Limits</div>'+
+    _wfSlider('Max Connections/Day','maxConnectionsPerDay',c.maxConnectionsPerDay,1,100,'throttle')+
+    _wfSlider('Max Messages/Day','maxMessagesPerDay',c.maxMessagesPerDay,1,200,'throttle')+
+    _wfSlider('Min Delay (sec)','minDelay',c.minDelay,5,300,'throttle')+
+    _wfSlider('Max Delay (sec)','maxDelay',c.maxDelay,10,600,'throttle')+
+    '</div>'+
+    '<div class="wf-section"><div class="wf-section-title">Schedule</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label">Active Hours</label>'+
+    '<div class="wf-time-pair"><input type="time" value="'+c.activeHoursStart+'" onchange="_wfSet(\'throttle\',\'activeHoursStart\',this.value)"><span>to</span><input type="time" value="'+c.activeHoursEnd+'" onchange="_wfSet(\'throttle\',\'activeHoursEnd\',this.value)"></div></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.weekendPause?'checked':'')+' onchange="_wfSet(\'throttle\',\'weekendPause\',this.checked)"> Pause on weekends</label></div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Cooldown</div>'+
+    _wfSlider('Cooldown after N messages','cooldownAfterN',c.cooldownAfterN,1,50,'throttle')+
+    _wfSlider('Wait (minutes)','cooldownMinutes',c.cooldownMinutes,5,120,'throttle')+
+    '</div>'+
+    '<div class="wf-section"><div class="wf-section-title">Human Variance</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.humanVariance?'checked':'')+' onchange="_wfSet(\'throttle\',\'humanVariance\',this.checked);_wfRenderConfig(\'throttle\')"> Add human-like variance</label>'+
+    '<span class="wf-form-hint">Adds ±'+(c.humanVariancePct||30)+'% random variation to delays</span></div>'+
+    (c.humanVariance?_wfSlider('Variance %','humanVariancePct',c.humanVariancePct||30,5,50,'throttle'):'')+
+    '</div>';
+}
+
+function _wfDiscoveryCfg(c) {
+  var srcs = ['linkedin','lever','greenhouse','comeet','ashby','workday'];
+  return '<div class="wf-section"><div class="wf-section-title">Schedule</div>'+
+    '<div class="wf-form-group"><select class="wf-select" onchange="_wfSet(\'discovery\',\'schedule\',this.value)">'+
+    ['every_15m_daytime','every_30m','hourly','daily'].map(function(s){
+      return '<option value="'+s+'"'+(c.schedule===s?' selected':'')+'>'+s.replace(/_/g,' ')+'</option>';
+    }).join('')+'</select></div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Sources</div><div class="wf-checkbox-group">'+
+    srcs.map(function(s){
+      var checked = c.sources && c.sources.indexOf(s)>=0;
+      return '<div class="wf-checkbox-item"><input type="checkbox" id="wfSrc_'+s+'" '+(checked?'checked':'')+' onchange="_wfUpdateSources()"><label for="wfSrc_'+s+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</label></div>';
+    }).join('')+'</div></div>';
+}
+
+function _wfEnrichCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">Provider</div>'+
+    '<div class="wf-form-group"><select class="wf-select" onchange="_wfSet(\'enrichment\',\'provider\',this.value)">'+
+    '<option value="apollo"'+(c.provider==='apollo'?' selected':'')+'>Apollo.io</option>'+
+    '<option value="clearbit"'+(c.provider==='clearbit'?' selected':'')+'>Clearbit</option></select></div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Rate Limit</div>'+
+    _wfSlider('Calls per hour','rateLimit',c.rateLimit||600,100,2000,'enrichment')+
+    '</div>';
+}
+
+function _wfReviewCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">Review Mode</div>'+
+    '<div class="wf-form-group"><select class="wf-select" onchange="_wfSet(\'review\',\'mode\',this.value)">'+
+    '<option value="manual"'+(c.mode==='manual'?' selected':'')+'>Manual Review</option>'+
+    '<option value="auto_customers"'+(c.mode==='auto_customers'?' selected':'')+'>Auto-approve Customers</option>'+
+    '<option value="auto_categories"'+(c.mode==='auto_categories'?' selected':'')+'>Auto-approve Categories</option></select></div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Auto-Approve</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoApproveCustomers?'checked':'')+' onchange="_wfSet(\'review\',\'autoApproveCustomers\',this.checked)"> Auto-approve returning customers</label></div>'+
+    '</div>';
+}
+
+function _wfOutreachCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">Delivery</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.requireReview?'checked':'')+' onchange="_wfSet(\'outreach\',\'requireReview\',this.checked)"> Require review before sending</label>'+
+    '<span class="wf-form-hint">When enabled, messages go to queue for your approval before being sent.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoSendOnApproval?'checked':'')+' onchange="_wfSet(\'outreach\',\'autoSendOnApproval\',this.checked)"> Auto-send on approval</label>'+
+    '<span class="wf-form-hint">Immediately send after approving (respects throttle limits).</span></div></div>';
+}
+
+function _wfFollowUpCfg(c) {
+  var days = c.sequenceDays || [0,3,7,14];
+  return '<div class="wf-section"><div class="wf-section-title">Sequences</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.enableSequences?'checked':'')+' onchange="_wfSet(\'followUp\',\'enableSequences\',this.checked)"> Enable follow-up sequences</label></div></div>'+
+    '<div class="wf-section"><div class="wf-section-title">Sequence Days</div>'+
+    '<div class="wf-chip-list">'+days.map(function(d){
+      return '<div class="wf-chip">Day <strong>'+d+'</strong> <span class="wf-chip-remove" onclick="_wfRemoveDay('+d+')">×</span></div>';
+    }).join('')+'</div>'+
+    '<div class="wf-chip-add"><input type="number" id="wfNewDay" placeholder="Day #" min="0" max="365" style="width:80px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">'+
+    '<button onclick="_wfAddDay()" style="padding:6px 12px;font-size:12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600">Add</button></div></div>';
+}
+
+function _wfSimpleCfg(id, c) {
+  var nd = _WF_NODES[id];
+  return '<div class="wf-section"><div class="wf-section-title">Status</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.enabled?'checked':'')+' onchange="_wfToggle(\''+id+'\',this.checked)"> Enabled</label></div>'+
+    '<p class="wf-form-hint" style="margin-top:12px">'+nd.desc+'</p></div>';
+}
+
+/* ---- Helpers ---- */
+function _wfSlider(label,key,val,min,max,nodeId) {
+  return '<div class="wf-form-group"><label class="wf-form-label">'+label+'</label>'+
+    '<div class="wf-range-group"><input type="range" class="wf-range-slider" min="'+min+'" max="'+max+'" value="'+val+'" oninput="this.nextElementSibling.textContent=this.value" onchange="_wfSetNum(\''+nodeId+'\',\''+key+'\',this.value)">'+
+    '<span class="wf-range-value">'+val+'</span></div></div>';
+}
+
+function _wfSet(nodeId,key,val) { _WF_CONFIG[nodeId][key]=val; _wfMarkDirty(); }
+function _wfSetNum(nodeId,key,val) { _WF_CONFIG[nodeId][key]=parseInt(val,10); _wfMarkDirty(); }
+
+function _wfApplyPreset(p) {
+  var presets = {
+    conservative: {maxConnectionsPerDay:10,maxMessagesPerDay:25,minDelay:90,maxDelay:300,cooldownAfterN:5,cooldownMinutes:45},
+    moderate:     {maxConnectionsPerDay:20,maxMessagesPerDay:50,minDelay:45,maxDelay:180,cooldownAfterN:10,cooldownMinutes:30},
+    smart:        {maxConnectionsPerDay:20,maxMessagesPerDay:50,minDelay:45,maxDelay:180,cooldownAfterN:10,cooldownMinutes:30},
+    aggressive:   {maxConnectionsPerDay:40,maxMessagesPerDay:100,minDelay:15,maxDelay:60,cooldownAfterN:20,cooldownMinutes:15}
+  };
+  Object.assign(_WF_CONFIG.throttle, presets[p]||presets.smart);
+  _WF_CONFIG.throttle.preset = p;
+  _wfMarkDirty();
+  _wfRenderConfig('throttle');
+}
+
+function _wfUpdateSources() {
+  var srcs = [];
+  ['linkedin','lever','greenhouse','comeet','ashby','workday'].forEach(function(s){
+    var el = document.getElementById('wfSrc_'+s);
+    if(el && el.checked) srcs.push(s);
+  });
+  _WF_CONFIG.discovery.sources = srcs;
+  _wfMarkDirty();
+}
+
+function _wfAddDay() {
+  var el = document.getElementById('wfNewDay');
+  if(!el||!el.value) return;
+  var d = parseInt(el.value,10);
+  if(isNaN(d)||d<0||d>365) return;
+  if(!_WF_CONFIG.followUp.sequenceDays) _WF_CONFIG.followUp.sequenceDays=[];
+  if(_WF_CONFIG.followUp.sequenceDays.indexOf(d)<0){
+    _WF_CONFIG.followUp.sequenceDays.push(d);
+    _WF_CONFIG.followUp.sequenceDays.sort(function(a,b){return a-b});
+    _wfMarkDirty();
+    _wfRenderConfig('followUp');
+  }
+}
+
+function _wfRemoveDay(d) {
+  _WF_CONFIG.followUp.sequenceDays = (_WF_CONFIG.followUp.sequenceDays||[]).filter(function(x){return x!==d});
+  _wfMarkDirty();
+  _wfRenderConfig('followUp');
+}
+
+function _wfMarkDirty() {
+  _WF_DIRTY = true; _wfUpdateStatus();
+  clearTimeout(_WF_SAVE_TIMEOUT);
+  _WF_SAVE_TIMEOUT = setTimeout(_saveWorkflowConfig, 2000);
+}
+
+function _wfUpdateStatus() {
+  var el = document.getElementById('wfSaveStatus');
+  if(!el) return;
+  el.textContent = _WF_DIRTY ? '● Unsaved changes' : '✓ Saved';
+  el.className = 'wf-save-status' + (_WF_DIRTY?' unsaved':'');
+}
+
+function _wfMsg(type, msg) {
+  var panel = document.getElementById('wfConfigPanel');
+  if(!panel) return;
+  var d = document.createElement('div');
+  d.className = type==='error'?'wf-error':'wf-success';
+  d.textContent = msg;
+  panel.insertBefore(d, panel.firstChild);
+  setTimeout(function(){d.remove()}, 3000);
+}
 </script>
 </body>
 </html>

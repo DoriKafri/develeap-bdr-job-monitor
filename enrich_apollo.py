@@ -25,6 +25,23 @@ DOCS_HTML = "docs/index.html"
 # Rate limiting: Apollo allows 600 calls/hour ≈ 10/min
 REQUEST_DELAY = 0.25  # seconds between API calls
 
+# ── Workflow Config ───────────────────────────────────────────────────────
+WORKFLOW_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workflow_config.json")
+
+def _load_workflow_config():
+    """Load workflow_config.json if it exists."""
+    if os.path.exists(WORKFLOW_CONFIG_PATH):
+        try:
+            with open(WORKFLOW_CONFIG_PATH, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def _is_node_enabled(config, node_id):
+    """Check if a workflow node is enabled. Defaults to True if not configured."""
+    return config.get("nodes", {}).get(node_id, {}).get("enabled", True)
+
 
 def apollo_post_headers():
     """Headers for POST requests (people match)."""
@@ -279,6 +296,19 @@ def main():
     if not APOLLO_API_KEY:
         print("APOLLO_API_KEY not set, skipping enrichment")
         sys.exit(0)
+
+    # Check workflow config
+    wf_config = _load_workflow_config()
+    if wf_config and not _is_node_enabled(wf_config, "enrichment"):
+        print("Contact Enrichment node is DISABLED in workflow config — skipping")
+        sys.exit(0)
+
+    # Apply rate limit from workflow config if available
+    enrichment_node = wf_config.get("nodes", {}).get("enrichment", {}) if wf_config else {}
+    rate_limit = enrichment_node.get("rateLimit", 600)
+    global REQUEST_DELAY
+    REQUEST_DELAY = max(0.1, 3600.0 / rate_limit)  # Convert calls/hour to delay
+    print(f"  Rate limit: {rate_limit} calls/hour (delay: {REQUEST_DELAY:.2f}s)")
 
     print("Starting Apollo.io enrichment...")
     print(f"  API key: {APOLLO_API_KEY[:8]}...{APOLLO_API_KEY[-4:]}")
