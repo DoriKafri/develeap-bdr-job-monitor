@@ -2240,12 +2240,118 @@ def load_existing_jobs(html: str) -> list[dict]:
     return []
 
 
+def _normalize_title(title: str) -> str:
+    """Normalize job title for dedup matching.
+
+    Strips source-name suffixes like '- Comeet', '- CAREERS AT NVIDIA',
+    '- Myworkdayjobs.com', '- Lever', etc.  Also removes parenthetical
+    job IDs like '(25020)' and 'at Company - Comeet' patterns.
+    """
+    t = title.lower().strip()
+    # Order matters: check compound patterns BEFORE simple suffix stripping
+    # 1. Remove 'at Company - Source' suffix (e.g. "Cloud Security Engineer at Port - Comeet")
+    t = re.sub(r'\s+at\s+[\w\s]+-\s*(?:comeet|lever|greenhouse|careers)\s*$', '', t)
+    # 2. Remove trailing source names: "- Comeet", "- Lever", etc.
+    t = re.sub(r'\s*-\s*(?:comeet|lever|greenhouse|jobgether|myworkdayjobs\.com)\s*$', '', t)
+    # 3. Remove "- CAREERS AT <company>" suffix
+    t = re.sub(r'\s*-\s*careers\s+at\s+\S+\s*$', '', t)
+    # Remove parenthetical job IDs like (25020)
+    t = re.sub(r'\s*\(\d+\)\s*', ' ', t)
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
+
+
+def _is_company_page(j: dict) -> bool:
+    """Return True if this listing is a company career-page link, not a specific job.
+
+    Detects patterns like 'Jobs at Vonage', 'Jobs at Deloitte - Comeet',
+    or titles that are just the company name (e.g. 'Mobileye', 'Mobileye - Lever').
+    """
+    title = j.get("title", "").strip()
+    company = j.get("company", "").strip()
+    t_lower = title.lower()
+    c_lower = company.lower()
+
+    # "Jobs at X" or "Jobs at X - Comeet"
+    if re.match(r'^jobs\s+at\s+', t_lower):
+        return True
+    # Title == company name (with optional source suffix)
+    cleaned = re.sub(r'\s*-\s*(comeet|lever|greenhouse|jobgether)\s*$', '', t_lower).strip()
+    if cleaned == c_lower and cleaned:
+        return True
+    return False
+
+
+def _consolidate_duplicates(jobs: list[dict]) -> list[dict]:
+    """Consolidate duplicate listings in the job list.
+
+    Finds jobs that match on company + normalized title but come from
+    different sources (or are exact dupes).  Keeps the best entry and
+    records the others as altSources.
+    """
+    from collections import defaultdict
+
+    groups = defaultdict(list)
+    for j in jobs:
+        comp = j.get("company", "").lower().strip()
+        norm = _normalize_title(j.get("title", ""))
+        groups[(comp, norm)].append(j)
+
+    consolidated = []
+    merge_count = 0
+    for (comp, norm), entries in groups.items():
+        if len(entries) == 1:
+            consolidated.append(entries[0])
+            continue
+
+        # Multiple entries for same company+role — pick the best primary
+        # Prefer: most recent posted date, then entry with most stakeholders
+        entries.sort(key=lambda x: (x.get("posted", ""), len(x.get("stakeholders", []))), reverse=True)
+        primary = entries[0]
+
+        # Merge altSources from all duplicates
+        alt_sources = list(primary.get("altSources", []))
+        seen_urls = {primary.get("sourceUrl", "")}
+        seen_urls.update(a.get("sourceUrl", "") for a in alt_sources)
+
+        for dup in entries[1:]:
+            dup_url = dup.get("sourceUrl", "")
+            if dup_url and dup_url not in seen_urls:
+                alt_sources.append({
+                    "source": detect_source(dup_url),
+                    "sourceUrl": dup_url,
+                    "title": dup.get("title", "")[:80]
+                })
+                seen_urls.add(dup_url)
+            # Also pull in any altSources the duplicate had
+            for a in dup.get("altSources", []):
+                a_url = a.get("sourceUrl", "")
+                if a_url and a_url not in seen_urls:
+                    alt_sources.append(a)
+                    seen_urls.add(a_url)
+
+        if alt_sources:
+            primary["altSources"] = alt_sources
+        merge_count += len(entries) - 1
+        consolidated.append(primary)
+
+    if merge_count:
+        log.info(f"  Consolidation: merged {merge_count} duplicate listings into existing entries")
+    return consolidated
+
+
 def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """Merge new jobs with existing, return (merged, only_new)."""
     # Filter out Develeap's own listings and Unknown company jobs
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
     existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
     existing = [j for j in existing if j.get("company", "").strip() not in ("Unknown", "")]
+
+    # Remove company-page listings (not specific job postings)
+    before_cp = len(existing)
+    existing = [j for j in existing if not _is_company_page(j)]
+    if before_cp != len(existing):
+        log.info(f"  Removed {before_cp - len(existing)} company-page listings (not specific jobs)")
 
     # Remove aggregator/index pages from existing jobs
     def _is_aggregator(j):
@@ -2363,9 +2469,13 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} closed)")
     existing = cleaned
 
-    # Index existing by URL and company+title
+    # Consolidate duplicates within existing listings before processing new ones
+    existing = _consolidate_duplicates(existing)
+
+    # Index existing by URL, by exact company+title, AND by company+normalized_title
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
+    existing_norm = {f'{j.get("company","").lower()}|{_normalize_title(j.get("title",""))}': j for j in existing}
 
     # Mark existing jobs as not new; update stakeholders (preserve enrichment)
     for j in existing:
@@ -2402,13 +2512,21 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
 
     truly_new = []
     for j in new_jobs:
+        # Skip company-page listings from new jobs too
+        if _is_company_page(j):
+            log.info(f"  Skipping company-page listing: \"{j.get('title', '')}\" ({j.get('company', '')})")
+            continue
+
         url = j.get("sourceUrl", "")
         key = f'{j.get("company","").lower()}|{j.get("title","").lower()}'
-        if url not in existing_urls and key not in existing_keys:
+        norm_key = f'{j.get("company","").lower()}|{_normalize_title(j.get("title",""))}'
+
+        # Check all three indexes: URL, exact key, and normalized key
+        if url not in existing_urls and key not in existing_keys and norm_key not in existing_norm:
             truly_new.append(j)
         else:
             # Duplicate listing found on a different source — record the alternate source
-            match = existing_urls.get(url) or existing_keys.get(key)
+            match = existing_urls.get(url) or existing_keys.get(key) or existing_norm.get(norm_key)
             if match and url and url != match.get("sourceUrl", ""):
                 alt_source = detect_source(url)
                 alt_sources = match.get("altSources", [])
@@ -2423,6 +2541,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     log.info(f"  Alt source added: {match.get('company','')} — {alt_source} ({url[:60]})")
 
     merged = existing + truly_new
+
+    # Final consolidation pass — catches any duplicates between existing and truly_new
+    merged = _consolidate_duplicates(merged)
 
     # ── Freshness cutoff: remove anything older than 14 days ──
     cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).strftime("%Y-%m-%d")
