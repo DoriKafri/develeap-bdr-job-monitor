@@ -8421,14 +8421,45 @@ function _showApolloKeyStoredBadge() {
   const badge = document.getElementById('apolloKeyStoredBadge');
   if (!badge) return;
   const stored = localStorage.getItem('_apolloKeyStored') === 'true';
-  badge.style.display = stored ? 'flex' : 'none';
   if (stored) {
+    badge.style.display = 'flex';
     const at = localStorage.getItem('_apolloKeyStoredAt');
     const timeEl = document.getElementById('apolloKeyStoredTime');
     if (timeEl && at) {
       const d = new Date(at);
       timeEl.textContent = 'Saved ' + d.toLocaleDateString('en-IL', {month:'short', day:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL', {hour:'2-digit', minute:'2-digit'});
     }
+  } else {
+    // Check GitHub secrets API to see if key exists (may have been saved from another browser)
+    _checkApolloSecretExists();
+  }
+}
+
+async function _checkApolloSecretExists() {
+  try {
+    const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/APOLLO_API_KEY', {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      // Secret exists on GitHub — sync localStorage
+      localStorage.setItem('_apolloKeyStored', 'true');
+      if (data.updated_at) localStorage.setItem('_apolloKeyStoredAt', data.updated_at);
+      const badge = document.getElementById('apolloKeyStoredBadge');
+      if (badge) {
+        badge.style.display = 'flex';
+        const timeEl = document.getElementById('apolloKeyStoredTime');
+        if (timeEl && data.updated_at) {
+          const d = new Date(data.updated_at);
+          timeEl.textContent = 'Saved ' + d.toLocaleDateString('en-IL', {month:'short', day:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL', {hour:'2-digit', minute:'2-digit'});
+        }
+      }
+      // Also update overview banner & status dots
+      _updateApolloStatusBanner(true);
+    }
+  } catch (e) {
+    // Silently fail — just means we can't verify
+    console.warn('Could not check Apollo secret:', e);
   }
 }
 
@@ -8490,11 +8521,48 @@ async function _testApolloConnection() {
           '<div style="margin-top:6px;font-size:11px;opacity:0.8">The API key is stored as a GitHub Secret. It will be used on the next automated sync run. To test immediately, enter the key in the field above and click Test Connection.</div>';
       }
     } else {
-      resultEl.style.background = '#FFF3E0';
-      resultEl.style.color = '#E65100';
-      resultEl.style.border = '1px solid #FFB74D';
-      resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">⚠️ <strong>No API key found</strong></div>' +
-        '<div style="margin-top:6px;font-size:11px;opacity:0.8">Enter your Apollo API key above and save it first, then test the connection.</div>';
+      // No localStorage flag — check GitHub secrets API directly
+      let secretExists = false;
+      try {
+        const secResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/APOLLO_API_KEY', {
+          headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (secResp.ok) {
+          secretExists = true;
+          const secData = await secResp.json();
+          localStorage.setItem('_apolloKeyStored', 'true');
+          if (secData.updated_at) localStorage.setItem('_apolloKeyStoredAt', secData.updated_at);
+          _showApolloKeyStoredBadge();
+          _updateApolloStatusBanner(true);
+        }
+      } catch (e2) { /* ignore */ }
+
+      if (secretExists) {
+        // Key exists on GitHub — check for enrichment data
+        const dataResp = await fetch(_apolloDataUrl, { cache: 'no-store' });
+        if (dataResp.ok) {
+          const data = await dataResp.json();
+          resultEl.style.background = '#E8F5E9';
+          resultEl.style.color = '#2E7D32';
+          resultEl.style.border = '1px solid #A5D6A7';
+          const stats = data.stats || {};
+          resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Apollo is working!</strong></div>' +
+            '<div style="margin-top:6px;font-size:11px;opacity:0.8">Last sync: ' + (data.syncedAt ? new Date(data.syncedAt).toLocaleString() : 'unknown') +
+            ' · Contacts: ' + (stats.contactsEnriched || 0) + ' · Companies: ' + (stats.orgsEnriched || 0) + '</div>';
+        } else {
+          resultEl.style.background = '#FFF3E0';
+          resultEl.style.color = '#E65100';
+          resultEl.style.border = '1px solid #FFB74D';
+          resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">🔑 <strong>Key found on GitHub, awaiting first sync</strong></div>' +
+            '<div style="margin-top:6px;font-size:11px;opacity:0.8">The API key is stored as a GitHub Secret. It will be used on the next automated sync run. To test the key directly, paste it in the field above and click Test Connection.</div>';
+        }
+      } else {
+        resultEl.style.background = '#FFF3E0';
+        resultEl.style.color = '#E65100';
+        resultEl.style.border = '1px solid #FFB74D';
+        resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">⚠️ <strong>No API key found</strong></div>' +
+          '<div style="margin-top:6px;font-size:11px;opacity:0.8">Enter your Apollo API key above and save it first, then test the connection.</div>';
+      }
     }
   } catch (e) {
     resultEl.style.background = '#FFEBEE';
