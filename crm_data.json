@@ -1,14 +1,464 @@
 {
   "provider": "hubspot",
   "portalId": "25695560",
-  "syncedAt": "2026-03-06T08:06:13.698496Z",
-  "dealStageMap": {},
+  "syncedAt": "2026-03-06T08:31:37.941295Z",
+  "dealStageMap": {
+    "85640677": {
+      "label": "Waiting for us",
+      "pipeline": "Gardening",
+      "color": "#00CA72"
+    },
+    "85616068": {
+      "label": "Waiting for budget",
+      "pipeline": "Gardening",
+      "color": "#FFB100"
+    },
+    "85616069": {
+      "label": "Untapped lead A",
+      "pipeline": "Gardening",
+      "color": "#32BBD7"
+    },
+    "85616070": {
+      "label": "Untapped lead B",
+      "pipeline": "Gardening",
+      "color": "#E44258"
+    },
+    "85616071": {
+      "label": "Active customer",
+      "pipeline": "Gardening",
+      "color": "#9B59B6"
+    },
+    "85616072": {
+      "label": "Past customer",
+      "pipeline": "Gardening",
+      "color": "#3498DB"
+    },
+    "2574713042": {
+      "label": "Send notification",
+      "pipeline": "Course",
+      "color": "#E67E22"
+    },
+    "2574713039": {
+      "label": "Application Review",
+      "pipeline": "Course",
+      "color": "#1ABC9C"
+    },
+    "2574713040": {
+      "label": "Phone Screen \\ Recuriter",
+      "pipeline": "Course",
+      "color": "#95A5A6"
+    },
+    "2574713041": {
+      "label": "Technical Advisor call",
+      "pipeline": "Course",
+      "color": "#2ECC71"
+    },
+    "2574713043": {
+      "label": "Contract Sent",
+      "pipeline": "Course",
+      "color": "#00CA72"
+    },
+    "2574713044": {
+      "label": "Closed Won",
+      "pipeline": "Course",
+      "color": "#FFB100"
+    },
+    "2574713045": {
+      "label": "Closed Lost",
+      "pipeline": "Course",
+      "color": "#32BBD7"
+    },
+    "98792385": {
+      "label": "Initial Stage ",
+      "pipeline": "SALES ISRAEL",
+      "color": "#E44258"
+    },
+    "98792386": {
+      "label": "Advanced Stage",
+      "pipeline": "SALES ISRAEL",
+      "color": "#9B59B6"
+    },
+    "98792387": {
+      "label": "Almost Won",
+      "pipeline": "SALES ISRAEL",
+      "color": "#3498DB"
+    },
+    "98792389": {
+      "label": "Closed Won",
+      "pipeline": "SALES ISRAEL",
+      "color": "#E67E22"
+    },
+    "98812116": {
+      "label": "Closed Lost",
+      "pipeline": "SALES ISRAEL",
+      "color": "#1ABC9C"
+    },
+    "144799191": {
+      "label": "Catching up",
+      "pipeline": "SALES ISRAEL",
+      "color": "#95A5A6"
+    },
+    "98812117": {
+      "label": "Work started",
+      "pipeline": "SALES ISRAEL",
+      "color": "#2ECC71"
+    },
+    "98792384": {
+      "label": "On Hold",
+      "pipeline": "SALES ISRAEL",
+      "color": "#00CA72"
+    },
+    "98792383": {
+      "label": "Not Interested",
+      "pipeline": "SALES ISRAEL",
+      "color": "#FFB100"
+    },
+    "1923478772": {
+      "label": "Advanced, Low probability",
+      "pipeline": "SALES ISRAEL",
+      "color": "#32BBD7"
+    },
+    "1923288300": {
+      "label": "Closed Won, waiting for start",
+      "pipeline": "SALES ISRAEL",
+      "color": "#E44258"
+    },
+    "119800030": {
+      "label": "Appointment scheduled",
+      "pipeline": "Training",
+      "color": "#9B59B6"
+    },
+    "119800031": {
+      "label": "Qualified to buy",
+      "pipeline": "Training",
+      "color": "#3498DB"
+    },
+    "119800032": {
+      "label": "Presentation scheduled",
+      "pipeline": "Training",
+      "color": "#E67E22"
+    },
+    "119800033": {
+      "label": "Decision Maker Bought-In",
+      "pipeline": "Training",
+      "color": "#1ABC9C"
+    },
+    "119800034": {
+      "label": "Contract sent",
+      "pipeline": "Training",
+      "color": "#95A5A6"
+    },
+    "119800035": {
+      "label": "Closed won",
+      "pipeline": "Training",
+      "color": "#2ECC71"
+    },
+    "119800036": {
+      "label": "Closed lost",
+      "pipeline": "Training",
+      "color": "#00CA72"
+    },
+    "131694568": {
+      "label": "Gardening (mailing)",
+      "pipeline": "GADRENING POLAND",
+      "color": "#FFB100"
+    },
+    "131694572": {
+      "label": "Check in ",
+      "pipeline": "GADRENING POLAND",
+      "color": "#32BBD7"
+    },
+    "131694576": {
+      "label": "Not answering after 3rd message",
+      "pipeline": "GADRENING POLAND",
+      "color": "#E44258"
+    },
+    "133447626": {
+      "label": "RESELLER",
+      "pipeline": "GADRENING POLAND",
+      "color": "#9B59B6"
+    },
+    "153501626": {
+      "label": "New",
+      "pipeline": "Sales NEW",
+      "color": "#3498DB"
+    },
+    "153501431": {
+      "label": "Demo meeting scheduled",
+      "pipeline": "Sales NEW",
+      "color": "#E67E22"
+    },
+    "153501432": {
+      "label": "Deep dive meeting scheduled",
+      "pipeline": "Sales NEW",
+      "color": "#1ABC9C"
+    },
+    "153501627": {
+      "label": "Contract sent",
+      "pipeline": "Sales NEW",
+      "color": "#95A5A6"
+    },
+    "153501433": {
+      "label": "Contact negotiation",
+      "pipeline": "Sales NEW",
+      "color": "#2ECC71"
+    },
+    "153501628": {
+      "label": "Closed won",
+      "pipeline": "Sales NEW",
+      "color": "#00CA72"
+    },
+    "153501629": {
+      "label": "Closed lost",
+      "pipeline": "Sales NEW",
+      "color": "#FFB100"
+    },
+    "153501635": {
+      "label": "Follow up",
+      "pipeline": "Sales NEW",
+      "color": "#32BBD7"
+    },
+    "96829147": {
+      "label": "Create Contact",
+      "pipeline": "SALES POLAND",
+      "color": "#E44258"
+    },
+    "96829148": {
+      "label": "Follow-Up",
+      "pipeline": "SALES POLAND",
+      "color": "#9B59B6"
+    },
+    "97360070": {
+      "label": "Stop Follow-Up",
+      "pipeline": "SALES POLAND",
+      "color": "#3498DB"
+    },
+    "98045423": {
+      "label": "Engaged -develeap",
+      "pipeline": "SALES POLAND",
+      "color": "#E67E22"
+    },
+    "254768068": {
+      "label": "Engaged -United Perfectum",
+      "pipeline": "SALES POLAND",
+      "color": "#1ABC9C"
+    },
+    "90301422": {
+      "label": "Initial Stage (Sales Israel)",
+      "pipeline": "SALES POLAND",
+      "color": "#95A5A6"
+    },
+    "90301423": {
+      "label": "Advanced Stage (Sales Israel)",
+      "pipeline": "SALES POLAND",
+      "color": "#2ECC71"
+    },
+    "85640896": {
+      "label": "Almost Won (Sales Israel)",
+      "pipeline": "SALES POLAND",
+      "color": "#00CA72"
+    },
+    "90301424": {
+      "label": "Contract Negotiation",
+      "pipeline": "SALES POLAND",
+      "color": "#FFB100"
+    },
+    "85640897": {
+      "label": "Closed Won",
+      "pipeline": "SALES POLAND",
+      "color": "#32BBD7"
+    },
+    "90301425": {
+      "label": "Closed Lost",
+      "pipeline": "SALES POLAND",
+      "color": "#E44258"
+    },
+    "85640898": {
+      "label": "Work started",
+      "pipeline": "SALES POLAND",
+      "color": "#9B59B6"
+    },
+    "139773670": {
+      "label": "Not Responding After 3rd Message",
+      "pipeline": "SALES POLAND",
+      "color": "#3498DB"
+    },
+    "211885003": {
+      "label": "Passed to UP ",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#E67E22"
+    },
+    "211885002": {
+      "label": "Lead",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#1ABC9C"
+    },
+    "211885004": {
+      "label": "Presentation scheduled",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#95A5A6"
+    },
+    "211885005": {
+      "label": "Decision Maker Bought-In",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#2ECC71"
+    },
+    "211885006": {
+      "label": "Contract sent",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#00CA72"
+    },
+    "211885007": {
+      "label": "Closed won",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#FFB100"
+    },
+    "211885008": {
+      "label": "Closed lost",
+      "pipeline": "POLAND OFFICIAL",
+      "color": "#32BBD7"
+    }
+  },
   "companies": {
     "accenture": {
-      "companyId": null,
+      "companyId": "6126670840",
       "companyName": "Accenture",
-      "deals": [],
-      "contacts": []
+      "domain": "accenture.com",
+      "industry": "INFORMATION_TECHNOLOGY_AND_SERVICES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401893870",
+          "name": "Moran Hazan - Accenture",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "6198722529",
+          "name": "Accenture - New Deal",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": "2022-12-31T08:35:17.658Z"
+        },
+        {
+          "id": "5800183749",
+          "name": "Deal with Ulviyya Rahmanova",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1556251",
+          "name": "None None",
+          "email": "pl.office@accenture.com",
+          "title": null
+        },
+        {
+          "id": "1938601",
+          "name": "Jacek Koman",
+          "email": "jacek.koman@accenture.com",
+          "title": "Technology Strategy Manager | Technology Strategy & Advisory"
+        },
+        {
+          "id": "537401",
+          "name": "Wacław Wilczewski",
+          "email": null,
+          "title": "MLOps / Advanced Analytics Manager"
+        },
+        {
+          "id": "538051",
+          "name": "Ulviyya Rahmanova",
+          "email": null,
+          "title": "SME"
+        },
+        {
+          "id": "547251",
+          "name": "Patrycja Kozłowska",
+          "email": null,
+          "title": "Junior IT Recruiter"
+        },
+        {
+          "id": "537901",
+          "name": "Karol Maslowski",
+          "email": null,
+          "title": "Manager"
+        },
+        {
+          "id": "1447501",
+          "name": "Justyna Martula",
+          "email": "justyna.martula@accenture.com",
+          "title": "Recruitment Associate Manager"
+        },
+        {
+          "id": "538151",
+          "name": "Ugur Ozkan",
+          "email": null,
+          "title": "Data Analyst"
+        },
+        {
+          "id": "2489152",
+          "name": "Vishal Mishra",
+          "email": "vishalmishra.it@gmail.com",
+          "title": "Full Stack Engineering Manager"
+        },
+        {
+          "id": "1938651",
+          "name": "Marcin Kaczmarek",
+          "email": "info@kaczmarek.no",
+          "title": "Magento developer"
+        },
+        {
+          "id": "1711851",
+          "name": "Cameron Cronin",
+          "email": null,
+          "title": "Europe CTO - Salesforce Business Group"
+        },
+        {
+          "id": "78351",
+          "name": "Moran Hazan",
+          "email": "moran.hazan@accenture.com",
+          "title": null
+        },
+        {
+          "id": "162792951018",
+          "name": "Quim Arnau",
+          "email": "quim.arnau@accenture.com",
+          "title": null
+        },
+        {
+          "id": "538001",
+          "name": "Justyna Bajus-Chmiel",
+          "email": "j.bajus-chmiel@accenture.com",
+          "title": "Recruiter"
+        },
+        {
+          "id": "1014951",
+          "name": "Weronika Milena Hr. Wandycz Thathis Hansen",
+          "email": "weronika.hansen@accenture.com",
+          "title": "Customer Service Clerk"
+        },
+        {
+          "id": "538201",
+          "name": "Liudmyla Marych",
+          "email": null,
+          "title": "Team Lead"
+        }
+      ]
     },
     "adaptive6": {
       "companyId": null,
@@ -17,15 +467,127 @@
       "contacts": []
     },
     "applied materials": {
-      "companyId": null,
-      "companyName": "Applied Materials",
+      "companyId": "6128369387",
+      "companyName": "Applied Materials,",
+      "domain": "amat.com",
+      "industry": "SEMICONDUCTORS",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "199229838545",
+          "name": "Applied Materials- New Deal",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2025-06-09T05:49:22.232Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "80701",
+          "name": "Ido Zinger",
+          "email": "ido@amat.com",
+          "title": "Devops manager"
+        },
+        {
+          "id": "2086901",
+          "name": "Israel Rosenberg",
+          "email": "israel_rosenberg@amat.com",
+          "title": "Software Development Manager"
+        },
+        {
+          "id": "2087001",
+          "name": "Roi Ben Basat",
+          "email": "roi_basat@amat.com",
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "2086851",
+          "name": "Yaakov Magar",
+          "email": "yaakov_magar@amat.com",
+          "title": "DevOps Team Leader"
+        },
+        {
+          "id": "2256459",
+          "name": "Micha Oren",
+          "email": "micha_oren@amat.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "103296837841",
+          "name": "Avi Gabay",
+          "email": "avi_gabay@amat.com",
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "610456116433",
+          "name": "Lena Krak",
+          "email": "lena_krak@amat.com",
+          "title": null
+        },
+        {
+          "id": "305",
+          "name": "Nir Sagiv",
+          "email": "nir_sagiv@amat.com",
+          "title": "Director of Software Architecture"
+        },
+        {
+          "id": "701919860944",
+          "name": "Tal Orenstein",
+          "email": "tal_orenstein@amat.com",
+          "title": "SW R&D Manager"
+        }
+      ]
+    },
+    "applied materials - israel": {
+      "companyId": "400554539224",
+      "companyName": "Applied Materials - Israel",
+      "domain": "appliedmaterials.com",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "701919860944",
+          "name": "Tal Orenstein",
+          "email": "tal_orenstein@amat.com",
+          "title": "SW R&D Manager"
+        }
+      ]
     },
     "aqua security": {
-      "companyId": null,
+      "companyId": "6511944416",
       "companyName": "Aqua Security",
-      "deals": [],
+      "domain": null,
+      "industry": null,
+      "lifecyclestage": "customer",
+      "deals": [
+        {
+          "id": "7842559475",
+          "name": "Aqua security",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "90000",
+          "closedate": "2023-07-03T11:51:06.289Z"
+        },
+        {
+          "id": "12536307955",
+          "name": "Aqua",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "55000",
+          "closedate": "2024-05-19T10:10:54.207Z"
+        }
+      ],
       "contacts": []
     },
     "armissecurity": {
@@ -35,10 +597,89 @@
       "contacts": []
     },
     "au10tix": {
-      "companyId": null,
-      "companyName": "Au10Tix",
-      "deals": [],
-      "contacts": []
+      "companyId": "6126670808",
+      "companyName": "Au10tix",
+      "domain": "au10tix.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401934819",
+          "name": "Yehuda Shoshani DevOps Manager and Delivery at AU10TIX - Secure Customer Onboarding",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "7194637784",
+          "name": "Au10tix- Cast.ai",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2023-09-20T06:22:16.210Z"
+        },
+        {
+          "id": "5401916625",
+          "name": "Au10tix build optimsation",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "8567652051",
+          "name": "Au10Tix",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2023-12-12T12:21:13.845Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3193201",
+          "name": "Teymour Seidzade",
+          "email": "teymour.seidzade@au10tix.com",
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "10839922366",
+          "name": "Joseph Benraz",
+          "email": null,
+          "title": "Chief Architect"
+        },
+        {
+          "id": "1693051",
+          "name": "Rami Citrom",
+          "email": "rami.citrom@au10tix.com",
+          "title": "Chief Architect"
+        },
+        {
+          "id": "78412",
+          "name": "Yehuda Shoshani",
+          "email": null,
+          "title": "DevOps Manager and Delivery"
+        },
+        {
+          "id": "3909051",
+          "name": "Shirly Gafni",
+          "email": null,
+          "title": "Head of HR"
+        }
+      ]
     },
     "automatit": {
       "companyId": null,
@@ -47,28 +688,451 @@
       "contacts": []
     },
     "axonius": {
-      "companyId": null,
+      "companyId": "7124911573",
       "companyName": "Axonius",
-      "deals": [],
-      "contacts": []
+      "domain": "axonius.com",
+      "industry": null,
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "8602192331",
+          "name": "Deal Axonius",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1918019",
+          "name": "Guy Sakal",
+          "email": "guy.sakal@axonius.com",
+          "title": "Engineering Lead"
+        },
+        {
+          "id": "2573252",
+          "name": "Ricardo Slomka",
+          "email": null,
+          "title": "Director of Engineering - Axonius Brasil"
+        },
+        {
+          "id": "2573303",
+          "name": "Dekel Levkovich",
+          "email": null,
+          "title": "Director Of Engineering"
+        },
+        {
+          "id": "1918036",
+          "name": "Roy Asulin",
+          "email": "roy.asulin@axonius.com",
+          "title": "Engineering Operations Team leader"
+        },
+        {
+          "id": "1919205",
+          "name": "Yossi Berliner",
+          "email": "yossi.berliner@axonius.com",
+          "title": "Director of Software Engineering"
+        },
+        {
+          "id": "1892406",
+          "name": "Dor Savion",
+          "email": "dor.savion@axonius.com",
+          "title": "Senior DevOps Engineer"
+        },
+        {
+          "id": "1795456",
+          "name": "Roee Salomon",
+          "email": "roee.salomon@axonius.com",
+          "title": "CTO AxoniusX"
+        },
+        {
+          "id": "2573251",
+          "name": "Roee Salomon",
+          "email": null,
+          "title": "CTO AxoniusX"
+        },
+        {
+          "id": "2573253",
+          "name": "Avi Tavdi",
+          "email": null,
+          "title": "Software Solutions Architecture Team Leader"
+        },
+        {
+          "id": "2573302",
+          "name": "Yossi Paneth",
+          "email": null,
+          "title": "Solutions Architect Team Leader"
+        },
+        {
+          "id": "1916653",
+          "name": "Yaniv Shulman",
+          "email": "yaniv.shulman@axonius.com",
+          "title": "Director of Engineering, AxoniusX"
+        },
+        {
+          "id": "1919153",
+          "name": "Yotam Leopold",
+          "email": "yotam.leopold@axonius.com",
+          "title": "Head Of Quality"
+        },
+        {
+          "id": "1794656",
+          "name": "Ofri Shur",
+          "email": "ofri@axonius.com",
+          "title": "CTO and Co-Founder"
+        },
+        {
+          "id": "1795379",
+          "name": "Amir Ofek",
+          "email": "amir.ofek@axonius.com",
+          "title": "CEO AxoniusX"
+        },
+        {
+          "id": "1841652",
+          "name": "Omri Mugzach",
+          "email": "omri.mugzach@axonius.com",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "1842852",
+          "name": "Yoni Rotvel",
+          "email": "yoni.rotvel@axonius.com",
+          "title": "Head of DevOps"
+        },
+        {
+          "id": "1916901",
+          "name": "Gil Dar",
+          "email": "gil.dar@axonius.com",
+          "title": "Director Of Engineering"
+        },
+        {
+          "id": "1916416",
+          "name": "Michael Gartsbein",
+          "email": "michael@axonius.com",
+          "title": "Head Of Infrastructure"
+        },
+        {
+          "id": "1917613",
+          "name": "Oz Jacobi",
+          "email": "oz.jacobi@axonius.com",
+          "title": "Software Engineering Team Leader"
+        },
+        {
+          "id": "2573301",
+          "name": "Hen Shaham",
+          "email": null,
+          "title": "Global Talent Acquisition Leader "
+        }
+      ]
     },
     "bmc": {
-      "companyId": null,
+      "companyId": "6126590689",
       "companyName": "BMC",
-      "deals": [],
-      "contacts": []
+      "domain": "bmc.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5402448609",
+          "name": "BMC - Omri",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "7805672644",
+          "name": "BMC- Cast.ai",
+          "stage": "98792383",
+          "stageName": "Not Interested",
+          "stageColor": "#FFB100",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2023-06-11T06:04:32.506Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1882651",
+          "name": "Shaked Dahan",
+          "email": "shaked_dahan_tp@bmc.com",
+          "title": "Software Developer"
+        },
+        {
+          "id": "590249586907",
+          "name": "Maayan Michaeli",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "1916700",
+          "name": "Yonatan Ofir",
+          "email": "yonatan_ofir@bmc.com",
+          "title": "Senior Director Of Development"
+        },
+        {
+          "id": "590481984702",
+          "name": "Yaniv Adler",
+          "email": "yaniv_adler@bmc.com",
+          "title": "DevOps Group Manager | SaaS & Cloud Transformation"
+        },
+        {
+          "id": "590431888593",
+          "name": "Michal Hazani Toren",
+          "email": null,
+          "title": "Lead Technical Recruiter"
+        },
+        {
+          "id": "326156774647",
+          "name": "Maayan Michaeli",
+          "email": "maayan_michaeli@bmc.com",
+          "title": null
+        },
+        {
+          "id": "1794657",
+          "name": "Gadi Ve",
+          "email": "gadi_ve@bmc.com",
+          "title": "VP"
+        },
+        {
+          "id": "79901",
+          "name": "Omri None",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "1916678",
+          "name": "Harel Yaakov",
+          "email": "hyaakov@bmc.com",
+          "title": "Team Lead and Lead Developer"
+        },
+        {
+          "id": "2810451",
+          "name": "Reut Israeli",
+          "email": null,
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "224312098011",
+          "name": "None None",
+          "email": "meytal_dimant@bmc.com",
+          "title": null
+        },
+        {
+          "id": "1917062",
+          "name": "Erik Segal",
+          "email": "erik_segal@bmc.com",
+          "title": "Head of Agile Transformation"
+        },
+        {
+          "id": "1919152",
+          "name": "Sarel Sadan",
+          "email": "sarel_sadan@bmc.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1794351",
+          "name": "Gad Ron",
+          "email": "gad_ron@bmc.com",
+          "title": "Solution Architect"
+        },
+        {
+          "id": "170270790882",
+          "name": "None None",
+          "email": "noy_mckinney-tsarfaty@bmc.com",
+          "title": null
+        },
+        {
+          "id": "1918010",
+          "name": "Yigal Benavi",
+          "email": "ybenavi@bmc.com",
+          "title": "Devops Manager"
+        },
+        {
+          "id": "1918955",
+          "name": "Nomi Paz",
+          "email": "nomi_paz@bmc.com",
+          "title": "Software Developer and DevOps"
+        },
+        {
+          "id": "2256801",
+          "name": "Adir Dromi",
+          "email": "adromi@bmc.com",
+          "title": "DevOps"
+        },
+        {
+          "id": "1842002",
+          "name": "Asi Lavi",
+          "email": "asi_lavi@bmc.com",
+          "title": "dev"
+        },
+        {
+          "id": "170495080655",
+          "name": "Noy McKinney-Tsarfaty",
+          "email": null,
+          "title": "DevOps Team Lead"
+        }
+      ]
     },
     "biocatch": {
-      "companyId": null,
-      "companyName": "Biocatch",
+      "companyId": "7336823234",
+      "companyName": "BioCatch",
+      "domain": "biocatch.com",
+      "industry": "COMPUTER_NETWORK_SECURITY",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "19350332396",
+          "name": "Inbal Faina Rotburd",
+          "email": null,
+          "title": "Global Talent Acquisition Partner"
+        },
+        {
+          "id": "648237934783",
+          "name": "Tomer Aharon",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "600483662038",
+          "name": "Dan Robinson",
+          "email": "dan.robinson@biocatch.com",
+          "title": "Senior Server Developer"
+        },
+        {
+          "id": "1972811",
+          "name": "Tomer Parnasa",
+          "email": "tomer.parnasa@biocatch.com",
+          "title": "Data Engineering Team Lead"
+        },
+        {
+          "id": "1973801",
+          "name": "Racheli Agam",
+          "email": "racheli.agam@biocatch.com",
+          "title": "Cloud Operations Engineer"
+        },
+        {
+          "id": "1972904",
+          "name": "Ofer Peer",
+          "email": "ofer.peer@biocatch.com",
+          "title": "Head Of Service Operations"
+        },
+        {
+          "id": "1974765",
+          "name": "Tamir Amram",
+          "email": "tamir.amram@biocatch.com",
+          "title": "Director Of Technology Operations"
+        },
+        {
+          "id": "1974121",
+          "name": "Nurit Eldar",
+          "email": "nurit.eldar@biocatch.com",
+          "title": "Director of Software Platform"
+        },
+        {
+          "id": "648237934784",
+          "name": "Micha Bitton",
+          "email": null,
+          "title": "DevOps Tech Lead"
+        },
+        {
+          "id": "1974757",
+          "name": "Oren Medina",
+          "email": "oren.medina@biocatch.com",
+          "title": "Director of Service Delivery"
+        },
+        {
+          "id": "1974807",
+          "name": "Or Moshayoff",
+          "email": "or.moshayoff@biocatch.com",
+          "title": "Director Of Accounting"
+        },
+        {
+          "id": "1973818",
+          "name": "Idan Hay",
+          "email": "idan.hay@biocatch.com",
+          "title": "Cloud Operations Engineer"
+        },
+        {
+          "id": "648237934807",
+          "name": "Itai Alzaradel",
+          "email": null,
+          "title": "Global Talent Acquisition Partner"
+        },
+        {
+          "id": "1974701",
+          "name": "Shira Mintz",
+          "email": "shira.mintz@biocatch.com",
+          "title": "Director of Data Science"
+        },
+        {
+          "id": "650306423020",
+          "name": "Moshe Levine",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "1972853",
+          "name": "Mordechai Shalev",
+          "email": "motty.shalev@biocatch.com",
+          "title": "Head of Customer Support"
+        },
+        {
+          "id": "2772602",
+          "name": "Micha Bitton",
+          "email": "micha.bitton@biocatch.com",
+          "title": "DevOps Tech Lead"
+        }
+      ]
     },
     "bitsight": {
-      "companyId": null,
+      "companyId": "283695161576",
       "companyName": "Bitsight",
+      "domain": "bitsight.com",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "518698859746",
+          "name": "Naveh Katz",
+          "email": "navehk@cybersixgill.com",
+          "title": "Director of cloud operations"
+        },
+        {
+          "id": "521256758505",
+          "name": "None None",
+          "email": "naveh.katz@bitsight.com",
+          "title": null
+        },
+        {
+          "id": "516661165265",
+          "name": "Shira Wisemon",
+          "email": null,
+          "title": "Talent, Operations & HR Business Partner Israel"
+        },
+        {
+          "id": "600202771701",
+          "name": "Ashraf Hamad",
+          "email": null,
+          "title": "Staff DevOps Engineer"
+        },
+        {
+          "id": "516661321957",
+          "name": "Omer Carmi",
+          "email": "omer.carmi@bitsighttech.com",
+          "title": "Vice President of Professional Services"
+        }
+      ]
     },
     "campbellsoup": {
       "companyId": null,
@@ -88,6 +1152,291 @@
       "deals": [],
       "contacts": []
     },
+    "check point software": {
+      "companyId": "6126626036",
+      "companyName": "Check Point Software",
+      "domain": "checkpoint.com",
+      "industry": "COMPUTER_NETWORK_SECURITY",
+      "lifecyclestage": "customer",
+      "deals": [
+        {
+          "id": "15453295067",
+          "name": "CP",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "45000",
+          "closedate": "2024-08-29T06:49:09.058Z"
+        },
+        {
+          "id": "270402018519",
+          "name": "CheckPoint - GA",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "7750",
+          "closedate": "2025-09-01T07:37:58.607Z"
+        },
+        {
+          "id": "340034985208",
+          "name": "CheckPoint - BC+Senior",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "50000",
+          "closedate": "2025-12-08T08:50:20.506Z"
+        },
+        {
+          "id": "330577156324",
+          "name": "Checkpoint- Farid rate change",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "2000",
+          "closedate": "2025-11-30T14:35:37.819Z"
+        },
+        {
+          "id": "11473655247",
+          "name": "Checkpoint - Training",
+          "stage": "119800036",
+          "stageName": "Closed lost",
+          "stageColor": "#00CA72",
+          "pipeline": "44553939",
+          "pipelineName": "Training",
+          "amount": "40000",
+          "closedate": "2024-12-09T08:42:34.097Z"
+        },
+        {
+          "id": "355709175033",
+          "name": "CheckPoint - Tech Lead",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "50000",
+          "closedate": "2026-01-13T16:00:17.383Z"
+        },
+        {
+          "id": "18453100994",
+          "name": "Checkpoint - AvAnan",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "45000",
+          "closedate": "2024-12-16T11:42:15.801Z"
+        },
+        {
+          "id": "5402431179",
+          "name": "Eyal Fingold- VP R&D Cloud Security Products at Check Point Software",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "157966483644",
+          "name": "Perimeter81",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "45000",
+          "closedate": "2025-04-16T07:24:14.349Z"
+        },
+        {
+          "id": "341449611465",
+          "name": "Check Point Avanan- 3 months, help with workload",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "50000",
+          "closedate": "2025-12-10T13:04:21.328Z"
+        },
+        {
+          "id": "347229657294",
+          "name": "CheckPoint - Avanan",
+          "stage": "1923288300",
+          "stageName": "Closed Won, waiting for start",
+          "stageColor": "#E44258",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "97000",
+          "closedate": null
+        },
+        {
+          "id": "235667036395",
+          "name": "Checkpoint - Rate Change",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "13000",
+          "closedate": "2025-06-26T13:19:18.837Z"
+        },
+        {
+          "id": "327598458071",
+          "name": "Checkpoint - DevSecOps",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "52000",
+          "closedate": "2025-11-02T13:14:23.675Z"
+        },
+        {
+          "id": "5401934827",
+          "name": "Danny Karpati Chief Technologist at Check Point Software Technologies, Ltd. - NR",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1879201",
+          "name": "Ido Haver",
+          "email": "idohaver@gmail.com",
+          "title": "Cloud Security Architect"
+        },
+        {
+          "id": "3393401",
+          "name": "Esti Dana",
+          "email": "estida@checkpoint.com",
+          "title": "Team Leader"
+        },
+        {
+          "id": "1973854",
+          "name": "Jonathan Maresky",
+          "email": "jonathan.maresky@checkpoint.com",
+          "title": "Head of Product Marketing and Technical Marketing, Cloud Security"
+        },
+        {
+          "id": "1973812",
+          "name": "Javier Scheinfeld",
+          "email": "javiers@checkpoint.com",
+          "title": "Head of Global Operations"
+        },
+        {
+          "id": "3278001",
+          "name": "Regev Golan",
+          "email": "rgolan@checkpoint.com",
+          "title": "Research and Development Group Manager"
+        },
+        {
+          "id": "3052651",
+          "name": "Eitan Erez",
+          "email": null,
+          "title": "Head of Harmony Technologies Sales, WW"
+        },
+        {
+          "id": "1974060",
+          "name": "Mor Manor",
+          "email": "mmanor@checkpoint.com",
+          "title": "Head of Cyber Security Evangelists"
+        },
+        {
+          "id": "79675",
+          "name": "Danny Karpati",
+          "email": "danka@checkpoint.com",
+          "title": "Chief Technologist"
+        },
+        {
+          "id": "3274451",
+          "name": "Dorit Dor",
+          "email": "dorit@checkpoint.com",
+          "title": "Chief Technology Officer"
+        },
+        {
+          "id": "78423",
+          "name": "Eyal Fingold",
+          "email": null,
+          "title": "VP R&D"
+        },
+        {
+          "id": "2256365",
+          "name": "Aviv Biton",
+          "email": "avivb@checkpoint.com",
+          "title": "Full stack developer"
+        },
+        {
+          "id": "3157401",
+          "name": "None None",
+          "email": "shaharre@checkpoint.com",
+          "title": null
+        },
+        {
+          "id": "2979801",
+          "name": "Christian Sandberg",
+          "email": null,
+          "title": "Head of Engineering Experts, EMEA"
+        },
+        {
+          "id": "3189401",
+          "name": "Daniel Elias",
+          "email": "daniele@checkpoint.com",
+          "title": "HR Manager"
+        },
+        {
+          "id": "632851",
+          "name": "Shira Israeli",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "1974113",
+          "name": "Amit Gadol",
+          "email": "amitg@checkpoint.com",
+          "title": "Head of worldwide QA"
+        },
+        {
+          "id": "2256721",
+          "name": "Yanai Lipshitz",
+          "email": "yanail@checkpoint.com",
+          "title": "Software Developer"
+        },
+        {
+          "id": "3017951",
+          "name": "Tom Kendrick",
+          "email": null,
+          "title": "EMEA Security Expert & Cyber Security Evangelist - Office of the CTO at Check Point Software Technol"
+        },
+        {
+          "id": "2772754",
+          "name": "Adi Sivan",
+          "email": "adis@checkpoint.com",
+          "title": "Director of IT engineering and DevOps"
+        },
+        {
+          "id": "2772553",
+          "name": "Oded Gonda",
+          "email": "ogonda@checkpoint.com",
+          "title": "VP, Technology & Innovation"
+        }
+      ]
+    },
     "checkpoint": {
       "companyId": null,
       "companyName": "Checkpoint",
@@ -95,58 +1444,520 @@
       "contacts": []
     },
     "classiq": {
-      "companyId": null,
+      "companyId": "399463175397",
       "companyName": "Classiq",
+      "domain": "classiq.io",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "701328519406",
+          "name": "Ella Luxembourg",
+          "email": "ella@classiq.io",
+          "title": "Head of Recruitment"
+        },
+        {
+          "id": "700398955768",
+          "name": "Moshe Nadler",
+          "email": null,
+          "title": "DevOps Tech Lead"
+        }
+      ]
     },
     "cloudera": {
-      "companyId": null,
+      "companyId": "7656980927",
       "companyName": "Cloudera",
-      "deals": [],
-      "contacts": []
+      "domain": "cloudera.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "7527658953",
+          "name": "My new Deal",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "2090551",
+          "name": "Michelle H",
+          "email": null,
+          "title": "VP Cloud, Cloud Partners "
+        },
+        {
+          "id": "2090601",
+          "name": "Jamie Engesser",
+          "email": "jengesser@cloudera.com",
+          "title": "SVP, Cloud Architects/Success and Solutions Engineering"
+        },
+        {
+          "id": "2090401",
+          "name": "Caroline Herlihy",
+          "email": "cherlihy@cloudera.com",
+          "title": "Global Director, Talent Acquisition"
+        },
+        {
+          "id": "2090451",
+          "name": "Sivakumar Krishnamurthy",
+          "email": "siva@cloudera.com",
+          "title": "Director - DevOps / SRE"
+        },
+        {
+          "id": "2090351",
+          "name": "Paul Penney",
+          "email": "ppenney@cloudera.com",
+          "title": "Director - Global Cloud & Technical Operations"
+        },
+        {
+          "id": "2090501",
+          "name": "Rahul Sharma",
+          "email": "rahuldjsharma@google.com",
+          "title": "Director of Product Management"
+        }
+      ]
     },
     "cloudinary": {
-      "companyId": null,
-      "companyName": "Cloudinary",
+      "companyId": "7124942545",
+      "companyName": "cloudinary",
+      "domain": "cloudinary.com",
+      "industry": "INFORMATION_TECHNOLOGY_AND_SERVICES",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2073501",
+          "name": "Uri Landau",
+          "email": "uri.landau@cloudinary.com",
+          "title": "VP of R&D"
+        },
+        {
+          "id": "2072901",
+          "name": "Daniel Cohen",
+          "email": "daniel.cohen@cloudinary.com",
+          "title": "Backend Team Leader"
+        },
+        {
+          "id": "1919820",
+          "name": "Neta Agmon",
+          "email": "neta.agmon@cloudinary.com",
+          "title": "VP of Product Management"
+        },
+        {
+          "id": "2073651",
+          "name": "Eitan Revach",
+          "email": "eitan@revachonline.net",
+          "title": "R&D Architect"
+        },
+        {
+          "id": "1794201",
+          "name": "Yuval Papish",
+          "email": "yuval.papish@cloudinary.com",
+          "title": "Senior Solution Architect"
+        },
+        {
+          "id": "1917061",
+          "name": "Felix Zilber",
+          "email": "felix@cloudinary.com",
+          "title": "Automation Tech Lead"
+        },
+        {
+          "id": "1841802",
+          "name": "Nir Reuveny",
+          "email": "nir.reuveny@cloudinary.com",
+          "title": "Director of Devops"
+        },
+        {
+          "id": "2073701",
+          "name": "Tzachi Strul",
+          "email": "tzachi.strul@cloudinary.com",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "2073551",
+          "name": "Nofar Ben Kereth",
+          "email": "nofar.benkereth@cloudinary.com",
+          "title": "R&D Operation Manager"
+        },
+        {
+          "id": "2073301",
+          "name": "Yaron Tomer",
+          "email": "yaron.tomer@cloudinary.com",
+          "title": "Media Processing R&D Director"
+        },
+        {
+          "id": "1917321",
+          "name": "Amit Dadon",
+          "email": "amit.dadon@cloudinary.com",
+          "title": "VP of Finance"
+        },
+        {
+          "id": "1794853",
+          "name": "Ran Rubinstein",
+          "email": "ran.rubinstein@cloudinary.com",
+          "title": "VP Solutions"
+        },
+        {
+          "id": "1917377",
+          "name": "Adi Dagan",
+          "email": "osi.adi@gmail.com",
+          "title": "Director of Engineering at Cloudinary"
+        },
+        {
+          "id": "2072851",
+          "name": "Shiran Azran Pe'er",
+          "email": "shiran.azran@cloudinary.com",
+          "title": "Senior DevOps Engineer"
+        },
+        {
+          "id": "1917382",
+          "name": "Ronen Burin",
+          "email": "ronen.burin@cloudinary.com",
+          "title": "VP R&D (hiring!)"
+        },
+        {
+          "id": "1917551",
+          "name": "Tal Lev-Ami",
+          "email": "tal.levami@cloudinary.com",
+          "title": "Co-Founder and CTO"
+        },
+        {
+          "id": "2072801",
+          "name": "Avihay Tsayeg",
+          "email": "avihay.tsayeg@cloudinary.com",
+          "title": "Senior DevOps"
+        }
+      ]
     },
     "codevalue": {
-      "companyId": null,
-      "companyName": "Codevalue",
+      "companyId": "6506121195",
+      "companyName": "CodeValue",
+      "domain": "codevalue.com",
+      "industry": null,
+      "lifecyclestage": "subscriber",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2256773",
+          "name": "Yamit Sivak",
+          "email": "yamits@codevalue.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1545001",
+          "name": "Tal Levy",
+          "email": "tal2624@gmail.com",
+          "title": "HR"
+        },
+        {
+          "id": "3358551",
+          "name": "Maya Ludmer",
+          "email": "mayal@codevalue.com",
+          "title": "Talent Acquisition Specialist & HR"
+        },
+        {
+          "id": "560151",
+          "name": "Bat Chen Sabag",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "2256420",
+          "name": "Orly Rapaport",
+          "email": "orlyr@codevalue.com",
+          "title": "Business Development"
+        },
+        {
+          "id": "2183954",
+          "name": "Zohar Berkovitz",
+          "email": "zoharb@codevalue.com",
+          "title": "Head of Sales"
+        }
+      ]
     },
     "coralogix": {
-      "companyId": null,
+      "companyId": "7502882756",
       "companyName": "Coralogix",
-      "deals": [],
-      "contacts": []
+      "domain": "coralogix.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "7314485468",
+          "name": "Coralogix - Cast.ai",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2023-05-11T12:04:06.261Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "137863549150",
+          "name": "Lotan Kessel",
+          "email": null,
+          "title": "Global Talent Acquisition Specialist"
+        },
+        {
+          "id": "2033051",
+          "name": "Harel Ben Atiya",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "2025251",
+          "name": "Shauli Solomovich",
+          "email": "shauli@coralogix.com",
+          "title": "Software Engineer"
+        },
+        {
+          "id": "3458251",
+          "name": "None None",
+          "email": "dor.y@coralogix.com",
+          "title": null
+        },
+        {
+          "id": "2025401",
+          "name": "Aviv Gold",
+          "email": "aviv@coralogix.com",
+          "title": "SRE DevOps Team Lead"
+        },
+        {
+          "id": "2030704",
+          "name": "Ran Levgoren",
+          "email": "ran.levgoren@coralogix.com",
+          "title": "Observability consultant"
+        },
+        {
+          "id": "2030451",
+          "name": "Harel Ben-Attia",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "135762369754",
+          "name": "Oron Sharabi",
+          "email": null,
+          "title": "R&D Team Leader"
+        },
+        {
+          "id": "714465366204",
+          "name": "Shauli Solomovich",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "191796617462",
+          "name": "Yoni Farin",
+          "email": null,
+          "title": "Co-founder & VP R&D"
+        },
+        {
+          "id": "135759851766",
+          "name": "Bar Ostrich",
+          "email": null,
+          "title": "Senior Talent Sourcer & Global Talent Acquisition Partner"
+        }
+      ]
     },
     "cymulate": {
-      "companyId": null,
+      "companyId": "7893139703",
       "companyName": "Cymulate",
+      "domain": "cymulate.com",
+      "industry": "COMPUTER_NETWORK_SECURITY",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2228901",
+          "name": "Avihai Ben-Yossef",
+          "email": "avihaib@cymulate.com",
+          "title": "Co founder & CTO"
+        },
+        {
+          "id": "3312301",
+          "name": "Orel Gabay",
+          "email": null,
+          "title": "Full Stack Team Lead"
+        },
+        {
+          "id": "2228905",
+          "name": "Roy Haimof",
+          "email": "royh@cymulate.com",
+          "title": "Director Of Engineering"
+        },
+        {
+          "id": "2229001",
+          "name": "Dor Saidon",
+          "email": null,
+          "title": "DevOps Lead"
+        },
+        {
+          "id": "2228904",
+          "name": "Amit Ben Ari",
+          "email": "amitba@cymulate.com",
+          "title": "R&D Director"
+        },
+        {
+          "id": "2228903",
+          "name": "Yoni Oren",
+          "email": "yonio@cymulate.com",
+          "title": "Team Leader"
+        },
+        {
+          "id": "3312351",
+          "name": "Dvora Cohen",
+          "email": null,
+          "title": "VP R&D"
+        },
+        {
+          "id": "3226951",
+          "name": "Yael Shoham",
+          "email": null,
+          "title": "Talent Acquisition Specialist"
+        },
+        {
+          "id": "3312251",
+          "name": "Maor Agai",
+          "email": null,
+          "title": "Development Team Lead"
+        },
+        {
+          "id": "2228902",
+          "name": "Itzik Finkel",
+          "email": "itzikf@cymulate.com",
+          "title": "Vice President of Sales North America"
+        },
+        {
+          "id": "2228951",
+          "name": "Dor Saidon",
+          "email": "dors@cymulate.com",
+          "title": "DevOps Lead"
+        }
+      ]
     },
     "datadog": {
-      "companyId": null,
+      "companyId": "6960170990",
       "companyName": "Datadog",
+      "domain": "datadoghq.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "1546151",
+          "name": "Donal Reddington",
+          "email": "donal.reddington@datadoghq.com",
+          "title": "Senior Tech Recruiter"
+        },
+        {
+          "id": "2257501",
+          "name": "None None",
+          "email": "darragh.byrne@datadoghq.com",
+          "title": null
+        }
+      ]
     },
     "deloitte": {
-      "companyId": null,
+      "companyId": "6115484110",
       "companyName": "Deloitte",
-      "deals": [],
-      "contacts": []
+      "domain": "deloitte.com",
+      "industry": "MANAGEMENT_CONSULTING",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "6720989687",
+          "name": "Deal with Deloitte",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": "2022-11-08T08:59:22.151Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "215401",
+          "name": "Małgorzata Parszewska",
+          "email": "mparszewska@deloitte.com",
+          "title": "Leading Sourcing Specialist (via AMS)"
+        },
+        {
+          "id": "1515201",
+          "name": "Jacob Bock Axelsen",
+          "email": null,
+          "title": "Chief Technology Officer"
+        },
+        {
+          "id": "2667301",
+          "name": "Joanna Bober",
+          "email": null,
+          "title": "Talent Acquisition Senior Specialist"
+        },
+        {
+          "id": "483301",
+          "name": "Mateusz Korsak",
+          "email": "mateusz.korsak@deloitte.pl",
+          "title": "Senior Manager, Head Of Software Development, QA and DevOps"
+        },
+        {
+          "id": "578601",
+          "name": "Monika Walicka",
+          "email": "mwalicka@deloitte.com",
+          "title": "Talent Acquisition Specialist"
+        },
+        {
+          "id": "2584102",
+          "name": "Curt Aubley",
+          "email": null,
+          "title": "Managing Director & General Manager, US Cyber & Strategic Risk Detect & Respond Leader"
+        },
+        {
+          "id": "607601",
+          "name": "Rafał Kamler",
+          "email": null,
+          "title": "Head of Business Intelligence and Data Warehouse Team | IT Manager at Deloitte Central Europe"
+        },
+        {
+          "id": "578751",
+          "name": "Marcelina Biniek",
+          "email": "mbiniek@deloitte.com",
+          "title": "IT Recruiter"
+        }
+      ]
     },
     "dialog": {
-      "companyId": null,
+      "companyId": "7723505113",
       "companyName": "Dialog",
+      "domain": "dialog.co.il",
+      "industry": "STAFFING_AND_RECRUITING",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2143251",
+          "name": "Shelly Wintrob Ben Shushan",
+          "email": null,
+          "title": "Sourcing Specialist"
+        },
+        {
+          "id": "2241451",
+          "name": "Yarden Ben Harush",
+          "email": "yarden-b@dialog.co.il",
+          "title": "Sourcing Specialist"
+        }
+      ]
     },
     "doitintl": {
       "companyId": null,
@@ -161,10 +1972,134 @@
       "contacts": []
     },
     "earnix": {
-      "companyId": null,
+      "companyId": "7124829165",
       "companyName": "Earnix",
+      "domain": "earnix.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "1917602",
+          "name": "Nimrod Saharof",
+          "email": "nimrod.saharof@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1892656",
+          "name": "Yochai Melochna",
+          "email": "yochai.melochna@earnix.com",
+          "title": "Global Head of Customer Success"
+        },
+        {
+          "id": "1878451",
+          "name": "Gabriel Berelejis",
+          "email": "gabriel.berelejis@earnix.com",
+          "title": "Head of Telematics Product Engineering"
+        },
+        {
+          "id": "1917634",
+          "name": "Erez Atias",
+          "email": "erez.atias@earnix.com",
+          "title": "Head of Customer Support"
+        },
+        {
+          "id": "1841951",
+          "name": "Elior Farajpur",
+          "email": "elior.farajpur@earnix.com",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "1794856",
+          "name": "Udi Ziv",
+          "email": "udi.ziv@earnix.com",
+          "title": "CEO"
+        },
+        {
+          "id": "1794706",
+          "name": "Alon Kleinman",
+          "email": "alon.kleinman@earnix.com",
+          "title": "VP Engineering"
+        },
+        {
+          "id": "1917098",
+          "name": "Alexander Olshanetsky",
+          "email": "alexander.olshanetsky@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1916697",
+          "name": "Adar Benjamin",
+          "email": "adar.benjamin@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1918802",
+          "name": "Johai Kadosh",
+          "email": "johai.kadosh@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1892951",
+          "name": "Nir Oren",
+          "email": "nir.oren@earnix.com",
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "1893152",
+          "name": "Guy Chait",
+          "email": "guy.chait@earnix.com",
+          "title": "DevOps Tech Lead, Platform Engineering"
+        },
+        {
+          "id": "1919828",
+          "name": "Raphael Ohayon",
+          "email": "raphael.ohayon@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1878552",
+          "name": "Gal Spektor",
+          "email": "gals@earnix.com",
+          "title": "Learning and Knowledge Team Lead"
+        },
+        {
+          "id": "1878603",
+          "name": "Eugene Pistunovich",
+          "email": "epistunovich@earnix.com",
+          "title": "Senior Mobile Engineer and Technical Lead"
+        },
+        {
+          "id": "1794757",
+          "name": "Kostya Gorel",
+          "email": "kostya.gorel@earnix.com",
+          "title": "Group Lead, Mobile Telematics"
+        },
+        {
+          "id": "1918902",
+          "name": "Jordan Yefet",
+          "email": "jordan.yefet@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1917707",
+          "name": "Oren Ben-Shimol",
+          "email": "oren.benshimol@earnix.com",
+          "title": "Full Stack Tech Lead"
+        },
+        {
+          "id": "1916430",
+          "name": "Michael Mesguich",
+          "email": "michael.mesguich@earnix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1842801",
+          "name": "Adam Schneider",
+          "email": "adam.schneider@earnix.com",
+          "title": "DevOps Team Lead"
+        }
+      ]
     },
     "efinancialcareers norway": {
       "companyId": null,
@@ -179,10 +2114,38 @@
       "contacts": []
     },
     "fetcherr": {
-      "companyId": null,
+      "companyId": "39118983412",
       "companyName": "Fetcherr",
+      "domain": "fetcherr.io",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "115475218655",
+          "name": "Robby Nissan",
+          "email": "robby@fetcherr.io",
+          "title": null
+        },
+        {
+          "id": "115332109535",
+          "name": "Robby Nissan",
+          "email": null,
+          "title": "Co-Founder & Chief Strategy Officer"
+        },
+        {
+          "id": "113854531825",
+          "name": "Maayan Bar",
+          "email": null,
+          "title": "HR Manager"
+        },
+        {
+          "id": "115475217639",
+          "name": "None None",
+          "email": "maayanbar@fetcherr.io",
+          "title": null
+        }
+      ]
     },
     "flexerasoftware": {
       "companyId": null,
@@ -191,22 +2154,189 @@
       "contacts": []
     },
     "forter": {
-      "companyId": null,
-      "companyName": "Forter",
+      "companyId": "7124953284",
+      "companyName": "forter",
+      "domain": "forter.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "3005401",
+          "name": "Oren Ellenbogen",
+          "email": null,
+          "title": "Senior Vice President of Engineering"
+        },
+        {
+          "id": "3005351",
+          "name": "Assaf Maimon",
+          "email": null,
+          "title": "Engineering Manager, Real-Time Decision - Brain team"
+        },
+        {
+          "id": "1795378",
+          "name": "Sarah Shurin",
+          "email": "sarah.shurin@forter.com",
+          "title": "Solution Analyst"
+        },
+        {
+          "id": "3083952",
+          "name": "Eran Vanounou",
+          "email": null,
+          "title": "CTO"
+        },
+        {
+          "id": "1795152",
+          "name": "Erez Koren",
+          "email": "erez@forter.com",
+          "title": "VP Research Labs and New Ventures"
+        },
+        {
+          "id": "3005352",
+          "name": "Hadas Goldfarb",
+          "email": null,
+          "title": "Engineering Manager, Platform Engineering"
+        }
+      ]
     },
     "globallogic": {
-      "companyId": null,
-      "companyName": "Globallogic",
-      "deals": [],
-      "contacts": []
+      "companyId": "6545336796",
+      "companyName": "GlobalLogic",
+      "domain": "globallogic.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "6156146418",
+          "name": "Deal with GlobalLogic",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1517201",
+          "name": "Nadiia Tykha",
+          "email": "nadiia.tykha@globallogic.com",
+          "title": "Senior Recruitment Specialist"
+        },
+        {
+          "id": "1216201",
+          "name": "Hanna Kornilova",
+          "email": "hanna.kornilova@globallogic.com",
+          "title": "Recruitment Specialist"
+        },
+        {
+          "id": "665201",
+          "name": "Taras Myshlenyk",
+          "email": "taras.myshlenyk@globallogic.com",
+          "title": "Technical Recruiter"
+        },
+        {
+          "id": "1937202",
+          "name": "Mariia Konarieva",
+          "email": null,
+          "title": "Senior Talent Acquisition Specialist"
+        },
+        {
+          "id": "1587751",
+          "name": "GlobalLogic Regional Headquarter Poland",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "998201",
+          "name": "Aleksandra Kołodziej",
+          "email": "aleksandra.kolodziej@globallogic.com",
+          "title": "Associate Specialist"
+        },
+        {
+          "id": "2132751",
+          "name": "Anastasiia Karnaukhova",
+          "email": "a.karnaukhova@globallogic.com",
+          "title": "Recruitment Specialist"
+        }
+      ]
     },
     "gsk": {
-      "companyId": null,
-      "companyName": "Gsk",
-      "deals": [],
-      "contacts": []
+      "companyId": "6291605480",
+      "companyName": "GSK",
+      "domain": "gsk.com",
+      "industry": "PHARMACEUTICALS",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5531550196",
+          "name": "Deal with Jacek Domanski, MBA",
+          "stage": "97360070",
+          "stageName": "Stop Follow-Up",
+          "stageColor": "#3498DB",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5531486966",
+          "name": "Deal with wojciech garbiak",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "505051",
+          "name": "Marcin Usiński",
+          "email": null,
+          "title": "Global Tech Product Owner - Payroll"
+        },
+        {
+          "id": "217551",
+          "name": "Jacek Domanski, MBA",
+          "email": "jacek.a.domanski@gsk.com",
+          "title": "IT Director of Innovation Engineering"
+        },
+        {
+          "id": "855551",
+          "name": "Tahir Sulehri",
+          "email": "tsulehri@haleon.com",
+          "title": "DevOps Consultant"
+        },
+        {
+          "id": "217051",
+          "name": "wojciech garbiak",
+          "email": null,
+          "title": "DevOps Director"
+        },
+        {
+          "id": "483251",
+          "name": "Marek Zielinski",
+          "email": null,
+          "title": "Engineering Director"
+        },
+        {
+          "id": "505151",
+          "name": "Bartosz Hawro",
+          "email": null,
+          "title": "TECH Recruitment Team Leader "
+        },
+        {
+          "id": "505101",
+          "name": "Wojciech Tyszkowski",
+          "email": null,
+          "title": "Senior Product Manager "
+        }
+      ]
     },
     "guidde": {
       "companyId": null,
@@ -221,22 +2351,208 @@
       "contacts": []
     },
     "jobgether": {
-      "companyId": null,
+      "companyId": "8794824158",
       "companyName": "Jobgether",
-      "deals": [],
-      "contacts": []
+      "domain": "jobgether.com",
+      "industry": "HUMAN_RESOURCES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "9425003971",
+          "name": "Deal Jobgether",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3067651",
+          "name": "Alexis Rodríguez",
+          "email": null,
+          "title": "Chief Technology Officer"
+        },
+        {
+          "id": "3067751",
+          "name": "Carolina Pico",
+          "email": null,
+          "title": "Talent Acquisition Recruiter"
+        },
+        {
+          "id": "3067701",
+          "name": "Hernan David Alvarez Caballero",
+          "email": null,
+          "title": "Lead Software Development Engineer"
+        },
+        {
+          "id": "3067601",
+          "name": "Juan Bourgois",
+          "email": null,
+          "title": "Co-Founder & CEO"
+        }
+      ]
     },
     "kpmg": {
-      "companyId": null,
-      "companyName": "KPMG",
-      "deals": [],
-      "contacts": []
+      "companyId": "6368094194",
+      "companyName": "KPMG Poland",
+      "domain": "kpmg.pl",
+      "industry": "ACCOUNTING",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5630389712",
+          "name": "Deal with Tomasz Zaremba",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "317551",
+          "name": "Tomasz Zaremba",
+          "email": null,
+          "title": "Intelligent Automation & Rapid Solutions Principal Consultant"
+        }
+      ]
     },
     "leidos": {
-      "companyId": null,
+      "companyId": "7641342914",
       "companyName": "Leidos",
+      "domain": "leidos.com",
+      "industry": "INFORMATION_TECHNOLOGY_AND_SERVICES",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2078151",
+          "name": "Paul Bucur",
+          "email": "paul.bucur@leidos.com",
+          "title": "Senior Talent Acquisition Manager - UK & Europe"
+        },
+        {
+          "id": "2077601",
+          "name": "Kushal Patel",
+          "email": "kushal.patel@leidos.com",
+          "title": "Software Engineer"
+        },
+        {
+          "id": "2078251",
+          "name": "Michael Whiteley MEd PGCE",
+          "email": "michael.pgce@leidos.com",
+          "title": "UK Training Manager at Leidos"
+        },
+        {
+          "id": "2078451",
+          "name": "Michelle Raven",
+          "email": "michelle.raven@leidos.com",
+          "title": "Associate Director Growth & Innovation"
+        },
+        {
+          "id": "2078501",
+          "name": "Barry Hill",
+          "email": "barry.w.hill@leidos.com",
+          "title": "Director Of Business Development and Sales - National Security and Defence"
+        },
+        {
+          "id": "2078401",
+          "name": "James Langley",
+          "email": "james.langley@leidos.com",
+          "title": "Director of Innovation"
+        },
+        {
+          "id": "2078051",
+          "name": "Jim Mathieu",
+          "email": "james.j.mathieu@leidos.com",
+          "title": "Principal Talent Acquisition Recruiter"
+        },
+        {
+          "id": "2077901",
+          "name": "Toby Burden",
+          "email": "toby.burden@leidos.com",
+          "title": "Senior Talent Acquisition Specialist"
+        },
+        {
+          "id": "2077851",
+          "name": "Matt Longman",
+          "email": "matt.longman@leidos.com",
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "2078351",
+          "name": "Charles Newhouse MCMI ChMC",
+          "email": "charles.newhouse@leidos.com",
+          "title": "Chief Technology Officer"
+        },
+        {
+          "id": "2078201",
+          "name": "Robert Milsom",
+          "email": "robert.milsom@leidos.com",
+          "title": "Strategic Resource Manager"
+        },
+        {
+          "id": "2077651",
+          "name": "Ali Osman",
+          "email": "ali.osman@leidos.com",
+          "title": "Technologist"
+        },
+        {
+          "id": "2078301",
+          "name": "Nigel Dougherty",
+          "email": "nigel.dougherty@leidos.com",
+          "title": "Vice President Finance"
+        },
+        {
+          "id": "2077801",
+          "name": "Simon Hutchings OBE FCILT",
+          "email": "simon.fcilt@leidos.com",
+          "title": "Strategy Director"
+        },
+        {
+          "id": "2077551",
+          "name": "Fraser G",
+          "email": "fraser@leidos.net",
+          "title": "2nd line Engineer "
+        },
+        {
+          "id": "2077751",
+          "name": "Simon Fovargue",
+          "email": "simon.fovargue@leidos.com",
+          "title": "Chief Executive & SVP"
+        },
+        {
+          "id": "2077701",
+          "name": "Ross Bannerman",
+          "email": "ross.bannerman@leidos.com",
+          "title": "Chief Operating Officer, Logistics Commodities and Services Transformation"
+        },
+        {
+          "id": "2078101",
+          "name": "Carlé Liddell",
+          "email": "carle.liddell@leidos.com",
+          "title": "Talent Acquisition Resourcer"
+        },
+        {
+          "id": "2078001",
+          "name": "Raman Malhotra",
+          "email": "raman.malhotra@leidos.com",
+          "title": "Vice President, Talent Acquisition "
+        },
+        {
+          "id": "2077951",
+          "name": "Matt Cartwright",
+          "email": "matt.cartwright@leidos.com",
+          "title": "Senior Talent Acquisition Consultant"
+        }
+      ]
     },
     "levistraussandco": {
       "companyId": null,
@@ -245,28 +2561,319 @@
       "contacts": []
     },
     "lightricks": {
-      "companyId": null,
+      "companyId": "6126701252",
       "companyName": "Lightricks",
-      "deals": [],
-      "contacts": []
+      "domain": "lightricks.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5402448571",
+          "name": "Vika Kam VP of Engineering - Lightricks",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1973811",
+          "name": "Barak Yoresh",
+          "email": "barak@lightricks.com",
+          "title": "VP of Engineering"
+        },
+        {
+          "id": "2437951",
+          "name": "Adi Israel",
+          "email": null,
+          "title": "Talent Sourcing Lead"
+        },
+        {
+          "id": "2437402",
+          "name": "Eliah Ninyo",
+          "email": null,
+          "title": "Engineering Manager"
+        },
+        {
+          "id": "2437351",
+          "name": "Ofir Gluzman",
+          "email": null,
+          "title": "VP of Engineering"
+        },
+        {
+          "id": "2437401",
+          "name": "Yaron Karlinski",
+          "email": null,
+          "title": "Engineering Manager"
+        },
+        {
+          "id": "18775581118",
+          "name": "David Michael Gang",
+          "email": null,
+          "title": "Technical Lead"
+        },
+        {
+          "id": "1854251",
+          "name": "David Gang",
+          "email": "dgang@lightricks.com",
+          "title": "Senior Software Developer"
+        },
+        {
+          "id": "2549001",
+          "name": "None None",
+          "email": "galina@lightricks.com",
+          "title": null
+        },
+        {
+          "id": "1972827",
+          "name": "Yaron Inger",
+          "email": "yaron@lightricks.com",
+          "title": "Co-Founder and CTO"
+        },
+        {
+          "id": "1972619",
+          "name": "Ben Weinberg",
+          "email": "ben@lightricks.com",
+          "title": "Head of Product Design"
+        },
+        {
+          "id": "2437952",
+          "name": "Aliza Green",
+          "email": null,
+          "title": "Global Talent Acquisition Manager "
+        },
+        {
+          "id": "1974062",
+          "name": "Racheli Ben-Onn",
+          "email": "racheli@lightricks.com",
+          "title": "Head of Strategic Partnerships"
+        },
+        {
+          "id": "1972623",
+          "name": "Yoav Yair",
+          "email": "yoav@lightricks.com",
+          "title": "Head of Data Platform"
+        },
+        {
+          "id": "2437953",
+          "name": "Galina Dvorkin",
+          "email": null,
+          "title": "Hiring Partner Lead"
+        },
+        {
+          "id": "1972648",
+          "name": "Reut Rosen",
+          "email": "reut@lightricks.com",
+          "title": "Head of Product Data"
+        },
+        {
+          "id": "79884",
+          "name": "Vika Kam",
+          "email": "vika@lightricks.com",
+          "title": "VP of Engineering"
+        },
+        {
+          "id": "2437352",
+          "name": "Vika Milgrom",
+          "email": null,
+          "title": "VP of Engineering, Creator Services/Feed"
+        }
+      ]
     },
     "linearb": {
-      "companyId": null,
+      "companyId": "6126626034",
       "companyName": "LinearB",
-      "deals": [],
-      "contacts": []
+      "domain": "linearb.com",
+      "industry": "EDUCATION_MANAGEMENT",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401893865",
+          "name": "Ariel Illouz - Manager of Software Engineering at LinearB",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "79762",
+          "name": "Ariel Illouz",
+          "email": null,
+          "title": "Manager of Software Engineering"
+        },
+        {
+          "id": "2993601",
+          "name": "Yishai Beeri",
+          "email": null,
+          "title": "Chief Technology Officer"
+        }
+      ]
     },
     "mastercard": {
-      "companyId": null,
+      "companyId": "6477075911",
       "companyName": "Mastercard",
-      "deals": [],
-      "contacts": []
+      "domain": "mastercard.com",
+      "industry": "FINANCIAL_SERVICES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "6900916215",
+          "name": "Deal with Mastercard",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3359251",
+          "name": "Onn Hachmon",
+          "email": null,
+          "title": "Director Software Engineering"
+        },
+        {
+          "id": "1953251",
+          "name": "Aga Wiszniewska",
+          "email": "aga.wiszniewska@mastercard.com",
+          "title": "Talent Acquisition Manager"
+        },
+        {
+          "id": "1893155",
+          "name": "Muly Benjamin",
+          "email": "muly_benjamin@mastercard.com",
+          "title": "Team Lead"
+        },
+        {
+          "id": "1937101",
+          "name": "Melissa Alessandroni",
+          "email": "melissa_alessandroni@mastercard.com",
+          "title": "Technical Talent Acquisition Specialist"
+        },
+        {
+          "id": "3042151",
+          "name": "Mimmi Berglund",
+          "email": null,
+          "title": "Director, Account Management, Nordics & Baltics"
+        },
+        {
+          "id": "3359351",
+          "name": "Magnus White",
+          "email": null,
+          "title": "Director, DevOps Engineering"
+        },
+        {
+          "id": "1680807",
+          "name": "Dave Fleming",
+          "email": "dave.fleming@mastercard.com",
+          "title": "EVP, Global Head, R&D"
+        },
+        {
+          "id": "3359252",
+          "name": "Rakhesh Sekhar",
+          "email": null,
+          "title": "Director DevOps @ MasterCard Digital Foundation Services- BizOps, Operations & Technology"
+        },
+        {
+          "id": "492251",
+          "name": "Kamran Manzoor",
+          "email": null,
+          "title": "Lead Developer/DevOps Architect"
+        },
+        {
+          "id": "619001",
+          "name": "Jeppe Jensen",
+          "email": null,
+          "title": "Senior IT projektleder"
+        },
+        {
+          "id": "3042201",
+          "name": "Rania Alhajjar",
+          "email": "rania.alhajjar@mastercard.com",
+          "title": "Talent Acquisition Lead, Nordics & Baltics at Mastercard (ex-Klarna)"
+        }
+      ]
     },
     "medtronic": {
-      "companyId": null,
+      "companyId": "6126567405",
       "companyName": "Medtronic",
-      "deals": [],
-      "contacts": []
+      "domain": "medtronic.com",
+      "industry": "MEDICAL_DEVICES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5402431193",
+          "name": "medtronic Yokneam [1]",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5401934800",
+          "name": "Medtronic - Dana & Nevo [1]",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "56001898727",
+          "name": "Ben Balki",
+          "email": "ben.balki@medtronic.com",
+          "title": "DevOps Manager"
+        },
+        {
+          "id": "135959033038",
+          "name": "Shlomit Grinberg",
+          "email": null,
+          "title": "Senior Recruiter (Israel R&D Sites and Colombia)"
+        },
+        {
+          "id": "80102",
+          "name": "Dana None",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "136646569173",
+          "name": "Natali Melman",
+          "email": null,
+          "title": "Recruitment Team Leader |   Israel, Greece & North Western Europe"
+        },
+        {
+          "id": "136646570180",
+          "name": "Lilach Carmely",
+          "email": null,
+          "title": "Talent Acquisition Partner - Israel, Greece, Italy, Portugal, and Spain"
+        },
+        {
+          "id": "70146470080",
+          "name": "Itzik Haba",
+          "email": "itzik.haba@medtronic.com",
+          "title": "Azure devops system manager"
+        }
+      ]
     },
     "mksinst": {
       "companyId": null,
@@ -275,10 +2882,289 @@
       "contacts": []
     },
     "mobileye": {
-      "companyId": null,
-      "companyName": "Mobileye",
-      "deals": [],
-      "contacts": []
+      "companyId": "5985122795",
+      "companyName": "mobileye",
+      "domain": "mobileye.com",
+      "industry": "DEFENSE_SPACE",
+      "lifecyclestage": "customer",
+      "deals": [
+        {
+          "id": "5401893838",
+          "name": "Sefi Darshan Director Of Information Technology at Mobileye",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "314866951408",
+          "name": "Mobileye - rate change, Eran",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "4000",
+          "closedate": "2025-12-10T13:05:35.820Z"
+        },
+        {
+          "id": "129299995840",
+          "name": "Mobileye - replacement",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "35000",
+          "closedate": "2025-04-03T14:00:57.589Z"
+        },
+        {
+          "id": "5402420948",
+          "name": "Mobileye Transformation",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "8831517943",
+          "name": "Mobileye - DevOps",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "35000",
+          "closedate": "2023-12-12T18:13:13.900Z"
+        },
+        {
+          "id": "5401916630",
+          "name": "Mobileye dev",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5402448868",
+          "name": "Mobileye",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "157966448866",
+          "name": "Mobileye - Shaul's team",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "42000",
+          "closedate": "2025-04-21T10:08:45.503Z"
+        },
+        {
+          "id": "5401934573",
+          "name": "Mobileye CI",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5401934319",
+          "name": "SageMaker for Mobileye",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5401893618",
+          "name": "Mobileye - Haim",
+          "stage": "85616072",
+          "stageName": "Past customer",
+          "stageColor": "#3498DB",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5401916877",
+          "name": "Mobileye",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "7371527927",
+          "name": "Mobileye - cast.ai",
+          "stage": "98792385",
+          "stageName": "Initial Stage ",
+          "stageColor": "#E44258",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2023-05-31T13:41:34.162Z"
+        },
+        {
+          "id": "5228309985",
+          "name": "Mobileye scripting (Yulia)",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2022-11-14T06:37:27.355Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1974776",
+          "name": "Niv Levhari",
+          "email": "niv.levhari@mobileye.com",
+          "title": "AV Policy Algorithm Developer, CTO office"
+        },
+        {
+          "id": "1973867",
+          "name": "Nimrod Shaham",
+          "email": "nimrod.shaham@mobileye.com",
+          "title": "Algorithm Developer, CTO office"
+        },
+        {
+          "id": "2097101",
+          "name": "None None",
+          "email": "itiel.olenick@mobileye.com",
+          "title": null
+        },
+        {
+          "id": "78633",
+          "name": "Sefi Darshan",
+          "email": null,
+          "title": "Director Of Information Technology"
+        },
+        {
+          "id": "78278",
+          "name": "Sefi Darshan",
+          "email": "sefi.darshan@gmail.com",
+          "title": "Director of Information Technology"
+        },
+        {
+          "id": "1972602",
+          "name": "Beny Haddad hadad",
+          "email": "beny.haddad@mobileye.com",
+          "title": "team manager"
+        },
+        {
+          "id": "2256359",
+          "name": "Yehoshoua Dahan",
+          "email": "yehoshouad@mobileye.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "1974817",
+          "name": "Elchanan Rushinek",
+          "email": "elchanan.rushinek@mobileye.com",
+          "title": "Senior VP Engineering"
+        },
+        {
+          "id": "1973704",
+          "name": "reut amsellem",
+          "email": "reut.amsellem@mobileye.com",
+          "title": "Head of design"
+        },
+        {
+          "id": "1973703",
+          "name": "Ram Mizrahi",
+          "email": "ram.mizrahi@mobileye.com",
+          "title": "Cloud Specialist"
+        },
+        {
+          "id": "1973853",
+          "name": "Sigi Asaraf",
+          "email": "sigi.asaraf@mobileye.com",
+          "title": "Cloud DevOps"
+        },
+        {
+          "id": "2257158",
+          "name": "ariel szmerla",
+          "email": "ariel.szmerla@mobileye.com",
+          "title": "Software Developer"
+        },
+        {
+          "id": "1974762",
+          "name": "Dima Shechtman",
+          "email": "dima@mobileye.com",
+          "title": "Cloud Validation Team Lead"
+        },
+        {
+          "id": "2097001",
+          "name": "None None",
+          "email": "daniel.lifshitz@mobileye.com",
+          "title": null
+        },
+        {
+          "id": "79678",
+          "name": "Haim None",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "2037501",
+          "name": "Yermiyahu (Jeremy) Atlan",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "80101",
+          "name": "Yigal Gvily",
+          "email": null,
+          "title": null
+        },
+        {
+          "id": "2097051",
+          "name": "None None",
+          "email": "shuki.zaitman@mobileye.com",
+          "title": null
+        },
+        {
+          "id": "2046801",
+          "name": "None None",
+          "email": "jeremy.atlan@mobileye.com",
+          "title": null
+        },
+        {
+          "id": "1972647",
+          "name": "Pini Reisman",
+          "email": "pini.reisman@mobileye.com",
+          "title": "Director of REM cloud application"
+        }
+      ]
     },
     "motorolasolutions": {
       "companyId": null,
@@ -293,22 +3179,201 @@
       "contacts": []
     },
     "next insurance": {
-      "companyId": null,
-      "companyName": "Next Insurance",
+      "companyId": "7124906444",
+      "companyName": "next insurance",
+      "domain": "nextinsurance.com",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "626856609009",
+          "name": "Nadav Leibovitch",
+          "email": "nadav.l@nextinsurance.com",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "625326181613",
+          "name": "Tal Neuman Keret",
+          "email": null,
+          "title": "Sr. Talent Acquisition Partner"
+        }
+      ]
     },
     "nvidia": {
-      "companyId": null,
-      "companyName": "Nvidia",
-      "deals": [],
-      "contacts": []
+      "companyId": "6127240928",
+      "companyName": "NVIDIA",
+      "domain": "nvidia.com",
+      "industry": "COMPUTER_HARDWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "6153312228",
+          "name": "Deal with NVIDIA",
+          "stage": "97360070",
+          "stageName": "Stop Follow-Up",
+          "stageColor": "#3498DB",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5402448590",
+          "name": "Meir Renford  R&D SW Director - InfiniBand Systems and infrastructure at  NVIDIA",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "2782551",
+          "name": "Vladi Ifat",
+          "email": null,
+          "title": "SW DevOps Architect"
+        },
+        {
+          "id": "3632051",
+          "name": "None None",
+          "email": "amirsht@nvidia.com",
+          "title": null
+        },
+        {
+          "id": "399847325887",
+          "name": "ציפורה קאופמן",
+          "email": "tkaufman@nvidia.com",
+          "title": "אוטומציה לחומרה / לפיתוח (לא אוטומציה עסקית)"
+        },
+        {
+          "id": "2948351",
+          "name": "Katya Taershmidt - ★Always Hiring",
+          "email": null,
+          "title": "Talent Acquisition Specialist"
+        },
+        {
+          "id": "3284301",
+          "name": "Or Drucker",
+          "email": null,
+          "title": "Senior Formal Verification Engineer"
+        },
+        {
+          "id": "77351349435",
+          "name": "Michael Zeevi",
+          "email": "mzeevi@nvidia.com",
+          "title": null
+        },
+        {
+          "id": "3055451",
+          "name": "Gideon Rosenberg",
+          "email": "rosenberggideon@gmail.com",
+          "title": "Head of HR Israel & Deputy General Counsel "
+        },
+        {
+          "id": "2430451",
+          "name": "Ayoub Ahmad",
+          "email": "ahayoub@nvidia.com",
+          "title": null
+        },
+        {
+          "id": "55782530268",
+          "name": "Ori Varon",
+          "email": "ovaron@nvidia.com",
+          "title": "Director - IT Infrastructure and Cloud Operations"
+        },
+        {
+          "id": "56003706093",
+          "name": "Ariel Levanon",
+          "email": "lariel@nvidia.com",
+          "title": "VP - Security Systems"
+        },
+        {
+          "id": "2772351",
+          "name": "Dor Shireto",
+          "email": null,
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "70179004603",
+          "name": "Gideon Rosenberg",
+          "email": "gideon@nvidia.com",
+          "title": "Director - IT Infrastructure and Cloud Operations"
+        },
+        {
+          "id": "2676601",
+          "name": "Avner Hartuv",
+          "email": null,
+          "title": "DevOps/CI Manager"
+        },
+        {
+          "id": "3130651",
+          "name": "Shiri Sharon",
+          "email": null,
+          "title": "Technical Recruiter"
+        },
+        {
+          "id": "399847325905",
+          "name": "צפורה שפיאצקי",
+          "email": "tshpiatzky@nvidia.com",
+          "title": "פיתוח תוכנה - Backend"
+        },
+        {
+          "id": "989651",
+          "name": "Jesper Wolf Bek",
+          "email": null,
+          "title": "Senior Director"
+        },
+        {
+          "id": "2453151",
+          "name": "Suresh Ollala",
+          "email": null,
+          "title": "Sr. Director of Engineering - NGC Platform"
+        },
+        {
+          "id": "78622",
+          "name": "Meir Renford",
+          "email": "meir.renford@gmail.com",
+          "title": "SW Director"
+        },
+        {
+          "id": "3045451",
+          "name": "Lenny Verkhovsky",
+          "email": null,
+          "title": "DevOps and Verification Team Leader"
+        },
+        {
+          "id": "99743284466",
+          "name": "ענבל אבוזלף",
+          "email": "eabuzalaf@nvidia.com",
+          "title": null
+        }
+      ]
     },
     "oligo security": {
-      "companyId": null,
+      "companyId": "12506945774",
       "companyName": "Oligo Security",
+      "domain": "oligo.security",
+      "industry": "COMPUTER_NETWORK_SECURITY",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "20635430109",
+          "name": "Adam Kobi",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "721274303716",
+          "name": "Itamar Lechowicer",
+          "email": null,
+          "title": "Development Team Lead"
+        }
+      ]
     },
     "onezerobank": {
       "companyId": null,
@@ -317,34 +3382,196 @@
       "contacts": []
     },
     "pentera": {
-      "companyId": null,
-      "companyName": "Pentera",
+      "companyId": "7124949181",
+      "companyName": "pentera",
+      "domain": "pentera.io",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2167701",
+          "name": "Yarden Bloch Fox",
+          "email": "yarden@pentera.net",
+          "title": "Global Talent Acquisition Partner"
+        },
+        {
+          "id": "2168102",
+          "name": "Alex Barenboim",
+          "email": "alex@pentera.io",
+          "title": "VP of Engineering"
+        },
+        {
+          "id": "2257751",
+          "name": "Tal Sheinfeld",
+          "email": "tal.sheinfeld@pcysys.com",
+          "title": "Backend Team Leader"
+        },
+        {
+          "id": "2168251",
+          "name": "Omer Gafni",
+          "email": "omer@pentera.io",
+          "title": "VP, R&D"
+        },
+        {
+          "id": "2168101",
+          "name": "Nitzan Dana",
+          "email": "nitzan@pentera.io",
+          "title": "DevOps Team Leader"
+        },
+        {
+          "id": "2257701",
+          "name": "Amit Guelmann",
+          "email": "amit.guelmann@pentera.io",
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "680886435005",
+          "name": "Eilon Cohen",
+          "email": null,
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "3311201",
+          "name": "Artyom Ladygin",
+          "email": null,
+          "title": "DevOps Architect"
+        }
+      ]
     },
     "plainid": {
-      "companyId": null,
-      "companyName": "Plainid",
-      "deals": [],
+      "companyId": "6126626261",
+      "companyName": "PlainID",
+      "domain": "plainid.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401893823",
+          "name": "PlainID",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
       "contacts": []
     },
     "play": {
-      "companyId": null,
-      "companyName": "Play",
-      "deals": [],
-      "contacts": []
+      "companyId": "7990092488",
+      "companyName": "Play'n GO",
+      "domain": "playngo.com",
+      "industry": "GAMBLING_CASINOS",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "8112895181",
+          "name": "Deal Play'n GO",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "2267652",
+          "name": "Anna Tell",
+          "email": null,
+          "title": "Global Human Resources Business Partner"
+        },
+        {
+          "id": "2267651",
+          "name": "Dennis Gustafsson",
+          "email": null,
+          "title": "Chief Operating Officer"
+        },
+        {
+          "id": "2357351",
+          "name": "Matt Doyle",
+          "email": null,
+          "title": "Head of Talent Acquisition & Culture"
+        },
+        {
+          "id": "2267751",
+          "name": "Alexander Eriksson",
+          "email": null,
+          "title": "Development Manager"
+        },
+        {
+          "id": "2267801",
+          "name": "Aaron Zammit",
+          "email": null,
+          "title": "Head of Infrastructure"
+        },
+        {
+          "id": "2267701",
+          "name": "Nikola Hansson",
+          "email": null,
+          "title": "Head Of Technical Operations"
+        },
+        {
+          "id": "2267752",
+          "name": "Johan Nilsson",
+          "email": null,
+          "title": "Tech Lead - Data Infrastructure"
+        }
+      ]
     },
     "port": {
-      "companyId": null,
-      "companyName": "Port",
-      "deals": [],
+      "companyId": "6126567382",
+      "companyName": "Ashdod Port",
+      "domain": "ashdodport.com",
+      "industry": null,
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401934287",
+          "name": "Ashdod Port",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
       "contacts": []
     },
     "remedio": {
-      "companyId": null,
-      "companyName": "Remedio",
+      "companyId": "326363207883",
+      "companyName": "Remedio (formerly GYTPOL)",
+      "domain": "remedio.io",
+      "industry": "COMPUTER_NETWORKING",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "581262593231",
+          "name": "Yaron Bialik",
+          "email": null,
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "580117163219",
+          "name": "Yael Goldfus",
+          "email": null,
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "581262593212",
+          "name": "Roni Nuriel",
+          "email": null,
+          "title": "Head of HR"
+        }
+      ]
     },
     "remoterockethub": {
       "companyId": null,
@@ -359,16 +3586,167 @@
       "contacts": []
     },
     "silverfort": {
-      "companyId": null,
+      "companyId": "7693520352",
       "companyName": "Silverfort",
+      "domain": "silverfort.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "185265661117",
+          "name": "None None",
+          "email": "yoav.weisblech@silverfort.com",
+          "title": null
+        },
+        {
+          "id": "323525053679",
+          "name": "Shimi Eshkenazi",
+          "email": "shimi.eshkenazi@silverfort.com",
+          "title": null
+        },
+        {
+          "id": "2410601",
+          "name": "Neomi Sandler",
+          "email": null,
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "294971582691",
+          "name": "Asaf Apel",
+          "email": "asaf.apel@silverfort.com",
+          "title": null
+        },
+        {
+          "id": "2118001",
+          "name": "Tal Shechanovitz",
+          "email": "tal.shechanovitz@silverfort.com",
+          "title": null
+        }
+      ]
     },
     "similarweb": {
-      "companyId": null,
+      "companyId": "6126567379",
       "companyName": "Similarweb",
-      "deals": [],
-      "contacts": []
+      "domain": "similarweb.com",
+      "industry": "MARKET_RESEARCH",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "467109905644",
+          "name": "SimilarWeb",
+          "stage": "98792385",
+          "stageName": "Initial Stage ",
+          "stageColor": "#E44258",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "10000",
+          "closedate": null
+        },
+        {
+          "id": "5402448865",
+          "name": "Daniel Sonnenschein Director of Japan GTM at Similarweb - NR",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3128601",
+          "name": "Idan Doitch",
+          "email": null,
+          "title": "VP R&D of Data Collection & B2C"
+        },
+        {
+          "id": "3695102",
+          "name": "None None",
+          "email": "ofir.machlof@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "2085451",
+          "name": "Yossi Srebnogur",
+          "email": "yossis@similarweb.com",
+          "title": "R&D Director"
+        },
+        {
+          "id": "3695101",
+          "name": "None None",
+          "email": "eliezer.yaacov@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "670256368872",
+          "name": "Liraz Kogman",
+          "email": "liraz.kogman@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "670285936880",
+          "name": "Adi Miron",
+          "email": "adi.miron@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "1919853",
+          "name": "Laliv Peled",
+          "email": "laliv.peled@similarweb.com",
+          "title": "Head of PMI"
+        },
+        {
+          "id": "670320938214",
+          "name": "Noy Zedek",
+          "email": "noy.zedek@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "78298",
+          "name": "Daniel Sonnenschein",
+          "email": "dson88@gmail.com",
+          "title": "Director of Japan GTM"
+        },
+        {
+          "id": "2037251",
+          "name": "Amir Saar",
+          "email": "amir.saar@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "1919813",
+          "name": "Yair Pecherer",
+          "email": "yair.pecherer@similarweb.com",
+          "title": "Business to Consumer - Mobile Tech Lead"
+        },
+        {
+          "id": "1917079",
+          "name": "Costya Regev",
+          "email": "costya.regev@similarweb.com",
+          "title": "Production Engineering Team Leader"
+        },
+        {
+          "id": "1918351",
+          "name": "Sivan Peri",
+          "email": "sivan.peri@similarweb.com",
+          "title": "Advisory Board Member"
+        },
+        {
+          "id": "2365201",
+          "name": "Liav Shabtai",
+          "email": "liav.shabtai@similarweb.com",
+          "title": null
+        },
+        {
+          "id": "1918003",
+          "name": "Isan Rivkin",
+          "email": "isan.rivkin@similarweb.com",
+          "title": "Team Leader, Production Engineering"
+        }
+      ]
     },
     "somekhchaikin": {
       "companyId": null,
@@ -383,28 +3761,215 @@
       "contacts": []
     },
     "surecomp": {
-      "companyId": null,
+      "companyId": "5988568557",
       "companyName": "Surecomp",
-      "deals": [],
-      "contacts": []
+      "domain": "surecomp.com",
+      "industry": "FINANCIAL_SERVICES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401893589",
+          "name": "Surecomp",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5402448601",
+          "name": "Amichai Hazan Director Of R&D at Surecomp",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "5235463910",
+          "name": "Benny Savinik  VP Research And Development at Surecomp",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2022-11-14T05:04:34.600Z"
+        },
+        {
+          "id": "5401934285",
+          "name": "Surecomp",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3293751",
+          "name": "Alina Luft",
+          "email": null,
+          "title": "Global Talent Acquisition "
+        },
+        {
+          "id": "93124758719",
+          "name": "Ofek B",
+          "email": null,
+          "title": "Global Talent Partner Lead"
+        },
+        {
+          "id": "1708",
+          "name": "Benny Savinik",
+          "email": null,
+          "title": "VP Research And Development"
+        },
+        {
+          "id": "2772801",
+          "name": "Benny Savinik",
+          "email": "benny.savinik@surecomp.com",
+          "title": "VP Research And Development"
+        },
+        {
+          "id": "79300",
+          "name": "Amichai Hazan",
+          "email": "amichai.hazan@gmail.com",
+          "title": "Director Of R&D"
+        },
+        {
+          "id": "80040",
+          "name": "Benny None",
+          "email": null,
+          "title": "VP R&D"
+        },
+        {
+          "id": "701731312836",
+          "name": "Amichai Hazan",
+          "email": null,
+          "title": "R&D Director | RIVO Group Manager"
+        },
+        {
+          "id": "2772452",
+          "name": "Lior Mor",
+          "email": "lior.mor@surecomp.com",
+          "title": "Director R&D Teach and Support - Global DevOps"
+        },
+        {
+          "id": "691649317109",
+          "name": "Benny Savinik",
+          "email": null,
+          "title": "VP of Technology"
+        }
+      ]
     },
     "taboola": {
-      "companyId": null,
+      "companyId": "6126701251",
       "companyName": "Taboola",
-      "deals": [],
-      "contacts": []
+      "domain": "taboola.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401934570",
+          "name": "Taboola",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1795001",
+          "name": "Lior Golan",
+          "email": "lior.golan@taboola.com",
+          "title": "CTO"
+        }
+      ]
     },
     "terasky": {
-      "companyId": null,
-      "companyName": "Terasky",
+      "companyId": "7142353862",
+      "companyName": "TeraSky",
+      "domain": "terasky.com",
+      "industry": "WIRELESS",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "3282401",
+          "name": "Yael Bismut",
+          "email": "yael@terasky.com",
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "1917612",
+          "name": "Gilad Broun",
+          "email": "giladb@terasky.com",
+          "title": "EUC Delivery Manager"
+        },
+        {
+          "id": "2256470",
+          "name": "Dor Netanel",
+          "email": "dor@terasky.com",
+          "title": "Account manager"
+        },
+        {
+          "id": "1828652",
+          "name": "Itamar Hadad",
+          "email": "itamar@terasky.com",
+          "title": "Devops Engineer"
+        }
+      ]
     },
     "tikalk": {
       "companyId": null,
       "companyName": "Tikalk",
       "deals": [],
       "contacts": []
+    },
+    "torq": {
+      "companyId": "7124829161",
+      "companyName": "Torq",
+      "domain": "torq.io",
+      "industry": null,
+      "lifecyclestage": "lead",
+      "deals": [],
+      "contacts": [
+        {
+          "id": "2037151",
+          "name": "Liron Zizva",
+          "email": "lironz@torq.io",
+          "title": "Automation Team Leader"
+        },
+        {
+          "id": "538114668765",
+          "name": "Nadav Baumer",
+          "email": "nadav.baumer@torq.io",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "22947726798",
+          "name": "Nitzan Zror",
+          "email": null,
+          "title": "Talent Acquisition Partner & Employer Branding Lead"
+        },
+        {
+          "id": "3053601",
+          "name": "Eldad Rudich",
+          "email": null,
+          "title": "VP R&D"
+        }
+      ]
     },
     "unframe": {
       "companyId": null,
@@ -413,10 +3978,74 @@
       "contacts": []
     },
     "unity": {
-      "companyId": null,
+      "companyId": "6511303639",
       "companyName": "Unity",
-      "deals": [],
-      "contacts": []
+      "domain": null,
+      "industry": null,
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5849580017",
+          "name": "Deal with Dima Roznouski",
+          "stage": "96829147",
+          "stageName": "Create Contact",
+          "stageColor": "#E44258",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "625951",
+          "name": "Dima Roznouski",
+          "email": null,
+          "title": "Sr. Director, Client Partners - Ads, Operate"
+        },
+        {
+          "id": "776001",
+          "name": "Aga Kwiatkowska",
+          "email": "aga.kwiatkowska@unity.com",
+          "title": "Senior Recruiter"
+        },
+        {
+          "id": "3337151",
+          "name": "Or Arnon",
+          "email": null,
+          "title": "Senior Manager, Developer Operations Engineering (DevOps)"
+        },
+        {
+          "id": "3176101",
+          "name": "Ofer Mark",
+          "email": null,
+          "title": "Senior R&D Manager"
+        },
+        {
+          "id": "625651",
+          "name": "Jordan Marion",
+          "email": null,
+          "title": "Senior Recruiter"
+        },
+        {
+          "id": "29434538426",
+          "name": "Avner Schwartz",
+          "email": null,
+          "title": "Engineering Manager"
+        },
+        {
+          "id": "3337152",
+          "name": "Lior Shem-Tov",
+          "email": null,
+          "title": "Engineering Manager, Digital Twins"
+        },
+        {
+          "id": "627151",
+          "name": "Ali Parr",
+          "email": null,
+          "title": "VP - Engineering"
+        }
+      ]
     },
     "unknown": {
       "companyId": null,
@@ -425,16 +4054,168 @@
       "contacts": []
     },
     "upstream": {
-      "companyId": null,
+      "companyId": "8718256621",
       "companyName": "Upstream",
-      "deals": [],
-      "contacts": []
+      "domain": "upstreamsystems.com",
+      "industry": null,
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "9312454127",
+          "name": "Deal Upstream",
+          "stage": "96829148",
+          "stageName": "Follow-Up",
+          "stageColor": "#9B59B6",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "3012802",
+          "name": "Savvas Makalias",
+          "email": null,
+          "title": "Software Development Manager"
+        },
+        {
+          "id": "3012851",
+          "name": "Eleana Pleioni",
+          "email": null,
+          "title": "Software Development Manager"
+        },
+        {
+          "id": "3012804",
+          "name": "Nick Kotzalas",
+          "email": null,
+          "title": "Chief Software Architect"
+        },
+        {
+          "id": "3012901",
+          "name": "Leonidas Patouchas",
+          "email": null,
+          "title": "Director of Software Engineering"
+        },
+        {
+          "id": "3012853",
+          "name": "Laodimos Nick Filippopoulos",
+          "email": null,
+          "title": "Software Architect"
+        },
+        {
+          "id": "3013001",
+          "name": "Evgenia Nanou",
+          "email": null,
+          "title": "Human Resources Associate"
+        },
+        {
+          "id": "3012801",
+          "name": "Thanasis Gkliatis",
+          "email": null,
+          "title": "Software Development Manager"
+        },
+        {
+          "id": "3012803",
+          "name": "George Kavourgias",
+          "email": null,
+          "title": "Technical Product Manager"
+        },
+        {
+          "id": "3012852",
+          "name": "Panagiotis Pantazopoulos",
+          "email": null,
+          "title": "Software Development Manager"
+        }
+      ]
     },
     "vast data": {
-      "companyId": null,
-      "companyName": "VAST Data",
+      "companyId": "7124960212",
+      "companyName": "vast data",
+      "domain": "vastdata.com",
+      "industry": "LOGISTICS_AND_SUPPLY_CHAIN",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2183103",
+          "name": "Roni Mizrahi",
+          "email": "ronim747@gmail.com",
+          "title": "Building something new"
+        },
+        {
+          "id": "2183001",
+          "name": "Shachar Fienblit",
+          "email": null,
+          "title": "Co-Founder & Chief R&D Officer"
+        },
+        {
+          "id": "324540898553",
+          "name": "Eli Koren",
+          "email": "eli.koren@vastdata.com",
+          "title": null
+        },
+        {
+          "id": "3005302",
+          "name": "Yogev Vaknin",
+          "email": null,
+          "title": "VP R&D"
+        },
+        {
+          "id": "3005301",
+          "name": "Avi Goren",
+          "email": null,
+          "title": "Co-Founder and Chief Scientist"
+        },
+        {
+          "id": "2183152",
+          "name": "Nir Brifman",
+          "email": null,
+          "title": "R&D Manager"
+        },
+        {
+          "id": "2183101",
+          "name": "Ronnie Lazar",
+          "email": null,
+          "title": "Software Engineering Manager"
+        },
+        {
+          "id": "2183102",
+          "name": "Vladimir Zdornov",
+          "email": null,
+          "title": "VP R&D"
+        },
+        {
+          "id": "3005252",
+          "name": "Alon Horev",
+          "email": null,
+          "title": "Co-Founder and VP Technology"
+        },
+        {
+          "id": "2182951",
+          "name": "Noa Cohen",
+          "email": null,
+          "title": "Director Of Engineering"
+        },
+        {
+          "id": "70501",
+          "name": "Eli Elhadad Koren",
+          "email": null,
+          "title": "DevOps Lead"
+        },
+        {
+          "id": "2183151",
+          "name": "Shachar Fienblit",
+          "email": null,
+          "title": "Co-Founder & Chief R&D Officer"
+        },
+        {
+          "id": "2183051",
+          "name": "Tal Engle-Potlog",
+          "email": "tal.potlog@gmail.com",
+          "title": "Cloud Architect & Senior DevOps Engineer  at VAST Data"
+        }
+      ]
     },
     "vastdata": {
       "companyId": null,
@@ -449,16 +4230,267 @@
       "contacts": []
     },
     "wix": {
-      "companyId": null,
-      "companyName": "Wix",
-      "deals": [],
-      "contacts": []
+      "companyId": "5988523474",
+      "companyName": "wix",
+      "domain": "wix.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "11537513695",
+          "name": "Wix training",
+          "stage": "119800036",
+          "stageName": "Closed lost",
+          "stageColor": "#00CA72",
+          "pipeline": "44553939",
+          "pipelineName": "Training",
+          "amount": "14400",
+          "closedate": "2024-04-09T13:55:01.151Z"
+        },
+        {
+          "id": "8284491482",
+          "name": "Wix - open-ended",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "46000",
+          "closedate": "2023-07-23T13:32:42.933Z"
+        },
+        {
+          "id": "15446573533",
+          "name": "Wix Training",
+          "stage": "119800036",
+          "stageName": "Closed lost",
+          "stageColor": "#00CA72",
+          "pipeline": "44553939",
+          "pipelineName": "Training",
+          "amount": "20000",
+          "closedate": "2024-11-11T08:42:19.901Z"
+        },
+        {
+          "id": "11836825049",
+          "name": "Wix- cast",
+          "stage": "98792385",
+          "stageName": "Initial Stage ",
+          "stageColor": "#E44258",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "10000",
+          "closedate": null
+        }
+      ],
+      "contacts": [
+        {
+          "id": "1160",
+          "name": "Lior Fadida",
+          "email": "lfadida@gmail.com",
+          "title": "Senior Full Stack Developer"
+        },
+        {
+          "id": "2183851",
+          "name": "David Grumer",
+          "email": "davidgr@wix.com",
+          "title": "Senior Product Marketing Manager"
+        },
+        {
+          "id": "2383901",
+          "name": "Michael Gelfand",
+          "email": null,
+          "title": "Infra DevOps Team Lead"
+        },
+        {
+          "id": "220902751432",
+          "name": "Ben Chen",
+          "email": "benc@wix.com",
+          "title": null
+        },
+        {
+          "id": "409748765945",
+          "name": "Tal Ayalon",
+          "email": "talay@wix.com",
+          "title": "DevOps Engineer"
+        },
+        {
+          "id": "3233453",
+          "name": "Michal Burstin",
+          "email": null,
+          "title": "Head of R&D B2B"
+        },
+        {
+          "id": "1879153",
+          "name": "Doreen Weissfelner",
+          "email": "dweissfelner@wix.com",
+          "title": "General Manager and Head of Product"
+        },
+        {
+          "id": "23225875157",
+          "name": "Eliran Tal",
+          "email": "eliranta@wix.com",
+          "title": "DevOps Team leader"
+        },
+        {
+          "id": "1973817",
+          "name": "Yafit Lotan",
+          "email": "yafitl@wix.com",
+          "title": "Head Of Production"
+        },
+        {
+          "id": "190593671366",
+          "name": "Etamar Weinberg",
+          "email": "etamarw@wix.com",
+          "title": "DevOps Team Lead"
+        },
+        {
+          "id": "23405732300",
+          "name": "None None",
+          "email": "yossig@wix.com",
+          "title": null
+        },
+        {
+          "id": "390870570223",
+          "name": "Barak Seri",
+          "email": "baraks@wix.com",
+          "title": null
+        },
+        {
+          "id": "1828952",
+          "name": "Roi Ashkenazi",
+          "email": "roia@wix.com",
+          "title": "Research and Development Manager"
+        },
+        {
+          "id": "411188774079",
+          "name": "Amit Cohen",
+          "email": "amitcoh@wix.com",
+          "title": "NetOps System Engineer"
+        },
+        {
+          "id": "3023901",
+          "name": "Noa Stanger",
+          "email": null,
+          "title": "Product Manager "
+        },
+        {
+          "id": "1828653",
+          "name": "Gilad Segal",
+          "email": "gilads@wix.com",
+          "title": "Research and Development Manager"
+        },
+        {
+          "id": "390864852177",
+          "name": "Dor Cohen",
+          "email": "dorc@wix.com",
+          "title": null
+        },
+        {
+          "id": "391045065935",
+          "name": "Ofer Velich",
+          "email": "oferv@wix.com",
+          "title": "Development"
+        },
+        {
+          "id": "4172701",
+          "name": "Morha Hamo",
+          "email": "morha@wix.com",
+          "title": null
+        },
+        {
+          "id": "14071787225",
+          "name": "Mor Ben Hamo",
+          "email": null,
+          "title": "DevOps Team Lead"
+        }
+      ]
     },
     "wiz": {
-      "companyId": null,
-      "companyName": "Wiz",
+      "companyId": "7124966337",
+      "companyName": "wiz",
+      "domain": "wiz.io",
+      "industry": null,
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "163136175314",
+          "name": "Ada Sharoni",
+          "email": "ada.sharoni@wiz.io",
+          "title": null
+        },
+        {
+          "id": "2676801",
+          "name": "Lihi Erez",
+          "email": null,
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "2677001",
+          "name": "Roy R",
+          "email": null,
+          "title": "Co-Founder & VP R&D"
+        },
+        {
+          "id": "2676802",
+          "name": "Ron Tzrouya",
+          "email": null,
+          "title": "Lead Cloud FinOps & Analysis"
+        },
+        {
+          "id": "2676701",
+          "name": "Or Shachar",
+          "email": "or@wiz.io",
+          "title": "Senior DevOps Engineer"
+        },
+        {
+          "id": "1878558",
+          "name": "Tomer Sabag",
+          "email": "tomer.sabag@wiz.io",
+          "title": "Head of Product and Production Security"
+        },
+        {
+          "id": "2677002",
+          "name": "Michael Aminov",
+          "email": null,
+          "title": "CTO Architect"
+        },
+        {
+          "id": "2676851",
+          "name": "Melanie Silberstein",
+          "email": null,
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "1794514",
+          "name": "Assaf Rappaport",
+          "email": "assaf@wiz.io",
+          "title": "Co-Founder & CEO"
+        },
+        {
+          "id": "2676901",
+          "name": "Ron Cohen",
+          "email": null,
+          "title": "Director of Operations"
+        },
+        {
+          "id": "2677101",
+          "name": "Arik Nemtsov",
+          "email": null,
+          "title": "Director Of Engineering"
+        },
+        {
+          "id": "2676951",
+          "name": "Adi Lior",
+          "email": null,
+          "title": "Talent Acquisition Partner"
+        },
+        {
+          "id": "3093351",
+          "name": "Guy Kozliner",
+          "email": null,
+          "title": "CTO Operations"
+        }
+      ]
     },
     "wizinc": {
       "companyId": null,
@@ -472,17 +4504,90 @@
       "deals": [],
       "contacts": []
     },
-    "zenity": {
-      "companyId": null,
-      "companyName": "Zenity",
+    "yael group": {
+      "companyId": "8027588328",
+      "companyName": "Yael Group",
+      "domain": "yaelsoft.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
-      "contacts": []
+      "contacts": [
+        {
+          "id": "2281401",
+          "name": "None None",
+          "email": "adil@yaelsoft.com",
+          "title": null
+        }
+      ]
+    },
+    "zenity": {
+      "companyId": "87376660715",
+      "companyName": "Zenity",
+      "domain": "zenity.io",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "customer",
+      "deals": [
+        {
+          "id": "406329359600",
+          "name": "Zenity - DevOps",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "100000",
+          "closedate": "2026-02-02T14:12:39.275Z"
+        },
+        {
+          "id": "306373588207",
+          "name": "Zenity",
+          "stage": "98792389",
+          "stageName": "Closed Won",
+          "stageColor": "#E67E22",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "13000",
+          "closedate": "2025-12-15T12:15:59.899Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "442594901227",
+          "name": "None None",
+          "email": "kerenh@zenity.io",
+          "title": null
+        },
+        {
+          "id": "528911638733",
+          "name": "None None",
+          "email": "ofirp@zenity.io",
+          "title": null
+        },
+        {
+          "id": "527381594339",
+          "name": "None None",
+          "email": "nicom@zenity.io",
+          "title": null
+        },
+        {
+          "id": "442399768805",
+          "name": "None None",
+          "email": "roneny@zenity.io",
+          "title": null
+        },
+        {
+          "id": "528804734160",
+          "name": "None None",
+          "email": "jonathanz@zenity.io",
+          "title": null
+        }
+      ]
     }
   },
   "stats": {
-    "totalCompanies": 79,
-    "matchedInCrm": 0,
-    "withDeals": 0,
-    "withContacts": 0
+    "totalCompanies": 83,
+    "matchedInCrm": 53,
+    "withDeals": 30,
+    "withContacts": 50
   }
 }
