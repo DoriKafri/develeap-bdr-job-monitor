@@ -90,7 +90,7 @@
   .stats-bar-fade.right { right:0; background:linear-gradient(to left, var(--bg-page) 0%, transparent 100%); }
   .stats-bar-fade.hidden { opacity:0; }
   #categoryStatsContainer, #categoryFilterContainer { display:contents; }
-  .stat-card { flex:0 0 auto; padding:10px 14px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+  .stat-card { flex:0 0 auto; padding:8px 12px; border-radius:12px; background:var(--bg); border-left:4px solid var(--primary); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
   .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.10); }
   .stat-card.stat-active { box-shadow:0 0 0 2px var(--primary); background:#fff; }
   .stat-card.develeap { border-left-color:var(--accent); }
@@ -101,8 +101,10 @@
   .stat-number { font-size:22px; font-weight:800; line-height:1; }
   .stat-label { font-size:11px; color:var(--text-light); margin-top:4px; white-space:nowrap; }
 
-  .filters-bar { display:flex; align-items:center; gap:12px; padding:16px 0; background:transparent; border-bottom:none; flex-wrap:wrap; }
-  .search-box { flex:1; min-width:250px; position:relative; }
+  .filters-bar { display:flex; align-items:center; gap:8px; padding:12px 0; background:transparent; border-bottom:none; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch; }
+  .filters-bar::-webkit-scrollbar { display:none; }
+  .filter-chip { white-space:nowrap; }
+  .search-box { flex:0 0 auto; width:260px; position:relative; }
   .search-box input { width:100%; padding:10px 16px 10px 40px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; }
   .search-box input:focus { border-color:var(--primary); }
   .search-box svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-lighter); }
@@ -317,13 +319,11 @@
     .top-bar { left:0; }
     .top-bar .hamburger { display:flex; }
     .main-content { margin-left:0; margin-top:48px; padding:16px; }
-    .stats-bar { padding:16px 0; gap:8px; flex-wrap:wrap; overflow-x:visible; }
-    .stat-card { min-width:calc(50% - 4px); padding:10px 12px; flex:0 1 auto; }
-    .stats-bar-arrow, .stats-bar-fade { display:none !important; }
-    .stat-number { font-size:22px; }
-    .stat-label { font-size:11px; }
-    .filters-bar { padding:12px 0; gap:6px; }
-    .search-box { min-width:100%; }
+    .stat-card { padding:8px 10px; }
+    .stat-number { font-size:18px; }
+    .stat-label { font-size:10px; }
+    .filters-bar { padding:8px 0; gap:6px; }
+    .search-box { width:180px; flex:0 0 auto; }
     .search-box input { padding:8px 12px 8px 36px; font-size:13px; }
     .filter-chip { padding:6px 12px; font-size:12px; }
     .table-container { border-radius:10px; }
