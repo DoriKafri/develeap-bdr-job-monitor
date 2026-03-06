@@ -725,6 +725,45 @@
   .wf-add-item .type-badge.auto { background:#e0f7f0; color:#0d7a5f; }
   .wf-add-item .type-badge.human { background:#fff3e0; color:#e65100; }
   .wf-add-item .type-badge.throttled { background:#fce4ec; color:#c62828; }
+  .wf-add-item .type-badge.logic { background:#ede7f6; color:#6a1b9a; }
+
+  /* Logic node styles */
+  .wf-node[data-type="logic"] .wf-node-bar { background:linear-gradient(90deg,#7c4dff,#b388ff); }
+  .wf-node.logic-node { border:2px solid #b388ff; }
+  .wf-node.logic-node.selected { border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,0.15),0 4px 20px rgba(0,0,0,0.12); }
+  .wf-logic-badge { display:inline-block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; background:#ede7f6; color:#6a1b9a; margin-left:auto; }
+  .wf-branch-label { font-size:10px; font-weight:700; fill:#7c4dff; text-anchor:middle; }
+  .wf-branch-line { stroke:#b388ff; stroke-width:2; fill:none; stroke-dasharray:6,3; }
+  .wf-branch-line.true-branch { stroke:#00ca72; }
+  .wf-branch-line.false-branch { stroke:#e44258; }
+
+  /* Condition builder */
+  .wf-cond-tabs { display:flex; gap:2px; background:var(--bg); border-radius:8px; padding:3px; margin-bottom:12px; }
+  .wf-cond-tab { flex:1; padding:6px 8px; border:none; background:transparent; border-radius:6px; font-size:11px; font-weight:600; color:var(--text-light); cursor:pointer; text-align:center; transition:all 0.2s; font-family:inherit; }
+  .wf-cond-tab.active { background:white; color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  .wf-cond-tab:hover:not(.active) { color:var(--text); }
+  .wf-rule-row { display:flex; gap:6px; align-items:center; margin-bottom:8px; padding:8px; background:var(--bg); border-radius:8px; }
+  .wf-rule-row select, .wf-rule-row input { padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; font-family:inherit; }
+  .wf-rule-row select { min-width:80px; }
+  .wf-rule-row input { flex:1; min-width:60px; }
+  .wf-rule-remove { background:none; border:none; color:var(--danger); cursor:pointer; font-size:16px; padding:2px 6px; border-radius:4px; }
+  .wf-rule-remove:hover { background:#fce4ec; }
+  .wf-add-rule { display:inline-flex; align-items:center; gap:4px; padding:6px 12px; background:var(--bg); border:1px dashed var(--border); border-radius:6px; font-size:12px; color:var(--text-light); cursor:pointer; font-family:inherit; transition:all 0.2s; }
+  .wf-add-rule:hover { border-color:var(--accent); color:var(--accent-dark); background:var(--accent-light); }
+  .wf-code-editor { width:100%; min-height:80px; padding:10px; font-family:'SF Mono','Fira Code',monospace; font-size:12px; border:1px solid var(--border); border-radius:8px; background:#1e1e2e; color:#cdd6f4; resize:vertical; line-height:1.5; }
+  .wf-code-editor:focus { outline:none; border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,0.1); }
+  .wf-vibe-input { width:100%; min-height:60px; padding:10px; font-size:13px; border:1px solid var(--border); border-radius:8px; resize:vertical; font-family:inherit; line-height:1.5; }
+  .wf-vibe-input:focus { outline:none; border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,0.1); }
+  .wf-vibe-hint { font-size:11px; color:#7c4dff; margin-top:6px; font-style:italic; }
+  .wf-switch-cases { display:flex; flex-direction:column; gap:8px; }
+  .wf-switch-case { display:flex; gap:6px; align-items:center; padding:8px; background:var(--bg); border-radius:8px; }
+  .wf-switch-case input { flex:1; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; font-family:inherit; }
+  .wf-switch-case .case-label { font-size:11px; font-weight:700; color:#7c4dff; min-width:50px; }
+  .wf-loop-limits { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .wf-loop-limit { padding:10px; background:var(--bg); border-radius:8px; text-align:center; }
+  .wf-loop-limit label { font-size:11px; font-weight:600; color:var(--text-light); display:block; margin-bottom:6px; }
+  .wf-loop-limit input { width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:13px; text-align:center; font-family:inherit; }
+  .wf-loop-limit input:focus { outline:none; border-color:#7c4dff; }
   .wf-add-sep { height:1px; background:var(--border); margin:6px 0; }
   .wf-add-section-label { font-size:10px; font-weight:700; text-transform:uppercase; color:var(--text-lighter); letter-spacing:0.5px; padding:6px 12px 4px; }
   .wf-config-panel { width:340px; background:white; border-left:1px solid var(--border); overflow-y:auto; padding:24px; box-shadow:-2px 0 8px rgba(0,0,0,0.04); animation:wfSlideIn 0.3s ease-out; }
@@ -11734,6 +11773,38 @@ var _WF_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/c
 var _WF_ZOOM = 1.0;
 var _WF_ADD_MENU_OPEN = false;
 
+/* Logic node field/operator definitions */
+var _WF_FIELDS = [
+  { value:'job.title', label:'Job Title' },
+  { value:'job.company', label:'Company' },
+  { value:'job.location', label:'Location' },
+  { value:'job.category', label:'Category' },
+  { value:'job.source', label:'Source' },
+  { value:'job.daysAgo', label:'Days Since Posted', type:'number' },
+  { value:'job.isCustomer', label:'Is Customer', type:'boolean' },
+  { value:'lead.score', label:'Lead Score', type:'number' },
+  { value:'lead.status', label:'Lead Status' },
+  { value:'crm.hasContact', label:'Has CRM Contact', type:'boolean' },
+  { value:'crm.dealStage', label:'Deal Stage' },
+  { value:'enrichment.hasEmail', label:'Has Email', type:'boolean' },
+  { value:'enrichment.seniority', label:'Seniority Level' }
+];
+var _WF_OPERATORS = [
+  { value:'eq', label:'equals', types:['string','number','boolean'] },
+  { value:'neq', label:'not equals', types:['string','number','boolean'] },
+  { value:'contains', label:'contains', types:['string'] },
+  { value:'not_contains', label:'does not contain', types:['string'] },
+  { value:'gt', label:'greater than', types:['number'] },
+  { value:'lt', label:'less than', types:['number'] },
+  { value:'gte', label:'≥', types:['number'] },
+  { value:'lte', label:'≤', types:['number'] },
+  { value:'starts_with', label:'starts with', types:['string'] },
+  { value:'ends_with', label:'ends with', types:['string'] },
+  { value:'is_empty', label:'is empty', types:['string','number'] },
+  { value:'is_true', label:'is true', types:['boolean'] },
+  { value:'is_false', label:'is false', types:['boolean'] }
+];
+
 var _WF_NODE_ORDER = [
   'discovery','dedup','customerMatch','enrichment','crmSync',
   'review','throttle','outreach','followUp','responseTracking','crmUpdate'
@@ -11823,8 +11894,12 @@ function _wfDrawCanvas(container) {
   var row1 = _WF_NODE_ORDER.slice(0, 5);
   var row2 = _WF_NODE_ORDER.slice(5);
   var maxCols = Math.max(row1.length, row2.length);
+
+  // Calculate extra height for branch indicators on logic nodes
+  var branchExtraH = 50;
+  var hasLogicNodes = _WF_NODE_ORDER.some(function(id){ return _WF_NODES[id] && _WF_NODES[id].type==='logic'; });
   var svgW = pad*2 + maxCols*W + (maxCols-1)*gapH;
-  var svgH = pad*2 + H*2 + gapV;
+  var svgH = pad*2 + H*2 + gapV + (hasLogicNodes ? branchExtraH : 0);
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('width', svgW);
@@ -11838,7 +11913,21 @@ function _wfDrawCanvas(container) {
   pat.setAttribute('id','wfGrid'); pat.setAttribute('width','30'); pat.setAttribute('height','30'); pat.setAttribute('patternUnits','userSpaceOnUse');
   var dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
   dot.setAttribute('cx','15'); dot.setAttribute('cy','15'); dot.setAttribute('r','1'); dot.setAttribute('fill','rgba(0,0,0,0.04)');
-  pat.appendChild(dot); defs.appendChild(pat); svg.appendChild(defs);
+  pat.appendChild(dot); defs.appendChild(pat);
+  // Arrow markers for branches
+  var mkTrue = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  mkTrue.setAttribute('id','arrowTrue'); mkTrue.setAttribute('viewBox','0 0 10 10'); mkTrue.setAttribute('refX','8'); mkTrue.setAttribute('refY','5');
+  mkTrue.setAttribute('markerWidth','6'); mkTrue.setAttribute('markerHeight','6'); mkTrue.setAttribute('orient','auto');
+  var arP1 = document.createElementNS('http://www.w3.org/2000/svg','path');
+  arP1.setAttribute('d','M 0 0 L 10 5 L 0 10 z'); arP1.setAttribute('fill','#00ca72');
+  mkTrue.appendChild(arP1); defs.appendChild(mkTrue);
+  var mkFalse = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  mkFalse.setAttribute('id','arrowFalse'); mkFalse.setAttribute('viewBox','0 0 10 10'); mkFalse.setAttribute('refX','8'); mkFalse.setAttribute('refY','5');
+  mkFalse.setAttribute('markerWidth','6'); mkFalse.setAttribute('markerHeight','6'); mkFalse.setAttribute('orient','auto');
+  var arP2 = document.createElementNS('http://www.w3.org/2000/svg','path');
+  arP2.setAttribute('d','M 0 0 L 10 5 L 0 10 z'); arP2.setAttribute('fill','#e44258');
+  mkFalse.appendChild(arP2); defs.appendChild(mkFalse);
+  svg.appendChild(defs);
   var bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
   bg.setAttribute('width','100%'); bg.setAttribute('height','100%'); bg.setAttribute('fill','url(#wfGrid)');
   svg.appendChild(bg);
@@ -11857,10 +11946,8 @@ function _wfDrawCanvas(container) {
     var sameRow = (f.y === t.y);
     var d;
     if(sameRow) {
-      // Horizontal: from right edge to left edge
       d = 'M '+(f.x+W)+' '+(f.y+H/2)+' C '+(f.x+W+gapH/2)+' '+(f.y+H/2)+', '+(t.x-gapH/2)+' '+(t.y+H/2)+', '+t.x+' '+(t.y+H/2);
     } else {
-      // Row transition: from bottom of last in row1 to top of first in row2
       var x1=f.x+W/2, y1=f.y+H, x2=t.x+W/2, y2=t.y;
       var cy = (y1+y2)/2;
       d = 'M '+x1+' '+y1+' C '+x1+' '+cy+', '+x2+' '+cy+', '+x2+' '+y2;
@@ -11871,6 +11958,78 @@ function _wfDrawCanvas(container) {
     svg.appendChild(path);
   }
 
+  // Draw branch indicators for logic nodes
+  _WF_NODE_ORDER.forEach(function(nodeId){
+    var nd = _WF_NODES[nodeId];
+    if(!nd || nd.type !== 'logic') return;
+    var p = pos[nodeId]; if(!p) return;
+    var cfg = _WF_CONFIG[nodeId] || {};
+    var cx = p.x + W/2, botY = p.y + H;
+
+    if(nodeId.indexOf('if_') === 0 || nodeId === 'if_branch') {
+      // IF: True (right-down) and False (left-down) branch indicators
+      var trueX = p.x + W - 20, falseX = p.x + 20;
+      // True branch arrow
+      var tb = document.createElementNS('http://www.w3.org/2000/svg','path');
+      tb.setAttribute('d','M '+cx+' '+botY+' Q '+(cx+40)+' '+(botY+20)+' '+(cx+50)+' '+(botY+35));
+      tb.setAttribute('class','wf-branch-line true-branch');
+      tb.setAttribute('marker-end','url(#arrowTrue)');
+      svg.appendChild(tb);
+      var tl = document.createElementNS('http://www.w3.org/2000/svg','text');
+      tl.setAttribute('x',cx+55); tl.setAttribute('y',botY+30);
+      tl.setAttribute('class','wf-branch-label'); tl.setAttribute('fill','#00ca72');
+      tl.textContent = '✓ True';
+      svg.appendChild(tl);
+      // False branch arrow
+      var fb = document.createElementNS('http://www.w3.org/2000/svg','path');
+      fb.setAttribute('d','M '+cx+' '+botY+' Q '+(cx-40)+' '+(botY+20)+' '+(cx-50)+' '+(botY+35));
+      fb.setAttribute('class','wf-branch-line false-branch');
+      fb.setAttribute('marker-end','url(#arrowFalse)');
+      svg.appendChild(fb);
+      var fl = document.createElementNS('http://www.w3.org/2000/svg','text');
+      fl.setAttribute('x',cx-55); fl.setAttribute('y',botY+30);
+      fl.setAttribute('class','wf-branch-label'); fl.setAttribute('fill','#e44258');
+      fl.textContent = '✗ False';
+      svg.appendChild(fl);
+    } else if(nodeId.indexOf('switch_') === 0 || nodeId === 'switch_branch') {
+      // Switch: show case labels as fan-out
+      var cases = (cfg.cases || ['Case 1','Case 2','Default']);
+      var spread = Math.min(cases.length * 35, 100);
+      cases.forEach(function(c, ci){
+        var angle = -spread/2 + (cases.length>1 ? ci * spread/(cases.length-1) : 0);
+        var rad = angle * Math.PI/180;
+        var endX = cx + Math.sin(rad)*45, endY = botY + Math.cos(rad)*35;
+        var sb = document.createElementNS('http://www.w3.org/2000/svg','path');
+        sb.setAttribute('d','M '+cx+' '+botY+' Q '+(cx+Math.sin(rad)*20)+' '+(botY+15)+' '+endX+' '+endY);
+        sb.setAttribute('class','wf-branch-line'); sb.setAttribute('stroke','#7c4dff');
+        sb.setAttribute('marker-end','url(#arrowTrue)');
+        svg.appendChild(sb);
+        var sl = document.createElementNS('http://www.w3.org/2000/svg','text');
+        sl.setAttribute('x',endX); sl.setAttribute('y',endY+12);
+        sl.setAttribute('class','wf-branch-label'); sl.setAttribute('fill','#7c4dff');
+        sl.setAttribute('font-size','9');
+        sl.textContent = (typeof c==='string'?c:'Case '+(ci+1));
+        svg.appendChild(sl);
+      });
+    } else if(nodeId.indexOf('while_') === 0 || nodeId === 'while_loop') {
+      // While: loop-back arrow
+      var loopR = 18;
+      var la = document.createElementNS('http://www.w3.org/2000/svg','path');
+      la.setAttribute('d','M '+(p.x+W+5)+' '+(p.y+H/2-loopR)+' A '+loopR+' '+loopR+' 0 1 1 '+(p.x+W+5)+' '+(p.y+H/2+loopR));
+      la.setAttribute('class','wf-branch-line'); la.setAttribute('stroke','#7c4dff'); la.setAttribute('stroke-width','2');
+      la.setAttribute('marker-end','url(#arrowTrue)');
+      svg.appendChild(la);
+      var ll = document.createElementNS('http://www.w3.org/2000/svg','text');
+      ll.setAttribute('x',p.x+W+28); ll.setAttribute('y',p.y+H/2+4);
+      ll.setAttribute('class','wf-branch-label'); ll.setAttribute('fill','#7c4dff');
+      ll.setAttribute('font-size','9');
+      var maxIter = (cfg.maxIterations||10);
+      ll.textContent = '↻ max '+maxIter;
+      svg.appendChild(ll);
+    }
+    // Wait node: just shows a timer icon indicator (handled by metric/status)
+  });
+
   // Draw nodes
   _WF_NODE_ORDER.forEach(function(nodeId){
     var p = pos[nodeId]; if(!p) return;
@@ -11878,7 +12037,8 @@ function _wfDrawCanvas(container) {
     var fo = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
     fo.setAttribute('x',p.x); fo.setAttribute('y',p.y); fo.setAttribute('width',W); fo.setAttribute('height',H);
     var div = document.createElement('div');
-    div.className = 'wf-node'+(_WF_SELECTED_NODE===nodeId?' selected':'')+(cfg.enabled?'':' disabled');
+    var isLogic = nd.type === 'logic';
+    div.className = 'wf-node'+(_WF_SELECTED_NODE===nodeId?' selected':'')+(cfg.enabled?'':' disabled')+(isLogic?' logic-node':'');
     div.setAttribute('data-node-id',nodeId);
     div.setAttribute('data-type',nd.type);
     div.onclick = function(e){ e.stopPropagation(); _wfSelectNode(nodeId); };
@@ -11888,6 +12048,7 @@ function _wfDrawCanvas(container) {
       '<div class="wf-node-header">'+
         '<span class="wf-node-icon">'+nd.icon+'</span>'+
         '<span class="wf-node-title">'+nd.label+'</span>'+
+        (isLogic ? '<span class="wf-logic-badge">Logic</span>' : '')+
         '<label class="wf-toggle" onclick="event.stopPropagation()">'+
           '<input type="checkbox" '+(cfg.enabled?'checked':'')+' onchange="_wfToggle(\''+nodeId+'\',this.checked)">'+
           '<span class="wf-toggle-slider"></span>'+
@@ -11929,7 +12090,19 @@ function _wfMetric(id) {
     case 'followUp': return cfg.enableSequences?'Days: '+(cfg.sequenceDays||[0,3,7,14]).join('→'):'Sequences off';
     case 'crmSync': return 'HubSpot — every 2h';
     case 'review': return cfg.mode==='manual'?'Manual review':'Auto-approve';
-    default: return 'Active';
+    default:
+      // Logic node metrics
+      var nd = _WF_NODES[id];
+      if(nd && nd.type === 'logic') {
+        if(id==='if_branch'||id.indexOf('if_')===0) {
+          var mode = (cfg.conditionMode||'rules');
+          return mode==='rules'?(cfg.rules||[]).length+' rule(s)':mode==='js'?'JS expression':'AI vibe';
+        }
+        if(id==='switch_branch'||id.indexOf('switch_')===0) return (cfg.cases||[]).length+' case(s)';
+        if(id==='while_loop'||id.indexOf('while_')===0) return 'Max '+(cfg.maxIterations||10)+' iterations';
+        if(id==='wait_node'||id.indexOf('wait_')===0) return cfg.waitType==='condition'?'Until condition':(cfg.waitMinutes||5)+'min delay';
+      }
+      return 'Active';
   }
 }
 
@@ -11942,7 +12115,15 @@ function _wfStatus(id) {
     case 'throttle': return (cfg.preset||'smart').charAt(0).toUpperCase()+(cfg.preset||'smart').slice(1)+' mode';
     case 'review': return cfg.mode==='manual'?'Human-in-loop':'Auto';
     case 'outreach': return cfg.requireReview?'Requires review':'Auto-send';
-    default: return 'Running';
+    default:
+      var nds = _WF_NODES[id];
+      if(nds && nds.type === 'logic') {
+        if(id==='if_branch'||id.indexOf('if_')===0) return 'IF → branching';
+        if(id==='switch_branch'||id.indexOf('switch_')===0) return 'Switch → routing';
+        if(id==='while_loop'||id.indexOf('while_')===0) return 'Loop w/ limits';
+        if(id==='wait_node'||id.indexOf('wait_')===0) return cfg.waitType==='condition'?'Condition wait':'Timer wait';
+      }
+      return 'Running';
   }
 }
 
@@ -11967,14 +12148,29 @@ function _wfRenderConfig(id) {
   if(!panel) return;
   var nd = _WF_NODES[id], cfg = _WF_CONFIG[id];
   var h = '<div class="wf-config-header"><span class="icon">'+nd.icon+'</span><div><h3>'+nd.label+'</h3><p>'+nd.desc+'</p></div></div>';
-  switch(id){
-    case 'throttle': h += _wfThrottleCfg(cfg); break;
-    case 'discovery': h += _wfDiscoveryCfg(cfg); break;
-    case 'enrichment': h += _wfEnrichCfg(cfg); break;
-    case 'review': h += _wfReviewCfg(cfg); break;
-    case 'followUp': h += _wfFollowUpCfg(cfg); break;
-    case 'outreach': h += _wfOutreachCfg(cfg); break;
-    default: h += _wfSimpleCfg(id, cfg);
+  // Check if it's a logic node first
+  if(nd.type === 'logic') {
+    if(id==='if_branch'||id.indexOf('if_')===0) { h += _wfIfCfg(id, cfg); }
+    else if(id==='switch_branch'||id.indexOf('switch_')===0) { h += _wfSwitchCfg(id, cfg); }
+    else if(id==='while_loop'||id.indexOf('while_')===0) { h += _wfWhileCfg(id, cfg); }
+    else if(id==='wait_node'||id.indexOf('wait_')===0) { h += _wfWaitCfg(id, cfg); }
+    else { h += _wfSimpleCfg(id, cfg); }
+    // Add remove button for custom logic nodes
+    var coreNodes = ['discovery','dedup','customerMatch','enrichment','crmSync','review','throttle','outreach','followUp','responseTracking','crmUpdate'];
+    if(coreNodes.indexOf(id) < 0) {
+      h += '<div class="wf-section"><div class="wf-section-title">Actions</div>'+
+        '<button onclick="_wfRemoveNode(\''+id+'\')" style="width:100%;padding:10px;background:#ede7f6;color:#6a1b9a;border:1px solid #ce93d8;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;transition:all 0.2s" onmouseover="this.style.background=\'#ce93d8\'" onmouseout="this.style.background=\'#ede7f6\'">🗑 Remove Logic Node</button></div>';
+    }
+  } else {
+    switch(id){
+      case 'throttle': h += _wfThrottleCfg(cfg); break;
+      case 'discovery': h += _wfDiscoveryCfg(cfg); break;
+      case 'enrichment': h += _wfEnrichCfg(cfg); break;
+      case 'review': h += _wfReviewCfg(cfg); break;
+      case 'followUp': h += _wfFollowUpCfg(cfg); break;
+      case 'outreach': h += _wfOutreachCfg(cfg); break;
+      default: h += _wfSimpleCfg(id, cfg);
+    }
   }
   panel.innerHTML = h;
 }
@@ -12059,6 +12255,192 @@ function _wfFollowUpCfg(c) {
     }).join('')+'</div>'+
     '<div class="wf-chip-add"><input type="number" id="wfNewDay" placeholder="Day #" min="0" max="365" style="width:80px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">'+
     '<button onclick="_wfAddDay()" style="padding:6px 12px;font-size:12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600">Add</button></div></div>';
+}
+
+/* ---- Condition Builder (3 modes: rules, JS, vibe) ---- */
+function _wfConditionBuilder(nodeId, cfg) {
+  var mode = cfg.conditionMode || 'rules';
+  var h = '<div class="wf-cond-tabs">';
+  h += '<button class="wf-cond-tab'+(mode==='rules'?' active':'')+'" onclick="_wfSetCondMode(\''+nodeId+'\',\'rules\')">📋 Rules</button>';
+  h += '<button class="wf-cond-tab'+(mode==='js'?' active':'')+'" onclick="_wfSetCondMode(\''+nodeId+'\',\'js\')">⌨️ JavaScript</button>';
+  h += '<button class="wf-cond-tab'+(mode==='vibe'?' active':'')+'" onclick="_wfSetCondMode(\''+nodeId+'\',\'vibe\')">🤖 AI Vibe</button>';
+  h += '</div>';
+
+  if(mode === 'rules') {
+    var rules = cfg.rules || [];
+    h += '<div class="wf-section"><div class="wf-section-title">Conditions '+(rules.length>1?'<span style="font-weight:400;text-transform:none">('+((cfg.ruleLogic||'AND'))+')</span>':'')+'</div>';
+    if(rules.length > 1) {
+      h += '<div class="wf-form-group" style="margin-bottom:10px"><select class="wf-select" style="width:auto;padding:4px 24px 4px 8px;font-size:11px" onchange="_wfSet(\''+nodeId+'\',\'ruleLogic\',this.value)">';
+      h += '<option value="AND"'+(cfg.ruleLogic==='AND'||!cfg.ruleLogic?' selected':'')+'>Match ALL (AND)</option>';
+      h += '<option value="OR"'+(cfg.ruleLogic==='OR'?' selected':'')+'>Match ANY (OR)</option>';
+      h += '</select></div>';
+    }
+    rules.forEach(function(r, ri) {
+      h += '<div class="wf-rule-row">';
+      h += '<select onchange="_wfUpdateRule(\''+nodeId+'\','+ri+',\'field\',this.value)">';
+      _WF_FIELDS.forEach(function(f){ h += '<option value="'+f.value+'"'+(r.field===f.value?' selected':'')+'>'+f.label+'</option>'; });
+      h += '</select>';
+      h += '<select onchange="_wfUpdateRule(\''+nodeId+'\','+ri+',\'op\',this.value)">';
+      var fieldDef = _WF_FIELDS.find(function(f){return f.value===r.field}) || {};
+      var fType = fieldDef.type || 'string';
+      _WF_OPERATORS.filter(function(o){return o.types.indexOf(fType)>=0}).forEach(function(o){
+        h += '<option value="'+o.value+'"'+(r.op===o.value?' selected':'')+'>'+o.label+'</option>';
+      });
+      h += '</select>';
+      var needsVal = ['is_empty','is_true','is_false'].indexOf(r.op)<0;
+      if(needsVal) h += '<input type="'+(fType==='number'?'number':'text')+'" value="'+(r.value||'')+'" placeholder="value" onchange="_wfUpdateRule(\''+nodeId+'\','+ri+',\'value\',this.value)">';
+      h += '<button class="wf-rule-remove" onclick="_wfRemoveRule(\''+nodeId+'\','+ri+')">×</button>';
+      h += '</div>';
+    });
+    h += '<button class="wf-add-rule" onclick="_wfAddRule(\''+nodeId+'\')">＋ Add Rule</button></div>';
+  } else if(mode === 'js') {
+    h += '<div class="wf-section"><div class="wf-section-title">JavaScript Expression</div>';
+    h += '<textarea class="wf-code-editor" onchange="_wfSet(\''+nodeId+'\',\'jsExpression\',this.value)" placeholder="// Return true or false\n// Available: job, lead, crm, enrichment\nreturn job.daysAgo < 7 && lead.score > 50;">'+(cfg.jsExpression||'')+'</textarea>';
+    h += '<p class="wf-form-hint">Variables: <code>job</code>, <code>lead</code>, <code>crm</code>, <code>enrichment</code>. Must return boolean.</p></div>';
+  } else if(mode === 'vibe') {
+    h += '<div class="wf-section"><div class="wf-section-title">Describe in Plain English</div>';
+    h += '<textarea class="wf-vibe-input" onchange="_wfSet(\''+nodeId+'\',\'vibePrompt\',this.value)" placeholder="e.g. Only proceed if the job is from a tech company with more than 100 employees and was posted in the last week">'+(cfg.vibePrompt||'')+'</textarea>';
+    h += '<p class="wf-vibe-hint">💡 Claude AI will interpret this condition at runtime and generate the logic automatically.</p></div>';
+  }
+  return h;
+}
+
+function _wfSetCondMode(nodeId, mode) {
+  _WF_CONFIG[nodeId].conditionMode = mode;
+  _wfMarkDirty();
+  _wfRenderConfig(nodeId);
+}
+
+function _wfAddRule(nodeId) {
+  if(!_WF_CONFIG[nodeId].rules) _WF_CONFIG[nodeId].rules = [];
+  _WF_CONFIG[nodeId].rules.push({ field:'job.title', op:'contains', value:'' });
+  _wfMarkDirty();
+  _wfRenderConfig(nodeId);
+}
+
+function _wfRemoveRule(nodeId, idx) {
+  if(_WF_CONFIG[nodeId].rules) {
+    _WF_CONFIG[nodeId].rules.splice(idx, 1);
+    _wfMarkDirty();
+    _wfRenderConfig(nodeId);
+  }
+}
+
+function _wfUpdateRule(nodeId, idx, key, val) {
+  if(_WF_CONFIG[nodeId].rules && _WF_CONFIG[nodeId].rules[idx]) {
+    _WF_CONFIG[nodeId].rules[idx][key] = val;
+    // If field changed, reset operator to first valid one
+    if(key === 'field') {
+      var fDef = _WF_FIELDS.find(function(f){return f.value===val}) || {};
+      var fType = fDef.type || 'string';
+      var validOps = _WF_OPERATORS.filter(function(o){return o.types.indexOf(fType)>=0});
+      if(validOps.length) _WF_CONFIG[nodeId].rules[idx].op = validOps[0].value;
+      _WF_CONFIG[nodeId].rules[idx].value = '';
+      _wfMarkDirty();
+      _wfRenderConfig(nodeId);
+    } else {
+      _wfMarkDirty();
+    }
+  }
+}
+
+/* ---- Logic Node Config Panels ---- */
+function _wfIfCfg(nodeId, c) {
+  return '<div class="wf-section"><div class="wf-section-title">Condition</div>' +
+    _wfConditionBuilder(nodeId, c) + '</div>' +
+    '<div class="wf-section"><div class="wf-section-title">Branching</div>' +
+    '<p class="wf-form-hint">When condition is <strong style="color:#00ca72">TRUE</strong>, execution continues to the next node.</p>' +
+    '<p class="wf-form-hint" style="margin-top:6px">When <strong style="color:#e44258">FALSE</strong>, the item is ' +
+    '<select class="wf-select" style="width:auto;display:inline;padding:4px 24px 4px 8px;font-size:12px" onchange="_wfSet(\''+nodeId+'\',\'falseBehavior\',this.value)">' +
+    '<option value="skip"'+(c.falseBehavior==='skip'||!c.falseBehavior?' selected':'')+'>skipped (removed from pipeline)</option>' +
+    '<option value="continue"'+(c.falseBehavior==='continue'?' selected':'')+'>passed to next node anyway</option>' +
+    '<option value="queue"'+(c.falseBehavior==='queue'?' selected':'')+'>sent to review queue</option>' +
+    '</select></p></div>';
+}
+
+function _wfSwitchCfg(nodeId, c) {
+  var cases = c.cases || ['Case 1','Case 2','Default'];
+  var h = '<div class="wf-section"><div class="wf-section-title">Switch Field</div>' +
+    '<select class="wf-select" onchange="_wfSet(\''+nodeId+'\',\'switchField\',this.value)">';
+  _WF_FIELDS.forEach(function(f){
+    h += '<option value="'+f.value+'"'+(c.switchField===f.value?' selected':'')+'>'+f.label+'</option>';
+  });
+  h += '</select></div>';
+  h += '<div class="wf-section"><div class="wf-section-title">Cases</div><div class="wf-switch-cases">';
+  cases.forEach(function(cs, ci) {
+    var isDefault = ci === cases.length-1;
+    h += '<div class="wf-switch-case">' +
+      '<span class="case-label">'+(isDefault?'Default':'Case '+(ci+1))+'</span>' +
+      '<input type="text" value="'+cs+'" '+(isDefault?'disabled placeholder="(fallback)"':'onchange="_wfUpdateCase(\''+nodeId+'\','+ci+',this.value)"')+'>' +
+      (!isDefault?'<button class="wf-rule-remove" onclick="_wfRemoveCase(\''+nodeId+'\','+ci+')">×</button>':'') +
+      '</div>';
+  });
+  h += '</div><button class="wf-add-rule" onclick="_wfAddCase(\''+nodeId+'\')" style="margin-top:8px">＋ Add Case</button></div>';
+  h += '<div class="wf-section"><div class="wf-section-title">Condition Mode</div>' +
+    _wfConditionBuilder(nodeId, c) + '</div>';
+  return h;
+}
+
+function _wfWhileCfg(nodeId, c) {
+  return '<div class="wf-section"><div class="wf-section-title">Loop Condition</div>' +
+    '<p class="wf-form-hint" style="margin-bottom:10px">Repeat while this condition remains true:</p>' +
+    _wfConditionBuilder(nodeId, c) + '</div>' +
+    '<div class="wf-section"><div class="wf-section-title">Safety Limits</div>' +
+    '<div class="wf-loop-limits">' +
+    '<div class="wf-loop-limit"><label>Max Iterations</label><input type="number" value="'+(c.maxIterations||10)+'" min="1" max="100" onchange="_wfSetNum(\''+nodeId+'\',\'maxIterations\',this.value)"></div>' +
+    '<div class="wf-loop-limit"><label>Timeout (min)</label><input type="number" value="'+(c.timeoutMinutes||5)+'" min="1" max="60" onchange="_wfSetNum(\''+nodeId+'\',\'timeoutMinutes\',this.value)"></div>' +
+    '</div>' +
+    '<div class="wf-form-group" style="margin-top:10px"><label class="wf-form-label"><input type="checkbox" '+(c.breakOnError!==false?'checked':'')+' onchange="_wfSet(\''+nodeId+'\',\'breakOnError\',this.checked)"> Break on error</label>' +
+    '<span class="wf-form-hint">Stop loop immediately if an iteration throws an error</span></div></div>';
+}
+
+function _wfWaitCfg(nodeId, c) {
+  var wt = c.waitType || 'timer';
+  return '<div class="wf-section"><div class="wf-section-title">Wait Type</div>' +
+    '<div class="wf-presets" style="grid-template-columns:1fr 1fr">' +
+    '<div class="wf-preset-card'+(wt==='timer'?' active':'')+'" onclick="_wfSet(\''+nodeId+'\',\'waitType\',\'timer\');_wfRenderConfig(\''+nodeId+'\')"><div class="wf-preset-check">✓</div><div class="preset-name">⏱️ Timer</div></div>' +
+    '<div class="wf-preset-card'+(wt==='condition'?' active':'')+'" onclick="_wfSet(\''+nodeId+'\',\'waitType\',\'condition\');_wfRenderConfig(\''+nodeId+'\')"><div class="wf-preset-check">✓</div><div class="preset-name">🔍 Condition</div></div>' +
+    '</div></div>' +
+    (wt === 'timer' ?
+      '<div class="wf-section"><div class="wf-section-title">Duration</div>' +
+      '<div class="wf-loop-limits">' +
+      '<div class="wf-loop-limit"><label>Minutes</label><input type="number" value="'+(c.waitMinutes||5)+'" min="1" max="1440" onchange="_wfSetNum(\''+nodeId+'\',\'waitMinutes\',this.value)"></div>' +
+      '<div class="wf-loop-limit"><label>or Hours</label><input type="number" value="'+(c.waitHours||0)+'" min="0" max="168" onchange="_wfSetNum(\''+nodeId+'\',\'waitHours\',this.value)"></div>' +
+      '</div></div>'
+    :
+      '<div class="wf-section"><div class="wf-section-title">Wait Until</div>' +
+      '<p class="wf-form-hint" style="margin-bottom:10px">Pause until this condition becomes true:</p>' +
+      _wfConditionBuilder(nodeId, c) +
+      '<div class="wf-form-group" style="margin-top:10px"><label class="wf-form-label">Check interval (seconds)</label>' +
+      '<input type="number" class="wf-select" value="'+(c.pollIntervalSec||30)+'" min="5" max="3600" onchange="_wfSetNum(\''+nodeId+'\',\'pollIntervalSec\',this.value)"></div>' +
+      '<div class="wf-loop-limits" style="margin-top:8px"><div class="wf-loop-limit"><label>Timeout (min)</label>' +
+      '<input type="number" value="'+(c.timeoutMinutes||5)+'" min="1" max="60" onchange="_wfSetNum(\''+nodeId+'\',\'timeoutMinutes\',this.value)"></div></div></div>'
+    );
+}
+
+/* ---- Switch case helpers ---- */
+function _wfAddCase(nodeId) {
+  if(!_WF_CONFIG[nodeId].cases) _WF_CONFIG[nodeId].cases = ['Case 1','Default'];
+  var cases = _WF_CONFIG[nodeId].cases;
+  // Insert before Default (last item)
+  cases.splice(cases.length-1, 0, 'Case '+cases.length);
+  _wfMarkDirty();
+  _wfRenderConfig(nodeId);
+}
+
+function _wfRemoveCase(nodeId, idx) {
+  if(_WF_CONFIG[nodeId].cases) {
+    _WF_CONFIG[nodeId].cases.splice(idx, 1);
+    _wfMarkDirty();
+    _wfRenderConfig(nodeId);
+  }
+}
+
+function _wfUpdateCase(nodeId, idx, val) {
+  if(_WF_CONFIG[nodeId].cases) {
+    _WF_CONFIG[nodeId].cases[idx] = val;
+    _wfMarkDirty();
+  }
 }
 
 function _wfSimpleCfg(id, c) {
@@ -12190,6 +12572,11 @@ var _WF_NODE_TEMPLATES = [
   { id:'email_send',     icon:'📧', label:'Send Email',       type:'throttled', desc:'Send email via SMTP/API' },
   { id:'crm_lookup',     icon:'🏢', label:'CRM Lookup',       type:'auto',      desc:'Look up data from CRM' },
   { id:'ai_enrich',      icon:'🤖', label:'AI Enrichment',    type:'auto',      desc:'Enrich with AI-generated insights' },
+  { section:'Logic & Control' },
+  { id:'if_branch',      icon:'🔀', label:'IF Condition',     type:'logic',     desc:'Branch workflow based on a condition' },
+  { id:'switch_branch',  icon:'🔀', label:'Switch',           type:'logic',     desc:'Route to different paths by value' },
+  { id:'while_loop',     icon:'🔄', label:'While Loop',       type:'logic',     desc:'Repeat until condition is met' },
+  { id:'wait_node',      icon:'⏳', label:'Wait / Delay',     type:'logic',     desc:'Pause execution for a condition or time' },
 ];
 
 function _wfToggleAddMenu(e) {
@@ -12243,8 +12630,18 @@ function _wfAddNode(templateId) {
   _WF_NODES[templateId] = { icon:tmpl.icon, label:tmpl.label, type:tmpl.type, desc:tmpl.desc };
   // Add to order (insert before the last node, typically 'crmUpdate')
   _WF_NODE_ORDER.splice(_WF_NODE_ORDER.length - 1, 0, templateId);
-  // Add default config
-  _WF_CONFIG[templateId] = { enabled:true, label:tmpl.label, description:tmpl.desc, type:tmpl.type };
+  // Add default config (with logic-node-specific defaults)
+  var defCfg = { enabled:true, label:tmpl.label, description:tmpl.desc, type:tmpl.type };
+  if(tmpl.type === 'logic') {
+    defCfg.conditionMode = 'rules';
+    defCfg.rules = [{ field:'job.title', op:'contains', value:'' }];
+    defCfg.ruleLogic = 'AND';
+    if(templateId === 'if_branch') { defCfg.falseBehavior = 'skip'; }
+    if(templateId === 'switch_branch') { defCfg.switchField = 'job.category'; defCfg.cases = ['Case 1','Case 2','Default']; }
+    if(templateId === 'while_loop') { defCfg.maxIterations = 10; defCfg.timeoutMinutes = 5; defCfg.breakOnError = true; }
+    if(templateId === 'wait_node') { defCfg.waitType = 'timer'; defCfg.waitMinutes = 5; defCfg.waitHours = 0; defCfg.pollIntervalSec = 30; defCfg.timeoutMinutes = 5; }
+  }
+  _WF_CONFIG[templateId] = defCfg;
   // Close menu, mark dirty, re-render
   _wfCloseAddMenu();
   _wfMarkDirty();
