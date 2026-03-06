@@ -8233,22 +8233,9 @@ function clearSourceFilters() {
 }
 
 function buildCategoryFilters() {
-  const container = document.getElementById('categoryFilterContainer');
-  container.style.display = 'contents';
-  container.innerHTML = '';
-  for (const [key, label] of Object.entries(CAT_LABELS)) {
-    const chip = document.createElement('div');
-    chip.className = 'filter-chip';
-    chip.setAttribute('data-filter', key);
-    chip.setAttribute('onclick', 'toggleFilter(this)');
-    chip.textContent = label;
-    container.appendChild(chip);
-  }
-  // Sync active chip with currentFilter (supports URL deep linking)
+  // Category filter chips removed — stat cards handle filtering
+  // Just sync highlight if a filter is active from URL deep linking
   if (currentFilter && currentFilter !== 'all') {
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    const matchChip = document.querySelector('.filter-chip[data-filter="' + currentFilter + '"]');
-    if (matchChip) matchChip.classList.add('active');
     syncStatCardHighlight();
   }
 }
