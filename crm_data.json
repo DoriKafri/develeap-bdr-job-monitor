@@ -1,7 +1,7 @@
 {
   "provider": "hubspot",
   "portalId": "25695560",
-  "syncedAt": "2026-03-06T08:31:37.941295Z",
+  "syncedAt": "2026-03-06T11:38:21.860747Z",
   "dealStageMap": {
     "85640677": {
       "label": "Waiting for us",
@@ -534,22 +534,6 @@
           "email": "nir_sagiv@amat.com",
           "title": "Director of Software Architecture"
         },
-        {
-          "id": "701919860944",
-          "name": "Tal Orenstein",
-          "email": "tal_orenstein@amat.com",
-          "title": "SW R&D Manager"
-        }
-      ]
-    },
-    "applied materials - israel": {
-      "companyId": "400554539224",
-      "companyName": "Applied Materials - Israel",
-      "domain": "appliedmaterials.com",
-      "industry": null,
-      "lifecyclestage": "lead",
-      "deals": [],
-      "contacts": [
         {
           "id": "701919860944",
           "name": "Tal Orenstein",
@@ -1152,6 +1136,34 @@
       "deals": [],
       "contacts": []
     },
+    "chaos labs": {
+      "companyId": "7692207583",
+      "companyName": "Chaos Labs",
+      "domain": "chaoslabs.xyz",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
+      "deals": [],
+      "contacts": [
+        {
+          "id": "119198653663",
+          "name": "Omer Seginer",
+          "email": null,
+          "title": "People Operations Manager"
+        },
+        {
+          "id": "2117801",
+          "name": "Yonatan Hayun",
+          "email": "yonatan@chaoslabs.xyz",
+          "title": "Co-Founder & CTO"
+        },
+        {
+          "id": "2117851",
+          "name": "Shira Katzir",
+          "email": "shira@chaoslabs.xyz",
+          "title": "HR & Talent Acquisition Manager"
+        }
+      ]
+    },
     "check point software": {
       "companyId": "6126626036",
       "companyName": "Check Point Software",
@@ -1681,6 +1693,34 @@
         }
       ]
     },
+    "commit": {
+      "companyId": "6409638881",
+      "companyName": "Commit.IT Sp. z o.o.",
+      "domain": "commit-it.pl",
+      "industry": "INFORMATION_SERVICES",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "6191645164",
+          "name": "Deal with Commit.IT Sp. z o.o.",
+          "stage": "97360070",
+          "stageName": "Stop Follow-Up",
+          "stageColor": "#3498DB",
+          "pipeline": "default",
+          "pipelineName": "SALES POLAND",
+          "amount": null,
+          "closedate": "2023-11-10T06:55:57.975Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "344801",
+          "name": "Blazej Pastuszka",
+          "email": "blazej.pastuszka@commit-it.pl",
+          "title": "CEO/CTO "
+        }
+      ]
+    },
     "coralogix": {
       "companyId": "7502882756",
       "companyName": "Coralogix",
@@ -2196,6 +2236,62 @@
           "name": "Hadas Goldfarb",
           "email": null,
           "title": "Engineering Manager, Platform Engineering"
+        }
+      ]
+    },
+    "freightos": {
+      "companyId": "6126590911",
+      "companyName": "Freightos",
+      "domain": "freightos.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "opportunity",
+      "deals": [
+        {
+          "id": "5401916869",
+          "name": "Freightos",
+          "stage": "85616069",
+          "stageName": "Untapped lead A",
+          "stageColor": "#32BBD7",
+          "pipeline": "27850436",
+          "pipelineName": "Gardening",
+          "amount": null,
+          "closedate": null
+        },
+        {
+          "id": "470699622640",
+          "name": "Frightos - GA",
+          "stage": "98792385",
+          "stageName": "Initial Stage ",
+          "stageColor": "#E44258",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": "6750",
+          "closedate": null
+        },
+        {
+          "id": "355709276388",
+          "name": "Freightos - New Deal",
+          "stage": "98812116",
+          "stageName": "Closed Lost",
+          "stageColor": "#1ABC9C",
+          "pipeline": "32973258",
+          "pipelineName": "SALES ISRAEL",
+          "amount": null,
+          "closedate": "2025-12-10T13:03:44.924Z"
+        }
+      ],
+      "contacts": [
+        {
+          "id": "79269",
+          "name": "Moshe None",
+          "email": "mkamioner@gmail.com",
+          "title": null
+        },
+        {
+          "id": "518936244473",
+          "name": "Anton Barr",
+          "email": "anton@freightos.com",
+          "title": null
         }
       ]
     },
@@ -3375,12 +3471,6 @@
         }
       ]
     },
-    "onezerobank": {
-      "companyId": null,
-      "companyName": "Onezerobank",
-      "deals": [],
-      "contacts": []
-    },
     "pentera": {
       "companyId": "7124949181",
       "companyName": "pentera",
@@ -3576,6 +3666,15 @@
     "remoterockethub": {
       "companyId": null,
       "companyName": "RemoteRocketHub",
+      "deals": [],
+      "contacts": []
+    },
+    "scylladb": {
+      "companyId": "9227360995",
+      "companyName": "ScyllaDB",
+      "domain": "scylladb.com",
+      "industry": "COMPUTER_SOFTWARE",
+      "lifecyclestage": "lead",
       "deals": [],
       "contacts": []
     },
@@ -4504,22 +4603,6 @@
       "deals": [],
       "contacts": []
     },
-    "yael group": {
-      "companyId": "8027588328",
-      "companyName": "Yael Group",
-      "domain": "yaelsoft.com",
-      "industry": "COMPUTER_SOFTWARE",
-      "lifecyclestage": "lead",
-      "deals": [],
-      "contacts": [
-        {
-          "id": "2281401",
-          "name": "None None",
-          "email": "adil@yaelsoft.com",
-          "title": null
-        }
-      ]
-    },
     "zenity": {
       "companyId": "87376660715",
       "companyName": "Zenity",
@@ -4585,9 +4668,9 @@
     }
   },
   "stats": {
-    "totalCompanies": 83,
-    "matchedInCrm": 53,
-    "withDeals": 30,
-    "withContacts": 50
+    "totalCompanies": 84,
+    "matchedInCrm": 55,
+    "withDeals": 32,
+    "withContacts": 51
   }
 }

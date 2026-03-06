@@ -1,0 +1,351 @@
+{
+  "provider": "apollo",
+  "syncedAt": "2026-03-06T11:38:53.838362Z",
+  "contacts": {},
+  "organizations": {
+    "accenture": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "adaptive6": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "applied materials": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "aqua security": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "armissecurity": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "au10tix": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "automatit": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "axonius": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "bmc": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "biocatch": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "bitsight": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "campbellsoup": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "carrier": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "cato networks": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "chaos labs": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "check point software": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "checkpoint": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "classiq": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "cloudera": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "cloudinary": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "codevalue": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "commit": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "coralogix": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "cymulate": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "datadog": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "deloitte": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "dialog": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "doitintl": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "drivecapital": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "earnix": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "efinancialcareers norway": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "factored": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "fetcherr": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "flexerasoftware": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "forter": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "freightos": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "globallogic": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "gsk": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "guidde": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "intel corporation": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "jobgether": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "kpmg": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "leidos": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "levistraussandco": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "lightricks": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "linearb": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "mastercard": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "medtronic": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "mksinst": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "mobileye": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "motorolasolutions": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "ness technologies israel": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "next insurance": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "nvidia": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "oligo security": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "pentera": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "plainid": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "play": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "port": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "remedio": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "remoterockethub": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "scylladb": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "shi": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "silverfort": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "similarweb": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "somekhchaikin": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "sqlink group": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "surecomp": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "taboola": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "terasky": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "tikalk": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "torq": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "unframe": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "unity": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "unknown": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "upstream": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "vast data": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "vastdata": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "voyantis": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "wix": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "wiz": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "wizinc": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "xsolla": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "zenity": {
+      "apolloId": "",
+      "_notFound": true
+    }
+  },
+  "stats": {
+    "totalStakeholders": 0,
+    "contactsEnriched": 0,
+    "newContactsThisRun": 0,
+    "totalCompanies": 84,
+    "orgsEnriched": 0,
+    "newOrgsThisRun": 0
+  }
+}
