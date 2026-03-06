@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T21:17:08.222Z",
+  "lastUpdated": "2026-03-06T21:17:28.568Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -118,7 +118,7 @@
       "label": "IF Condition",
       "description": "Branch workflow based on a condition",
       "type": "logic",
-      "conditionMode": "js",
+      "conditionMode": "vibe",
       "rules": [
         {
           "field": "job.title",
