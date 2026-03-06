@@ -764,6 +764,50 @@
   .wf-loop-limit label { font-size:11px; font-weight:600; color:var(--text-light); display:block; margin-bottom:6px; }
   .wf-loop-limit input { width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:13px; text-align:center; font-family:inherit; }
   .wf-loop-limit input:focus { outline:none; border-color:#7c4dff; }
+
+  /* Node sidebar */
+  .wf-sidebar { width:60px; background:white; border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; padding:8px 0; gap:2px; overflow-y:auto; flex-shrink:0; box-shadow:2px 0 8px rgba(0,0,0,0.03); z-index:6; }
+  .wf-sidebar-section { width:100%; padding:6px 0 2px; text-align:center; font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-lighter); user-select:none; }
+  .wf-sidebar-sep { width:36px; height:1px; background:var(--border); margin:4px auto; }
+  .wf-sidebar-item { width:46px; height:46px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:10px; cursor:grab; transition:all 0.2s; position:relative; user-select:none; border:1.5px solid transparent; gap:1px; }
+  .wf-sidebar-item:hover { background:var(--bg); border-color:var(--border); transform:scale(1.08); }
+  .wf-sidebar-item:active { cursor:grabbing; transform:scale(0.95); }
+  .wf-sidebar-item .sb-icon { font-size:18px; line-height:1; pointer-events:none; }
+  .wf-sidebar-item .sb-label { font-size:7px; font-weight:600; color:var(--text-light); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:42px; text-align:center; pointer-events:none; }
+  .wf-sidebar-item[data-type="auto"] { }
+  .wf-sidebar-item[data-type="auto"]:hover { background:#e0f7f0; border-color:#b2dfdb; }
+  .wf-sidebar-item[data-type="human"]:hover { background:#fff3e0; border-color:#ffe0b2; }
+  .wf-sidebar-item[data-type="throttled"]:hover { background:#fce4ec; border-color:#f8bbd0; }
+  .wf-sidebar-item[data-type="logic"]:hover { background:#ede7f6; border-color:#ce93d8; }
+  .wf-sidebar-item.disabled { opacity:0.35; cursor:default; pointer-events:none; }
+  .wf-sidebar-item .sb-check { position:absolute; top:2px; right:2px; width:12px; height:12px; background:var(--success); border-radius:50%; color:white; font-size:8px; line-height:12px; text-align:center; display:none; }
+  .wf-sidebar-item.in-workflow .sb-check { display:block; }
+
+  /* Line tool */
+  .wf-sidebar-tool { width:46px; height:38px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; transition:all 0.2s; border:1.5px solid transparent; gap:2px; }
+  .wf-sidebar-tool:hover { background:var(--bg); border-color:var(--border); }
+  .wf-sidebar-tool.active { background:#e3f2fd; border-color:#42a5f5; box-shadow:0 0 0 2px rgba(66,165,245,0.2); }
+  .wf-sidebar-tool .sb-icon { font-size:16px; line-height:1; pointer-events:none; }
+  .wf-sidebar-tool .sb-label { font-size:7px; font-weight:700; color:var(--text-light); pointer-events:none; }
+  .wf-sidebar-tool.active .sb-label { color:#1565c0; }
+
+  /* Drag ghost */
+  .wf-drag-ghost { position:fixed; z-index:999; pointer-events:none; padding:8px 14px; background:white; border:2px solid var(--accent); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.18); font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; opacity:0.92; transform:translate(-50%,-50%); }
+  .wf-drag-ghost .dg-icon { font-size:18px; }
+  .wf-drag-ghost[data-type="logic"] { border-color:#7c4dff; }
+  .wf-drag-ghost[data-type="human"] { border-color:var(--accent); }
+  .wf-drag-ghost[data-type="throttled"] { border-color:var(--danger); }
+
+  /* Connection mode cursor */
+  .wf-canvas.connect-mode { cursor:crosshair; }
+  .wf-canvas.connect-mode .wf-node { cursor:crosshair; }
+  .wf-node.connect-source { box-shadow:0 0 0 3px rgba(66,165,245,0.4),0 4px 20px rgba(0,0,0,0.12) !important; }
+  .wf-temp-line { stroke:#42a5f5; stroke-width:2.5; fill:none; stroke-dasharray:8,4; opacity:0.7; pointer-events:none; }
+
+  /* Connection badges */
+  .wf-conn-delete { cursor:pointer; opacity:0; transition:opacity 0.2s; }
+  .wf-conn-delete:hover { opacity:1; }
+  .wf-connection-group:hover .wf-conn-delete { opacity:0.7; }
   .wf-add-sep { height:1px; background:var(--border); margin:6px 0; }
   .wf-add-section-label { font-size:10px; font-weight:700; text-transform:uppercase; color:var(--text-lighter); letter-spacing:0.5px; padding:6px 12px 4px; }
   .wf-config-panel { width:340px; background:white; border-left:1px solid var(--border); overflow-y:auto; padding:24px; box-shadow:-2px 0 8px rgba(0,0,0,0.04); animation:wfSlideIn 0.3s ease-out; }
@@ -1650,9 +1694,9 @@
     </div>
   </div>
   <div class="wf-body">
+    <div class="wf-sidebar" id="wfSidebar"></div>
     <div class="wf-canvas" id="wfCanvas">
       <div class="wf-toolbar" id="wfToolbar">
-        <button class="wf-toolbar-btn" onclick="_wfToggleAddMenu(event)"><span class="icon">＋</span> Add Node</button>
         <button class="wf-toolbar-btn" onclick="_wfFitCanvas()" title="Fit to screen"><span class="icon">⊞</span> Fit</button>
       </div>
       <div class="wf-zoom-controls" id="wfZoomControls">
@@ -11772,6 +11816,10 @@ var _WF_GITHUB_SHA = null;
 var _WF_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/contents/workflow_config.json';
 var _WF_ZOOM = 1.0;
 var _WF_ADD_MENU_OPEN = false;
+var _WF_CONNECTIONS = []; // [{from:'nodeId', to:'nodeId'}] custom connections (empty = use _WF_NODE_ORDER chain)
+var _WF_CONNECT_MODE = false;
+var _WF_CONNECT_SOURCE = null;
+var _WF_DRAG_TEMPLATE = null; // template being dragged from sidebar
 
 /* Logic node field/operator definitions */
 var _WF_FIELDS = [
@@ -11854,6 +11902,8 @@ async function _wfLoadConfig() {
     var cfg = JSON.parse(JSON.stringify(_WF_DEFAULTS));
     if (raw.nodes) { Object.keys(raw.nodes).forEach(function(k){ if(cfg[k]) Object.assign(cfg[k], raw.nodes[k]); }); }
     _WF_CONFIG = cfg;
+    if (raw.nodeOrder && Array.isArray(raw.nodeOrder)) _WF_NODE_ORDER = raw.nodeOrder;
+    if (raw.connections && Array.isArray(raw.connections)) _WF_CONNECTIONS = raw.connections;
   } catch(e) { console.warn('WF load error:',e); _WF_CONFIG = JSON.parse(JSON.stringify(_WF_DEFAULTS)); }
 }
 
@@ -11861,7 +11911,7 @@ async function _saveWorkflowConfig() {
   try {
     if (!_GH_TOKEN) { _wfMsg('error','No GitHub token'); return; }
     // Build the file content matching workflow_config.json format
-    var out = { version:1, lastUpdated:new Date().toISOString(), nodes:{} };
+    var out = { version:1, lastUpdated:new Date().toISOString(), nodes:{}, nodeOrder:_WF_NODE_ORDER, connections:_WF_CONNECTIONS };
     _WF_NODE_ORDER.forEach(function(k){ out.nodes[k] = Object.assign({}, _WF_CONFIG[k], { label:_WF_NODES[k].label, description:_WF_NODES[k].desc, type:_WF_NODES[k].type }); });
     var content = btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 2))));
     var body = { message:'Update workflow config', content:content, branch:'main' };
@@ -11885,6 +11935,135 @@ function renderWorkflowView() {
   if(oldMenu) oldMenu.remove();
   _WF_ADD_MENU_OPEN = false;
   _wfDrawCanvas(canvas);
+  _wfRenderSidebar();
+}
+
+/* ---- Node Sidebar ---- */
+function _wfRenderSidebar() {
+  var sb = document.getElementById('wfSidebar');
+  if(!sb) return;
+  var h = '';
+  // Tools section
+  h += '<div class="wf-sidebar-section">Tools</div>';
+  h += '<div class="wf-sidebar-tool'+ (_WF_CONNECT_MODE?' active':'') +'" onclick="_wfToggleConnectMode()" title="Connect nodes (draw lines)">';
+  h += '<span class="sb-icon">↗</span><span class="sb-label">Connect</span></div>';
+  h += '<div class="wf-sidebar-sep"></div>';
+
+  // Node templates
+  _WF_NODE_TEMPLATES.forEach(function(t){
+    if(t.section) {
+      h += '<div class="wf-sidebar-section">'+t.section.split(' ')[0]+'</div>';
+      return;
+    }
+    var inWf = _WF_NODE_ORDER.indexOf(t.id) >= 0;
+    h += '<div class="wf-sidebar-item'+(inWf?' in-workflow disabled':'')+'" data-type="'+t.type+'" data-template="'+t.id+'" draggable="true" '+
+      'ondragstart="_wfSidebarDragStart(event,\''+t.id+'\')" '+
+      'ondragend="_wfSidebarDragEnd(event)" '+
+      (!inWf ? 'onclick="_wfAddNode(\''+t.id+'\')"' : '') +
+      ' title="'+t.label+(inWf?' (in workflow)':' — click or drag to add')+'">';
+    h += '<span class="sb-icon">'+t.icon+'</span>';
+    h += '<span class="sb-label">'+t.label.split(' ')[0]+'</span>';
+    h += '<span class="sb-check">✓</span>';
+    h += '</div>';
+  });
+  sb.innerHTML = h;
+}
+
+/* ---- Drag from sidebar ---- */
+function _wfSidebarDragStart(e, templateId) {
+  _WF_DRAG_TEMPLATE = templateId;
+  var tmpl = _WF_NODE_TEMPLATES.find(function(t){ return t.id === templateId; });
+  if(!tmpl) return;
+  // Create drag ghost
+  var ghost = document.createElement('div');
+  ghost.className = 'wf-drag-ghost';
+  ghost.id = 'wfDragGhost';
+  ghost.setAttribute('data-type', tmpl.type);
+  ghost.innerHTML = '<span class="dg-icon">'+tmpl.icon+'</span> '+tmpl.label;
+  document.body.appendChild(ghost);
+  // Position ghost
+  ghost.style.left = e.clientX + 'px';
+  ghost.style.top = e.clientY + 'px';
+  // Use a transparent drag image
+  var img = new Image();
+  img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+  e.dataTransfer.setDragImage(img, 0, 0);
+  e.dataTransfer.setData('text/plain', templateId);
+  document.addEventListener('dragover', _wfDragMove);
+}
+
+function _wfDragMove(e) {
+  e.preventDefault();
+  var ghost = document.getElementById('wfDragGhost');
+  if(ghost) { ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px'; }
+}
+
+function _wfSidebarDragEnd(e) {
+  document.removeEventListener('dragover', _wfDragMove);
+  var ghost = document.getElementById('wfDragGhost');
+  if(ghost) ghost.remove();
+  // Check if dropped on canvas
+  var canvas = document.getElementById('wfCanvas');
+  if(canvas && _WF_DRAG_TEMPLATE) {
+    var rect = canvas.getBoundingClientRect();
+    if(e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+      _wfAddNode(_WF_DRAG_TEMPLATE);
+    }
+  }
+  _WF_DRAG_TEMPLATE = null;
+}
+
+/* ---- Connection Tool ---- */
+function _wfToggleConnectMode() {
+  _WF_CONNECT_MODE = !_WF_CONNECT_MODE;
+  _WF_CONNECT_SOURCE = null;
+  var canvas = document.getElementById('wfCanvas');
+  if(canvas) {
+    if(_WF_CONNECT_MODE) canvas.classList.add('connect-mode');
+    else canvas.classList.remove('connect-mode');
+  }
+  // Clean up temp line
+  var tempLine = document.querySelector('.wf-temp-line');
+  if(tempLine) tempLine.remove();
+  // Remove source highlight
+  document.querySelectorAll('.wf-node.connect-source').forEach(function(n){ n.classList.remove('connect-source'); });
+  _wfRenderSidebar(); // Update active state
+}
+
+function _wfConnectClick(nodeId) {
+  if(!_WF_CONNECT_MODE) return false;
+  if(!_WF_CONNECT_SOURCE) {
+    // Set source
+    _WF_CONNECT_SOURCE = nodeId;
+    var el = document.querySelector('.wf-node[data-node-id="'+nodeId+'"]');
+    if(el) el.classList.add('connect-source');
+    return true;
+  } else {
+    // Set target — create connection
+    if(nodeId === _WF_CONNECT_SOURCE) {
+      // Self-connection not allowed, just deselect
+      _WF_CONNECT_SOURCE = null;
+      document.querySelectorAll('.wf-node.connect-source').forEach(function(n){ n.classList.remove('connect-source'); });
+      return true;
+    }
+    // Check if connection already exists
+    var exists = _WF_CONNECTIONS.some(function(c){ return c.from===_WF_CONNECT_SOURCE && c.to===nodeId; });
+    if(!exists) {
+      _WF_CONNECTIONS.push({ from:_WF_CONNECT_SOURCE, to:nodeId });
+      _wfMarkDirty();
+      renderWorkflowView();
+      if(_WF_SELECTED_NODE) _wfRenderConfig(_WF_SELECTED_NODE);
+    }
+    _WF_CONNECT_SOURCE = null;
+    document.querySelectorAll('.wf-node.connect-source').forEach(function(n){ n.classList.remove('connect-source'); });
+    return true;
+  }
+}
+
+function _wfRemoveConnection(fromId, toId) {
+  _WF_CONNECTIONS = _WF_CONNECTIONS.filter(function(c){ return !(c.from===fromId && c.to===toId); });
+  _wfMarkDirty();
+  renderWorkflowView();
 }
 
 function _wfDrawCanvas(container) {
@@ -12030,6 +12209,44 @@ function _wfDrawCanvas(container) {
     // Wait node: just shows a timer icon indicator (handled by metric/status)
   });
 
+  // Draw custom connections
+  _WF_CONNECTIONS.forEach(function(conn){
+    var f = pos[conn.from], t = pos[conn.to];
+    if(!f || !t) return;
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','wf-connection-group');
+    // Calculate bezier path
+    var x1 = f.x+W, y1 = f.y+H/2, x2 = t.x, y2 = t.y+H/2;
+    // If target is below, connect from bottom to top
+    if(t.y > f.y + H/2) { x1 = f.x+W/2; y1 = f.y+H; x2 = t.x+W/2; y2 = t.y; }
+    // If target is to the left, connect from left
+    if(t.x + W < f.x) { x1 = f.x; y1 = f.y+H/2; x2 = t.x+W; y2 = t.y+H/2; }
+    var mx = (x1+x2)/2, my = (y1+y2)/2;
+    var d = 'M '+x1+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+x2+' '+y2;
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('stroke','#42a5f5'); path.setAttribute('stroke-width','2.5');
+    path.setAttribute('fill','none'); path.setAttribute('stroke-dasharray','6,3');
+    path.setAttribute('marker-end','url(#arrowTrue)');
+    g.appendChild(path);
+    // Delete button at midpoint
+    var del = document.createElementNS('http://www.w3.org/2000/svg','g');
+    del.setAttribute('class','wf-conn-delete');
+    del.setAttribute('transform','translate('+mx+','+my+')');
+    del.style.cursor = 'pointer';
+    del.onclick = function(e){ e.stopPropagation(); _wfRemoveConnection(conn.from, conn.to); };
+    var delBg = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    delBg.setAttribute('r','10'); delBg.setAttribute('fill','white'); delBg.setAttribute('stroke','#ef5350'); delBg.setAttribute('stroke-width','1.5');
+    del.appendChild(delBg);
+    var delX = document.createElementNS('http://www.w3.org/2000/svg','text');
+    delX.setAttribute('text-anchor','middle'); delX.setAttribute('dy','4'); delX.setAttribute('fill','#ef5350');
+    delX.setAttribute('font-size','12'); delX.setAttribute('font-weight','bold');
+    delX.textContent = '×';
+    del.appendChild(delX);
+    g.appendChild(del);
+    svg.appendChild(g);
+  });
+
   // Draw nodes
   _WF_NODE_ORDER.forEach(function(nodeId){
     var p = pos[nodeId]; if(!p) return;
@@ -12041,7 +12258,7 @@ function _wfDrawCanvas(container) {
     div.className = 'wf-node'+(_WF_SELECTED_NODE===nodeId?' selected':'')+(cfg.enabled?'':' disabled')+(isLogic?' logic-node':'');
     div.setAttribute('data-node-id',nodeId);
     div.setAttribute('data-type',nd.type);
-    div.onclick = function(e){ e.stopPropagation(); _wfSelectNode(nodeId); };
+    div.onclick = function(e){ e.stopPropagation(); if(_wfConnectClick(nodeId)) return; _wfSelectNode(nodeId); };
     var metric = _wfMetric(nodeId);
     var status = _wfStatus(nodeId);
     div.innerHTML = '<div class="wf-node-bar"></div>'+
@@ -12060,6 +12277,11 @@ function _wfDrawCanvas(container) {
     svg.appendChild(fo);
   });
 
+  // Store pos for temp line drawing
+  container._wfPos = pos;
+  container._wfNodeW = W;
+  container._wfNodeH = H;
+
   svg.style.transform = 'scale('+_WF_ZOOM+')';
   container.appendChild(svg);
   // Attach wheel zoom if not already attached
@@ -12071,6 +12293,45 @@ function _wfDrawCanvas(container) {
         _wfZoom(e.deltaY < 0 ? 0.05 : -0.05);
       }
     }, {passive:false});
+  }
+  // Attach mousemove for temp connection line
+  if(!container._wfMoveAttached){
+    container._wfMoveAttached = true;
+    container.addEventListener('mousemove', function(e){
+      if(!_WF_CONNECT_MODE || !_WF_CONNECT_SOURCE) return;
+      var svg = container.querySelector('svg');
+      if(!svg) return;
+      var pos = container._wfPos;
+      var W = container._wfNodeW, H = container._wfNodeH;
+      var src = pos[_WF_CONNECT_SOURCE];
+      if(!src) return;
+      // Remove old temp line
+      var old = svg.querySelector('.wf-temp-line');
+      if(old) old.remove();
+      // Get mouse pos relative to SVG
+      var rect = svg.getBoundingClientRect();
+      var scale = _WF_ZOOM;
+      var mx = (e.clientX - rect.left) / scale;
+      var my = (e.clientY - rect.top) / scale;
+      var x1 = src.x + W, y1 = src.y + H/2;
+      var cpx = (x1+mx)/2;
+      var d = 'M '+x1+' '+y1+' C '+cpx+' '+y1+', '+cpx+' '+my+', '+mx+' '+my;
+      var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d',d);
+      path.setAttribute('class','wf-temp-line');
+      svg.appendChild(path);
+    });
+  }
+  // Dragover for sidebar drag-and-drop
+  if(!container._wfDragOverAttached) {
+    container._wfDragOverAttached = true;
+    container.addEventListener('dragover', function(e){ e.preventDefault(); });
+    container.addEventListener('drop', function(e){
+      e.preventDefault();
+      var tid = e.dataTransfer.getData('text/plain');
+      if(tid && _WF_NODE_ORDER.indexOf(tid) < 0) _wfAddNode(tid);
+    });
   }
 }
 
