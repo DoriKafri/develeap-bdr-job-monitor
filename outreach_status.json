@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T09:02:17.228Z",
+  "lastUpdated": "2026-03-06T09:02:26.258Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -158,7 +158,14 @@
     "itai alzaradel": "invited",
     "shira mintz": "invited",
     "moshe levine": "invited",
-    "mordechai shalev": "invited"
+    "mordechai shalev": "invited",
+    "anna tell": "invited",
+    "dennis gustafsson": "invited",
+    "matt doyle": "invited",
+    "alexander eriksson": "invited",
+    "aaron zammit": "invited",
+    "nikola hansson": "invited",
+    "johan nilsson": "invited"
   },
   "connected": [
     "check point|nataly kremer"
