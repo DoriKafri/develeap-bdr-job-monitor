@@ -2366,17 +2366,27 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing_urls = {j.get("sourceUrl", ""): j for j in existing if j.get("sourceUrl")}
     existing_keys = {f'{j.get("company","").lower()}|{j.get("title","").lower()}': j for j in existing}
 
-    # Mark existing jobs as not new; update stakeholders (preserve photos)
+    # Mark existing jobs as not new; update stakeholders (preserve enrichment)
     for j in existing:
         j["isNew"] = False
         old_stakeholders = j.get("stakeholders", [])
         new_stakeholders = _get_stakeholders(j.get("company", ""))
-        # Preserve photos from previously enriched stakeholders
-        old_photos = {s.get("linkedin", ""): s.get("photo", "") for s in old_stakeholders if s.get("photo")}
+        # Preserve ALL enrichment data from previously enriched stakeholders
+        # Index old stakeholders by linkedin URL and by name (fallback)
+        old_by_li = {s.get("linkedin", ""): s for s in old_stakeholders if s.get("linkedin")}
+        old_by_name = {s.get("name", "").lower(): s for s in old_stakeholders if s.get("name")}
+        # Fields that the base _get_stakeholders provides (safe to overwrite)
+        base_fields = {"name", "title", "linkedin", "source"}
         for s in new_stakeholders:
             li = s.get("linkedin", "")
-            if li and li in old_photos:
-                s["photo"] = old_photos[li]
+            name_lower = s.get("name", "").lower()
+            old = old_by_li.get(li) or old_by_name.get(name_lower)
+            if old:
+                # Copy over all enrichment fields (photo, phone, email,
+                # _apolloData, connectMsg, followUpMsg, etc.)
+                for k, v in old.items():
+                    if k not in base_fields and k not in s:
+                        s[k] = v
         j["stakeholders"] = new_stakeholders
         # Update logo
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
