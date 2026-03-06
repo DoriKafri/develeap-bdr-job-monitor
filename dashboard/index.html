@@ -432,7 +432,8 @@
   .settings-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
 
   /* Integration sub-tabs — light, clearly distinct from dark outer sidebar */
-  .intg-nav-wrap { position:sticky; top:-24px; z-index:10; background:linear-gradient(to bottom, #fff 85%, rgba(255,255,255,0)); margin:-4px -8px 12px; padding:4px 8px 18px; }
+  .intg-nav-wrap { position:sticky; top:0; z-index:10; background:#fff; margin:0 -32px 12px; padding:12px 32px 14px; border-bottom:1px solid transparent; transition:box-shadow 0.2s, border-color 0.2s; }
+  .intg-nav-wrap.stuck { box-shadow:0 2px 12px rgba(0,0,0,0.06); border-bottom-color:var(--border); }
   .intg-nav { display:flex; gap:4px; background:#EEF1F5; border-radius:12px; padding:4px; border:none; }
   .intg-nav-btn { flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; border:none; background:transparent; border-radius:9px; cursor:pointer; transition:all 0.18s; color:#6B7280; font-size:13px; font-weight:500; position:relative; }
   .intg-nav-btn:hover { background:rgba(255,255,255,0.7); color:var(--text); }
@@ -481,7 +482,7 @@
     .settings-content-area { padding:16px; overflow-y:visible; }
     .settings-header h2 { font-size:17px; }
     /* Integration sub-tabs stack vertically on mobile */
-    .intg-nav-wrap { position:relative; top:auto; margin:0 0 12px; padding:0 0 12px; background:none; }
+    .intg-nav-wrap { position:sticky; top:0; z-index:10; margin:0 -16px 12px; padding:8px 16px 12px; background:#fff; border-bottom:1px solid var(--border); box-shadow:none; }
     .intg-nav { flex-direction:column; gap:4px; border-radius:12px; }
     .intg-nav-btn { padding:10px 14px; }
     .intg-nav-icon { width:28px; height:28px; font-size:14px; }
@@ -7904,6 +7905,27 @@ function renderIntegrationsSection() {
   if (chk3) chk3.checked = CRM_CONFIG.autoMatch;
   _renderDealStageMapping();
   _updateCrmStatusBanner();
+
+  // Setup sticky shadow detection for integration nav
+  _setupIntgNavSticky();
+}
+
+var _intgNavStickySetup = false;
+function _setupIntgNavSticky() {
+  if (_intgNavStickySetup) return;
+  _intgNavStickySetup = true;
+  const contentArea = document.querySelector('.settings-content-area');
+  const navWrap = document.querySelector('.intg-nav-wrap');
+  if (!contentArea || !navWrap) return;
+  contentArea.addEventListener('scroll', function() {
+    // Check if nav-wrap is in its stuck state by comparing its offset
+    const sectionTop = navWrap.parentElement.getBoundingClientRect().top;
+    const navTop = navWrap.getBoundingClientRect().top;
+    const contentTop = contentArea.getBoundingClientRect().top;
+    // It's stuck when the nav is at the top of the content area but its section has scrolled above
+    const isStuck = navTop <= contentTop + 2 && sectionTop < contentTop;
+    navWrap.classList.toggle('stuck', isStuck);
+  });
 }
 
 function switchIntgTab(tabId) {
@@ -8667,6 +8689,10 @@ function switchSettingsSection(section) {
   document.querySelectorAll('.settings-section').forEach(sec => {
     sec.style.display = 'none';
   });
+
+  // Scroll content area to top
+  const contentArea = document.querySelector('.settings-content-area');
+  if (contentArea) contentArea.scrollTop = 0;
 
   // Show the selected section
   const sectionEl = document.getElementById(section + 'Section');
