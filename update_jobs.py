@@ -2259,15 +2259,18 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                                    "archives", "משרות דרושים", "jobs wanted",
                                    "as a service for startups", "open positions",
                                    "see our list", "career opportunities",
-                                   "we're hiring", "join our team", "jobs at ",
-                                   "- comeet", "- careers - comeet"]):
+                                   "we're hiring", "join our team", "jobs at "]):
             return True
         # URL patterns for known aggregators
         agg_domains = ["remoterocketship.com", "devjobs.co.il", "simplyhired.com",
                        "jooble.", "talent.com", "jobrapido.", "careerjet.",
                        "secrettelaviv.com", "efinancialcareers.com",
                        "aidevtlv.com", "machinelearning.co.il", "gotfriends.co.il",
-                       "whist.ai", "startup.jobs", "comeet.com"]
+                       "whist.ai", "startup.jobs"]
+        # NOTE: comeet.com is an ATS (individual job pages), NOT an aggregator.
+        # Do NOT add it here — it caused a severe bug where Comeet listings were
+        # removed from existing every run, then re-added as "new", triggering
+        # duplicate Slack notifications indefinitely.
         if any(d in u for d in agg_domains):
             return True
         return False
