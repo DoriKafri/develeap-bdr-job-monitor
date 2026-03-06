@@ -6644,9 +6644,12 @@ function _mergeStakeholdersWithCrm(job) {
   // 2. Add CRM-only contacts (not already matched)
   crmData.contacts.forEach((c, ci) => {
     if (matched.has(ci)) return;
-    if (!c.name || !c.name.trim()) return;
+    // Resolve display name: skip "None None", fall back to email prefix
+    let displayName = (c.name && c.name.trim() && c.name.trim() !== 'None None') ? c.name.trim() : '';
+    if (!displayName && c.email) displayName = c.email.split('@')[0];
+    if (!displayName) return;
     stakeholders.push({
-      name: c.name,
+      name: displayName,
       title: c.title || '',
       email: c.email || '',
       phone: c.phone || '',

@@ -316,7 +316,7 @@ def main():
                     phone = cp.get("mobilephone") or cp.get("phone") or ""
                     contact_entry = {
                         "id": c["id"],
-                        "name": f'{cp.get("firstname", "")} {cp.get("lastname", "")}'.strip(),
+                        "name": f'{cp.get("firstname") or ""} {cp.get("lastname") or ""}'.strip() or cp.get("email", "").split("@")[0],
                         "email": cp.get("email", ""),
                         "title": cp.get("jobtitle", ""),
                     }
