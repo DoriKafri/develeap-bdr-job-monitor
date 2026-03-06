@@ -1,0 +1,488 @@
+{
+  "provider": "hubspot",
+  "portalId": "25695560",
+  "syncedAt": "2026-03-06T07:52:45.668442Z",
+  "dealStageMap": {},
+  "companies": {
+    "accenture": {
+      "companyId": null,
+      "companyName": "Accenture",
+      "deals": [],
+      "contacts": []
+    },
+    "adaptive6": {
+      "companyId": null,
+      "companyName": "Adaptive6",
+      "deals": [],
+      "contacts": []
+    },
+    "applied materials": {
+      "companyId": null,
+      "companyName": "Applied Materials",
+      "deals": [],
+      "contacts": []
+    },
+    "aqua security": {
+      "companyId": null,
+      "companyName": "Aqua Security",
+      "deals": [],
+      "contacts": []
+    },
+    "armissecurity": {
+      "companyId": null,
+      "companyName": "Armissecurity",
+      "deals": [],
+      "contacts": []
+    },
+    "au10tix": {
+      "companyId": null,
+      "companyName": "Au10Tix",
+      "deals": [],
+      "contacts": []
+    },
+    "automatit": {
+      "companyId": null,
+      "companyName": "Automatit",
+      "deals": [],
+      "contacts": []
+    },
+    "axonius": {
+      "companyId": null,
+      "companyName": "Axonius",
+      "deals": [],
+      "contacts": []
+    },
+    "bmc": {
+      "companyId": null,
+      "companyName": "BMC",
+      "deals": [],
+      "contacts": []
+    },
+    "biocatch": {
+      "companyId": null,
+      "companyName": "Biocatch",
+      "deals": [],
+      "contacts": []
+    },
+    "bitsight": {
+      "companyId": null,
+      "companyName": "Bitsight",
+      "deals": [],
+      "contacts": []
+    },
+    "campbellsoup": {
+      "companyId": null,
+      "companyName": "Campbellsoup",
+      "deals": [],
+      "contacts": []
+    },
+    "carrier": {
+      "companyId": null,
+      "companyName": "Carrier",
+      "deals": [],
+      "contacts": []
+    },
+    "cato networks": {
+      "companyId": null,
+      "companyName": "Cato Networks",
+      "deals": [],
+      "contacts": []
+    },
+    "checkpoint": {
+      "companyId": null,
+      "companyName": "Checkpoint",
+      "deals": [],
+      "contacts": []
+    },
+    "classiq": {
+      "companyId": null,
+      "companyName": "Classiq",
+      "deals": [],
+      "contacts": []
+    },
+    "cloudera": {
+      "companyId": null,
+      "companyName": "Cloudera",
+      "deals": [],
+      "contacts": []
+    },
+    "cloudinary": {
+      "companyId": null,
+      "companyName": "Cloudinary",
+      "deals": [],
+      "contacts": []
+    },
+    "codevalue": {
+      "companyId": null,
+      "companyName": "Codevalue",
+      "deals": [],
+      "contacts": []
+    },
+    "coralogix": {
+      "companyId": null,
+      "companyName": "Coralogix",
+      "deals": [],
+      "contacts": []
+    },
+    "cymulate": {
+      "companyId": null,
+      "companyName": "Cymulate",
+      "deals": [],
+      "contacts": []
+    },
+    "datadog": {
+      "companyId": null,
+      "companyName": "Datadog",
+      "deals": [],
+      "contacts": []
+    },
+    "deloitte": {
+      "companyId": null,
+      "companyName": "Deloitte",
+      "deals": [],
+      "contacts": []
+    },
+    "dialog": {
+      "companyId": null,
+      "companyName": "Dialog",
+      "deals": [],
+      "contacts": []
+    },
+    "doitintl": {
+      "companyId": null,
+      "companyName": "Doitintl",
+      "deals": [],
+      "contacts": []
+    },
+    "drivecapital": {
+      "companyId": null,
+      "companyName": "Drivecapital",
+      "deals": [],
+      "contacts": []
+    },
+    "earnix": {
+      "companyId": null,
+      "companyName": "Earnix",
+      "deals": [],
+      "contacts": []
+    },
+    "efinancialcareers norway": {
+      "companyId": null,
+      "companyName": "Efinancialcareers Norway",
+      "deals": [],
+      "contacts": []
+    },
+    "factored": {
+      "companyId": null,
+      "companyName": "Factored",
+      "deals": [],
+      "contacts": []
+    },
+    "fetcherr": {
+      "companyId": null,
+      "companyName": "Fetcherr",
+      "deals": [],
+      "contacts": []
+    },
+    "flexerasoftware": {
+      "companyId": null,
+      "companyName": "Flexerasoftware",
+      "deals": [],
+      "contacts": []
+    },
+    "forter": {
+      "companyId": null,
+      "companyName": "Forter",
+      "deals": [],
+      "contacts": []
+    },
+    "globallogic": {
+      "companyId": null,
+      "companyName": "Globallogic",
+      "deals": [],
+      "contacts": []
+    },
+    "gsk": {
+      "companyId": null,
+      "companyName": "Gsk",
+      "deals": [],
+      "contacts": []
+    },
+    "guidde": {
+      "companyId": null,
+      "companyName": "Guidde",
+      "deals": [],
+      "contacts": []
+    },
+    "intel corporation": {
+      "companyId": null,
+      "companyName": "Intel Corporation",
+      "deals": [],
+      "contacts": []
+    },
+    "jobgether": {
+      "companyId": null,
+      "companyName": "Jobgether",
+      "deals": [],
+      "contacts": []
+    },
+    "kpmg": {
+      "companyId": null,
+      "companyName": "KPMG",
+      "deals": [],
+      "contacts": []
+    },
+    "leidos": {
+      "companyId": null,
+      "companyName": "Leidos",
+      "deals": [],
+      "contacts": []
+    },
+    "levistraussandco": {
+      "companyId": null,
+      "companyName": "Levistraussandco",
+      "deals": [],
+      "contacts": []
+    },
+    "lightricks": {
+      "companyId": null,
+      "companyName": "Lightricks",
+      "deals": [],
+      "contacts": []
+    },
+    "linearb": {
+      "companyId": null,
+      "companyName": "LinearB",
+      "deals": [],
+      "contacts": []
+    },
+    "mastercard": {
+      "companyId": null,
+      "companyName": "Mastercard",
+      "deals": [],
+      "contacts": []
+    },
+    "medtronic": {
+      "companyId": null,
+      "companyName": "Medtronic",
+      "deals": [],
+      "contacts": []
+    },
+    "mksinst": {
+      "companyId": null,
+      "companyName": "Mksinst",
+      "deals": [],
+      "contacts": []
+    },
+    "mobileye": {
+      "companyId": null,
+      "companyName": "Mobileye",
+      "deals": [],
+      "contacts": []
+    },
+    "motorolasolutions": {
+      "companyId": null,
+      "companyName": "Motorolasolutions",
+      "deals": [],
+      "contacts": []
+    },
+    "ness technologies israel": {
+      "companyId": null,
+      "companyName": "Ness Technologies Israel",
+      "deals": [],
+      "contacts": []
+    },
+    "next insurance": {
+      "companyId": null,
+      "companyName": "Next Insurance",
+      "deals": [],
+      "contacts": []
+    },
+    "nvidia": {
+      "companyId": null,
+      "companyName": "Nvidia",
+      "deals": [],
+      "contacts": []
+    },
+    "oligo security": {
+      "companyId": null,
+      "companyName": "Oligo Security",
+      "deals": [],
+      "contacts": []
+    },
+    "onezerobank": {
+      "companyId": null,
+      "companyName": "Onezerobank",
+      "deals": [],
+      "contacts": []
+    },
+    "pentera": {
+      "companyId": null,
+      "companyName": "Pentera",
+      "deals": [],
+      "contacts": []
+    },
+    "plainid": {
+      "companyId": null,
+      "companyName": "Plainid",
+      "deals": [],
+      "contacts": []
+    },
+    "play": {
+      "companyId": null,
+      "companyName": "Play",
+      "deals": [],
+      "contacts": []
+    },
+    "port": {
+      "companyId": null,
+      "companyName": "Port",
+      "deals": [],
+      "contacts": []
+    },
+    "remedio": {
+      "companyId": null,
+      "companyName": "Remedio",
+      "deals": [],
+      "contacts": []
+    },
+    "remoterockethub": {
+      "companyId": null,
+      "companyName": "RemoteRocketHub",
+      "deals": [],
+      "contacts": []
+    },
+    "shi": {
+      "companyId": null,
+      "companyName": "Shi",
+      "deals": [],
+      "contacts": []
+    },
+    "silverfort": {
+      "companyId": null,
+      "companyName": "Silverfort",
+      "deals": [],
+      "contacts": []
+    },
+    "similarweb": {
+      "companyId": null,
+      "companyName": "Similarweb",
+      "deals": [],
+      "contacts": []
+    },
+    "somekhchaikin": {
+      "companyId": null,
+      "companyName": "Somekhchaikin",
+      "deals": [],
+      "contacts": []
+    },
+    "sqlink group": {
+      "companyId": null,
+      "companyName": "Sqlink Group",
+      "deals": [],
+      "contacts": []
+    },
+    "surecomp": {
+      "companyId": null,
+      "companyName": "Surecomp",
+      "deals": [],
+      "contacts": []
+    },
+    "taboola": {
+      "companyId": null,
+      "companyName": "Taboola",
+      "deals": [],
+      "contacts": []
+    },
+    "terasky": {
+      "companyId": null,
+      "companyName": "Terasky",
+      "deals": [],
+      "contacts": []
+    },
+    "tikalk": {
+      "companyId": null,
+      "companyName": "Tikalk",
+      "deals": [],
+      "contacts": []
+    },
+    "unframe": {
+      "companyId": null,
+      "companyName": "Unframe",
+      "deals": [],
+      "contacts": []
+    },
+    "unity": {
+      "companyId": null,
+      "companyName": "Unity",
+      "deals": [],
+      "contacts": []
+    },
+    "unknown": {
+      "companyId": null,
+      "companyName": "Unknown",
+      "deals": [],
+      "contacts": []
+    },
+    "upstream": {
+      "companyId": null,
+      "companyName": "Upstream",
+      "deals": [],
+      "contacts": []
+    },
+    "vast data": {
+      "companyId": null,
+      "companyName": "VAST Data",
+      "deals": [],
+      "contacts": []
+    },
+    "vastdata": {
+      "companyId": null,
+      "companyName": "Vastdata",
+      "deals": [],
+      "contacts": []
+    },
+    "voyantis": {
+      "companyId": null,
+      "companyName": "Voyantis",
+      "deals": [],
+      "contacts": []
+    },
+    "wix": {
+      "companyId": null,
+      "companyName": "Wix",
+      "deals": [],
+      "contacts": []
+    },
+    "wiz": {
+      "companyId": null,
+      "companyName": "Wiz",
+      "deals": [],
+      "contacts": []
+    },
+    "wizinc": {
+      "companyId": null,
+      "companyName": "Wizinc",
+      "deals": [],
+      "contacts": []
+    },
+    "xsolla": {
+      "companyId": null,
+      "companyName": "Xsolla",
+      "deals": [],
+      "contacts": []
+    },
+    "zenity": {
+      "companyId": null,
+      "companyName": "Zenity",
+      "deals": [],
+      "contacts": []
+    }
+  },
+  "stats": {
+    "totalCompanies": 79,
+    "matchedInCrm": 0,
+    "withDeals": 0,
+    "withContacts": 0
+  }
+}
