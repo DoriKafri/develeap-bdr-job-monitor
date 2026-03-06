@@ -1,0 +1,11 @@
+name = "apollo-phone-webhook"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Secrets (set via: npx wrangler secret put GH_TOKEN)
+# GH_TOKEN    — GitHub personal access token
+# GH_REPO     — e.g. "DoriKafri/develeap-bdr-job-monitor"
+# WEBHOOK_SECRET — optional shared secret for request validation
+
+[vars]
+GH_REPO = "DoriKafri/develeap-bdr-job-monitor"

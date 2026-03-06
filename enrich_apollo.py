@@ -17,6 +17,7 @@ import requests
 from datetime import datetime
 
 APOLLO_API_KEY = os.environ.get("APOLLO_API_KEY", "").strip()
+APOLLO_WEBHOOK_URL = os.environ.get("APOLLO_WEBHOOK_URL", "").strip()
 APOLLO_BASE = "https://api.apollo.io/api/v1"
 OUTPUT_FILE = "apollo_data.json"
 DOCS_HTML = "docs/index.html"
@@ -126,15 +127,17 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
     first_name = parts[0]
     last_name = parts[1] if len(parts) > 1 else ""
 
+    # Enable phone reveal when webhook is configured (async delivery via webhook)
+    has_webhook = bool(APOLLO_WEBHOOK_URL)
     payload = {
         "first_name": first_name,
         "last_name": last_name,
         "organization_name": company,
         "reveal_personal_emails": False,
-        # Note: reveal_phone_number requires a webhook_url for async delivery
-        # Phone numbers are still returned when available without this flag
-        "reveal_phone_number": False,
+        "reveal_phone_number": has_webhook,
     }
+    if has_webhook:
+        payload["webhook_url"] = APOLLO_WEBHOOK_URL
 
     if email and "@" in email:
         payload["email"] = email
@@ -279,6 +282,10 @@ def main():
 
     print("Starting Apollo.io enrichment...")
     print(f"  API key: {APOLLO_API_KEY[:8]}...{APOLLO_API_KEY[-4:]}")
+    if APOLLO_WEBHOOK_URL:
+        print(f"  Phone webhook: {APOLLO_WEBHOOK_URL[:40]}...")
+    else:
+        print("  Phone webhook: not configured (phone numbers will be limited)")
 
     # Load existing Apollo data to avoid re-enriching
     existing = {}
