@@ -1,6 +1,6 @@
 {
   "provider": "apollo",
-  "syncedAt": "2026-03-06T11:56:56.667776Z",
+  "syncedAt": "2026-03-06T14:14:17.225810Z",
   "contacts": {
     "nataly kremer|checkpoint": {
       "apolloId": "54a40c697468693676355028",
@@ -4118,10 +4118,6 @@
       "apolloId": "",
       "_notFound": true
     },
-    "check point software": {
-      "apolloId": "",
-      "_notFound": true
-    },
     "classiq": {
       "apolloId": "",
       "_notFound": true
@@ -4208,10 +4204,10 @@
     }
   },
   "stats": {
-    "totalStakeholders": 127,
+    "totalStakeholders": 120,
     "contactsEnriched": 127,
-    "newContactsThisRun": 127,
-    "totalCompanies": 84,
+    "newContactsThisRun": 0,
+    "totalCompanies": 81,
     "orgsEnriched": 60,
     "newOrgsThisRun": 0
   }
