@@ -2298,15 +2298,28 @@ def _normalize_title(title: str) -> str:
     t = re.sub(r'\s+at\s+[\w\s]+-\s*(?:comeet|lever|greenhouse|careers)\s*$', '', t)
     # 2. Remove trailing source names: "- Comeet", "- Lever", etc.
     t = re.sub(r'\s*-\s*(?:comeet|lever|greenhouse|jobgether|myworkdayjobs\.com)\s*$', '', t)
+    # 2b. Remove "| Source" suffix (e.g. "FinOps Engineer @ Ness | LHH Job Board")
+    t = re.sub(r'\s*\|\s*(?:lhh job board|glassdoor|indeed|linkedin|drushim|alljobs)\s*$', '', t, flags=re.IGNORECASE)
+    # 2c. Remove "@ Company Name" suffix when it's a company name at end of title
+    #     e.g. "FinOps Engineer @ Ness Technologies Israel" → "FinOps Engineer"
+    #     Only strip if what follows @ looks like a company (2+ words or known pattern)
+    t = re.sub(r'\s*@\s+(?:[A-Z][\w]*[\s]){1,5}[\w]*\s*$', '', t)
+    # Also handle lowercase variant
+    t = re.sub(r'\s*@\s+\S+(?:\s+\S+){1,4}\s*$', '', t)
     # 3. Remove "- CAREERS AT <company>" suffix
     t = re.sub(r'\s*-\s*careers\s+at\s+\S+\s*$', '', t)
     # 4. Remove LinkedIn-style "Company Name גיוס עובדים" prefix (Hebrew for "hiring")
     #    e.g. "Check Point Software גיוס עובדים Senior FinOps Engineer" → "Senior FinOps Engineer"
     t = re.sub(r'^.*?גיוס\s*עובדים\s*', '', t)
-    # 5. Remove "דרושים" (wanted) prefix patterns: "דרושים Role ל..." → "Role"
+    # 5. Remove "דרושים" (wanted) and "דרוש/ה" prefix patterns
     t = re.sub(r'^דרושים\s*', '', t)
+    t = re.sub(r'^דרוש/?ה?\s*', '', t)
+    # 5b. Remove Hebrew suffix "לנס (NESS)" or "לחברת X" (to company X)
+    t = re.sub(r'\s*ל[\u0590-\u05FF]+\s*(?:\([^)]+\))?\s*התפקיד.*$', '', t)
     # 6. Remove parenthetical job IDs like (25020)
     t = re.sub(r'\s*\(\d+\)\s*', ' ', t)
+    # 7. Clean up trailing punctuation and whitespace
+    t = re.sub(r'[\s.,;:]+$', '', t)
     t = re.sub(r'\s+', ' ', t).strip()
     return t
 
@@ -2396,10 +2409,11 @@ def _consolidate_duplicates(jobs: list[dict]) -> list[dict]:
 
 def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """Merge new jobs with existing, return (merged, only_new)."""
-    # Filter out Develeap's own listings and Unknown company jobs
+    # Filter out Develeap's own listings (but keep Unknown company jobs to prevent
+    # them from being re-discovered as "new" on every run — which caused duplicate
+    # Slack notifications for listings scraped with company="Unknown")
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
     existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
-    existing = [j for j in existing if j.get("company", "").strip() not in ("Unknown", "")]
 
     # Remove company-page listings (not specific job postings)
     before_cp = len(existing)
@@ -2573,6 +2587,11 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         # Normalize company name on incoming jobs
         j["company"] = _normalize_company(j.get("company", ""))
 
+        # Skip Unknown/empty company jobs from new — they stay in existing for dedup
+        # but we don't want to re-add them as new listings
+        if j.get("company", "").strip() in ("Unknown", ""):
+            continue
+
         # Skip company-page listings from new jobs too
         if _is_company_page(j):
             log.info(f"  Skipping company-page listing: \"{j.get('title', '')}\" ({j.get('company', '')})")
@@ -2685,10 +2704,15 @@ def deploy_to_netlify(html: str) -> bool:
 # ── Slack Dedup Tracking ───────────────────────────────────────────────────
 
 def _slack_listing_key(job: dict) -> str:
-    """Build a unique identifier for a listing: company|category|title|date."""
-    company = (job.get("company") or "").lower().strip()
+    """Build a unique identifier for a listing: company|category|normalized_title|date.
+
+    Uses _normalize_company and _normalize_title so that different scrape variants
+    of the same job (e.g. Hebrew vs English title, different source suffixes)
+    resolve to the same key and avoid duplicate Slack posts.
+    """
+    company = _normalize_company(job.get("company") or "").lower().strip()
     category = (job.get("category") or "").lower().strip()
-    title = (job.get("title") or "").lower().strip()
+    title = _normalize_title(job.get("title") or "")
     posted = (job.get("posted") or "")[:10]  # YYYY-MM-DD
     return f"{company}|{category}|{title}|{posted}"
 

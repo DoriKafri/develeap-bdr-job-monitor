@@ -11904,6 +11904,18 @@ async function _wfLoadConfig() {
     _WF_CONFIG = cfg;
     if (raw.nodeOrder && Array.isArray(raw.nodeOrder)) _WF_NODE_ORDER = raw.nodeOrder;
     if (raw.connections && Array.isArray(raw.connections)) _WF_CONNECTIONS = raw.connections;
+    // Reconstruct _WF_NODES and _WF_CONFIG for dynamically-added nodes (logic nodes, etc.)
+    _WF_NODE_ORDER.forEach(function(nid){
+      if (_WF_NODES[nid]) return; // already known
+      // Look up in templates
+      var tmpl = _WF_NODE_TEMPLATES.find(function(t){ return t.id === nid; });
+      if (tmpl) {
+        _WF_NODES[nid] = { icon:tmpl.icon, label:tmpl.label, type:tmpl.type, desc:tmpl.desc };
+        if (!_WF_CONFIG[nid]) _WF_CONFIG[nid] = { enabled:true };
+        // Merge saved config for this node
+        if (raw.nodes && raw.nodes[nid]) Object.assign(_WF_CONFIG[nid], raw.nodes[nid]);
+      }
+    });
   } catch(e) { console.warn('WF load error:',e); _WF_CONFIG = JSON.parse(JSON.stringify(_WF_DEFAULTS)); }
 }
 
@@ -11912,7 +11924,7 @@ async function _saveWorkflowConfig() {
     if (!_GH_TOKEN) { _wfMsg('error','No GitHub token'); return; }
     // Build the file content matching workflow_config.json format
     var out = { version:1, lastUpdated:new Date().toISOString(), nodes:{}, nodeOrder:_WF_NODE_ORDER, connections:_WF_CONNECTIONS };
-    _WF_NODE_ORDER.forEach(function(k){ out.nodes[k] = Object.assign({}, _WF_CONFIG[k], { label:_WF_NODES[k].label, description:_WF_NODES[k].desc, type:_WF_NODES[k].type }); });
+    _WF_NODE_ORDER.forEach(function(k){ var n = _WF_NODES[k] || {}; out.nodes[k] = Object.assign({}, _WF_CONFIG[k], { label:n.label||k, description:n.desc||'', type:n.type||'auto' }); });
     var content = btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 2))));
     var body = { message:'Update workflow config', content:content, branch:'main' };
     if (_WF_GITHUB_SHA) body.sha = _WF_GITHUB_SHA;
@@ -12132,7 +12144,7 @@ function _wfDrawCanvas(container) {
       d = 'M '+x1+' '+y1+' C '+x1+' '+cy+', '+x2+' '+cy+', '+x2+' '+y2;
     }
     path.setAttribute('d', d);
-    var enabled = _WF_CONFIG[fromId].enabled && _WF_CONFIG[toId].enabled;
+    var enabled = (_WF_CONFIG[fromId]||{}).enabled !== false && (_WF_CONFIG[toId]||{}).enabled !== false;
     path.setAttribute('class','wf-connection-line wf-connection-animate'+(enabled?'':' disabled'));
     svg.appendChild(path);
   }
