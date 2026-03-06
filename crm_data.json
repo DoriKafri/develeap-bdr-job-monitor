@@ -1,7 +1,7 @@
 {
   "provider": "hubspot",
   "portalId": "25695560",
-  "syncedAt": "2026-03-06T14:14:07.915600Z",
+  "syncedAt": "2026-03-06T14:21:50.122770Z",
   "dealStageMap": {
     "85640677": {
       "label": "Waiting for us",
