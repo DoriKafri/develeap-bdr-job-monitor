@@ -8090,7 +8090,7 @@ function openDetail(id){
   document.getElementById('sidebarBody').innerHTML=`
     <div class="detail-section"><div class="company-cell" style="margin-bottom:16px"><div class="company-logo" style="width:48px;height:48px;font-size:20px">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" style="width:100%;height:100%;object-fit:contain;border-radius:8px" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name" style="font-size:16px">${j.company}</span><span class="company-industry">${j.companyIndustry}</span></div></div>${j.isDeveleapCustomer?'<span class="badge badge-develeap" style="display:inline-flex">Develeap Customer</span>':(j.isPastCustomer?'<span class="badge badge-past" style="display:inline-flex">Past Customer</span>':'')}</div>
     <div class="detail-section"><div class="detail-label">Location</div><div class="detail-value">${j.location}</div></div>
-    <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description}</div></div>
+    <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description && j.description.length > 120 ? '<span id="_descShort">' + j.description.slice(0,120).replace(/\s+\S*$/,'') + '… <a href="#" onclick="event.preventDefault();document.getElementById(\'_descShort\').style.display=\'none\';document.getElementById(\'_descFull\').style.display=\'inline\'" style="color:var(--primary);font-size:12px">more</a></span><span id="_descFull" style="display:none">' + j.description + '</span>' : (j.description||'')}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
     ${_buildCrmDetailHtml(j.company)}
     ${_buildApolloDetailHtml(j.company)}
@@ -9520,9 +9520,15 @@ function _buildApolloDetailHtml(companyName) {
   let html = '<div class="detail-section" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">';
   html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:14px">🚀</span> Apollo Intel</div>';
 
-  // Company summary
+  // Company summary (truncated with "more" link)
   if (org.shortDescription) {
-    html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px">' + org.shortDescription + '</div>';
+    const desc = org.shortDescription;
+    if (desc.length > 150) {
+      const short = desc.slice(0, 150).replace(/\s+\S*$/, '');
+      html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px"><span id="_apolloDescShort">' + short + '… <a href="#" onclick="event.preventDefault();document.getElementById(\'_apolloDescShort\').style.display=\'none\';document.getElementById(\'_apolloDescFull\').style.display=\'inline\'" style="color:#7B1FA2;font-size:11px">more</a></span><span id="_apolloDescFull" style="display:none">' + desc + '</span></div>';
+    } else {
+      html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px">' + desc + '</div>';
+    }
   }
 
   // Key metrics
@@ -9535,13 +9541,23 @@ function _buildApolloDetailHtml(companyName) {
     html += '<div style="font-size:12px;color:var(--text);margin-bottom:8px">' + metrics.join(' · ') + '</div>';
   }
 
-  // Tech stack
+  // Tech stack (truncated to 6 with "more" toggle)
   if (org.technologies && org.technologies.length > 0) {
+    const techs = org.technologies;
+    const limit = 6;
     html += '<div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--text-light)">Tech Stack</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">';
-    org.technologies.forEach(t => {
+    techs.slice(0, limit).forEach(t => {
       html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
     });
+    if (techs.length > limit) {
+      html += '<span id="_techMore" style="display:none">';
+      techs.slice(limit).forEach(t => {
+        html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
+      });
+      html += '</span>';
+      html += '<a href="#" onclick="event.preventDefault();document.getElementById(\'_techMore\').style.display=\'contents\';this.style.display=\'none\'" style="font-size:10px;padding:2px 6px;border-radius:4px;background:#EDE7F6;color:#7B1FA2;cursor:pointer;text-decoration:none">+' + (techs.length - limit) + ' more</a>';
+    }
     html += '</div>';
   }
 
