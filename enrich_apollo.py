@@ -131,7 +131,9 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
         "last_name": last_name,
         "organization_name": company,
         "reveal_personal_emails": False,
-        "reveal_phone_number": True,
+        # Note: reveal_phone_number requires a webhook_url for async delivery
+        # Phone numbers are still returned when available without this flag
+        "reveal_phone_number": False,
     }
 
     if email and "@" in email:
@@ -296,17 +298,14 @@ def main():
     companies = extract_companies_from_html(DOCS_HTML)
     print(f"  Found {len(stakeholders)} stakeholders, {len(companies)} companies")
 
-    # 2. Enrich contacts (skip already-enriched with phone, retry missing phones)
+    # 2. Enrich contacts (skip already-enriched, retry not-found from previous runs)
     contacts_enriched = {k: v for k, v in existing.items() if v.get("apolloId")}
-    needs_phone_update = {k for k, v in contacts_enriched.items() if not v.get("phone")}
-    if needs_phone_update:
-        print(f"  {len(needs_phone_update)} contacts need phone number re-enrichment")
-    skipped_contacts = len(contacts_enriched) - len(needs_phone_update)
+    skipped_contacts = len(contacts_enriched)
     new_contacts = 0
     for i, sh in enumerate(stakeholders):
         key = sh["key"]
-        if key in contacts_enriched and key not in needs_phone_update:
-            continue  # already enriched with phone
+        if key in contacts_enriched:
+            continue  # already enriched
 
         print(f"  [{i+1}/{len(stakeholders)}] Enriching: {sh['name']} @ {sh['company']}")
         result = enrich_person(
