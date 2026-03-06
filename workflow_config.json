@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-06T21:28:57.136Z",
+  "lastUpdated": "2026-03-06T21:30:04.454Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -151,5 +151,10 @@
     "if_branch",
     "crmUpdate"
   ],
-  "connections": []
+  "connections": [
+    {
+      "from": "discovery",
+      "to": "if_branch"
+    }
+  ]
 }
