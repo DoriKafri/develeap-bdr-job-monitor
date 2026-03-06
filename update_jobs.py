@@ -666,12 +666,30 @@ SEARCH_QUERIES = [
 CATEGORY_KEYWORDS = {
     "agentic": ["agentic", "agent", "llm agent", "autonomous agent", "ai agent", "sales agent"],
     "ai": ["ai engineer", "machine learning", "ml engineer", "mlops", "data scientist",
-            "deep learning", "nlp", "llm", "generative ai", "genai", "artificial intelligence"],
+            "deep learning", "nlp", "llm", "generative ai", "genai", "artificial intelligence",
+            "ai ops", "large scale training"],
     "finops": ["finops", "fin ops", "cloud cost", "cloud financial", "cost optimization",
                "cloud economics", "cloud spend", "cost management", "cloud billing",
                "cost engineer", "cloud finance", "cost analyst"],
-    "devops": ["devops", "sre", "site reliability", "platform engineer", "cloud engineer",
-               "infrastructure", "ci/cd", "kubernetes", "terraform", "devsecops"],
+    "security": ["devsecops", "security engineer", "appsec", "application security",
+                  "cybersecurity", "infosec", "information security", "cloud security",
+                  "security architect", "penetration test", "soc analyst", "threat",
+                  "vulnerability", "compliance engineer", "security operations"],
+    "sre": ["sre", "site reliability", "reliability engineer", "production engineer",
+             "availability engineer", "incident management", "on-call", "observability"],
+    "platform": ["platform engineer", "platform team", "internal developer platform",
+                  "developer experience", "developer platform", "idp ", "backstage",
+                  "platform infrastructure", "developer productivity"],
+    "data": ["data engineer", "data pipeline", "data platform", "etl", "elt ",
+              "data warehouse", "data lake", "apache spark", "apache kafka",
+              "data infrastructure", "analytics engineer", "dbt ", "airflow",
+              "databricks", "snowflake engineer"],
+    "cloud": ["cloud engineer", "cloud architect", "cloud infrastructure",
+              "aws engineer", "azure engineer", "gcp engineer", "multi-cloud",
+              "cloud migration", "cloud native", "cloud operations"],
+    "devops": ["devops", "ci/cd", "kubernetes", "terraform", "docker",
+               "infrastructure as code", "iac", "jenkins", "gitops", "argocd",
+               "helm", "ansible", "puppet", "chef"],
 }
 
 SOURCE_MAP = {
@@ -1290,21 +1308,26 @@ def detect_source(url: str) -> str:
 
 
 def detect_category(title: str, snippet: str) -> str:
-    """Detect job category from title and snippet."""
+    """Detect job category from title and snippet.
+
+    Title keywords are checked first (stronger signal) before description.
+    This prevents a job titled 'Platform Engineer' from being classified as
+    'sre' just because the description mentions SRE experience.
+    """
+    title_lower = title.lower()
     text = f"{title} {snippet}".lower()
-    # Check most specific categories first
-    for kw in CATEGORY_KEYWORDS["agentic"]:
-        if kw in text:
-            return "agentic"
-    for kw in CATEGORY_KEYWORDS["finops"]:
-        if kw in text:
-            return "finops"
-    for kw in CATEGORY_KEYWORDS["ai"]:
-        if kw in text:
-            return "ai"
-    for kw in CATEGORY_KEYWORDS["devops"]:
-        if kw in text:
-            return "devops"
+    # Check most specific categories first, then broader ones
+    priority = ["agentic", "finops", "security", "sre", "platform", "data", "ai", "cloud", "devops"]
+    # Pass 1: Check TITLE only (strongest signal)
+    for cat in priority:
+        for kw in CATEGORY_KEYWORDS.get(cat, []):
+            if kw in title_lower:
+                return cat
+    # Pass 2: Check full text (title + description)
+    for cat in priority:
+        for kw in CATEGORY_KEYWORDS.get(cat, []):
+            if kw in text:
+                return cat
     return "devops"  # Default
 
 
@@ -2337,6 +2360,8 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
         # Re-classify source from URL (picks up newly added SOURCE_MAP entries)
         j["source"] = detect_source(j.get("sourceUrl", ""))
+        # Re-classify category (picks up newly added categories like security, sre, etc.)
+        j["category"] = detect_category(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
         # Re-classify customer status
         company = j.get("company", "")
         j["isDeveleapCustomer"] = is_develeap_customer(company)
