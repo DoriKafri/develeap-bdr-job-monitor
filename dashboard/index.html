@@ -10634,6 +10634,10 @@ async function _apolloAutoLoad() {
       const data = await _loadApolloData();
       if (data) {
         renderJobs(); // Re-render — _preloadAllStakeholders() called inside renderJobs()
+        // Refresh detail panel if already open (Apollo data arrived after user clicked a job)
+        if (_activeJobForOutreach && _activeJobForOutreach.id) {
+          openDetail(_activeJobForOutreach.id);
+        }
       }
     } catch (e) {
       console.warn('Apollo auto-load skipped:', e);
