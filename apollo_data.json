@@ -1,6 +1,6 @@
 {
   "provider": "apollo",
-  "syncedAt": "2026-03-06T14:43:45.466760Z",
+  "syncedAt": "2026-03-07T09:11:06.560744Z",
   "contacts": {
     "nataly kremer|checkpoint": {
       "apolloId": "54a40c697468693676355028",
@@ -2331,6 +2331,148 @@
         "master_engineering_technical"
       ],
       "headline": null
+    },
+    "lior kanfi|tikal": {
+      "apolloId": "605dfd4c2256800001ef5478",
+      "email": "lior@tikalk.com",
+      "emailStatus": null,
+      "title": "CEO",
+      "linkedin_url": "http://www.linkedin.com/in/liorkanfi",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://media.licdn.com/dms/image/v2/D4D03AQHsTNaR-vre5Q/profile-displayphoto-scale_200_200/B4DZreh91lGgAY-/0/1764670039864?e=2147483647&v=beta&t=zGonzMeVawliVht1yuUpIXkUFNM8Hf5w5LocTgRrsAw",
+      "city": null,
+      "country": "Israel",
+      "seniority": "c_suite",
+      "departments": [
+        "c_suite"
+      ],
+      "headline": null
+    },
+    "amir misgav|tikal": {
+      "apolloId": "54a1fd9e7468692e716b8103",
+      "email": "amir@tikalk.com",
+      "emailStatus": null,
+      "title": "DevOps Tech Lead @ Qwilt",
+      "linkedin_url": "http://www.linkedin.com/in/amir-misgav",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://media.licdn.com/dms/image/v2/C5603AQG3WE1_TEp1eA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517742832340?e=2147483647&v=beta&t=GsGLJ1s4QZ_Ci4CX67rYwTOt_GQp3fK51xjVQLoAazQ",
+      "city": null,
+      "country": "Israel",
+      "seniority": "manager",
+      "departments": [
+        "master_engineering_technical"
+      ],
+      "headline": "DevOps Tech & Group Leader @ Tikal"
+    },
+    "tamir tausi|tikal": {
+      "apolloId": "605dfd4104b5750001129052",
+      "email": "tamir@tikalk.com",
+      "emailStatus": null,
+      "title": "Head of Sales",
+      "linkedin_url": "http://www.linkedin.com/in/tamirtausi",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://media.licdn.com/dms/image/v2/C4E03AQHhtTxYgLcuYg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1596052188528?e=2147483647&v=beta&t=9nyqTrVCx1C0hS-Y8voQ-4aInOS2vxnqLoZy6TQBT0E",
+      "city": null,
+      "country": "Israel",
+      "seniority": "head",
+      "departments": [
+        "master_sales"
+      ],
+      "headline": "Head of Sales at Tikal"
+    },
+    "dina pasca-raz|kpmg israel": {
+      "apolloId": "69aabdf49eaddc001d93da9a",
+      "email": "dpasca@kpmg.com",
+      "emailStatus": "verified",
+      "title": "Partner, Head of Technology",
+      "linkedin_url": "http://www.linkedin.com/in/dina-pasca-raz-187873100",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": null,
+      "city": null,
+      "country": "Israel",
+      "seniority": "partner",
+      "departments": [],
+      "headline": null
+    },
+    "vadim solovey|doit international": {
+      "apolloId": "6889f4b81cf3940001d7c1a6",
+      "email": "vadim@doit.com",
+      "emailStatus": null,
+      "title": "CEO",
+      "linkedin_url": "http://www.linkedin.com/in/vadimska",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+      "city": "Boston",
+      "country": "United States",
+      "seniority": "c_suite",
+      "departments": [
+        "c_suite"
+      ],
+      "headline": "An intent-aware FinOps platform solving the “Illusion of Efficiency”"
+    },
+    "yoav toussia-cohen|doit international": {
+      "apolloId": "61152bb3aa25220001dcdeb9",
+      "email": "yoav@doit.com",
+      "emailStatus": null,
+      "title": "Chief Executive Officer",
+      "linkedin_url": "http://www.linkedin.com/in/yoavtoussiacohen",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://media.licdn.com/dms/image/v2/D4E03AQGhQRDSN2jeEw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1714095852738?e=2147483647&v=beta&t=AdlS6drQdP9Qo9paPN9KMrUoEOuvSZy_ZfSXvY1ecn0",
+      "city": "Nassau",
+      "country": "The Bahamas",
+      "seniority": "c_suite",
+      "departments": [
+        "c_suite"
+      ],
+      "headline": "Board Member | Advisor | Entrepreneur\n\n\n\n\n\nBoard Member & Advisor | Former Co-CEO, DoiT International | Built Multi-Billion-Dollar Global Tech Business"
+    },
+    "renen hallak|vast data": {
+      "apolloId": "66f3c8932a4d3800019d43bb",
+      "email": "renen.hallak@vastdata.com",
+      "emailStatus": null,
+      "title": "Founder & CEO",
+      "linkedin_url": "http://www.linkedin.com/in/renenh",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+      "city": null,
+      "country": "United States",
+      "seniority": "founder",
+      "departments": [
+        "c_suite"
+      ],
+      "headline": "Founder & CEO, VAST Data"
+    },
+    "jeff denworth|vast data": {
+      "apolloId": "66f457846e73580001189d02",
+      "email": "jeff.denworth@vastdata.com",
+      "emailStatus": null,
+      "title": "CoFounder",
+      "linkedin_url": "http://www.linkedin.com/in/jeffreydenworth",
+      "phone": "",
+      "phoneType": "",
+      "allPhones": [],
+      "photoUrl": "https://media.licdn.com/dms/image/v2/D4E03AQGm0B74upuvaw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718513377411?e=2147483647&v=beta&t=1f2zu7UB-Nk_lKeJoqM8LWLf3cF2WO36M3az2gN3Drw",
+      "city": "New York",
+      "country": "United States",
+      "seniority": "founder",
+      "departments": [
+        "c_suite"
+      ],
+      "headline": "CoFounder at VAST Data"
     }
   },
   "organizations": {
@@ -4187,7 +4329,7 @@
       "apolloId": "",
       "_notFound": true
     },
-    "automatit": {
+    "check point software": {
       "apolloId": "",
       "_notFound": true
     },
@@ -4199,7 +4341,7 @@
       "apolloId": "",
       "_notFound": true
     },
-    "doitintl": {
+    "doit international": {
       "apolloId": "",
       "_notFound": true
     },
@@ -4216,6 +4358,10 @@
       "_notFound": true
     },
     "intel corporation": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "kpmg israel": {
       "apolloId": "",
       "_notFound": true
     },
@@ -4247,7 +4393,7 @@
       "apolloId": "",
       "_notFound": true
     },
-    "somekhchaikin": {
+    "tikal": {
       "apolloId": "",
       "_notFound": true
     },
@@ -4267,21 +4413,49 @@
       "apolloId": "",
       "_notFound": true
     },
-    "wizinc": {
-      "apolloId": "",
-      "_notFound": true
-    },
     "zenity": {
       "apolloId": "",
       "_notFound": true
+    },
+    "abra": {
+      "apolloId": "54a1359969702d407ff2bb00",
+      "name": "Abra",
+      "domain": "abra.com",
+      "website": "http://www.abra.com",
+      "industry": "financial services",
+      "employeeCount": 180,
+      "annualRevenue": 25000000.0,
+      "foundedYear": 2016,
+      "technologies": [
+        "AI",
+        "Amazon SES",
+        "Android",
+        "Atlassian Cloud",
+        "Bootstrap Framework",
+        "CloudFlare CDN",
+        "CloudFlare Hosting",
+        "Formstack",
+        "Gmail",
+        "Google Apps",
+        "Google Tag Manager",
+        "MailChimp SPF",
+        "Mimecast",
+        "Mobile Friendly",
+        "Rackspace MailGun"
+      ],
+      "linkedinUrl": "http://www.linkedin.com/company/abra",
+      "city": "Mountain View",
+      "country": "United States",
+      "shortDescription": "Abra is a global digital asset prime services and wealth management company that specializes in solutions for institutional and high-net-worth clients in the cryptocurrency and decentralized finance (DeFi) sectors. The company aims to create abundant economic opportunities by bridging traditional finance with digital assets, offering secure and innovative services.\n\nAbra provides a range of institutional digital asset services, including prime services for liquidity and execution, wealth management solutions, asset-backed lending, and secure custody and trading. The company also integrates DeFi expertise to enhance yield generation and risk management. Its clientele includes private clients, family offices, hedge funds, venture capital firms, and financial institutions, all benefiting from Abra's commitment to fiduciary responsibility and capital protection. With a leadership team experienced in both traditional finance and crypto markets, Abra is positioned to deliver tailored financial solutions in a rapidly evolving landscape.",
+      "logoUrl": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69866d0ddf03c000019f4ac6/picture"
     }
   },
   "stats": {
-    "totalStakeholders": 120,
-    "contactsEnriched": 127,
-    "newContactsThisRun": 0,
-    "totalCompanies": 81,
-    "orgsEnriched": 60,
-    "newOrgsThisRun": 0
+    "totalStakeholders": 116,
+    "contactsEnriched": 135,
+    "newContactsThisRun": 8,
+    "totalCompanies": 77,
+    "orgsEnriched": 61,
+    "newOrgsThisRun": 1
   }
 }
