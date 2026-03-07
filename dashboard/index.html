@@ -7623,9 +7623,7 @@ function buildOutreachSection(job) {
           <button onclick="event.stopPropagation();_toggleLang('whatsapp',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E8F8F0;cursor:pointer;line-height:1" title="Switch language">${waFlag}</button>
         </div>`;
       }
-      if (!connected && !hasLI && !hasEmail) {
-        actionBtns += `<select class="template-select" style="font-size:11px;padding:4px 28px 4px 8px;margin:0;width:auto;min-width:130px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);scrollToTemplates();_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)"><option value="" disabled selected>\uD83D\uDCAC Pick Template</option>${liTplOpts}</select>`;
-      }
+      // No action buttons if contact has no LinkedIn, email, or phone — Pick Template removed as non-functional
 
       // Toggle connected status button
       const toggleBtn = (hasLI || connected)
