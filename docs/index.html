@@ -322,6 +322,7 @@
   .action-btn-group .tpl-trigger:hover { filter:brightness(0.9); }
   .tpl-dropdown { position:absolute; top:100%; right:0; background:white; border:1px solid var(--border); border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:200; min-width:160px; padding:4px 0; display:none; }
   .tpl-dropdown.open { display:block; }
+  .tpl-dropdown.flip-up { top:auto; bottom:100%; }
   .tpl-dropdown-item { display:flex; align-items:center; gap:6px; padding:6px 12px; font-size:12px; color:var(--text); cursor:pointer; white-space:nowrap; border:none; background:none; width:100%; text-align:left; }
   .tpl-dropdown-item:hover { background:var(--primary-light); }
   .tpl-dropdown-item.active { font-weight:700; background:#f0f0ff; }
@@ -6476,15 +6477,25 @@ function _buildTplDropdown(channel, stakeholderIdx) {
   return `<div class="tpl-dropdown" id="tplDrop_${channel}_${stakeholderIdx}">${items}</div>`;
 }
 
-// Toggle a template dropdown open/closed
+// Toggle a template dropdown open/closed, flipping up if not enough space below
 function _toggleTplDropdown(channel, stakeholderIdx, evt) {
   evt.stopPropagation();
   // Close all other dropdowns first
   document.querySelectorAll('.tpl-dropdown.open').forEach(d => {
-    if (d.id !== 'tplDrop_' + channel + '_' + stakeholderIdx) d.classList.remove('open');
+    if (d.id !== 'tplDrop_' + channel + '_' + stakeholderIdx) { d.classList.remove('open'); d.classList.remove('flip-up'); }
   });
   const dd = document.getElementById('tplDrop_' + channel + '_' + stakeholderIdx);
-  if (dd) dd.classList.toggle('open');
+  if (!dd) return;
+  const isOpen = dd.classList.contains('open');
+  if (isOpen) { dd.classList.remove('open'); dd.classList.remove('flip-up'); return; }
+  // Show it to measure, then decide direction
+  dd.classList.add('open');
+  dd.classList.remove('flip-up');
+  const rect = dd.getBoundingClientRect();
+  const viewH = window.innerHeight;
+  if (rect.bottom > viewH - 10) {
+    dd.classList.add('flip-up');
+  }
 }
 
 // Select a template for a channel
