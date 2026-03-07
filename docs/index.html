@@ -926,7 +926,7 @@
   .wp-card-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
   .wp-card-company { font-size:16px; font-weight:700; color:var(--text); }
   .wp-card-job { font-size:13px; color:var(--text-light); margin-top:2px; }
-  .wp-card-status { position:absolute; top:16px; right:16px; font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px; text-transform:uppercase; letter-spacing:0.5px; }
+  .wp-card-status { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px; text-transform:uppercase; letter-spacing:0.5px; vertical-align:middle; margin-left:6px; }
   .wp-card-status.active { background:#E8F5E9; color:#2E7D32; }
   .wp-card-status.paused { background:#FFF3E0; color:#E65100; }
   .wp-card-status.completed { background:#E3F2FD; color:#1565C0; }
@@ -15595,13 +15595,12 @@ function _wpRenderCampaignCard(c, idx) {
 
   // Full-width horizontal layout
   return '<div class="wp-campaign-card" data-status="' + c.status + '" data-company="' + (c.company.name || '').toLowerCase() + '" onclick="_wpOpenDetail(\'' + c.id + '\')" style="border-left:4px solid ' + borderColor + '">' +
-    '<div class="wp-card-status ' + c.status + '">' + c.status + '</div>' +
     '<div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">' +
       // Left: company info
       '<div style="display:flex;align-items:center;gap:12px;min-width:240px;flex:1">' +
         cLogoHtml +
         '<div>' +
-          '<div class="wp-card-company" style="font-size:15px">' + cName + ' ' + custBadge + '</div>' +
+          '<div class="wp-card-company" style="font-size:15px">' + cName + ' ' + custBadge + ' <span class="wp-card-status ' + c.status + '">' + c.status + '</span></div>' +
           '<div class="wp-card-job">' + (c.targetJob && c.targetJob.title ? c.targetJob.title : 'No job specified') + '</div>' +
           '<div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</span>' + cSourceHtml + '</div>' +
         '</div>' +
