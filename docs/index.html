@@ -14544,7 +14544,336 @@ function _wpRenderList() {
   });
   cardsHtml += '</div>';
 
-  container.innerHTML = filterHtml + cardsHtml;
+  ALL_JOBS.forEach(function(j) {
+    // Must have enriched stakeholders
+    if (!j.stakeholders || j.stakeholders.length === 0) return;
+    // Must not already have a campaign
+    var key = (j.company || '').toLowerCase() + '::' + (j.title || '').toLowerCase();
+    if (campaignKeys[key]) return;
+    // Must be relatively new (or isNew flag)
+    if (j.isNew || !j.firstSeen || (Date.now() - new Date(j.firstSeen).getTime() < 7 * 86400000)) {
+      // Detect customer type
+      var customerType = j.isDeveleapCustomer ? 'customer' :
+                         j.isPastCustomer ? 'past' :
+                         _isHighPotential(j) ? 'high_potential' : 'prospect';
+      result.push({ job: j, customerType: customerType });
+    }
+  });
+
+  // Sort by priority: customer > past > high_potential > prospect
+  var priority = { customer: 0, past: 1, high_potential: 2, prospect: 3 };
+  result.sort(function(a, b) { return (priority[a.customerType] || 9) - (priority[b.customerType] || 9); });
+  return result;
+}
+
+function _isHighPotential(job) {
+  // Multiple job listings from same company
+  var companyListings = ALL_JOBS.filter(function(j) { return j.company && job.company && j.company.toLowerCase() === job.company.toLowerCase(); });
+  if (companyListings.length >= 3) return true;
+
+  // C-level or VP stakeholders
+  if (job.stakeholders && job.stakeholders.length > 0) {
+    var hasExec = job.stakeholders.some(function(s) {
+      var title = (s.title || s.role || '').toLowerCase();
+      return title.indexOf('ceo') >= 0 || title.indexOf('cto') >= 0 || title.indexOf('cio') >= 0 ||
+             title.indexOf('vp') >= 0 || title.indexOf('vice president') >= 0 || title.indexOf('director') >= 0 ||
+             title.indexOf('chief') >= 0 || title.indexOf('head of') >= 0;
+    });
+    if (hasExec) return true;
+  }
+
+  return false;
+}
+
+function _wpRenderPendingTab(pending) {
+  if (pending.length === 0) {
+    return '<div class="wp-empty"><div class="wp-empty-icon">✅</div><div class="wp-empty-title">All caught up!</div><div class="wp-empty-desc">No new job listings need Wolf Pack strategy assignment. Check back when new listings are detected.</div></div>';
+  }
+
+  var typeLabels = {
+    customer: { icon: '🏢', color: '#00CA72', label: 'Customer' },
+    past: { icon: '🔄', color: '#FDAB3D', label: 'Past Customer' },
+    prospect: { icon: '🎯', color: '#0073EA', label: 'Prospect' },
+    high_potential: { icon: '⭐', color: '#DF2F4A', label: 'High Potential' }
+  };
+
+  var html = '<div style="display:flex;flex-direction:column;gap:12px">';
+
+  pending.forEach(function(item) {
+    var job = item.job;
+    var ct = item.customerType;
+    var info = typeLabels[ct] || typeLabels.prospect;
+    var defaults = _wpStrategyDefaults[ct];
+    var tpl = _WP_FLOW_TEMPLATES[defaults.flowTemplate] || {};
+    var contactCount = (job.stakeholders || []).length;
+    var mergedCount = (job._mergedStakeholders || job.stakeholders || []).length;
+
+    html += '<div class="wp-pending-card" style="background:white;border:1px solid var(--border);border-radius:14px;padding:16px 20px;border-left:4px solid ' + info.color + '">';
+
+    // Header row
+    var companyLogoHtml = job.logo
+      ? '<div style="width:40px;height:40px;border-radius:10px;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="' + job.logo + '" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.onerror=null;this.parentNode.innerHTML=\'' + (job.company || '?').charAt(0) + '\'"></div>'
+      : '<div style="width:40px;height:40px;border-radius:10px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--primary);flex-shrink:0">' + (job.company || '?').charAt(0) + '</div>';
+    var sourceBadgeHtml = sourceIcon(job.source) ? '<span class="badge badge-' + job.source + ' source-badge" style="font-size:11px">' + sourceIcon(job.source) + (SOURCE_LABELS[job.source] || job.source) + '</span>' : '';
+
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
+    html += '<div style="display:flex;align-items:center;gap:10px">';
+    html += companyLogoHtml;
+    html += '<div>';
+    html += '<div style="font-weight:700;font-size:15px">' + (job.company || 'Unknown Company') + '</div>';
+    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;color:var(--text-light)">' + (job.title || 'Unknown Position') + '</span>' + sourceBadgeHtml + '</div>';
+    html += '</div></div>';
+    html += '<span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:600;color:white;background:' + info.color + '">' + info.icon + ' ' + info.label + '</span>';
+    html += '</div>';
+
+    // Info row
+    html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap">';
+    html += '<div style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-light)">👥 ' + mergedCount + ' contacts</div>';
+    html += '<div style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-light)">' + tpl.icon + ' ' + tpl.name + ' (' + tpl.days + ' days)</div>';
+    html += '<div style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-light)">📡 ' + (defaults.channels || []).join(', ') + '</div>';
+    if (defaults.teamMembers && defaults.teamMembers.length > 0) {
+      html += '<div style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-light)">🎖️ ' + defaults.teamMembers.length + ' team members</div>';
+    }
+    html += '</div>';
+
+    // Strategy picker + launch
+    html += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">';
+    html += '<select id="wpPendingStrategy_' + (job.id || '') + '" onchange="_wpUpdatePendingStrategy(this, \'' + (job.id || '') + '\')" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;flex:0 0 auto">';
+    Object.keys(_WP_FLOW_TEMPLATES).forEach(function(key) {
+      var t = _WP_FLOW_TEMPLATES[key];
+      html += '<option value="' + key + '"' + (defaults.flowTemplate === key ? ' selected' : '') + '>' + t.icon + ' ' + t.name + '</option>';
+    });
+    html += '</select>';
+    html += '<button onclick="_wpShowQuickConfirm(\'' + (job.id || '') + '\', \'' + ct + '\')" style="padding:8px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px">🐺 Launch</button>';
+    html += '<button onclick="_wpShowWizardForJob(\'' + (job.id || '') + '\', \'' + ct + '\')" style="padding:8px 14px;background:white;color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:12px;cursor:pointer">Customize...</button>';
+    html += '</div>';
+
+    // Quick confirm overlay (hidden by default)
+    html += '<div id="wpQuickConfirm_' + (job.id || '') + '" style="display:none"></div>';
+
+    html += '</div>';
+  });
+
+  html += '</div>';
+  return html;
+}
+
+function _wpUpdatePendingStrategy(select, jobId) {
+  // This just updates the visual dropdown; actual template is used at launch time
+}
+
+/* ---- Quick Confirm + Auto-Launch ---- */
+function _wpShowQuickConfirm(jobId, customerType) {
+  var job = ALL_JOBS.find(function(j) { return j.id === jobId; });
+  if (!job) { _showToast('❌ Job not found'); return; }
+
+  var ct = customerType;
+  var defaults = _wpStrategyDefaults[ct];
+  var selectedTemplate = document.getElementById('wpPendingStrategy_' + jobId);
+  var templateKey = selectedTemplate ? selectedTemplate.value : defaults.flowTemplate;
+  var tpl = _WP_FLOW_TEMPLATES[templateKey] || {};
+
+  var contacts = job._mergedStakeholders || job.stakeholders || [];
+  var teamMembers = defaults.teamMembers || [];
+
+  var typeLabels = {
+    customer: { icon: '🏢', label: 'Customer', color: '#00CA72' },
+    past: { icon: '🔄', label: 'Past Customer', color: '#FDAB3D' },
+    prospect: { icon: '🎯', label: 'Prospect', color: '#0073EA' },
+    high_potential: { icon: '⭐', label: 'High Potential', color: '#DF2F4A' }
+  };
+  var info = typeLabels[ct] || typeLabels.prospect;
+
+  var html = '<div style="margin-top:12px;padding:16px;background:#F8F9FA;border:2px solid ' + info.color + ';border-radius:12px;animation:fadeIn 0.2s">';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
+  html += '<div style="font-weight:700;font-size:14px">🐺 Confirm Campaign Launch</div>';
+  html += '<span onclick="_wpCloseQuickConfirm(\'' + jobId + '\')" style="cursor:pointer;font-size:18px;color:var(--text-light)">×</span>';
+  html += '</div>';
+
+  // Strategy summary
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">';
+  html += '<div><div style="font-size:11px;color:var(--text-light);margin-bottom:4px">STRATEGY</div><div style="font-size:13px;font-weight:600">' + tpl.icon + ' ' + tpl.name + ' (' + tpl.days + ' days)</div></div>';
+  html += '<div><div style="font-size:11px;color:var(--text-light);margin-bottom:4px">TYPE</div><div style="font-size:13px;font-weight:600">' + info.icon + ' ' + info.label + '</div></div>';
+  html += '</div>';
+
+  // Team members
+  html += '<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text-light);margin-bottom:6px">TEAM (' + teamMembers.length + ')</div>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+  if (teamMembers.length > 0) {
+    teamMembers.forEach(function(email) {
+      var name = _getUserDisplayName(email);
+      var initials = name.split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
+      html += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:white;border-radius:16px;font-size:12px;border:1px solid var(--border)">';
+      html += '<div style="width:22px;height:22px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">' + initials + '</div>';
+      html += name + '</div>';
+    });
+  } else {
+    html += '<span style="font-size:12px;color:var(--text-light);font-style:italic">No team members configured — set defaults in Settings → Wolf Pack</span>';
+  }
+  html += '</div></div>';
+
+  // Contacts
+  html += '<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text-light);margin-bottom:6px">TARGET CONTACTS (' + contacts.length + ')</div>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+  contacts.forEach(function(c, i) {
+    if (i >= 8) return;
+    var name = c.name || c.firstName || c.email || 'Contact';
+    var role = c.title || c.role || '';
+    html += '<div style="padding:4px 10px;background:white;border-radius:16px;font-size:12px;border:1px solid var(--border)" title="' + role + '">' + name + '</div>';
+  });
+  if (contacts.length > 8) html += '<div style="padding:4px 10px;font-size:12px;color:var(--text-light)">+' + (contacts.length - 8) + ' more</div>';
+  html += '</div></div>';
+
+  // Channels
+  html += '<div style="margin-bottom:14px"><div style="font-size:11px;color:var(--text-light);margin-bottom:6px">CHANNELS</div>';
+  html += '<div style="display:flex;gap:6px">';
+  var chIcons = { linkedin: '🔗 LinkedIn', email: '✉️ Email', whatsapp: '📱 WhatsApp' };
+  (defaults.channels || []).forEach(function(ch) {
+    html += '<span style="padding:4px 10px;background:white;border-radius:16px;font-size:12px;border:1px solid var(--border)">' + (chIcons[ch] || ch) + '</span>';
+  });
+  html += '</div></div>';
+
+  // Launch button
+  html += '<div style="display:flex;gap:10px;justify-content:flex-end">';
+  html += '<button onclick="_wpCloseQuickConfirm(\'' + jobId + '\')" style="padding:8px 16px;background:white;border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer">Cancel</button>';
+  html += '<button onclick="_wpAutoLaunch(\'' + jobId + '\', \'' + ct + '\')" style="padding:8px 24px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px">🐺 Launch Campaign</button>';
+  html += '</div>';
+  html += '</div>';
+
+  var confirmEl = document.getElementById('wpQuickConfirm_' + jobId);
+  if (confirmEl) {
+    confirmEl.style.display = 'block';
+    confirmEl.innerHTML = html;
+  }
+}
+
+function _wpCloseQuickConfirm(jobId) {
+  var el = document.getElementById('wpQuickConfirm_' + jobId);
+  if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+}
+
+function _wpAutoLaunch(jobId, customerType) {
+  var job = ALL_JOBS.find(function(j) { return j.id === jobId; });
+  if (!job) { _showToast('❌ Job not found'); return; }
+
+  var ct = customerType;
+  var defaults = _wpStrategyDefaults[ct];
+
+  // Get selected template from dropdown (may differ from defaults)
+  var selectedTemplate = document.getElementById('wpPendingStrategy_' + jobId);
+  var templateKey = selectedTemplate ? selectedTemplate.value : defaults.flowTemplate;
+
+  // Build company object
+  var company = {
+    name: job.company || 'Unknown',
+    logo: job.logo || '',
+    isCustomer: job.isDeveleapCustomer || false,
+    isPastCustomer: job.isPastCustomer || false,
+    customerType: ct,
+    source: job.source || ''
+  };
+
+  // Build target job
+  var targetJob = {
+    title: job.title || '',
+    url: job.url || '',
+    location: job.location || '',
+    source: job.source || ''
+  };
+
+  // Build contacts from stakeholders
+  var contacts = (job._mergedStakeholders || job.stakeholders || []).map(function(s) {
+    return {
+      id: _wpGenerateId(),
+      name: s.name || s.firstName || '',
+      email: s.email || '',
+      title: s.title || s.role || '',
+      linkedin: s.linkedin || s.linkedinUrl || '',
+      phone: s.phone || '',
+      isPrimary: false
+    };
+  });
+  if (contacts.length > 0) contacts[0].isPrimary = true;
+
+  // Build team members
+  var teamMembers = (defaults.teamMembers || []).map(function(email) {
+    var name = _getUserDisplayName(email);
+    return { email: email, displayName: name, role: 'member' };
+  });
+
+  // Generate flow
+  var flow = _wpGenerateDefaultFlow(templateKey, teamMembers, contacts);
+
+  // Create campaign
+  var campaign = {
+    id: _wpGenerateId(),
+    company: company,
+    targetJob: targetJob,
+    targetContacts: contacts,
+    teamMembers: teamMembers,
+    flow: flow,
+    status: 'active',
+    createdAt: new Date().toISOString(),
+    createdBy: (_userProfiles && Object.keys(_userProfiles).length > 0) ? Object.keys(_userProfiles)[0] : 'unknown',
+    autoLaunched: true,
+    customerType: ct,
+    channels: defaults.channels || [],
+    adaptiveRules: (defaults.adaptiveRules || []).map(function(r) {
+      var parts = r.split(':');
+      return { trigger: parts[0], action: parts[1], enabled: true };
+    }),
+    executionState: {
+      currentNodeIndex: 0,
+      completedNodes: [],
+      nextExecutionTime: new Date().toISOString()
+    },
+    responseTracking: {
+      touchpoints: [],
+      engagementScore: 0,
+      lastChecked: null
+    }
+  };
+
+  _wpCampaigns.push(campaign);
+  _saveCampaignsToGitHub();
+  _showToast('🐺 Wolf Pack campaign launched for ' + company.name + '!');
+
+  // Navigate to campaign detail
+  _wpSelectedCampaign = campaign;
+  _wpSubView = 'detail';
+  _wpRenderCurrentView();
+}
+
+function _wpShowWizardForJob(jobId, customerType) {
+  var job = ALL_JOBS.find(function(j) { return j.id === jobId; });
+  if (!job) return;
+
+  // Pre-fill wizard data from job + defaults
+  var defaults = _wpStrategyDefaults[customerType];
+  _wpWizardData = {
+    company: {
+      name: job.company || '',
+      logo: job.logo || '',
+      isCustomer: job.isDeveleapCustomer || false,
+      isPastCustomer: job.isPastCustomer || false,
+      customerType: customerType,
+      source: job.source || ''
+    },
+    job: {
+      title: job.title || '',
+      url: job.url || '',
+      location: job.location || ''
+    },
+    contacts: (job._mergedStakeholders || job.stakeholders || []).map(function(s) {
+      return { id: _wpGenerateId(), name: s.name || s.firstName || '', email: s.email || '', title: s.title || s.role || '', linkedin: s.linkedin || s.linkedinUrl || '' };
+    }),
+    team: (defaults.teamMembers || []).map(function(email) { return email; }),
+    channels: defaults.channels ? defaults.channels.slice() : ['linkedin', 'email'],
+    template: defaults.flowTemplate
+  };
+  _wpWizardStep = 1;
+  document.getElementById('wpWizardOverlay').style.display = 'flex';
+  _wpRenderWizardStep();
 }
 
 function _wpRenderCampaignCard(c, idx) {
@@ -14567,13 +14896,27 @@ function _wpRenderCampaignCard(c, idx) {
 
   var daysRunning = c.createdAt ? Math.max(1, Math.round((Date.now() - new Date(c.createdAt).getTime()) / 86400000)) : 0;
 
+  // Company logo
+  var cLogo = c.company.logo || '';
+  var cName = c.company.name || 'Unknown';
+  var cLogoHtml = cLogo
+    ? '<div class="company-logo" style="width:36px;height:36px;border-radius:8px"><img src="' + cLogo + '" alt="" onerror="this.onerror=null;this.parentNode.textContent=\'' + cName.charAt(0) + '\'"></div>'
+    : '<div class="company-logo" style="width:36px;height:36px;border-radius:8px">' + cName.charAt(0) + '</div>';
+
+  // Source badge
+  var cSource = (c.targetJob && c.targetJob.source) || c.company.source || '';
+  var cSourceHtml = cSource && typeof sourceIcon === 'function' ? '<span class="source-badge" style="font-size:11px;margin-top:2px">' + sourceIcon(cSource) + (SOURCE_LABELS[cSource] || cSource) + '</span>' : '';
+
   return '<div class="wp-campaign-card" data-status="' + c.status + '" data-company="' + (c.company.name || '').toLowerCase() + '" onclick="_wpOpenDetail(\'' + c.id + '\')">' +
     '<div class="wp-card-status ' + c.status + '">' + c.status + '</div>' +
     '<div class="wp-card-header">' +
-      '<div>' +
-        '<div class="wp-card-company">' + (c.company.name || 'Unknown') + '</div>' +
-        '<div class="wp-card-job">' + (c.targetJob && c.targetJob.title ? c.targetJob.title : 'No job specified') + '</div>' +
-        '<div class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</div>' +
+      '<div style="display:flex;align-items:center;gap:10px">' +
+        cLogoHtml +
+        '<div>' +
+          '<div class="wp-card-company">' + cName + '</div>' +
+          '<div class="wp-card-job">' + (c.targetJob && c.targetJob.title ? c.targetJob.title : 'No job specified') + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px"><span class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</span>' + cSourceHtml + '</div>' +
+        '</div>' +
       '</div>' +
     '</div>' +
     '<div class="wp-card-team">' + teamAvatars + '</div>' +
@@ -14637,14 +14980,26 @@ function _wpRenderDetail() {
 
   var h = '<div class="wp-detail">';
 
+  // Company logo + source for detail header
+  var dLogo = c.company.logo || '';
+  var dName = c.company.name || '';
+  var dLogoHtml = dLogo
+    ? '<div style="width:48px;height:48px;border-radius:12px;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="' + dLogo + '" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.onerror=null;this.parentNode.innerHTML=\'' + dName.charAt(0) + '\'"></div>'
+    : '<div style="width:48px;height:48px;border-radius:12px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:var(--primary);flex-shrink:0">' + dName.charAt(0) + '</div>';
+  var dSource = (c.targetJob && c.targetJob.source) || c.company.source || '';
+  var dSourceHtml = dSource && typeof sourceIcon === 'function' ? '<span class="source-badge" style="font-size:12px">' + sourceIcon(dSource) + (SOURCE_LABELS[dSource] || dSource) + '</span>' : '';
+
   // Header
   h += '<div class="wp-detail-header">' +
-    '<div>' +
-      '<h2 style="font-size:20px;margin-bottom:4px">' + (c.company.name || '') + '</h2>' +
-      '<div style="font-size:13px;color:var(--text-light)">' + (c.targetJob && c.targetJob.title || '') + '</div>' +
-      '<div style="margin-top:8px;display:flex;align-items:center;gap:8px">' +
-        '<span class="wp-card-status ' + c.status + '" style="position:static">' + c.status + '</span>' +
-        teamAvatars +
+    '<div style="display:flex;align-items:center;gap:14px">' +
+      dLogoHtml +
+      '<div>' +
+        '<h2 style="font-size:20px;margin-bottom:4px">' + dName + '</h2>' +
+        '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;color:var(--text-light)">' + (c.targetJob && c.targetJob.title || '') + '</span>' + dSourceHtml + '</div>' +
+        '<div style="margin-top:8px;display:flex;align-items:center;gap:8px">' +
+          '<span class="wp-card-status ' + c.status + '" style="position:static">' + c.status + '</span>' +
+          teamAvatars +
+        '</div>' +
       '</div>' +
     '</div>' +
     '<div style="text-align:center">' +
