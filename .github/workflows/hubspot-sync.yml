@@ -26,47 +26,43 @@ jobs:
       - name: Check if any integration is configured
         run: |
           if [ -z "$HUBSPOT_TOKEN" ] && [ -z "$APOLLO_API_KEY" ]; then
-            echo "⏭️ No integration secrets set — skipping run"
-            echo "SKIP_RUN=true" >> $GITHUB_ENV
+            echo "No integration secrets set, skipping"
+            exit 0
           fi
 
       - name: Checkout repository
-        if: env.SKIP_RUN != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        if: env.SKIP_RUN != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install dependencies
-        if: env.SKIP_RUN != 'true'
         run: pip install requests
 
       - name: Run HubSpot CRM sync
-        if: env.SKIP_RUN != 'true' && env.HUBSPOT_TOKEN != ''
+        if: env.HUBSPOT_TOKEN != ''
         env:
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
         run: python sync_hubspot.py
 
       - name: Run Apollo.io enrichment
-        if: env.SKIP_RUN != 'true' && env.APOLLO_API_KEY != ''
+        if: env.APOLLO_API_KEY != ''
         env:
           APOLLO_WEBHOOK_URL: ${{ secrets.APOLLO_WEBHOOK_URL }}
         run: python enrich_apollo.py
 
       - name: Process outreach queue
-        if: env.SKIP_RUN != 'true' && env.HUBSPOT_TOKEN != ''
+        if: env.HUBSPOT_TOKEN != ''
         env:
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python process_queue.py
 
       - name: Commit data
-        if: env.SKIP_RUN != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

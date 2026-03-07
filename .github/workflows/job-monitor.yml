@@ -20,34 +20,21 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Check required secrets
-        env:
-          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
-        run: |
-          if [ -z "$SERPAPI_KEY" ]; then
-            echo "⏭️ SERPAPI_KEY not configured — skipping run"
-            echo "SKIP_RUN=true" >> $GITHUB_ENV
-          fi
-
       - name: Checkout repository
-        if: env.SKIP_RUN != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        if: env.SKIP_RUN != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: 'pip'
 
       - name: Install dependencies
-        if: env.SKIP_RUN != 'true'
         run: pip install -r requirements.txt
 
       - name: Run job monitor update
-        if: env.SKIP_RUN != 'true'
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
@@ -57,7 +44,6 @@ jobs:
         run: python update_jobs.py
 
       - name: Commit updated dashboard
-        if: env.SKIP_RUN != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -76,7 +62,7 @@ jobs:
           git push
 
       - name: Notify Slack on failure
-        if: failure() && env.SKIP_RUN != 'true'
+        if: failure()
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
