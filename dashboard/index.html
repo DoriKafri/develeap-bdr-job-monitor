@@ -1299,6 +1299,10 @@
           <span>🎭</span>
           <span>Delegation</span>
         </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('wolfpack')">
+          <span>🐺</span>
+          <span>Wolf Pack</span>
+        </div>
       </div>
 
       <div class="settings-content-area">
@@ -1987,6 +1991,11 @@
               <strong>Created by</strong> and <strong>Acting as</strong> for audit purposes. Only admins can manage delegations.
             </div>
           </div>
+        </div>
+
+        <!-- Wolf Pack Section -->
+        <div id="wolfpackSection" class="settings-section" style="display:none">
+          <!-- Rendered dynamically by renderWolfPackSettingsSection() -->
         </div>
 
         <!-- Templates Section -->
@@ -9628,6 +9637,13 @@ async function _loadSettingsFromGitHub() {
         _delegationConfig = settings.delegation;
       }
 
+      // Apply Wolf Pack strategy defaults
+      if (settings.wolfPackDefaults && typeof settings.wolfPackDefaults === 'object') {
+        Object.keys(settings.wolfPackDefaults).forEach(function(ct) {
+          if (_wpStrategyDefaults[ct]) Object.assign(_wpStrategyDefaults[ct], settings.wolfPackDefaults[ct]);
+        });
+      }
+
       // Re-flag develeap customers with updated lists
       ALL_JOBS.forEach(j => {
         j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
@@ -10915,6 +10931,7 @@ async function _saveSettingsToGitHub() {
     userProfiles: _userProfiles,
     delegation: _delegationConfig,
     templateLang: _templateLang,
+    wolfPackDefaults: _wpStrategyDefaults,
     oauth: {
       clientId: localStorage.getItem('_oauthClientId') || '',
       domain: localStorage.getItem('_oauthDomain') || ALLOWED_DOMAIN
@@ -11000,6 +11017,7 @@ function switchSettingsSection(section) {
     else if (section === 'users') renderUsersSection();
     else if (section === 'profile') renderProfileSection();
     else if (section === 'delegation') renderDelegationSection();
+    else if (section === 'wolfpack') renderWolfPackSettingsSection();
   }
   updateUrlHash();
 }
@@ -11466,6 +11484,137 @@ function renderSettingsTab(idx) {
   document.getElementById('settingsTabContent').innerHTML = html;
 }
 
+function renderWolfPackSettingsSection() {
+  var el = document.getElementById('wolfpackSection');
+  if (!el) return;
+
+  var _WP_ADAPTIVE_RULES = [
+    { key: 'any_positive_reply:pause_remaining', label: 'Positive reply → Pause remaining' },
+    { key: 'email_opened_3x:escalate_priority', label: 'Email opened 3x → Escalate priority' },
+    { key: 'all_connections_declined:archive', label: 'All connections declined → Archive' },
+    { key: 'no_response_7days:switch_channel', label: 'No response 7 days → Switch channel' }
+  ];
+
+  var typeLabels = {
+    customer: { icon: '🏢', label: 'Existing Customers', desc: 'Companies currently using Develeap services' },
+    past: { icon: '🔄', label: 'Past Customers', desc: 'Companies that previously used Develeap services' },
+    prospect: { icon: '🎯', label: 'New Prospects', desc: 'Companies with no prior Develeap relationship' },
+    high_potential: { icon: '⭐', label: 'High-Potential Prospects', desc: 'Prospects with C-level contacts or multiple listings' }
+  };
+
+  var html = '<h3 class="settings-section-title">🐺 Wolf Pack Strategy Defaults</h3>';
+  html += '<p style="color:var(--text-light);font-size:13px;margin-bottom:20px">Configure default Wolf Pack strategies per customer type. These defaults auto-fill when new job listings are detected.</p>';
+
+  Object.keys(typeLabels).forEach(function(ct) {
+    var info = typeLabels[ct];
+    var defaults = _wpStrategyDefaults[ct];
+    var tpl = _WP_FLOW_TEMPLATES[defaults.flowTemplate] || {};
+
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">';
+    html += '<div style="display:flex;align-items:center;gap:10px">';
+    html += '<div style="width:36px;height:36px;border-radius:10px;background:#EDE7F6;display:flex;align-items:center;justify-content:center;font-size:18px">' + info.icon + '</div>';
+    html += '<div><div style="font-weight:700;font-size:14px">' + info.label + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-light)">' + info.desc + '</div></div></div>';
+    html += '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">';
+    html += '<span>Auto-activate</span>';
+    html += '<input type="checkbox" ' + (defaults.autoActivate ? 'checked' : '') + ' onchange="_wpToggleSettingsAutoActivate(\'' + ct + '\', this.checked)" style="cursor:pointer">';
+    html += '</label></div>';
+
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">';
+    html += '<div><label style="font-size:12px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Flow Template</label>';
+    html += '<select onchange="_wpUpdateSettingsDefault(\'' + ct + '\', \'flowTemplate\', this.value)" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px">';
+    Object.keys(_WP_FLOW_TEMPLATES).forEach(function(key) {
+      var t = _WP_FLOW_TEMPLATES[key];
+      html += '<option value="' + key + '"' + (defaults.flowTemplate === key ? ' selected' : '') + '>' + t.icon + ' ' + t.name + ' (' + t.days + ' days)</option>';
+    });
+    html += '</select></div>';
+
+    html += '<div><label style="font-size:12px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Channels</label>';
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+    ['linkedin', 'email', 'whatsapp'].forEach(function(ch) {
+      var checked = defaults.channels && defaults.channels.indexOf(ch) >= 0;
+      var icons = { linkedin: '🔗', email: '✉️', whatsapp: '📱' };
+      html += '<label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:' + (checked ? '#E8F5E9' : '#fff') + '">';
+      html += '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="_wpToggleSettingsChannel(\'' + ct + '\', \'' + ch + '\', this.checked)" style="cursor:pointer">';
+      html += icons[ch] + ' ' + ch.charAt(0).toUpperCase() + ch.slice(1) + '</label>';
+    });
+    html += '</div></div></div>';
+
+    html += '<div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Default Team Members</label>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="wpSettingsTeam_' + ct + '">';
+    if (defaults.teamMembers && defaults.teamMembers.length > 0) {
+      defaults.teamMembers.forEach(function(email) {
+        var name = _getUserDisplayName(email);
+        html += '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#E3F2FD;border-radius:16px;font-size:12px">';
+        html += name + ' <span onclick="_wpRemoveSettingsTeam(\'' + ct + '\', \'' + email + '\')" style="cursor:pointer;color:#666;font-weight:700">×</span></span>';
+      });
+    } else {
+      html += '<span style="font-size:12px;color:var(--text-light);font-style:italic">No default team members set</span>';
+    }
+    html += '</div>';
+    html += '<select onchange="_wpAddSettingsTeam(\'' + ct + '\', this.value); this.value=\'\'" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px">';
+    html += '<option value="">+ Add team member...</option>';
+    if (_dashboardUsers && _dashboardUsers.length > 0) {
+      _dashboardUsers.forEach(function(u) {
+        if (!defaults.teamMembers || defaults.teamMembers.indexOf(u.email) < 0) {
+          html += '<option value="' + u.email + '">' + (u.name || u.email) + '</option>';
+        }
+      });
+    }
+    html += '</select></div>';
+
+    html += '<div><label style="font-size:12px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Adaptive Rules</label>';
+    html += '<div style="display:flex;flex-direction:column;gap:6px">';
+    _WP_ADAPTIVE_RULES.forEach(function(rule) {
+      var checked = defaults.adaptiveRules && defaults.adaptiveRules.indexOf(rule.key) >= 0;
+      html += '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">';
+      html += '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="_wpToggleSettingsRule(\'' + ct + '\', \'' + rule.key + '\', this.checked)" style="cursor:pointer">';
+      html += rule.label + '</label>';
+    });
+    html += '</div></div>';
+
+    html += '</div>';
+  });
+
+  html += '<div style="display:flex;justify-content:flex-end;margin-top:8px">';
+  html += '<button class="intg-save-btn" onclick="_saveSettingsToGitHub()" style="background:var(--primary)">💾 Save Wolf Pack Defaults</button>';
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+function _wpToggleSettingsAutoActivate(ct, val) { _wpStrategyDefaults[ct].autoActivate = val; }
+function _wpUpdateSettingsDefault(ct, key, val) { _wpStrategyDefaults[ct][key] = val; }
+
+function _wpToggleSettingsChannel(ct, channel, checked) {
+  var chs = _wpStrategyDefaults[ct].channels || [];
+  if (checked && chs.indexOf(channel) < 0) chs.push(channel);
+  else if (!checked) chs = chs.filter(function(c) { return c !== channel; });
+  _wpStrategyDefaults[ct].channels = chs;
+}
+
+function _wpToggleSettingsRule(ct, rule, checked) {
+  var rules = _wpStrategyDefaults[ct].adaptiveRules || [];
+  if (checked && rules.indexOf(rule) < 0) rules.push(rule);
+  else if (!checked) rules = rules.filter(function(r) { return r !== rule; });
+  _wpStrategyDefaults[ct].adaptiveRules = rules;
+}
+
+function _wpAddSettingsTeam(ct, email) {
+  if (!email) return;
+  if (!_wpStrategyDefaults[ct].teamMembers) _wpStrategyDefaults[ct].teamMembers = [];
+  if (_wpStrategyDefaults[ct].teamMembers.indexOf(email) < 0) {
+    _wpStrategyDefaults[ct].teamMembers.push(email);
+    renderWolfPackSettingsSection();
+  }
+}
+
+function _wpRemoveSettingsTeam(ct, email) {
+  _wpStrategyDefaults[ct].teamMembers = (_wpStrategyDefaults[ct].teamMembers || []).filter(function(e) { return e !== email; });
+  renderWolfPackSettingsSection();
+}
+
 function renderSettingsView() {
   // On mobile: always start at the menu (sidebar visible, content hidden)
   if (window.innerWidth <= 768) {
@@ -11488,6 +11637,9 @@ function renderSettingsView() {
     else if (txt.includes('integrations')) sectionName = 'integrations';
     else if (txt.includes('templates')) sectionName = 'templates';
     else if (txt.includes('users')) sectionName = 'users';
+    else if (txt.includes('profile')) sectionName = 'profile';
+    else if (txt.includes('wolf pack')) sectionName = 'wolfpack';
+    else if (txt.includes('delegation')) sectionName = 'delegation';
   }
   switchSettingsSection(sectionName);
 }
@@ -13092,7 +13244,39 @@ var _wpSelectedNode = null;
 var _wpUndoStack = [];
 var _wpRedoStack = [];
 var _wpDragTemplate = null;
+var _wpPendingTab = 'pending'; // 'pending' | 'active' | 'all'
 var _WP_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/contents/wolfpack_campaigns.json';
+
+var _wpStrategyDefaults = {
+  customer: {
+    flowTemplate: 'executive_touch',
+    teamMembers: [],
+    channels: ['linkedin', 'email'],
+    adaptiveRules: ['any_positive_reply:pause_remaining', 'email_opened_3x:escalate_priority'],
+    autoActivate: true
+  },
+  past: {
+    flowTemplate: 'quick_strike',
+    teamMembers: [],
+    channels: ['linkedin', 'email', 'whatsapp'],
+    adaptiveRules: ['any_positive_reply:pause_remaining'],
+    autoActivate: true
+  },
+  prospect: {
+    flowTemplate: 'full_siege',
+    teamMembers: [],
+    channels: ['linkedin', 'email'],
+    adaptiveRules: ['any_positive_reply:pause_remaining', 'all_connections_declined:archive'],
+    autoActivate: true
+  },
+  high_potential: {
+    flowTemplate: 'content_surround',
+    teamMembers: [],
+    channels: ['linkedin', 'email', 'whatsapp'],
+    adaptiveRules: ['any_positive_reply:pause_remaining', 'email_opened_3x:escalate_priority'],
+    autoActivate: true
+  }
+};
 
 var _WP_NODE_TYPES = {
   // Triggers
@@ -14543,7 +14727,19 @@ function _wpRenderCurrentView() {
   }
 }
 
-/* ---- Campaign List ---- */
+function _wpUpdateBadge() {
+  var badge = document.getElementById('sidebarWolfPackBadge');
+  if (!badge) return;
+  var pendingCount = _wpGetPendingListings().length;
+  var activeCount = _wpCampaigns.filter(function(c) { return c.status === 'active'; }).length;
+  var displayCount = pendingCount > 0 ? pendingCount : activeCount;
+  badge.textContent = displayCount;
+  badge.style.display = displayCount > 0 ? '' : 'none';
+  badge.style.background = pendingCount > 0 ? '#DF2F4A' : '';
+  badge.title = pendingCount > 0 ? pendingCount + ' listings need Wolf Pack strategy' : activeCount + ' active campaigns';
+}
+
+/* ---- Campaign List with Pending/Active/All tabs ---- */
 function _wpRenderList() {
   var container = document.getElementById('wpListView');
   if (!container) return;
