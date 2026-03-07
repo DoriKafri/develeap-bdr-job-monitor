@@ -2,7 +2,7 @@ name: CRM & Enrichment Sync
 
 on:
   schedule:
-    - cron: '30 6-16 */2 * *'   # Every 2h from ~8:30-18:30 IST
+    - cron: '30 6,8,10,12,14,16 * * *'   # Every 2h from ~8:30-18:30 IST
 
   workflow_dispatch:
 
