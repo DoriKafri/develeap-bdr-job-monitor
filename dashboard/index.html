@@ -10473,19 +10473,25 @@ function _buildCrmDetailHtml(companyName) {
   const companyUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-2/' + data.companyId : '#';
   html += '<div style="margin-bottom:8px"><a href="' + companyUrl + '" target="_blank" style="font-size:13px;color:var(--teal);text-decoration:none;font-weight:600">' + data.companyName + ' in HubSpot &rarr;</a></div>';
 
-  // Deals
+  // Deals (collapsible — show first 3)
   if (data.deals.length > 0) {
+    const VISIBLE_COUNT = 3;
+    const crmUid = 'crm_' + cacheKey.replace(/[^a-z0-9]/g, '_');
     html += '<div style="font-size:12px;font-weight:600;margin-bottom:4px">Deals (' + data.deals.length + ')</div>';
-    data.deals.forEach(d => {
+    data.deals.forEach((d, di) => {
       const stageColor = d.stageColor || _resolveStageColor(d.stage);
       const amount = d.amount ? ' - $' + Number(d.amount).toLocaleString() : '';
       const dealUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-3/' + d.id : '#';
-      html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
+      const hidden = di >= VISIBLE_COUNT ? ' style="display:none"' : '';
+      html += '<div class="' + crmUid + '_deal"' + hidden + ' style="display:' + (di >= VISIBLE_COUNT ? 'none' : 'flex') + ';align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
       html += '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + stageColor + ';flex-shrink:0"></span>';
       html += '<a href="' + dealUrl + '" target="_blank" style="color:var(--text);text-decoration:none">' + d.name + '</a>';
       html += '<span style="color:var(--text-lighter)">' + (d.stageName || '') + amount + '</span>';
       html += '</div>';
     });
+    if (data.deals.length > VISIBLE_COUNT) {
+      html += '<a href="#" id="' + crmUid + '_toggle" onclick="event.preventDefault();_toggleCrmDeals(\'' + crmUid + '\',' + data.deals.length + ')" style="font-size:11px;color:var(--teal);text-decoration:none;display:inline-block;margin-top:2px">Show ' + (data.deals.length - VISIBLE_COUNT) + ' more ▾</a>';
+    }
   }
 
   // Contacts are now merged into the Outreach section above
@@ -10495,6 +10501,23 @@ function _buildCrmDetailHtml(companyName) {
 
   html += '</div>';
   return html;
+}
+
+function _toggleCrmDeals(uid, total) {
+  var VISIBLE_COUNT = 3;
+  var toggle = document.getElementById(uid + '_toggle');
+  var deals = document.querySelectorAll('.' + uid + '_deal');
+  var expanded = toggle.dataset.expanded === '1';
+  deals.forEach(function(el, i) {
+    if (i >= VISIBLE_COUNT) el.style.display = expanded ? 'none' : 'flex';
+  });
+  if (expanded) {
+    toggle.textContent = 'Show ' + (total - VISIBLE_COUNT) + ' more ▾';
+    toggle.dataset.expanded = '0';
+  } else {
+    toggle.textContent = 'Show less ▴';
+    toggle.dataset.expanded = '1';
+  }
 }
 
 function _buildApolloDetailHtml(companyName) {
