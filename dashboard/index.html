@@ -911,6 +911,143 @@
   .wf-back-btn { background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-light); padding:4px 8px; border-radius:6px; transition:all 0.15s; }
   .wf-back-btn:hover { background:var(--bg); color:var(--text); }
   @media(max-width:768px) { #workflowView { left:0; top:48px; } .wf-body { flex-direction:column; } .wf-config-panel { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } .wf-node { width:160px; min-height:100px; } }
+
+  /* ── WOLF PACK ── */
+  #wolfPackView { display:none; position:fixed; top:48px; left:240px; right:0; bottom:0; background:var(--bg); z-index:5; flex-direction:column; overflow:hidden; }
+  #wolfPackView.active { display:flex; }
+  .wp-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:white; border-bottom:1px solid var(--border); min-height:56px; }
+  .wp-header h2 { font-size:18px; font-weight:700; margin:0; }
+  .wp-body { flex:1; overflow-y:auto; padding:24px; }
+
+  /* Campaign cards */
+  .wp-campaign-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:20px; }
+  .wp-campaign-card { background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); border:1px solid var(--border); cursor:pointer; transition:all 0.15s; position:relative; }
+  .wp-campaign-card:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(0,0,0,0.12); transform:translateY(-2px); }
+  .wp-card-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+  .wp-card-company { font-size:16px; font-weight:700; color:var(--text); }
+  .wp-card-job { font-size:13px; color:var(--text-light); margin-top:2px; }
+  .wp-card-status { position:absolute; top:16px; right:16px; font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px; text-transform:uppercase; letter-spacing:0.5px; }
+  .wp-card-status.active { background:#E8F5E9; color:#2E7D32; }
+  .wp-card-status.paused { background:#FFF3E0; color:#E65100; }
+  .wp-card-status.completed { background:#E3F2FD; color:#1565C0; }
+  .wp-card-status.archived { background:#F5F5F5; color:#9E9E9E; }
+  .wp-card-team { display:flex; align-items:center; gap:4px; margin:12px 0; }
+  .wp-card-avatar { width:28px; height:28px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; border:2px solid white; margin-left:-8px; }
+  .wp-card-avatar:first-child { margin-left:0; }
+  .wp-card-progress { margin:12px 0 8px; }
+  .wp-card-progress-bar { height:6px; background:#E6E9EF; border-radius:3px; overflow:hidden; }
+  .wp-card-progress-fill { height:100%; background:linear-gradient(90deg,var(--teal),var(--success)); border-radius:3px; transition:width 0.3s; }
+  .wp-card-stats { display:flex; gap:16px; margin-top:12px; }
+  .wp-card-stat { font-size:11px; color:var(--text-light); }
+  .wp-card-stat strong { color:var(--text); display:block; font-size:16px; }
+  .wp-card-actions { display:flex; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+  .wp-card-actions button { flex:1; padding:6px 10px; border:1px solid var(--border); border-radius:6px; background:white; font-size:12px; cursor:pointer; transition:all 0.15s; }
+  .wp-card-actions button:hover { background:var(--primary); color:white; border-color:var(--primary); }
+  .wp-card-days { font-size:11px; color:var(--text-lighter); margin-top:4px; }
+
+  /* Filter bar */
+  .wp-filter-bar { display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+  .wp-filter-bar input { flex:1; min-width:200px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; font-size:13px; }
+  .wp-filter-chip { padding:6px 14px; border:1px solid var(--border); border-radius:20px; font-size:12px; cursor:pointer; background:white; transition:all 0.15s; }
+  .wp-filter-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
+  .wp-filter-chip:hover { border-color:var(--teal); }
+
+  /* Empty state */
+  .wp-empty { text-align:center; padding:80px 20px; }
+  .wp-empty-icon { font-size:64px; margin-bottom:16px; }
+  .wp-empty-title { font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text); }
+  .wp-empty-desc { font-size:14px; color:var(--text-light); margin-bottom:24px; max-width:400px; margin-left:auto; margin-right:auto; }
+
+  /* Campaign detail */
+  .wp-detail { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .wp-detail-header { grid-column:1/-1; background:white; border-radius:12px; padding:24px; box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; }
+  .wp-detail-section { background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); }
+  .wp-detail-section h3 { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .wp-detail-full { grid-column:1/-1; }
+
+  /* Timeline */
+  .wp-timeline { position:relative; padding-left:24px; }
+  .wp-timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+  .wp-timeline-item { position:relative; padding:8px 0 16px 12px; }
+  .wp-timeline-item::before { content:''; position:absolute; left:-20px; top:12px; width:10px; height:10px; border-radius:50%; border:2px solid var(--teal); background:white; }
+  .wp-timeline-item.completed::before { background:var(--success); border-color:var(--success); }
+  .wp-timeline-item.active::before { background:var(--teal); border-color:var(--teal); box-shadow:0 0 0 3px rgba(50,187,215,0.3); }
+  .wp-timeline-item .tp-sender { font-size:11px; font-weight:600; color:var(--primary); }
+  .wp-timeline-item .tp-action { font-size:13px; color:var(--text); }
+  .wp-timeline-item .tp-time { font-size:11px; color:var(--text-lighter); }
+  .wp-timeline-item .tp-status { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; }
+
+  /* Response heatmap */
+  .wp-heatmap { overflow-x:auto; }
+  .wp-heatmap table { width:100%; border-collapse:collapse; font-size:12px; }
+  .wp-heatmap th { padding:8px 6px; text-align:left; font-weight:600; color:var(--text-light); border-bottom:2px solid var(--border); white-space:nowrap; }
+  .wp-heatmap td { padding:8px 6px; text-align:center; border-bottom:1px solid #f0f0f0; }
+  .wp-heatmap .hm-sent { color:var(--text-lighter); }
+  .wp-heatmap .hm-opened { color:var(--warning); }
+  .wp-heatmap .hm-replied { color:var(--success); font-weight:700; }
+  .wp-heatmap .hm-declined { color:var(--danger); }
+
+  /* Engagement score */
+  .wp-engagement-ring { width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; margin:0 auto 8px; }
+
+  /* Flow editor */
+  .wp-editor-body { display:flex; flex:1; overflow:hidden; height:100%; }
+  .wp-editor-sidebar { width:180px; background:white; border-right:1px solid var(--border); overflow-y:auto; padding:8px 0; flex-shrink:0; }
+  .wp-editor-canvas { flex:1; position:relative; overflow:hidden; background:repeating-linear-gradient(0deg,transparent,transparent 19px,#f0f0f0 19px,#f0f0f0 20px), repeating-linear-gradient(90deg,transparent,transparent 19px,#f0f0f0 19px,#f0f0f0 20px); }
+  .wp-editor-config { width:340px; background:white; border-left:1px solid var(--border); overflow-y:auto; padding:16px; flex-shrink:0; }
+
+  /* Wolf Pack node cards in SVG */
+  .wp-node { position:absolute; width:200px; min-height:80px; background:white; border-radius:10px; border:2px solid var(--border); box-shadow:0 2px 8px rgba(0,0,0,0.08); cursor:pointer; transition:border-color 0.15s, box-shadow 0.15s; font-family:Inter,sans-serif; }
+  .wp-node:hover { border-color:var(--teal); box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+  .wp-node.selected { border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,177,0,0.3); }
+  .wp-node-header { padding:10px 12px 6px; display:flex; align-items:center; gap:8px; }
+  .wp-node-icon { font-size:18px; }
+  .wp-node-label { font-size:12px; font-weight:600; color:var(--text); }
+  .wp-node-body { padding:4px 12px 10px; font-size:11px; color:var(--text-light); }
+  .wp-node-sender { display:inline-flex; align-items:center; gap:4px; background:var(--primary-light); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; color:var(--primary); margin-top:4px; }
+  .wp-node-port { position:absolute; width:12px; height:12px; border-radius:50%; border:2px solid var(--border); background:white; cursor:crosshair; z-index:2; }
+  .wp-node-port.out { bottom:-6px; left:50%; transform:translateX(-50%); }
+  .wp-node-port.in { top:-6px; left:50%; transform:translateX(-50%); }
+  .wp-node-port:hover { border-color:var(--accent); background:var(--accent-light); }
+
+  /* Wizard */
+  .wp-wizard-modal { background:white; border-radius:16px; width:90%; max-width:720px; max-height:85vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+  .wp-wizard-progress { display:flex; padding:20px 24px; border-bottom:1px solid var(--border); gap:4px; }
+  .wp-wizard-step { flex:1; height:4px; border-radius:2px; background:#E6E9EF; transition:background 0.3s; }
+  .wp-wizard-step.active { background:var(--teal); }
+  .wp-wizard-step.done { background:var(--success); }
+  .wp-wizard-body { flex:1; overflow-y:auto; padding:24px; }
+  .wp-wizard-footer { display:flex; justify-content:space-between; padding:16px 24px; border-top:1px solid var(--border); }
+  .wp-wizard-body h3 { font-size:18px; font-weight:700; margin-bottom:16px; }
+  .wp-wizard-body .wp-wiz-field { margin-bottom:16px; }
+  .wp-wizard-body .wp-wiz-field label { display:block; font-size:12px; font-weight:600; color:var(--text-light); margin-bottom:6px; }
+  .wp-wizard-body .wp-wiz-field input, .wp-wizard-body .wp-wiz-field select, .wp-wizard-body .wp-wiz-field textarea { width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; font-family:inherit; }
+  .wp-wizard-body .wp-wiz-field textarea { min-height:80px; resize:vertical; }
+
+  /* Contact chips in wizard */
+  .wp-contact-chip { display:inline-flex; align-items:center; gap:6px; background:var(--primary-light); padding:4px 12px; border-radius:16px; font-size:12px; margin:4px; }
+  .wp-contact-chip .remove { cursor:pointer; color:var(--danger); font-weight:700; }
+
+  /* Team member select */
+  .wp-team-member { display:flex; align-items:center; gap:12px; padding:10px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; transition:all 0.15s; }
+  .wp-team-member:hover { border-color:var(--teal); }
+  .wp-team-member.selected { border-color:var(--success); background:#E8F5E9; }
+  .wp-team-member .tm-avatar { width:36px; height:36px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; }
+  .wp-team-member .tm-info { flex:1; }
+  .wp-team-member .tm-name { font-size:13px; font-weight:600; }
+  .wp-team-member .tm-role { font-size:11px; color:var(--text-light); }
+  .wp-team-member .tm-channels { display:flex; gap:4px; }
+  .wp-team-member .tm-ch { font-size:10px; padding:2px 6px; border-radius:4px; border:1px solid var(--border); cursor:pointer; }
+  .wp-team-member .tm-ch.active { background:var(--teal); color:white; border-color:var(--teal); }
+
+  /* Flow template cards */
+  .wp-flow-template { padding:14px; border:2px solid var(--border); border-radius:10px; cursor:pointer; margin-bottom:10px; transition:all 0.15s; }
+  .wp-flow-template:hover { border-color:var(--teal); }
+  .wp-flow-template.selected { border-color:var(--success); background:#E8F5E9; }
+  .wp-flow-template .ft-name { font-size:14px; font-weight:700; }
+  .wp-flow-template .ft-desc { font-size:12px; color:var(--text-light); margin-top:4px; }
+
+  @media(max-width:768px) { #wolfPackView { left:0; top:48px; } .wp-campaign-grid { grid-template-columns:1fr; } .wp-detail { grid-template-columns:1fr; } .wp-editor-body { flex-direction:column; } .wp-editor-sidebar { width:100%; border-right:none; border-bottom:1px solid var(--border); max-height:120px; } .wp-editor-config { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } }
 </style>
 </head>
 <body>
@@ -962,6 +1099,13 @@
       <div class="nav-item" data-view="settings" onclick="setView('settings')">
         <span>⚙️</span>
         <span>Settings</span>
+      </div>
+
+      <div class="nav-section">Campaigns</div>
+      <div class="nav-item" data-view="wolfpack" onclick="setView('wolfpack')">
+        <span>🐺</span>
+        <span>Wolf Pack</span>
+        <span class="nav-item-badge" id="sidebarWolfPackBadge" style="display:none">0</span>
       </div>
 
       <div class="nav-section">Workflow</div>
@@ -1842,6 +1986,58 @@
 </div>
 
 <!-- Workflow Editor View -->
+<!-- WOLF PACK CAMPAIGN VIEW -->
+<div id="wolfPackView">
+  <div class="wp-header" id="wpHeader">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="wf-back-btn" onclick="_wpBackOrClose()" title="Back" id="wpBackBtn" style="display:none">←</button>
+      <h2 id="wpTitle">🐺 Wolf Pack Campaigns</h2>
+    </div>
+    <div class="wp-header-actions" id="wpHeaderActions">
+      <button class="btn btn-primary" onclick="_wpShowWizard()" id="wpNewCampaignBtn">+ New Campaign</button>
+    </div>
+  </div>
+  <div class="wp-body" id="wpBody">
+    <!-- Campaign list -->
+    <div id="wpListView"></div>
+    <!-- Campaign detail -->
+    <div id="wpDetailView" style="display:none"></div>
+    <!-- Campaign flow editor -->
+    <div id="wpEditorView" style="display:none">
+      <div class="wp-editor-body">
+        <div class="wp-editor-sidebar" id="wpEditorSidebar"></div>
+        <div class="wp-editor-canvas" id="wpEditorCanvas">
+          <div class="wf-toolbar" id="wpEditorToolbar">
+            <button class="wf-toolbar-btn" id="wpUndoBtn" onclick="_wpUndo()" title="Undo" disabled><span class="icon">↩</span> Undo</button>
+            <button class="wf-toolbar-btn" id="wpRedoBtn" onclick="_wpRedo()" title="Redo" disabled><span class="icon">↪</span> Redo</button>
+            <div class="wf-toolbar-sep"></div>
+            <button class="wf-toolbar-btn" onclick="_wpFitCanvas()" title="Fit to screen"><span class="icon">⊞</span> Fit</button>
+          </div>
+          <div class="wf-zoom-controls" id="wpZoomControls">
+            <button class="wf-zoom-btn" onclick="_wpZoom(-0.1)">−</button>
+            <div class="wf-zoom-divider"></div>
+            <span class="wf-zoom-label" id="wpZoomLabel">100%</span>
+            <div class="wf-zoom-divider"></div>
+            <button class="wf-zoom-btn" onclick="_wpZoom(0.1)">＋</button>
+          </div>
+        </div>
+        <div class="wp-editor-config" id="wpEditorConfig">
+          <div class="wf-config-empty">Click a node to configure</div>
+        </div>
+      </div>
+    </div>
+    <!-- Campaign wizard modal -->
+    <div id="wpWizardOverlay" class="modal-overlay" style="display:none">
+      <div class="wp-wizard-modal">
+        <button class="modal-close" onclick="_wpCloseWizard()">&times;</button>
+        <div class="wp-wizard-progress" id="wpWizardProgress"></div>
+        <div class="wp-wizard-body" id="wpWizardBody"></div>
+        <div class="wp-wizard-footer" id="wpWizardFooter"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="workflowView">
   <div class="wf-header">
     <div style="display:flex;align-items:center;gap:12px">
@@ -8229,7 +8425,7 @@ function restoreFromHash() {
 
     // 2. Now switch view (this calls applyAllFilters with correct state)
     const view = params.get('view');
-    if (view && ['all','develeap','new','queue','settings'].includes(view)) {
+    if (view && ['all','develeap','new','queue','settings','wolfpack','workflow'].includes(view)) {
       setView(view);
     } else {
       applyAllFilters();
@@ -9010,7 +9206,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.
     // Only push if going TO settings/queue FROM a different view
     var prev = window.currentView;
     _origSetView.apply(this, arguments);
-    if ((v === 'settings' || v === 'queue') && prev !== v) _pushPanel(v);
+    if ((v === 'settings' || v === 'queue' || v === 'wolfpack') && prev !== v) _pushPanel(v);
   };
 
   var _origOpenHidden = window.openHiddenPanel;
@@ -11707,6 +11903,7 @@ var setView = function(v) {
   const queueView = document.getElementById('queueView');
   const settingsView = document.getElementById('settingsView');
   const workflowView = document.getElementById('workflowView');
+  const wolfPackView = document.getElementById('wolfPackView');
   const statsBar = document.querySelector('.stats-bar');
   const filtersBar = document.querySelector('.filters-bar');
 
@@ -11714,6 +11911,7 @@ var setView = function(v) {
   if (queueView) queueView.classList.remove('active');
   if (settingsView) settingsView.classList.remove('active');
   if (workflowView) workflowView.classList.remove('active');
+  if (wolfPackView) wolfPackView.classList.remove('active');
 
   if (v === 'queue') {
     if (tableContainer) tableContainer.style.display = 'none';
@@ -11733,6 +11931,12 @@ var setView = function(v) {
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     _ensureWorkflowReady().then(function() { renderWorkflowView(); });
+  } else if (v === 'wolfpack') {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (wolfPackView) wolfPackView.classList.add('active');
+    if (statsBar) statsBar.style.display = 'none';
+    if (filtersBar) filtersBar.style.display = 'none';
+    _loadCampaignsFromGitHub().then(function() { _wpRenderCurrentView(); });
   } else {
     if (tableContainer) tableContainer.style.display = '';
     if (statsBar) statsBar.style.display = '';
@@ -12841,6 +13045,127 @@ var _initQueueBadge = async function() {
 setTimeout(_initQueueBadge, 2000);
 
 window.onload = initGoogleAuth;
+
+/* ======================================================================
+   WOLF PACK — 360° BDR CAMPAIGN SYSTEM
+   ====================================================================== */
+
+var _wpCampaigns = [];
+var _wpSelectedCampaign = null;
+var _wpCampaignsSha = null;
+var _wpSubView = 'list'; // 'list' | 'detail' | 'editor' | 'wizard'
+var _wpWizardStep = 1;
+var _wpWizardData = {};
+var _wpFlowDirty = false;
+var _wpFlowZoom = 1.0;
+var _wpConnectMode = false;
+var _wpConnectSource = null;
+var _wpSelectedNode = null;
+var _wpUndoStack = [];
+var _wpRedoStack = [];
+var _wpDragTemplate = null;
+var _WP_API = 'https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/contents/wolfpack_campaigns.json';
+
+var _WP_NODE_TYPES = {
+  // Triggers
+  trigger_start:           { icon:'\u{1F680}', label:'Campaign Start',      category:'trigger',   desc:'Start of campaign flow', color:'#00CA72' },
+  trigger_response:        { icon:'\u{1F4EC}', label:'Response Trigger',    category:'trigger',   desc:'Triggered when a response is received', color:'#00CA72' },
+  trigger_end:             { icon:'\u2713',     label:'Campaign End',        category:'trigger',   desc:'End of campaign flow', color:'#676879' },
+  // Actions
+  action_linkedin_connect: { icon:'\u{1F517}', label:'LinkedIn Connect',    category:'action',    desc:'Send connection request on LinkedIn', color:'#0A66C2' },
+  action_linkedin_message: { icon:'\u{1F4AC}', label:'LinkedIn Message',    category:'action',    desc:'Send LinkedIn direct message', color:'#0A66C2' },
+  action_email:            { icon:'\u{1F4E7}', label:'Send Email',          category:'action',    desc:'Send email via HubSpot sequence', color:'#E44258' },
+  action_whatsapp:         { icon:'\u{1F4F1}', label:'WhatsApp Message',    category:'action',    desc:'Send WhatsApp message', color:'#25D366' },
+  // Marketing
+  action_blog_post:        { icon:'\u{1F4F0}', label:'Blog Post',           category:'marketing', desc:'Publish targeted blog content', color:'#FF6B35' },
+  action_linkedin_ad:      { icon:'\u{1F4CA}', label:'LinkedIn Ad',         category:'marketing', desc:'Run targeted LinkedIn ad', color:'#0A66C2' },
+  action_social_engage:    { icon:'\u{1F44D}', label:'Social Engage',       category:'marketing', desc:'Engage with target company social', color:'#9B59B6' },
+  // Logic
+  logic_if_response:       { icon:'\u2753',     label:'If Response',         category:'logic',     desc:'Branch based on response received', color:'#FFB100' },
+  logic_wait_response:     { icon:'\u23F3',     label:'Wait for Response',   category:'logic',     desc:'Wait for reply with timeout', color:'#FFB100' },
+  logic_switch_channel:    { icon:'\u{1F500}', label:'Switch Channel',      category:'logic',     desc:'Route by channel preference', color:'#FFB100' },
+  // Wait
+  wait:                    { icon:'\u23F0',     label:'Wait / Delay',        category:'timing',    desc:'Wait N days before next step', color:'#676879' },
+  // Sync
+  action_sync_team:        { icon:'\u{1F465}', label:'Notify Team',         category:'sync',      desc:'Send notification to team members', color:'#32BBD7' },
+  action_escalate:         { icon:'\u2B06\uFE0F', label:'Escalate',         category:'sync',      desc:'Flag for manager / escalate priority', color:'#E44258' },
+  action_pause:            { icon:'\u23F8\uFE0F', label:'Pause Campaign',   category:'sync',      desc:'Pause the campaign flow', color:'#676879' }
+};
+
+var _WP_NODE_TEMPLATES = [
+  { section:'Triggers' },
+  { id:'trigger_start', icon:'\u{1F680}', label:'Campaign Start', category:'trigger' },
+  { id:'trigger_response', icon:'\u{1F4EC}', label:'Response Trigger', category:'trigger' },
+  { id:'trigger_end', icon:'\u2713', label:'Campaign End', category:'trigger' },
+  { section:'Actions' },
+  { id:'action_linkedin_connect', icon:'\u{1F517}', label:'LinkedIn Connect', category:'action' },
+  { id:'action_linkedin_message', icon:'\u{1F4AC}', label:'LinkedIn Message', category:'action' },
+  { id:'action_email', icon:'\u{1F4E7}', label:'Send Email', category:'action' },
+  { id:'action_whatsapp', icon:'\u{1F4F1}', label:'WhatsApp Message', category:'action' },
+  { section:'Marketing' },
+  { id:'action_blog_post', icon:'\u{1F4F0}', label:'Blog Post', category:'marketing' },
+  { id:'action_linkedin_ad', icon:'\u{1F4CA}', label:'LinkedIn Ad', category:'marketing' },
+  { id:'action_social_engage', icon:'\u{1F44D}', label:'Social Engage', category:'marketing' },
+  { section:'Logic' },
+  { id:'logic_if_response', icon:'\u2753', label:'If Response', category:'logic' },
+  { id:'logic_wait_response', icon:'\u23F3', label:'Wait for Response', category:'logic' },
+  { id:'logic_switch_channel', icon:'\u{1F500}', label:'Switch Channel', category:'logic' },
+  { id:'wait', icon:'\u23F0', label:'Wait / Delay', category:'timing' },
+  { section:'Sync' },
+  { id:'action_sync_team', icon:'\u{1F465}', label:'Notify Team', category:'sync' },
+  { id:'action_escalate', icon:'\u2B06\uFE0F', label:'Escalate', category:'sync' },
+  { id:'action_pause', icon:'\u23F8\uFE0F', label:'Pause Campaign', category:'sync' }
+];
+
+// Campaign flow templates
+var _WP_FLOW_TEMPLATES = {
+  quick_strike: {
+    name:'Quick Strike', icon:'\u26A1', desc:'5-day blitz: 3 team members, LinkedIn + Email, fast response check',
+    days: 5
+  },
+  full_siege: {
+    name:'Full Siege', icon:'\u{1F3F0}', desc:'14-day campaign: all channels + marketing, multiple logic gates',
+    days: 14
+  },
+  executive_touch: {
+    name:'Executive Touch', icon:'\u{1F451}', desc:'7-day CEO-first cascade based on response',
+    days: 7
+  },
+  content_surround: {
+    name:'Content Surround', icon:'\u{1F4DD}', desc:'21-day marketing-heavy: content first, then outreach after awareness',
+    days: 21
+  }
+};
+
+async function _loadCampaignsFromGitHub() {
+  try {
+    if (!_GH_TOKEN) { _wpCampaigns = []; return; }
+    var r = await fetch(_WP_API, { headers:{'Authorization':'token '+_GH_TOKEN,'Accept':'application/vnd.github.v3+json'}, cache:'no-store' });
+    if (!r.ok) { _wpCampaigns = []; return; }
+    var d = await r.json();
+    _wpCampaignsSha = d.sha;
+    var raw = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
+    _wpCampaigns = raw.campaigns || [];
+  } catch(e) { console.warn('WP load error:', e); _wpCampaigns = []; }
+}
+
+async function _saveCampaignsToGitHub() {
+  try {
+    if (!_GH_TOKEN) { return; }
+    var out = { version:1, lastUpdated:new Date().toISOString(), campaigns:_wpCampaigns };
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 2))));
+    var body = { message:'Update wolf pack campaigns', content:content, branch:'main' };
+    if (_wpCampaignsSha) body.sha = _wpCampaignsSha;
+    var r = await fetch(_WP_API, { method:'PUT', headers:{'Authorization':'token '+_GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'}, body:JSON.stringify(body) });
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    var d = await r.json();
+    _wpCampaignsSha = d.content.sha;
+  } catch(e) { console.error('WP save error:', e); }
+}
+
+function _wpGenerateId(prefix) {
+  return (prefix || 'wp') + '_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
 
 /* ======================================================================
    WORKFLOW EDITOR
@@ -14130,6 +14455,1074 @@ function _wfRemoveNode(nodeId) {
   var panel = document.getElementById('wfConfigPanel');
   if(panel) panel.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>';
 }
+
+/* ======================================================================
+   WOLF PACK — CAMPAIGN UI FUNCTIONS
+   ====================================================================== */
+
+function _wpBackOrClose() {
+  if (_wpSubView === 'detail' || _wpSubView === 'editor') {
+    _wpSubView = 'list';
+    _wpSelectedCampaign = null;
+    _wpRenderCurrentView();
+  } else {
+    setView('all');
+  }
+}
+
+function _wpRenderCurrentView() {
+  var backBtn = document.getElementById('wpBackBtn');
+  var title = document.getElementById('wpTitle');
+  var newBtn = document.getElementById('wpNewCampaignBtn');
+  var headerActions = document.getElementById('wpHeaderActions');
+
+  if (_wpSubView === 'list') {
+    if (backBtn) backBtn.style.display = 'none';
+    if (title) title.textContent = '\u{1F43A} Wolf Pack Campaigns';
+    if (headerActions) headerActions.innerHTML = '<button class="btn btn-primary" onclick="_wpShowWizard()">+ New Campaign</button>';
+    _wpRenderList();
+  } else if (_wpSubView === 'detail') {
+    if (backBtn) backBtn.style.display = '';
+    var c = _wpSelectedCampaign;
+    if (title) title.textContent = '\u{1F43A} ' + (c ? c.company.name : 'Campaign');
+    if (headerActions) headerActions.innerHTML =
+      '<button class="btn" style="border:1px solid var(--border)" onclick="_wpEditFlow()">Edit Flow</button>' +
+      '<button class="btn" style="border:1px solid var(--border)" onclick="_wpTogglePause()">' + (c && c.status === 'paused' ? '\u25B6 Resume' : '\u23F8 Pause') + '</button>';
+    _wpRenderDetail();
+  } else if (_wpSubView === 'editor') {
+    if (backBtn) backBtn.style.display = '';
+    if (title) title.textContent = '\u{1F43A} Flow Editor — ' + (_wpSelectedCampaign ? _wpSelectedCampaign.company.name : '');
+    if (headerActions) headerActions.innerHTML =
+      '<span id="wpSaveStatus" style="font-size:12px;color:var(--text-light);margin-right:8px">\u2713 Saved</span>' +
+      '<button class="btn btn-primary" onclick="_wpSaveFlow()">Save Flow</button>';
+    _wpRenderEditor();
+  }
+
+  // Show/hide sub-views
+  var list = document.getElementById('wpListView');
+  var detail = document.getElementById('wpDetailView');
+  var editor = document.getElementById('wpEditorView');
+  if (list) list.style.display = _wpSubView === 'list' ? '' : 'none';
+  if (detail) detail.style.display = _wpSubView === 'detail' ? '' : 'none';
+  if (editor) editor.style.display = _wpSubView === 'editor' ? 'flex' : 'none';
+
+  // Update badge
+  var badge = document.getElementById('sidebarWolfPackBadge');
+  var activeCount = _wpCampaigns.filter(function(c) { return c.status === 'active'; }).length;
+  if (badge) {
+    badge.textContent = activeCount;
+    badge.style.display = activeCount > 0 ? '' : 'none';
+  }
+}
+
+/* ---- Campaign List ---- */
+function _wpRenderList() {
+  var container = document.getElementById('wpListView');
+  if (!container) return;
+
+  if (_wpCampaigns.length === 0) {
+    container.innerHTML = '<div class="wp-empty">' +
+      '<div class="wp-empty-icon">\u{1F43A}</div>' +
+      '<div class="wp-empty-title">No campaigns yet</div>' +
+      '<div class="wp-empty-desc">Create your first Wolf Pack campaign to coordinate multi-channel outreach and create the illusion that Develeap is everywhere.</div>' +
+      '<button class="btn btn-primary" onclick="_wpShowWizard()" style="font-size:15px;padding:12px 28px">+ Create First Campaign</button>' +
+      '</div>';
+    return;
+  }
+
+  var filterHtml = '<div class="wp-filter-bar">' +
+    '<input type="text" placeholder="Search campaigns..." oninput="_wpFilterList(this.value)" id="wpSearchInput">' +
+    '<div class="wp-filter-chip active" onclick="_wpFilterStatus(this,\'all\')">All</div>' +
+    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'active\')">Active</div>' +
+    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'paused\')">Paused</div>' +
+    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'completed\')">Completed</div>' +
+    '</div>';
+
+  var cardsHtml = '<div class="wp-campaign-grid" id="wpCampaignGrid">';
+  _wpCampaigns.forEach(function(c, idx) {
+    cardsHtml += _wpRenderCampaignCard(c, idx);
+  });
+  cardsHtml += '</div>';
+
+  container.innerHTML = filterHtml + cardsHtml;
+}
+
+function _wpRenderCampaignCard(c, idx) {
+  var completedNodes = (c.executionState && c.executionState.completedNodes) ? c.executionState.completedNodes.length : 0;
+  var totalNodes = c.flow && c.flow.nodeOrder ? c.flow.nodeOrder.length : 1;
+  var pct = Math.round((completedNodes / Math.max(totalNodes, 1)) * 100);
+
+  var teamAvatars = '';
+  (c.teamMembers || []).forEach(function(tm, i) {
+    if (i > 4) return;
+    var initials = (tm.displayName || tm.email || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
+    teamAvatars += '<div class="wp-card-avatar" title="' + (tm.displayName || tm.email) + '">' + initials + '</div>';
+  });
+  if ((c.teamMembers || []).length > 5) teamAvatars += '<div class="wp-card-avatar" style="background:var(--text-lighter)">+' + ((c.teamMembers || []).length - 5) + '</div>';
+
+  var touchpoints = (c.responseTracking && c.responseTracking.touchpoints) ? c.responseTracking.touchpoints : [];
+  var sent = touchpoints.filter(function(t) { return t.status !== 'pending'; }).length;
+  var replied = touchpoints.filter(function(t) { return t.responses && t.responses.length > 0; }).length;
+  var score = (c.responseTracking && c.responseTracking.engagementScore) ? Math.round(c.responseTracking.engagementScore) : 0;
+
+  var daysRunning = c.createdAt ? Math.max(1, Math.round((Date.now() - new Date(c.createdAt).getTime()) / 86400000)) : 0;
+
+  return '<div class="wp-campaign-card" data-status="' + c.status + '" data-company="' + (c.company.name || '').toLowerCase() + '" onclick="_wpOpenDetail(\'' + c.id + '\')">' +
+    '<div class="wp-card-status ' + c.status + '">' + c.status + '</div>' +
+    '<div class="wp-card-header">' +
+      '<div>' +
+        '<div class="wp-card-company">' + (c.company.name || 'Unknown') + '</div>' +
+        '<div class="wp-card-job">' + (c.targetJob && c.targetJob.title ? c.targetJob.title : 'No job specified') + '</div>' +
+        '<div class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wp-card-team">' + teamAvatars + '</div>' +
+    '<div class="wp-card-progress">' +
+      '<div class="wp-card-progress-bar"><div class="wp-card-progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:var(--text-lighter)">' + completedNodes + '/' + totalNodes + ' steps</span><span style="font-size:10px;font-weight:600;color:var(--teal)">' + pct + '%</span></div>' +
+    '</div>' +
+    '<div class="wp-card-stats">' +
+      '<div class="wp-card-stat"><strong>' + sent + '</strong>Sent</div>' +
+      '<div class="wp-card-stat"><strong>' + replied + '</strong>Replied</div>' +
+      '<div class="wp-card-stat"><strong>' + score + '</strong>Score</div>' +
+    '</div>' +
+    '<div class="wp-card-actions">' +
+      '<button onclick="event.stopPropagation();_wpOpenDetail(\'' + c.id + '\')">View</button>' +
+      '<button onclick="event.stopPropagation();_wpEditFlowById(\'' + c.id + '\')">Edit Flow</button>' +
+      '<button onclick="event.stopPropagation();_wpTogglePauseById(\'' + c.id + '\')">' + (c.status === 'paused' ? '\u25B6 Resume' : '\u23F8 Pause') + '</button>' +
+      '<button onclick="event.stopPropagation();_wpArchiveCampaign(\'' + c.id + '\')" title="Archive" style="max-width:40px">\u{1F5C4}</button>' +
+    '</div>' +
+    '</div>';
+}
+
+function _wpFilterList(query) {
+  var cards = document.querySelectorAll('.wp-campaign-card');
+  query = (query || '').toLowerCase();
+  cards.forEach(function(card) {
+    var company = card.getAttribute('data-company') || '';
+    card.style.display = !query || company.indexOf(query) >= 0 ? '' : 'none';
+  });
+}
+
+function _wpFilterStatus(el, status) {
+  document.querySelectorAll('.wp-filter-chip').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  var cards = document.querySelectorAll('.wp-campaign-card');
+  cards.forEach(function(card) {
+    var cardStatus = card.getAttribute('data-status');
+    card.style.display = (status === 'all' || cardStatus === status) ? '' : 'none';
+  });
+}
+
+/* ---- Campaign Detail ---- */
+function _wpOpenDetail(campaignId) {
+  _wpSelectedCampaign = _wpCampaigns.find(function(c) { return c.id === campaignId; });
+  if (!_wpSelectedCampaign) return;
+  _wpSubView = 'detail';
+  _wpRenderCurrentView();
+}
+
+function _wpRenderDetail() {
+  var container = document.getElementById('wpDetailView');
+  var c = _wpSelectedCampaign;
+  if (!container || !c) return;
+
+  var teamAvatars = (c.teamMembers || []).map(function(tm) {
+    var initials = (tm.displayName || tm.email || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
+    return '<div class="wp-card-avatar" title="' + (tm.displayName || tm.email) + '" style="margin-left:0;margin-right:4px">' + initials + '</div>';
+  }).join('');
+
+  var score = (c.responseTracking && c.responseTracking.engagementScore) ? Math.round(c.responseTracking.engagementScore) : 0;
+  var scoreColor = score >= 60 ? 'var(--success)' : score >= 30 ? 'var(--warning)' : 'var(--danger)';
+
+  var h = '<div class="wp-detail">';
+
+  // Header
+  h += '<div class="wp-detail-header">' +
+    '<div>' +
+      '<h2 style="font-size:20px;margin-bottom:4px">' + (c.company.name || '') + '</h2>' +
+      '<div style="font-size:13px;color:var(--text-light)">' + (c.targetJob && c.targetJob.title || '') + '</div>' +
+      '<div style="margin-top:8px;display:flex;align-items:center;gap:8px">' +
+        '<span class="wp-card-status ' + c.status + '" style="position:static">' + c.status + '</span>' +
+        teamAvatars +
+      '</div>' +
+    '</div>' +
+    '<div style="text-align:center">' +
+      '<div class="wp-engagement-ring" style="border:4px solid ' + scoreColor + ';color:' + scoreColor + '">' + score + '</div>' +
+      '<div style="font-size:11px;color:var(--text-light)">Engagement</div>' +
+    '</div>' +
+    '</div>';
+
+  // Timeline
+  h += '<div class="wp-detail-section">' +
+    '<h3>\u{1F4C5} Timeline</h3>' +
+    '<div class="wp-timeline" id="wpTimeline">';
+  var touchpoints = (c.responseTracking && c.responseTracking.touchpoints) || [];
+  if (touchpoints.length === 0) {
+    h += '<div style="text-align:center;padding:20px;color:var(--text-lighter)">No touchpoints yet. Launch the campaign to start.</div>';
+  } else {
+    touchpoints.slice().reverse().forEach(function(tp) {
+      var statusClass = tp.status === 'completed' ? 'completed' : tp.status === 'active' ? 'active' : '';
+      var statusColor = tp.status === 'completed' ? '#E8F5E9;color:#2E7D32' : tp.status === 'pending' ? '#FFF3E0;color:#E65100' : '#E3F2FD;color:#1565C0';
+      var nodeType = _WP_NODE_TYPES[tp.action] || {};
+      h += '<div class="wp-timeline-item ' + statusClass + '">' +
+        '<div class="tp-sender">' + (nodeType.icon || '\u{1F4E8}') + ' ' + (_getUserDisplayName(tp.sender) || tp.sender) + '</div>' +
+        '<div class="tp-action">' + (tp.action || '').replace(/_/g, ' ') + ' \u2192 ' + (tp.contactId || '') + '</div>' +
+        '<div class="tp-time">' + (tp.timestamp ? new Date(tp.timestamp).toLocaleDateString() : '') + '</div>' +
+        '<span class="tp-status" style="background:' + statusColor + '">' + (tp.status || 'pending') + '</span>' +
+        (tp.responses && tp.responses.length > 0 ? '<div style="margin-top:4px;font-size:11px;color:var(--success);font-weight:600">\u{1F4AC} ' + tp.responses.length + ' response(s)</div>' : '') +
+        '</div>';
+    });
+  }
+  h += '</div></div>';
+
+  // Response Heatmap
+  h += '<div class="wp-detail-section">' +
+    '<h3>\u{1F525} Response Heatmap</h3>' +
+    '<div class="wp-heatmap"><table><thead><tr><th>Contact</th><th>\u{1F517} LI Connect</th><th>\u{1F4AC} LI Msg</th><th>\u{1F4E7} Email</th><th>\u{1F4F1} WhatsApp</th></tr></thead><tbody>';
+  (c.targetContacts || []).forEach(function(tc) {
+    var channels = { linkedin_connect:'-', linkedin_message:'-', email:'-', whatsapp:'-' };
+    touchpoints.forEach(function(tp) {
+      if (tp.contactId === tc.id) {
+        var ch = tp.action === 'action_linkedin_connect' ? 'linkedin_connect' : tp.action === 'action_linkedin_message' ? 'linkedin_message' : tp.action === 'action_email' ? 'email' : tp.action === 'action_whatsapp' ? 'whatsapp' : null;
+        if (ch) {
+          if (tp.responses && tp.responses.length > 0) channels[ch] = '\u{1F4AC}';
+          else if (tp.status === 'completed') channels[ch] = '\u2713\u2713';
+          else if (tp.status !== 'pending') channels[ch] = '\u2713';
+        }
+      }
+    });
+    h += '<tr><td style="text-align:left;font-weight:600">' + (tc.name || '') + '<br><span style="font-size:10px;color:var(--text-lighter)">' + (tc.title || '') + '</span></td>';
+    h += '<td class="' + (channels.linkedin_connect === '\u{1F4AC}' ? 'hm-replied' : channels.linkedin_connect === '\u2713\u2713' ? 'hm-opened' : channels.linkedin_connect === '\u2713' ? 'hm-sent' : '') + '">' + channels.linkedin_connect + '</td>';
+    h += '<td class="' + (channels.linkedin_message === '\u{1F4AC}' ? 'hm-replied' : channels.linkedin_message === '\u2713\u2713' ? 'hm-opened' : channels.linkedin_message === '\u2713' ? 'hm-sent' : '') + '">' + channels.linkedin_message + '</td>';
+    h += '<td class="' + (channels.email === '\u{1F4AC}' ? 'hm-replied' : channels.email === '\u2713\u2713' ? 'hm-opened' : channels.email === '\u2713' ? 'hm-sent' : '') + '">' + channels.email + '</td>';
+    h += '<td class="' + (channels.whatsapp === '\u{1F4AC}' ? 'hm-replied' : channels.whatsapp === '\u2713\u2713' ? 'hm-opened' : channels.whatsapp === '\u2713' ? 'hm-sent' : '') + '">' + channels.whatsapp + '</td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div></div>';
+
+  // Team stats
+  h += '<div class="wp-detail-section wp-detail-full">' +
+    '<h3>\u{1F465} Team Performance</h3>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">';
+  (c.teamMembers || []).forEach(function(tm) {
+    var tpByMember = touchpoints.filter(function(tp) { return tp.sender === tm.email; });
+    var sentCount = tpByMember.filter(function(tp) { return tp.status !== 'pending'; }).length;
+    var repliedCount = tpByMember.filter(function(tp) { return tp.responses && tp.responses.length > 0; }).length;
+    var initials = (tm.displayName || tm.email || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
+    h += '<div style="background:var(--bg);padding:14px;border-radius:8px;text-align:center">' +
+      '<div class="wp-card-avatar" style="margin:0 auto 8px;width:36px;height:36px;font-size:14px">' + initials + '</div>' +
+      '<div style="font-size:12px;font-weight:600">' + (tm.displayName || tm.email.split('@')[0]) + '</div>' +
+      '<div style="font-size:11px;color:var(--text-light)">' + (tm.role || '') + '</div>' +
+      '<div style="margin-top:8px;display:flex;justify-content:center;gap:12px">' +
+        '<div><strong style="font-size:16px">' + sentCount + '</strong><br><span style="font-size:10px;color:var(--text-lighter)">Sent</span></div>' +
+        '<div><strong style="font-size:16px">' + repliedCount + '</strong><br><span style="font-size:10px;color:var(--text-lighter)">Replies</span></div>' +
+      '</div></div>';
+  });
+  h += '</div></div>';
+
+  // Adaptive rules log
+  h += '<div class="wp-detail-section wp-detail-full">' +
+    '<h3>\u{1F9E0} Adaptive Rules</h3>';
+  (c.adaptiveRules || []).forEach(function(rule) {
+    h += '<div style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:12px">' +
+      '<strong>' + (rule.trigger || '').replace(/_/g, ' ') + '</strong> \u2192 ' + (rule.action || '').replace(/_/g, ' ') +
+      '</div>';
+  });
+  if (!(c.adaptiveRules && c.adaptiveRules.length)) h += '<div style="color:var(--text-lighter);font-size:13px">No adaptive rules configured.</div>';
+  h += '</div>';
+
+  h += '</div>';
+  container.innerHTML = h;
+}
+
+/* ---- Campaign Actions ---- */
+function _wpTogglePause() {
+  if (!_wpSelectedCampaign) return;
+  _wpSelectedCampaign.status = _wpSelectedCampaign.status === 'paused' ? 'active' : 'paused';
+  _saveCampaignsToGitHub();
+  _wpRenderCurrentView();
+}
+
+function _wpTogglePauseById(id) {
+  var c = _wpCampaigns.find(function(x) { return x.id === id; });
+  if (!c) return;
+  c.status = c.status === 'paused' ? 'active' : 'paused';
+  _saveCampaignsToGitHub();
+  _wpRenderList();
+}
+
+function _wpArchiveCampaign(id) {
+  var c = _wpCampaigns.find(function(x) { return x.id === id; });
+  if (!c) return;
+  if (!confirm('Archive campaign "' + c.name + '"?')) return;
+  c.status = 'archived';
+  _saveCampaignsToGitHub();
+  _wpRenderList();
+}
+
+function _wpEditFlow() {
+  if (!_wpSelectedCampaign) return;
+  _wpSubView = 'editor';
+  _wpRenderCurrentView();
+}
+
+function _wpEditFlowById(id) {
+  _wpSelectedCampaign = _wpCampaigns.find(function(x) { return x.id === id; });
+  if (!_wpSelectedCampaign) return;
+  _wpSubView = 'editor';
+  _wpRenderCurrentView();
+}
+
+/* ---- Campaign Creation Wizard ---- */
+function _wpShowWizard() {
+  _wpWizardStep = 1;
+  _wpWizardData = {
+    company: { name:'', domain:'', category:'' },
+    targetJob: { title:'', sourceUrl:'', category:'' },
+    targetContacts: [],
+    teamMembers: [],
+    flowTemplate: 'quick_strike'
+  };
+  document.getElementById('wpWizardOverlay').style.display = 'flex';
+  _wpRenderWizardStep();
+}
+
+function _wpCloseWizard() {
+  document.getElementById('wpWizardOverlay').style.display = 'none';
+}
+
+function _wpRenderWizardStep() {
+  var progress = document.getElementById('wpWizardProgress');
+  var body = document.getElementById('wpWizardBody');
+  var footer = document.getElementById('wpWizardFooter');
+  var totalSteps = 5;
+
+  // Progress bar
+  var ph = '';
+  for (var i = 1; i <= totalSteps; i++) {
+    ph += '<div class="wp-wizard-step ' + (i < _wpWizardStep ? 'done' : i === _wpWizardStep ? 'active' : '') + '"></div>';
+  }
+  progress.innerHTML = ph;
+
+  // Body
+  var h = '';
+  if (_wpWizardStep === 1) {
+    // Company
+    h += '<h3>Step 1: Target Company</h3>';
+    h += '<div class="wp-wiz-field"><label>Company Name</label><input type="text" id="wpWizCompanyName" value="' + (_wpWizardData.company.name || '') + '" placeholder="e.g., Checkpoint"></div>';
+    h += '<div class="wp-wiz-field"><label>Domain</label><input type="text" id="wpWizCompanyDomain" value="' + (_wpWizardData.company.domain || '') + '" placeholder="e.g., checkpoint.com"></div>';
+    h += '<div class="wp-wiz-field"><label>Category / Industry</label><input type="text" id="wpWizCompanyCategory" value="' + (_wpWizardData.company.category || '') + '" placeholder="e.g., cybersecurity"></div>';
+    // Show existing campaigns for this company
+    var existing = _wpCampaigns.filter(function(c) {
+      return _wpWizardData.company.name && c.company.name.toLowerCase() === _wpWizardData.company.name.toLowerCase();
+    });
+    if (existing.length > 0) {
+      h += '<div style="margin-top:12px;padding:10px;background:#FFF3E0;border-radius:8px;font-size:12px;color:#E65100">\u26A0 ' + existing.length + ' existing campaign(s) for this company</div>';
+    }
+  } else if (_wpWizardStep === 2) {
+    // Job listing
+    h += '<h3>Step 2: Job Listing</h3>';
+    h += '<div class="wp-wiz-field"><label>Job Title</label><input type="text" id="wpWizJobTitle" value="' + (_wpWizardData.targetJob.title || '') + '" placeholder="e.g., Senior FinOps Engineer"></div>';
+    h += '<div class="wp-wiz-field"><label>Job URL (optional)</label><input type="text" id="wpWizJobUrl" value="' + (_wpWizardData.targetJob.sourceUrl || '') + '" placeholder="https://..."></div>';
+    h += '<div class="wp-wiz-field"><label>Category</label><select id="wpWizJobCategory">';
+    ['devops','finops','ai_ml','cloud','security','platform','data','sre','backend','fullstack','other'].forEach(function(cat) {
+      h += '<option value="' + cat + '"' + (cat === _wpWizardData.targetJob.category ? ' selected' : '') + '>' + (CAT_LABELS[cat] || cat) + '</option>';
+    });
+    h += '</select></div>';
+    // Suggest from dashboard jobs
+    var matchingJobs = ALL_JOBS.filter(function(j) {
+      return _wpWizardData.company.name && j.company && j.company.toLowerCase().indexOf(_wpWizardData.company.name.toLowerCase()) >= 0;
+    }).slice(0, 5);
+    if (matchingJobs.length > 0) {
+      h += '<div style="margin-top:12px"><label style="font-size:12px;font-weight:600;color:var(--text-light)">Or pick from dashboard:</label>';
+      matchingJobs.forEach(function(j) {
+        h += '<div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-top:4px;cursor:pointer;font-size:12px" onclick="document.getElementById(\'wpWizJobTitle\').value=\'' + (j.title || '').replace(/'/g, "\\'") + '\';document.getElementById(\'wpWizJobCategory\').value=\'' + (j.category || 'devops') + '\'">' +
+          (j.title || '') + ' <span style="color:var(--text-lighter)">(' + (j.category || '') + ')</span></div>';
+      });
+      h += '</div>';
+    }
+  } else if (_wpWizardStep === 3) {
+    // Target contacts
+    h += '<h3>Step 3: Target Contacts</h3>';
+    h += '<div id="wpWizContactsList">';
+    (_wpWizardData.targetContacts || []).forEach(function(tc, idx) {
+      h += '<div class="wp-contact-chip">' + tc.name + ' (' + tc.title + ') <span class="remove" onclick="_wpWizRemoveContact(' + idx + ')">\u2715</span></div>';
+    });
+    h += '</div>';
+    h += '<div style="margin-top:12px;padding:16px;border:1px dashed var(--border);border-radius:8px">';
+    h += '<div class="wp-wiz-field"><label>Name</label><input type="text" id="wpWizContactName" placeholder="e.g., Tomer Lev"></div>';
+    h += '<div class="wp-wiz-field"><label>Title</label><input type="text" id="wpWizContactTitle" placeholder="e.g., Engineering Director"></div>';
+    h += '<div class="wp-wiz-field"><label>Email (optional)</label><input type="text" id="wpWizContactEmail" placeholder="tomer@company.com"></div>';
+    h += '<div class="wp-wiz-field"><label>LinkedIn URL (optional)</label><input type="text" id="wpWizContactLinkedin" placeholder="https://linkedin.com/in/..."></div>';
+    h += '<div style="display:flex;gap:8px;align-items:center"><label style="font-size:12px"><input type="checkbox" id="wpWizContactDM"> Decision Maker</label></div>';
+    h += '<button class="btn" style="margin-top:8px;background:var(--primary);color:white;border:none;padding:6px 16px" onclick="_wpWizAddContact()">+ Add Contact</button>';
+    h += '</div>';
+    // Suggest from stakeholders
+    var matchJobs = ALL_JOBS.filter(function(j) {
+      return _wpWizardData.company.name && j.company && j.company.toLowerCase().indexOf(_wpWizardData.company.name.toLowerCase()) >= 0 && j.stakeholders && j.stakeholders.length > 0;
+    });
+    if (matchJobs.length > 0) {
+      h += '<div style="margin-top:12px"><label style="font-size:12px;font-weight:600;color:var(--text-light)">Suggested from dashboard:</label>';
+      matchJobs.forEach(function(j) {
+        (j.stakeholders || []).slice(0, 3).forEach(function(s) {
+          h += '<div style="padding:6px;border:1px solid var(--border);border-radius:6px;margin-top:4px;cursor:pointer;font-size:12px" onclick="_wpWizQuickAddContact(\'' + (s.name || '').replace(/'/g, "\\'") + '\',\'' + (s.title || '').replace(/'/g, "\\'") + '\',\'' + (s.email || '') + '\',\'' + (s.linkedin || '') + '\')">' +
+            (s.name || 'Unknown') + ' — ' + (s.title || '') + '</div>';
+        });
+      });
+      h += '</div>';
+    }
+  } else if (_wpWizardStep === 4) {
+    // Team members
+    h += '<h3>Step 4: Team Members</h3>';
+    h += '<p style="font-size:13px;color:var(--text-light);margin-bottom:16px">Select who participates in this campaign and their channels.</p>';
+    var dashUsers = typeof _dashboardUsers !== 'undefined' ? _dashboardUsers : [];
+    if (dashUsers.length === 0) {
+      dashUsers = [
+        { email:'dori.kafri@develeap.com', displayName:'Dori Kafri', role:'CEO' },
+        { email:'roni@develeap.com', displayName:'Roni', role:'Sales Lead' }
+      ];
+    }
+    dashUsers.forEach(function(u) {
+      var isSelected = _wpWizardData.teamMembers.some(function(tm) { return tm.email === u.email; });
+      var selectedTm = _wpWizardData.teamMembers.find(function(tm) { return tm.email === u.email; });
+      var channels = selectedTm ? selectedTm.channels : ['linkedin','email'];
+      var initials = (u.displayName || u.email || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
+      h += '<div class="wp-team-member' + (isSelected ? ' selected' : '') + '" onclick="_wpWizToggleTeam(\'' + u.email + '\')">' +
+        '<div class="tm-avatar">' + initials + '</div>' +
+        '<div class="tm-info">' +
+          '<div class="tm-name">' + (u.displayName || u.email) + '</div>' +
+          '<div class="tm-role">' + (u.role || u.email.split('@')[0]) + '</div>' +
+        '</div>' +
+        '<div class="tm-channels">' +
+          '<span class="tm-ch' + (channels.indexOf('linkedin') >= 0 ? ' active' : '') + '" onclick="event.stopPropagation();_wpWizToggleChannel(\'' + u.email + '\',\'linkedin\',this)">\u{1F517} LI</span>' +
+          '<span class="tm-ch' + (channels.indexOf('email') >= 0 ? ' active' : '') + '" onclick="event.stopPropagation();_wpWizToggleChannel(\'' + u.email + '\',\'email\',this)">\u{1F4E7} Email</span>' +
+          '<span class="tm-ch' + (channels.indexOf('whatsapp') >= 0 ? ' active' : '') + '" onclick="event.stopPropagation();_wpWizToggleChannel(\'' + u.email + '\',\'whatsapp\',this)">\u{1F4F1} WA</span>' +
+        '</div>' +
+        '</div>';
+    });
+  } else if (_wpWizardStep === 5) {
+    // Review + Template
+    h += '<h3>Step 5: Review & Launch</h3>';
+    h += '<div style="background:var(--bg);padding:16px;border-radius:10px;margin-bottom:16px">';
+    h += '<div style="font-size:14px;font-weight:700;margin-bottom:4px">' + (_wpWizardData.company.name || 'Unknown Company') + '</div>';
+    h += '<div style="font-size:13px;color:var(--text-light)">' + (_wpWizardData.targetJob.title || 'No job') + '</div>';
+    h += '<div style="margin-top:8px;font-size:12px">\u{1F465} ' + _wpWizardData.teamMembers.length + ' team members \u00B7 \u{1F3AF} ' + _wpWizardData.targetContacts.length + ' contacts</div>';
+    h += '</div>';
+    h += '<div style="margin-bottom:16px"><label style="font-size:14px;font-weight:600">Campaign Name</label><input type="text" id="wpWizCampaignName" value="' + (_wpWizardData.company.name + ' ' + (_wpWizardData.targetJob.category || '').replace(/_/g, ' ') + ' Push') + '" style="margin-top:6px"></div>';
+    h += '<label style="font-size:14px;font-weight:600;display:block;margin-bottom:10px">Select Flow Template</label>';
+    Object.keys(_WP_FLOW_TEMPLATES).forEach(function(key) {
+      var t = _WP_FLOW_TEMPLATES[key];
+      h += '<div class="wp-flow-template' + (key === _wpWizardData.flowTemplate ? ' selected' : '') + '" onclick="_wpWizSelectTemplate(\'' + key + '\')">' +
+        '<div class="ft-name">' + t.icon + ' ' + t.name + ' (' + t.days + ' days)</div>' +
+        '<div class="ft-desc">' + t.desc + '</div></div>';
+    });
+  }
+
+  body.innerHTML = h;
+
+  // Footer
+  var fh = '';
+  if (_wpWizardStep > 1) fh += '<button class="btn" style="border:1px solid var(--border)" onclick="_wpWizardStep--;_wpWizSaveCurrentStep();_wpRenderWizardStep()">\u2190 Back</button>';
+  else fh += '<div></div>';
+  if (_wpWizardStep < totalSteps) fh += '<button class="btn btn-primary" onclick="_wpWizSaveCurrentStep();_wpWizardStep++;_wpRenderWizardStep()">Next \u2192</button>';
+  else fh += '<button class="btn btn-primary" style="background:var(--success)" onclick="_wpWizSaveCurrentStep();_wpLaunchCampaign()">\u{1F680} Launch Campaign</button>';
+  footer.innerHTML = fh;
+}
+
+function _wpWizSaveCurrentStep() {
+  if (_wpWizardStep === 1) {
+    var n = document.getElementById('wpWizCompanyName');
+    var d = document.getElementById('wpWizCompanyDomain');
+    var cat = document.getElementById('wpWizCompanyCategory');
+    if (n) _wpWizardData.company.name = n.value;
+    if (d) _wpWizardData.company.domain = d.value;
+    if (cat) _wpWizardData.company.category = cat.value;
+  } else if (_wpWizardStep === 2) {
+    var t = document.getElementById('wpWizJobTitle');
+    var u = document.getElementById('wpWizJobUrl');
+    var jc = document.getElementById('wpWizJobCategory');
+    if (t) _wpWizardData.targetJob.title = t.value;
+    if (u) _wpWizardData.targetJob.sourceUrl = u.value;
+    if (jc) _wpWizardData.targetJob.category = jc.value;
+  }
+}
+
+function _wpWizAddContact() {
+  var name = document.getElementById('wpWizContactName');
+  var title = document.getElementById('wpWizContactTitle');
+  var email = document.getElementById('wpWizContactEmail');
+  var li = document.getElementById('wpWizContactLinkedin');
+  var dm = document.getElementById('wpWizContactDM');
+  if (!name || !name.value.trim()) return;
+  _wpWizardData.targetContacts.push({
+    id: _wpGenerateId('tc'),
+    name: name.value.trim(),
+    title: title ? title.value.trim() : '',
+    email: email ? email.value.trim() : '',
+    linkedinUrl: li ? li.value.trim() : '',
+    decisionMaker: dm ? dm.checked : false
+  });
+  _wpRenderWizardStep();
+}
+
+function _wpWizQuickAddContact(name, title, email, linkedin) {
+  _wpWizardData.targetContacts.push({
+    id: _wpGenerateId('tc'),
+    name: name, title: title, email: email, linkedinUrl: linkedin, decisionMaker: false
+  });
+  _wpRenderWizardStep();
+}
+
+function _wpWizRemoveContact(idx) {
+  _wpWizardData.targetContacts.splice(idx, 1);
+  _wpRenderWizardStep();
+}
+
+function _wpWizToggleTeam(email) {
+  var idx = _wpWizardData.teamMembers.findIndex(function(tm) { return tm.email === email; });
+  if (idx >= 0) {
+    _wpWizardData.teamMembers.splice(idx, 1);
+  } else {
+    var du = (typeof _dashboardUsers !== 'undefined' ? _dashboardUsers : []).find(function(u) { return u.email === email; });
+    _wpWizardData.teamMembers.push({
+      email: email,
+      displayName: du ? du.displayName : email.split('@')[0],
+      role: du ? (du.role || '') : '',
+      channels: ['linkedin', 'email'],
+      isPrimary: _wpWizardData.teamMembers.length === 0
+    });
+  }
+  _wpRenderWizardStep();
+}
+
+function _wpWizToggleChannel(email, channel, el) {
+  var tm = _wpWizardData.teamMembers.find(function(t) { return t.email === email; });
+  if (!tm) return;
+  var idx = tm.channels.indexOf(channel);
+  if (idx >= 0) tm.channels.splice(idx, 1);
+  else tm.channels.push(channel);
+  el.classList.toggle('active');
+}
+
+function _wpWizSelectTemplate(key) {
+  _wpWizardData.flowTemplate = key;
+  document.querySelectorAll('.wp-flow-template').forEach(function(el) { el.classList.remove('selected'); });
+  event.currentTarget.classList.add('selected');
+}
+
+/* ---- Launch Campaign ---- */
+function _wpLaunchCampaign() {
+  _wpWizSaveCurrentStep();
+  var nameEl = document.getElementById('wpWizCampaignName');
+  var campaignName = nameEl ? nameEl.value.trim() : (_wpWizardData.company.name + ' Campaign');
+
+  // Generate default flow based on template
+  var flow = _wpGenerateDefaultFlow(_wpWizardData.flowTemplate, _wpWizardData.teamMembers, _wpWizardData.targetContacts);
+
+  var campaign = {
+    id: _wpGenerateId('camp'),
+    name: campaignName,
+    status: 'active',
+    createdBy: _getCurrentUserEmail(),
+    createdAt: new Date().toISOString(),
+    company: _wpWizardData.company,
+    targetJob: _wpWizardData.targetJob,
+    teamMembers: _wpWizardData.teamMembers,
+    targetContacts: _wpWizardData.targetContacts,
+    flow: flow,
+    marketing: {
+      linkedinAds: { enabled: false, targetCompanyDomain: _wpWizardData.company.domain },
+      contentPlan: [],
+      socialEngagement: { enabled: false, companyLinkedinPage: '' }
+    },
+    responseTracking: {
+      engagementScore: 0,
+      touchpoints: []
+    },
+    adaptiveRules: [
+      { id: _wpGenerateId('rule'), trigger:'any_positive_reply', action:'pause_remaining', notify:[_getCurrentUserEmail()] },
+      { id: _wpGenerateId('rule'), trigger:'all_connections_declined', action:'archive' },
+      { id: _wpGenerateId('rule'), trigger:'email_opened_3x', action:'escalate_priority' }
+    ],
+    executionState: {
+      currentNodeId: flow.nodeOrder[0] || 'start',
+      completedNodes: [],
+      nextExecutionAt: new Date(Date.now() + 86400000).toISOString(),
+      pausedAt: null
+    }
+  };
+
+  _wpCampaigns.push(campaign);
+  _saveCampaignsToGitHub();
+  _wpCloseWizard();
+  _wpSelectedCampaign = campaign;
+  _wpSubView = 'detail';
+  _wpRenderCurrentView();
+  _showToast('\u{1F43A} Campaign "' + campaignName + '" launched!');
+}
+
+function _wpGenerateDefaultFlow(templateKey, teamMembers, contacts) {
+  var nodes = {};
+  var nodeOrder = [];
+  var connections = [];
+  var y = 60;
+  var centerX = 300;
+
+  // Start node
+  nodes['start'] = { type:'trigger_start', position:{x:centerX, y:y}, next:[] };
+  nodeOrder.push('start');
+  y += 100;
+
+  var template = _WP_FLOW_TEMPLATES[templateKey] || _WP_FLOW_TEMPLATES.quick_strike;
+  var prevNode = 'start';
+
+  // Generate sequence based on team + contacts
+  var contactIdx = 0;
+  teamMembers.forEach(function(tm, tmIdx) {
+    // Wait node
+    var waitId = 'wait_' + (tmIdx + 1);
+    nodes[waitId] = { type:'wait', position:{x:centerX, y:y}, config:{ days: Math.max(1, tmIdx * 2) }, next:[] };
+    nodeOrder.push(waitId);
+    connections.push({from:prevNode, to:waitId});
+    nodes[prevNode].next = [waitId];
+    y += 100;
+    prevNode = waitId;
+
+    // Action node for each channel this member has
+    tm.channels.forEach(function(ch) {
+      var actionType = ch === 'linkedin' ? 'action_linkedin_connect' : ch === 'email' ? 'action_email' : 'action_whatsapp';
+      var nodeId = tm.email.split('@')[0].replace(/\./g,'_') + '_' + ch + '_' + tmIdx;
+      nodes[nodeId] = {
+        type: actionType,
+        position: { x:centerX, y:y },
+        config: {
+          sender: tm.email,
+          templateIdx: 0,
+          contactIdx: contactIdx % Math.max(contacts.length, 1)
+        },
+        next: []
+      };
+      nodeOrder.push(nodeId);
+      connections.push({from:prevNode, to:nodeId});
+      nodes[prevNode].next = [nodeId];
+      y += 100;
+      prevNode = nodeId;
+    });
+    contactIdx++;
+  });
+
+  // Response check logic node
+  var ifId = 'if_responded';
+  nodes[ifId] = {
+    type: 'logic_if_response',
+    position: { x:centerX, y:y },
+    config: { channels:['all'], sentiment:'positive', timeoutDays:7 },
+    trueBranch: ['end_success'],
+    falseBranch: [],
+    next: []
+  };
+  nodeOrder.push(ifId);
+  connections.push({from:prevNode, to:ifId});
+  nodes[prevNode].next = [ifId];
+  y += 100;
+
+  // End node
+  nodes['end_success'] = { type:'trigger_end', position:{x:centerX, y:y}, next:[] };
+  nodeOrder.push('end_success');
+  connections.push({from:ifId, to:'end_success'});
+
+  return { nodes:nodes, nodeOrder:nodeOrder, connections:connections };
+}
+
+/* ---- Flow Editor ---- */
+function _wpRenderEditor() {
+  var canvas = document.getElementById('wpEditorCanvas');
+  var sidebar = document.getElementById('wpEditorSidebar');
+  var config = document.getElementById('wpEditorConfig');
+  if (!canvas || !_wpSelectedCampaign) return;
+
+  // Render sidebar with node templates
+  var sh = '';
+  _WP_NODE_TEMPLATES.forEach(function(t) {
+    if (t.section) {
+      sh += '<div class="wf-sidebar-section">' + t.section + '</div>';
+      return;
+    }
+    sh += '<div class="wf-sidebar-item" data-template="' + t.id + '" draggable="true" ' +
+      'ondragstart="_wpSidebarDragStart(event,\'' + t.id + '\')" ' +
+      'ondragend="_wpSidebarDragEnd(event)" ' +
+      'onclick="_wpAddNode(\'' + t.id + '\')" ' +
+      'title="' + t.label + ' \u2014 click or drag to add">' +
+      '<span class="sb-icon">' + t.icon + '</span>' +
+      '<span class="sb-label">' + t.label + '</span>' +
+      '</div>';
+  });
+  if (sidebar) sidebar.innerHTML = sh;
+
+  // Render SVG canvas
+  _wpDrawFlowCanvas(canvas);
+
+  // Config panel default
+  if (config && !_wpSelectedNode) {
+    config.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>';
+  }
+}
+
+function _wpDrawFlowCanvas(container) {
+  var c = _wpSelectedCampaign;
+  if (!c || !c.flow) return;
+
+  // Remove old SVG
+  var oldSvg = container.querySelector('svg');
+  if (oldSvg) oldSvg.remove();
+  // Remove old node HTML
+  container.querySelectorAll('.wp-node').forEach(function(n) { n.remove(); });
+
+  var flow = c.flow;
+  var nodes = flow.nodes || {};
+  var conns = flow.connections || [];
+
+  // Calculate canvas size
+  var maxX = 600, maxY = 200;
+  Object.keys(nodes).forEach(function(nid) {
+    var n = nodes[nid];
+    if (n.position) {
+      if (n.position.x + 220 > maxX) maxX = n.position.x + 220;
+      if (n.position.y + 120 > maxY) maxY = n.position.y + 120;
+    }
+  });
+
+  // Create SVG for connections
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', maxX + 100);
+  svg.setAttribute('height', maxY + 100);
+  svg.style.position = 'absolute';
+  svg.style.left = '0';
+  svg.style.top = '0';
+  svg.style.pointerEvents = 'none';
+  svg.style.transform = 'scale(' + _wpFlowZoom + ')';
+  svg.style.transformOrigin = '0 0';
+
+  // Draw connections
+  conns.forEach(function(conn) {
+    var fromNode = nodes[conn.from];
+    var toNode = nodes[conn.to];
+    if (!fromNode || !toNode || !fromNode.position || !toNode.position) return;
+
+    var x1 = fromNode.position.x + 100;
+    var y1 = fromNode.position.y + 80;
+    var x2 = toNode.position.x + 100;
+    var y2 = toNode.position.y;
+
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    var midY = (y1 + y2) / 2;
+    path.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + midY + ' ' + x2 + ',' + midY + ' ' + x2 + ',' + y2);
+    path.setAttribute('stroke', '#C5C7D0');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('fill', 'none');
+
+    // Check if this is a true/false branch
+    var fromNodeData = nodes[conn.from];
+    if (fromNodeData && fromNodeData.trueBranch && fromNodeData.trueBranch.indexOf(conn.to) >= 0) {
+      path.setAttribute('stroke', '#00CA72');
+    }
+    if (fromNodeData && fromNodeData.falseBranch && fromNodeData.falseBranch.indexOf(conn.to) >= 0) {
+      path.setAttribute('stroke', '#E44258');
+    }
+
+    svg.appendChild(path);
+
+    // Arrow head
+    var arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    arrow.setAttribute('points', (x2-5) + ',' + (y2-8) + ' ' + x2 + ',' + y2 + ' ' + (x2+5) + ',' + (y2-8));
+    arrow.setAttribute('fill', path.getAttribute('stroke'));
+    svg.appendChild(arrow);
+  });
+
+  container.appendChild(svg);
+
+  // Draw node cards as HTML elements
+  Object.keys(nodes).forEach(function(nid) {
+    var n = nodes[nid];
+    var ntype = _WP_NODE_TYPES[n.type] || { icon:'?', label:n.type, color:'#999' };
+
+    var div = document.createElement('div');
+    div.className = 'wp-node' + (_wpSelectedNode === nid ? ' selected' : '');
+    div.style.left = (n.position ? n.position.x : 0) * _wpFlowZoom + 'px';
+    div.style.top = (n.position ? n.position.y : 0) * _wpFlowZoom + 'px';
+    div.style.transform = 'scale(' + _wpFlowZoom + ')';
+    div.style.transformOrigin = '0 0';
+    div.setAttribute('data-node-id', nid);
+
+    var senderInfo = '';
+    if (n.config && n.config.sender) {
+      senderInfo = '<div class="wp-node-sender">\u{1F464} ' + _getUserDisplayName(n.config.sender) + '</div>';
+    }
+
+    var completedClass = '';
+    if (c.executionState && c.executionState.completedNodes && c.executionState.completedNodes.indexOf(nid) >= 0) {
+      completedClass = ' style="border-left:4px solid var(--success)"';
+    }
+
+    div.innerHTML =
+      '<div class="wp-node-header"' + completedClass + '>' +
+        '<span class="wp-node-icon">' + ntype.icon + '</span>' +
+        '<span class="wp-node-label">' + ntype.label + '</span>' +
+      '</div>' +
+      '<div class="wp-node-body">' +
+        (n.config && n.config.days ? 'Wait ' + n.config.days + ' day(s)' : ntype.desc || '') +
+        senderInfo +
+      '</div>' +
+      '<div class="wp-node-port in" onmousedown="_wpPortMouseDown(event,\'' + nid + '\',\'in\')"></div>' +
+      '<div class="wp-node-port out" onmousedown="_wpPortMouseDown(event,\'' + nid + '\',\'out\')"></div>';
+
+    // Click to select
+    div.addEventListener('click', function(e) {
+      e.stopPropagation();
+      _wpSelectNode(nid);
+    });
+
+    // Drag to move
+    div.addEventListener('mousedown', function(e) {
+      if (e.target.classList.contains('wp-node-port')) return;
+      _wpStartNodeDrag(e, nid);
+    });
+
+    container.appendChild(div);
+  });
+}
+
+function _wpSelectNode(nodeId) {
+  _wpSelectedNode = nodeId;
+  document.querySelectorAll('.wp-node').forEach(function(n) {
+    n.classList.toggle('selected', n.getAttribute('data-node-id') === nodeId);
+  });
+  _wpRenderNodeConfig(nodeId);
+}
+
+function _wpRenderNodeConfig(nodeId) {
+  var config = document.getElementById('wpEditorConfig');
+  if (!config || !_wpSelectedCampaign) return;
+  var c = _wpSelectedCampaign;
+  var node = c.flow.nodes[nodeId];
+  if (!node) { config.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>'; return; }
+
+  var ntype = _WP_NODE_TYPES[node.type] || { icon:'?', label:node.type };
+  var h = '<div style="padding:4px">';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">' +
+    '<span style="font-size:24px">' + ntype.icon + '</span>' +
+    '<div><div style="font-weight:700;font-size:14px">' + ntype.label + '</div><div style="font-size:11px;color:var(--text-light)">' + (ntype.desc || '') + '</div></div></div>';
+
+  // Delete button
+  if (nodeId !== 'start' && nodeId !== 'trigger_start') {
+    h += '<button class="btn" style="width:100%;border:1px solid var(--danger);color:var(--danger);margin-bottom:16px" onclick="_wpDeleteNode(\'' + nodeId + '\')">\u{1F5D1} Remove Node</button>';
+  }
+
+  // Config fields based on type
+  if (node.type.startsWith('action_')) {
+    // Sender
+    h += '<div class="wp-wiz-field"><label>Sender</label><select onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'sender\',this.value)">';
+    (c.teamMembers || []).forEach(function(tm) {
+      h += '<option value="' + tm.email + '"' + (node.config && node.config.sender === tm.email ? ' selected' : '') + '>' + (tm.displayName || tm.email) + '</option>';
+    });
+    h += '</select></div>';
+
+    // Contact target
+    h += '<div class="wp-wiz-field"><label>Target Contact</label><select onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'contactIdx\',parseInt(this.value))">';
+    (c.targetContacts || []).forEach(function(tc, i) {
+      h += '<option value="' + i + '"' + (node.config && node.config.contactIdx === i ? ' selected' : '') + '>' + (tc.name || 'Contact ' + (i+1)) + '</option>';
+    });
+    h += '</select></div>';
+
+    // Template index
+    h += '<div class="wp-wiz-field"><label>Template #</label><input type="number" value="' + (node.config && node.config.templateIdx !== undefined ? node.config.templateIdx : 0) + '" min="0" onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'templateIdx\',parseInt(this.value))"></div>';
+  }
+
+  if (node.type === 'wait') {
+    h += '<div class="wp-wiz-field"><label>Wait Days</label><input type="number" value="' + (node.config && node.config.days || 1) + '" min="1" max="30" onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'days\',parseInt(this.value))"></div>';
+    h += '<div class="wp-wiz-field"><label><input type="checkbox"' + (node.config && node.config.businessDaysOnly ? ' checked' : '') + ' onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'businessDaysOnly\',this.checked)"> Business days only</label></div>';
+  }
+
+  if (node.type.startsWith('logic_')) {
+    h += '<div class="wp-wiz-field"><label>Condition</label><select onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'condition\',this.value)">';
+    ['any_reply','positive_reply','negative_reply','connection_accepted','email_opened','email_clicked','no_response'].forEach(function(cond) {
+      h += '<option value="' + cond + '"' + (node.config && node.config.condition === cond ? ' selected' : '') + '>' + cond.replace(/_/g, ' ') + '</option>';
+    });
+    h += '</select></div>';
+    h += '<div class="wp-wiz-field"><label>Timeout (days)</label><input type="number" value="' + (node.config && node.config.timeoutDays || 7) + '" min="1" max="30" onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'timeoutDays\',parseInt(this.value))"></div>';
+  }
+
+  h += '</div>';
+  config.innerHTML = h;
+}
+
+function _wpUpdateNodeConfig(nodeId, key, value) {
+  if (!_wpSelectedCampaign) return;
+  var node = _wpSelectedCampaign.flow.nodes[nodeId];
+  if (!node) return;
+  if (!node.config) node.config = {};
+  node.config[key] = value;
+  _wpFlowDirty = true;
+  var status = document.getElementById('wpSaveStatus');
+  if (status) status.textContent = '\u25CF Unsaved changes';
+}
+
+function _wpDeleteNode(nodeId) {
+  if (!_wpSelectedCampaign) return;
+  var flow = _wpSelectedCampaign.flow;
+  // Remove from nodes
+  delete flow.nodes[nodeId];
+  // Remove from nodeOrder
+  var idx = flow.nodeOrder.indexOf(nodeId);
+  if (idx >= 0) flow.nodeOrder.splice(idx, 1);
+  // Remove connections to/from
+  flow.connections = (flow.connections || []).filter(function(c) { return c.from !== nodeId && c.to !== nodeId; });
+  _wpSelectedNode = null;
+  _wpFlowDirty = true;
+  _wpRenderEditor();
+}
+
+function _wpAddNode(templateId) {
+  if (!_wpSelectedCampaign) return;
+  var flow = _wpSelectedCampaign.flow;
+  var nodeId = templateId + '_' + Date.now().toString(36);
+
+  // Calculate position (below last node)
+  var maxY = 60;
+  Object.keys(flow.nodes).forEach(function(nid) {
+    var n = flow.nodes[nid];
+    if (n.position && n.position.y + 100 > maxY) maxY = n.position.y + 100;
+  });
+
+  flow.nodes[nodeId] = {
+    type: templateId,
+    position: { x: 300, y: maxY + 20 },
+    config: {},
+    next: []
+  };
+  flow.nodeOrder.push(nodeId);
+  _wpFlowDirty = true;
+  _wpSelectedNode = nodeId;
+  _wpRenderEditor();
+}
+
+function _wpSaveFlow() {
+  if (!_wpSelectedCampaign) return;
+  _saveCampaignsToGitHub().then(function() {
+    _wpFlowDirty = false;
+    var status = document.getElementById('wpSaveStatus');
+    if (status) status.textContent = '\u2713 Saved';
+    _showToast('\u2713 Flow saved');
+  });
+}
+
+// Node dragging
+var _wpDragState = null;
+function _wpStartNodeDrag(e, nodeId) {
+  if (!_wpSelectedCampaign) return;
+  var node = _wpSelectedCampaign.flow.nodes[nodeId];
+  if (!node) return;
+  _wpDragState = {
+    nodeId: nodeId,
+    startX: e.clientX,
+    startY: e.clientY,
+    origX: node.position.x,
+    origY: node.position.y
+  };
+  var onMove = function(ev) {
+    if (!_wpDragState) return;
+    var dx = (ev.clientX - _wpDragState.startX) / _wpFlowZoom;
+    var dy = (ev.clientY - _wpDragState.startY) / _wpFlowZoom;
+    var n = _wpSelectedCampaign.flow.nodes[_wpDragState.nodeId];
+    if (n) {
+      n.position.x = Math.max(0, _wpDragState.origX + dx);
+      n.position.y = Math.max(0, _wpDragState.origY + dy);
+    }
+    _wpDrawFlowCanvas(document.getElementById('wpEditorCanvas'));
+  };
+  var onUp = function() {
+    _wpDragState = null;
+    _wpFlowDirty = true;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  };
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+// Port connection
+function _wpPortMouseDown(e, nodeId, portType) {
+  e.stopPropagation();
+  if (portType === 'out') {
+    _wpConnectMode = true;
+    _wpConnectSource = nodeId;
+    document.querySelectorAll('.wp-node-port.in').forEach(function(p) {
+      p.style.borderColor = 'var(--accent)';
+      p.style.background = 'var(--accent-light)';
+    });
+  }
+}
+
+document.addEventListener('mouseup', function(e) {
+  if (!_wpConnectMode || !_wpConnectSource) return;
+  var target = e.target.closest('.wp-node');
+  if (target) {
+    var targetId = target.getAttribute('data-node-id');
+    if (targetId && targetId !== _wpConnectSource && _wpSelectedCampaign) {
+      var flow = _wpSelectedCampaign.flow;
+      // Avoid duplicate connections
+      var exists = (flow.connections || []).some(function(c) { return c.from === _wpConnectSource && c.to === targetId; });
+      if (!exists) {
+        flow.connections.push({ from: _wpConnectSource, to: targetId });
+        var srcNode = flow.nodes[_wpConnectSource];
+        if (srcNode && srcNode.next) srcNode.next.push(targetId);
+        _wpFlowDirty = true;
+        _wpDrawFlowCanvas(document.getElementById('wpEditorCanvas'));
+      }
+    }
+  }
+  _wpConnectMode = false;
+  _wpConnectSource = null;
+  document.querySelectorAll('.wp-node-port.in').forEach(function(p) {
+    p.style.borderColor = '';
+    p.style.background = '';
+  });
+});
+
+// Sidebar drag/drop
+function _wpSidebarDragStart(e, templateId) {
+  _wpDragTemplate = templateId;
+  e.dataTransfer.setData('text/plain', templateId);
+}
+function _wpSidebarDragEnd(e) {
+  _wpDragTemplate = null;
+}
+
+// Zoom
+function _wpZoom(delta) {
+  _wpFlowZoom = Math.max(0.3, Math.min(2, _wpFlowZoom + delta));
+  var label = document.getElementById('wpZoomLabel');
+  if (label) label.textContent = Math.round(_wpFlowZoom * 100) + '%';
+  _wpDrawFlowCanvas(document.getElementById('wpEditorCanvas'));
+}
+function _wpFitCanvas() {
+  _wpFlowZoom = 1.0;
+  var label = document.getElementById('wpZoomLabel');
+  if (label) label.textContent = '100%';
+  _wpDrawFlowCanvas(document.getElementById('wpEditorCanvas'));
+}
+
+// Undo/Redo stubs
+function _wpUndo() { /* TODO */ }
+function _wpRedo() { /* TODO */ }
+
+// Helper
+function _getUserDisplayName(email) {
+  if (typeof _userProfiles !== 'undefined' && _userProfiles[email] && _userProfiles[email].displayName) return _userProfiles[email].displayName;
+  return email ? email.split('@')[0] : '';
+}
+
 </script>
 </body>
 </html>

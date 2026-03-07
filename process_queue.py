@@ -34,6 +34,7 @@ EXEC_LOG_FILE = "queue_execution_log.json"
 CRM_DATA_FILE = "crm_data.json"
 DOCS_HTML = "docs/index.html"
 WORKFLOW_CONFIG_PATH = "workflow_config.json"
+WOLFPACK_FILE = "wolfpack_campaigns.json"
 
 # Rate limits
 MAX_CRM_CREATES_PER_RUN = 20
@@ -772,6 +773,367 @@ def _distribute_entries(queue_data, entries):
         queue_data["users"][owner]["queue"].append(entry)
 
 
+## ── Wolf Pack Campaign Processing ───────────────────────────────────────
+
+def process_wolf_pack_campaigns(queue_data):
+    """Main campaign processing loop — runs alongside existing queue processing."""
+    wp_data = _load_json(WOLFPACK_FILE, {"version": 1, "campaigns": []})
+    campaigns = wp_data.get("campaigns", [])
+    active_count = 0
+    nodes_executed = 0
+    responses_tracked = 0
+
+    for campaign in campaigns:
+        if campaign.get("status") != "active":
+            continue
+        active_count += 1
+
+        # 1. Track responses across all channels
+        responses_tracked += _track_campaign_responses(campaign)
+
+        # 2. Apply adaptive rules
+        _apply_adaptive_rules(campaign)
+
+        # 3. Execute ready nodes — push actions to the outreach queue
+        nodes_executed += _execute_campaign_nodes(campaign, queue_data)
+
+    if active_count > 0:
+        _save_json(WOLFPACK_FILE, wp_data)
+
+    return {
+        "activeCampaigns": active_count,
+        "nodesExecuted": nodes_executed,
+        "responsesTracked": responses_tracked,
+    }
+
+
+def _track_campaign_responses(campaign):
+    """Check for new responses across channels for this campaign."""
+    tracked = 0
+    touchpoints = campaign.get("responseTracking", {}).get("touchpoints", [])
+
+    for tp in touchpoints:
+        if tp.get("status") == "completed":
+            continue
+
+        channel = tp.get("channel", "")
+        contact_id = tp.get("contactId", "")
+
+        # Check HubSpot for email responses
+        if channel == "email" and HUBSPOT_TOKEN:
+            contact_email = _find_campaign_contact_email(campaign, contact_id)
+            if contact_email:
+                replied = _check_hubspot_email_reply(contact_email)
+                if replied:
+                    tp["status"] = "completed"
+                    tp["responses"] = tp.get("responses", []) + [{
+                        "type": "email_reply",
+                        "timestamp": _now_iso(),
+                        "sentiment": "unknown"
+                    }]
+                    tracked += 1
+
+        # Check LinkedIn status (from outreach_status.json if exists)
+        if channel == "linkedin":
+            status_data = _load_json("outreach_status.json", {})
+            contact_email = _find_campaign_contact_email(campaign, contact_id)
+            if contact_email and contact_email in status_data:
+                entry = status_data[contact_email]
+                if entry.get("connected"):
+                    tp["status"] = "completed"
+                    tp["responses"] = tp.get("responses", []) + [{
+                        "type": "linkedin_connected",
+                        "timestamp": _now_iso()
+                    }]
+                    tracked += 1
+
+    # Recalculate engagement score
+    if touchpoints:
+        total = len(touchpoints)
+        completed = sum(1 for t in touchpoints if t.get("status") == "completed")
+        replied = sum(1 for t in touchpoints if t.get("responses"))
+        score = ((completed * 0.3 + replied * 0.7) / max(total, 1)) * 100
+        campaign.setdefault("responseTracking", {})["engagementScore"] = round(score, 1)
+
+    return tracked
+
+
+def _apply_adaptive_rules(campaign):
+    """Evaluate and apply adaptive rules based on campaign state."""
+    rules = campaign.get("adaptiveRules", [])
+    touchpoints = campaign.get("responseTracking", {}).get("touchpoints", [])
+
+    for rule in rules:
+        trigger = rule.get("trigger", "")
+        action = rule.get("action", "")
+
+        fired = False
+
+        if trigger == "any_positive_reply":
+            fired = any(
+                tp.get("responses") and
+                any(r.get("sentiment") in ("positive", "unknown") for r in tp["responses"])
+                for tp in touchpoints
+            )
+        elif trigger == "all_connections_declined":
+            li_tps = [tp for tp in touchpoints if tp.get("channel") == "linkedin"]
+            fired = (
+                len(li_tps) > 0 and
+                all(tp.get("status") == "declined" for tp in li_tps)
+            )
+        elif trigger == "email_opened_3x":
+            opened_tps = [
+                tp for tp in touchpoints
+                if tp.get("channel") == "email" and tp.get("openCount", 0) >= 3
+            ]
+            fired = len(opened_tps) > 0
+        elif trigger == "no_response_7days":
+            exec_state = campaign.get("executionState", {})
+            if exec_state.get("nextExecutionAt"):
+                next_exec = datetime.fromisoformat(exec_state["nextExecutionAt"].replace("Z", "+00:00"))
+                if datetime.now(timezone.utc) - next_exec > timedelta(days=7):
+                    has_any_reply = any(tp.get("responses") for tp in touchpoints)
+                    fired = not has_any_reply
+
+        if fired:
+            print(f"    Wolf Pack rule fired: {trigger} → {action} (campaign {campaign.get('id', '?')})")
+            if action == "pause_remaining":
+                campaign["status"] = "paused"
+                campaign.setdefault("executionState", {})["pausedAt"] = _now_iso()
+            elif action == "archive":
+                campaign["status"] = "archived"
+            elif action == "escalate_priority":
+                # Mark as escalated in execution state
+                campaign.setdefault("executionState", {})["escalated"] = True
+
+
+def _execute_campaign_nodes(campaign, queue_data):
+    """Check execution state and execute nodes whose wait time has elapsed."""
+    executed = 0
+    exec_state = campaign.get("executionState", {})
+    current_node_id = exec_state.get("currentNodeId")
+    flow = campaign.get("flow", {})
+    nodes = flow.get("nodes", {})
+
+    if not current_node_id or current_node_id not in nodes:
+        return 0
+
+    node = nodes[current_node_id]
+    now = datetime.now(timezone.utc)
+
+    # Check if it's time to execute
+    next_exec_str = exec_state.get("nextExecutionAt")
+    if next_exec_str:
+        try:
+            next_exec = datetime.fromisoformat(next_exec_str.replace("Z", "+00:00"))
+            if now < next_exec:
+                return 0  # Not yet time
+        except (ValueError, TypeError):
+            pass
+
+    node_type = node.get("type", "")
+    config = node.get("config", {})
+
+    if node_type == "wait":
+        # Advance past wait node
+        wait_days = config.get("days", 1)
+        _advance_campaign_node(campaign, wait_days)
+        executed += 1
+
+    elif node_type.startswith("action_"):
+        # Push action to the outreach queue
+        sender = config.get("sender", "")
+        contact_idx = config.get("contactIdx", 0)
+        contacts = campaign.get("targetContacts", [])
+        contact = contacts[contact_idx] if contact_idx < len(contacts) else {}
+
+        # Determine channel
+        if "linkedin_connect" in node_type:
+            channel = "linkedin"
+            q_type = "connect"
+        elif "linkedin_message" in node_type:
+            channel = "linkedin"
+            q_type = "outreach"
+        elif "email" in node_type:
+            channel = "email"
+            q_type = "outreach"
+        elif "whatsapp" in node_type:
+            channel = "whatsapp"
+            q_type = "outreach"
+        else:
+            channel = "other"
+            q_type = "outreach"
+
+        # Create queue entry
+        queue_entry = {
+            "id": f"wp_{campaign['id']}_{current_node_id}_{int(time.time())}",
+            "contactName": contact.get("name", ""),
+            "contactTitle": contact.get("title", ""),
+            "company": campaign.get("company", {}).get("name", ""),
+            "linkedinUrl": contact.get("linkedinUrl", ""),
+            "email": contact.get("email", ""),
+            "message": "",  # Will be filled by template
+            "type": q_type,
+            "status": "pending",
+            "createdAt": _now_iso(),
+            "campaignId": campaign["id"],
+            "campaignNodeId": current_node_id,
+            "actingAs": sender,
+            "createdBy": campaign.get("createdBy", sender),
+        }
+
+        # Push to the right user's queue
+        target_user = sender or campaign.get("createdBy", "dori.kafri@develeap.com")
+        users = queue_data.setdefault("users", {})
+        if target_user not in users:
+            users[target_user] = {"queue": [], "lastProcessed": ""}
+        users[target_user]["queue"].append(queue_entry)
+
+        # Record touchpoint
+        campaign.setdefault("responseTracking", {}).setdefault("touchpoints", []).append({
+            "id": f"tp_{int(time.time())}",
+            "nodeId": current_node_id,
+            "timestamp": _now_iso(),
+            "sender": sender,
+            "channel": channel,
+            "action": node_type,
+            "contactId": contact.get("id", ""),
+            "status": "pending",
+            "responses": [],
+        })
+
+        _advance_campaign_node(campaign, 1)
+        executed += 1
+        print(f"    Wolf Pack: queued {node_type} for {contact.get('name', '?')} via {sender}")
+
+    elif node_type.startswith("logic_"):
+        # Evaluate logic node
+        _evaluate_campaign_logic(campaign, current_node_id, node)
+        executed += 1
+
+    elif node_type == "trigger_end":
+        campaign["status"] = "completed"
+        exec_state["completedNodes"] = exec_state.get("completedNodes", []) + [current_node_id]
+        print(f"    Wolf Pack: campaign {campaign.get('id', '?')} completed")
+
+    elif node_type == "trigger_start":
+        _advance_campaign_node(campaign, 0)
+        executed += 1
+
+    return executed
+
+
+def _advance_campaign_node(campaign, wait_days=0):
+    """Move to the next node in the flow."""
+    exec_state = campaign.setdefault("executionState", {})
+    current = exec_state.get("currentNodeId")
+    flow = campaign.get("flow", {})
+    nodes = flow.get("nodes", {})
+    node_order = flow.get("nodeOrder", [])
+
+    # Mark current as completed
+    completed = exec_state.setdefault("completedNodes", [])
+    if current and current not in completed:
+        completed.append(current)
+
+    # Find next node
+    current_node = nodes.get(current, {})
+    next_nodes = current_node.get("next", [])
+    if next_nodes:
+        exec_state["currentNodeId"] = next_nodes[0]
+    else:
+        # Fall back to nodeOrder
+        idx = node_order.index(current) if current in node_order else -1
+        if idx >= 0 and idx + 1 < len(node_order):
+            exec_state["currentNodeId"] = node_order[idx + 1]
+        else:
+            exec_state["currentNodeId"] = None
+
+    # Set next execution time
+    exec_state["nextExecutionAt"] = (
+        datetime.now(timezone.utc) + timedelta(days=max(wait_days, 0))
+    ).isoformat()
+
+
+def _evaluate_campaign_logic(campaign, node_id, node):
+    """Evaluate a logic node and choose the branch."""
+    config = node.get("config", {})
+    touchpoints = campaign.get("responseTracking", {}).get("touchpoints", [])
+
+    has_response = any(tp.get("responses") for tp in touchpoints)
+
+    exec_state = campaign.setdefault("executionState", {})
+    completed = exec_state.setdefault("completedNodes", [])
+    if node_id not in completed:
+        completed.append(node_id)
+
+    if has_response:
+        # True branch
+        true_branch = node.get("trueBranch", node.get("next", []))
+        exec_state["currentNodeId"] = true_branch[0] if true_branch else None
+    else:
+        # Check timeout
+        timeout_days = config.get("timeoutDays", 7)
+        created = campaign.get("createdAt", _now_iso())
+        try:
+            created_dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
+            elapsed = (datetime.now(timezone.utc) - created_dt).days
+        except (ValueError, TypeError):
+            elapsed = 0
+
+        if elapsed >= timeout_days:
+            # Timeout → false branch
+            false_branch = node.get("falseBranch", [])
+            if false_branch:
+                exec_state["currentNodeId"] = false_branch[0]
+            else:
+                _advance_campaign_node(campaign, 0)
+        # else: stay on this node, waiting for response
+
+
+def _find_campaign_contact_email(campaign, contact_id):
+    """Find email for a contact by ID."""
+    for tc in campaign.get("targetContacts", []):
+        if tc.get("id") == contact_id:
+            return tc.get("email", "")
+    return ""
+
+
+def _check_hubspot_email_reply(contact_email):
+    """Check HubSpot for email replies from a specific contact."""
+    if not HUBSPOT_TOKEN or not contact_email:
+        return False
+    try:
+        url = f"{BASE_URL}/crm/v3/objects/contacts/search"
+        body = {
+            "filterGroups": [{
+                "filters": [{
+                    "propertyName": "email",
+                    "operator": "EQ",
+                    "value": contact_email
+                }]
+            }],
+            "properties": ["hs_email_last_reply_date", "hs_email_replied"]
+        }
+        resp = requests.post(url, headers=_hs_headers(), json=body, timeout=10)
+        if resp.ok:
+            results = resp.json().get("results", [])
+            if results:
+                props = results[0].get("properties", {})
+                return props.get("hs_email_replied") == "true"
+    except Exception as e:
+        print(f"    HubSpot reply check error for {contact_email}: {e}")
+    return False
+
+
+def _hs_headers():
+    """Return HubSpot API headers."""
+    return {
+        "Authorization": f"Bearer {HUBSPOT_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+
 def main():
     print("=" * 60)
     print("BDR Queue Processor — Server-side automation (multi-user)")
@@ -843,6 +1205,13 @@ def main():
     else:
         print("\n── Step 5: Opportunity Detection — SKIPPED ──")
 
+    # 6. Wolf Pack campaign processing
+    print("\n── Step 6: Wolf Pack Campaigns ──")
+    wp_stats = process_wolf_pack_campaigns(queue_data)
+    print(f"  Active campaigns:  {wp_stats['activeCampaigns']}")
+    print(f"  Nodes executed:    {wp_stats['nodesExecuted']}")
+    print(f"  Responses tracked: {wp_stats['responsesTracked']}")
+
     # Update execution log (include user attribution)
     exec_log = update_execution_log(exec_log, queue, stats)
 
@@ -867,6 +1236,7 @@ def main():
     print(f"  Replies found:    {stats['repliesFound']}")
     print(f"  SOS updated:      {stats['sosUpdated']}")
     print(f"  Opportunities:    {stats['opportunitiesDetected']}")
+    print(f"  Wolf Pack active: {wp_stats['activeCampaigns']}")
     print(f"{'=' * 60}")
 
 
