@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-07T09:35:28.525Z",
+  "lastUpdated": "2026-03-07T09:35:45.525Z",
   "nodes": {
     "discovery": {
       "enabled": true,
@@ -129,12 +129,6 @@
       "ruleLogic": "AND",
       "falseBehavior": "skip"
     },
-    "delay": {
-      "enabled": true,
-      "label": "Delay / Wait",
-      "description": "Wait for a set period before continuing",
-      "type": "throttled"
-    },
     "crmUpdate": {
       "enabled": true,
       "autoLog": true,
@@ -155,7 +149,6 @@
     "followUp",
     "responseTracking",
     "if_branch",
-    "delay",
     "crmUpdate"
   ],
   "connections": [
