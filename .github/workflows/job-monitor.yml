@@ -50,9 +50,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Stash our generated files, pull remote, re-apply ours on top
+          cp dashboard/index.html /tmp/dashboard_gen.html
+          cp docs/index.html /tmp/docs_gen.html
+          cp slack_posted.json /tmp/slack_posted_gen.json 2>/dev/null || true
+          git checkout -- . 2>/dev/null || true
+          git pull origin main || true
+          # Restore our generated files (they're always the freshest)
+          cp /tmp/dashboard_gen.html dashboard/index.html
+          cp /tmp/docs_gen.html docs/index.html
+          cp /tmp/slack_posted_gen.json slack_posted.json 2>/dev/null || true
           git add dashboard/index.html docs/index.html slack_posted.json
           git diff --staged --quiet || git commit -m "chore: update job listings $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main || (git rebase --abort && git pull --no-rebase origin main && git push)
           git push
 
       - name: Notify Slack on failure
