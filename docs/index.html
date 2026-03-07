@@ -713,7 +713,9 @@
   .wf-toolbar { position:absolute; top:12px; left:12px; display:flex; gap:6px; z-index:10; }
   .wf-toolbar-btn { display:flex; align-items:center; gap:6px; padding:8px 14px; background:white; border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:12px; font-weight:600; color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:all 0.2s; font-family:inherit; }
   .wf-toolbar-btn:hover { border-color:var(--accent); background:var(--accent-light); color:var(--accent-dark); box-shadow:0 2px 12px rgba(255,177,0,0.15); }
+  .wf-toolbar-btn:disabled { opacity:0.35; cursor:default; pointer-events:none; }
   .wf-toolbar-btn .icon { font-size:14px; }
+  .wf-toolbar-sep { width:1px; height:24px; background:var(--border); align-self:center; }
   .wf-add-menu { position:absolute; top:42px; left:0; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.12); padding:6px; min-width:280px; z-index:20; animation:wfSlideIn 0.15s ease-out; max-height:520px; overflow-y:auto; }
   .wf-add-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; cursor:pointer; transition:background 0.15s; }
   .wf-add-item:hover { background:var(--bg); }
@@ -1697,6 +1699,9 @@
     <div class="wf-sidebar" id="wfSidebar"></div>
     <div class="wf-canvas" id="wfCanvas">
       <div class="wf-toolbar" id="wfToolbar">
+        <button class="wf-toolbar-btn" id="wfUndoBtn" onclick="_wfUndo()" title="Undo (Ctrl+Z)" disabled><span class="icon">↩</span> Undo</button>
+        <button class="wf-toolbar-btn" id="wfRedoBtn" onclick="_wfRedo()" title="Redo (Ctrl+Shift+Z)" disabled><span class="icon">↪</span> Redo</button>
+        <div class="wf-toolbar-sep"></div>
         <button class="wf-toolbar-btn" onclick="_wfFitCanvas()" title="Fit to screen"><span class="icon">⊞</span> Fit</button>
       </div>
       <div class="wf-zoom-controls" id="wfZoomControls">
@@ -11819,6 +11824,9 @@ var _WF_ADD_MENU_OPEN = false;
 var _WF_CONNECTIONS = []; // [{from:'nodeId', to:'nodeId'}] custom connections (empty = use _WF_NODE_ORDER chain)
 var _WF_CONNECT_MODE = false;
 var _WF_CONNECT_SOURCE = null;
+var _WF_UNDO_STACK = []; // array of state snapshots
+var _WF_REDO_STACK = [];
+var _WF_UNDO_MAX = 50;
 var _WF_DRAG_TEMPLATE = null; // template being dragged from sidebar
 
 /* Logic node field/operator definitions */
@@ -12061,6 +12069,7 @@ function _wfConnectClick(nodeId) {
     // Check if connection already exists
     var exists = _WF_CONNECTIONS.some(function(c){ return c.from===_WF_CONNECT_SOURCE && c.to===nodeId; });
     if(!exists) {
+      _wfPushUndo();
       _WF_CONNECTIONS.push({ from:_WF_CONNECT_SOURCE, to:nodeId });
       _wfMarkDirty();
       renderWorkflowView();
@@ -12073,6 +12082,7 @@ function _wfConnectClick(nodeId) {
 }
 
 function _wfRemoveConnection(fromId, toId) {
+  _wfPushUndo();
   _WF_CONNECTIONS = _WF_CONNECTIONS.filter(function(c){ return !(c.from===fromId && c.to===toId); });
   _wfMarkDirty();
   renderWorkflowView();
@@ -12734,8 +12744,16 @@ function _wfSlider(label,key,val,min,max,nodeId) {
     '<span class="wf-range-value">'+val+'</span></div></div>';
 }
 
-function _wfSet(nodeId,key,val) { _WF_CONFIG[nodeId][key]=val; _wfMarkDirty(); }
-function _wfSetNum(nodeId,key,val) { _WF_CONFIG[nodeId][key]=parseInt(val,10); _wfMarkDirty(); }
+/* Debounced undo for config edits — coalesces rapid keystrokes into one undo entry */
+var _WF_UNDO_TIMER = null;
+var _WF_UNDO_PENDING = false;
+function _wfPushUndoDebounced() {
+  if(!_WF_UNDO_PENDING) { _wfPushUndo(); _WF_UNDO_PENDING = true; }
+  clearTimeout(_WF_UNDO_TIMER);
+  _WF_UNDO_TIMER = setTimeout(function(){ _WF_UNDO_PENDING = false; }, 800);
+}
+function _wfSet(nodeId,key,val) { _wfPushUndoDebounced(); _WF_CONFIG[nodeId][key]=val; _wfMarkDirty(); }
+function _wfSetNum(nodeId,key,val) { _wfPushUndoDebounced(); _WF_CONFIG[nodeId][key]=parseInt(val,10); _wfMarkDirty(); }
 
 function _wfApplyPreset(p) {
   var presets = {
@@ -12779,6 +12797,76 @@ function _wfRemoveDay(d) {
   _wfMarkDirty();
   _wfRenderConfig('followUp');
 }
+
+/* ---- Undo / Redo ---- */
+function _wfSnapshot() {
+  return {
+    config: JSON.parse(JSON.stringify(_WF_CONFIG)),
+    order:  JSON.parse(JSON.stringify(_WF_NODE_ORDER)),
+    connections: JSON.parse(JSON.stringify(_WF_CONNECTIONS)),
+    nodes: JSON.parse(JSON.stringify(_WF_NODES))
+  };
+}
+function _wfRestoreSnapshot(snap) {
+  _WF_CONFIG = JSON.parse(JSON.stringify(snap.config));
+  _WF_NODE_ORDER = JSON.parse(JSON.stringify(snap.order));
+  _WF_CONNECTIONS = JSON.parse(JSON.stringify(snap.connections));
+  _WF_NODES = JSON.parse(JSON.stringify(snap.nodes));
+}
+function _wfPushUndo() {
+  _WF_UNDO_STACK.push(_wfSnapshot());
+  if (_WF_UNDO_STACK.length > _WF_UNDO_MAX) _WF_UNDO_STACK.shift();
+  _WF_REDO_STACK = []; // clear redo on new action
+  _wfUpdateUndoButtons();
+}
+function _wfUndo() {
+  if (!_WF_UNDO_STACK.length) return;
+  _WF_REDO_STACK.push(_wfSnapshot()); // save current for redo
+  var snap = _WF_UNDO_STACK.pop();
+  _wfRestoreSnapshot(snap);
+  _WF_DIRTY = true; _wfUpdateStatus();
+  clearTimeout(_WF_SAVE_TIMEOUT);
+  _WF_SAVE_TIMEOUT = setTimeout(_saveWorkflowConfig, 2000);
+  _WF_SELECTED_NODE = null;
+  renderWorkflowView();
+  var panel = document.getElementById('wfConfigPanel');
+  if(panel) panel.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>';
+  _wfUpdateUndoButtons();
+}
+function _wfRedo() {
+  if (!_WF_REDO_STACK.length) return;
+  _WF_UNDO_STACK.push(_wfSnapshot()); // save current for undo
+  var snap = _WF_REDO_STACK.pop();
+  _wfRestoreSnapshot(snap);
+  _WF_DIRTY = true; _wfUpdateStatus();
+  clearTimeout(_WF_SAVE_TIMEOUT);
+  _WF_SAVE_TIMEOUT = setTimeout(_saveWorkflowConfig, 2000);
+  _WF_SELECTED_NODE = null;
+  renderWorkflowView();
+  var panel = document.getElementById('wfConfigPanel');
+  if(panel) panel.innerHTML = '<div class="wf-config-empty">Click a node to configure</div>';
+  _wfUpdateUndoButtons();
+}
+function _wfUpdateUndoButtons() {
+  var u = document.getElementById('wfUndoBtn');
+  var r = document.getElementById('wfRedoBtn');
+  if(u) u.disabled = !_WF_UNDO_STACK.length;
+  if(r) r.disabled = !_WF_REDO_STACK.length;
+}
+
+/* Keyboard shortcuts: Ctrl/Cmd+Z = Undo, Ctrl/Cmd+Shift+Z = Redo */
+document.addEventListener('keydown', function(e) {
+  // Only act when workflow tab is visible
+  var wfTab = document.getElementById('workflowTab');
+  if(!wfTab || wfTab.style.display === 'none') return;
+  var mod = e.metaKey || e.ctrlKey;
+  if(!mod || e.key.toLowerCase() !== 'z') return;
+  // Don't intercept when typing in input/textarea/select
+  var tag = document.activeElement && document.activeElement.tagName;
+  if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  e.preventDefault();
+  if(e.shiftKey) { _wfRedo(); } else { _wfUndo(); }
+});
 
 function _wfMarkDirty() {
   _WF_DIRTY = true; _wfUpdateStatus();
@@ -12899,6 +12987,7 @@ function _wfAddNode(templateId) {
   // Don't add duplicates
   if(_WF_NODE_ORDER.indexOf(templateId) >= 0) return;
 
+  _wfPushUndo();
   // Add to registry
   _WF_NODES[templateId] = { icon:tmpl.icon, label:tmpl.label, type:tmpl.type, desc:tmpl.desc };
   // Add to order (insert before the last node, typically 'crmUpdate')
@@ -12927,6 +13016,7 @@ function _wfRemoveNode(nodeId) {
   // Prevent removing core nodes
   var coreNodes = ['discovery','dedup','customerMatch','enrichment','crmSync','review','throttle','outreach','followUp','responseTracking','crmUpdate'];
   if(coreNodes.indexOf(nodeId) >= 0) { _wfMsg('error','Cannot remove core pipeline node'); return; }
+  _wfPushUndo();
   var idx = _WF_NODE_ORDER.indexOf(nodeId);
   if(idx >= 0) _WF_NODE_ORDER.splice(idx, 1);
   delete _WF_NODES[nodeId];
