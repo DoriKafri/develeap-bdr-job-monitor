@@ -2427,7 +2427,8 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # them from being re-discovered as "new" on every run — which caused duplicate
     # Slack notifications for listings scraped with company="Unknown")
     develeap_names = {"develeap", "develeap ltd", "develeap ltd."}
-    existing = [j for j in existing if j.get("company", "").lower() not in develeap_names]
+    existing = [j for j in existing if j.get("company", "").lower() not in develeap_names
+                or j.get("_isMock")]
 
     # Remove company-page listings (not specific job postings)
     before_cp = len(existing)
@@ -2487,6 +2488,10 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
     for j in existing:
+        # Skip all cleanup checks for mock/test listings
+        if j.get("_isMock"):
+            cleaned.append(j)
+            continue
         url = j.get("sourceUrl", "")
 
         # ── Age-check existing jobs by their stored date ──
