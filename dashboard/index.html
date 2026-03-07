@@ -10482,8 +10482,8 @@ function _buildCrmDetailHtml(companyName) {
       const stageColor = d.stageColor || _resolveStageColor(d.stage);
       const amount = d.amount ? ' - $' + Number(d.amount).toLocaleString() : '';
       const dealUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-3/' + d.id : '#';
-      const hidden = di >= VISIBLE_COUNT ? ' style="display:none"' : '';
-      html += '<div class="' + crmUid + '_deal"' + hidden + ' style="display:' + (di >= VISIBLE_COUNT ? 'none' : 'flex') + ';align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
+      const displayVal = di >= VISIBLE_COUNT ? 'none' : 'flex';
+      html += '<div class="' + crmUid + '_deal" style="display:' + displayVal + ';align-items:center;gap:6px;margin-bottom:4px;font-size:12px">';
       html += '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + stageColor + ';flex-shrink:0"></span>';
       html += '<a href="' + dealUrl + '" target="_blank" style="color:var(--text);text-decoration:none">' + d.name + '</a>';
       html += '<span style="color:var(--text-lighter)">' + (d.stageName || '') + amount + '</span>';
