@@ -2316,6 +2316,20 @@ def _normalize_title(title: str) -> str:
     t = re.sub(r'^דרוש/?ה?\s*', '', t)
     # 5b. Remove Hebrew suffix "לנס (NESS)" or "לחברת X" (to company X)
     t = re.sub(r'\s*ל[\u0590-\u05FF]+\s*(?:\([^)]+\))?\s*התפקיד.*$', '', t)
+    # 5c. Remove location suffixes: "| Tel Aviv District", "- Tel Aviv-Yafo, Israel", etc.
+    #     These vary by source and cause the same job to appear "new" when re-scraped
+    #     from a different source with a different location format.
+    t = re.sub(
+        r'\s*[\|–—-]\s*(?:tel\s*aviv|jerusalem|haifa|beer\s*sheva|ramat\s*gan|herzliya|'
+        r'petah\s*tikva|netanya|rishon|rehovot|modiin|bnei\s*brak|kfar\s*saba|'
+        r'raanana|ashdod|ashkelon|eilat|nazareth|acre|tiberias|'
+        r'israel|remote|hybrid|on-?site|worldwide|global)[\w\s,.\-–—]*$',
+        '', t, flags=re.IGNORECASE
+    )
+    # Also strip generic "| City District/Region/Area" patterns at end
+    t = re.sub(r'\s*\|\s*[A-Za-z\s]+(?:district|region|area|county|province|state)\s*$', '', t, flags=re.IGNORECASE)
+    # Strip "- City, Country" or "- City, State" trailing location patterns
+    t = re.sub(r'\s*-\s*[A-Za-z\s-]+,\s*(?:israel|il|us|usa|uk|remote)\s*$', '', t, flags=re.IGNORECASE)
     # 6. Remove parenthetical job IDs like (25020)
     t = re.sub(r'\s*\(\d+\)\s*', ' ', t)
     # 7. Clean up trailing punctuation and whitespace
@@ -2704,22 +2718,28 @@ def deploy_to_netlify(html: str) -> bool:
 # ── Slack Dedup Tracking ───────────────────────────────────────────────────
 
 def _slack_listing_key(job: dict) -> str:
-    """Build a unique identifier for a listing: company|category|normalized_title.
+    """Build a unique identifier for a listing: company|||normalized_title.
 
     Uses _normalize_company and _normalize_title so that different scrape variants
     of the same job (e.g. Hebrew vs English title, different source suffixes)
     resolve to the same key and avoid duplicate Slack posts.
 
+    NOTE: Category is intentionally excluded from the key. Including category caused
+    duplicate Slack notifications when the same job was re-scraped with a different
+    category (e.g., "finops" vs "devops") due to different description/subtitle text.
+
     NOTE: Date is intentionally excluded from the key. Including the date caused
-    the same job to be re-posted whenever it was re-scraped with a different date
-    (e.g., search engine returns it with today's date instead of original date).
+    the same job to be re-posted whenever it was re-scraped with a different date.
     A 30-day staleness window is used instead to allow genuinely re-opened roles
     to be re-posted.
+
+    Uses '|||' as separator instead of '|' because job titles can contain pipes
+    (e.g. "Cloud FinOps Engineer | Tel Aviv District") which broke legacy key
+    parsing and migration.
     """
     company = _normalize_company(job.get("company") or "").lower().strip()
-    category = (job.get("category") or "").lower().strip()
     title = _normalize_title(job.get("title") or "")
-    return f"{company}|{category}|{title}"
+    return f"{company}|||{title}"
 
 
 def _slack_listing_key_legacy(job: dict) -> str:
@@ -2739,9 +2759,10 @@ def _load_slack_posted() -> dict:
     """Load the posted tracking data.
 
     Returns dict with:
-      - posted_keys: set of dateless keys (company|category|title)
+      - posted_keys: set of keys in ALL formats (legacy company|category|title,
+        new company|||title, and date-suffixed variants) for maximum dedup coverage
       - posted_keys_with_dates: set of legacy keys (for backward compat)
-      - first_seen: dict mapping dateless key → ISO timestamp of first posting
+      - first_seen: dict mapping key → ISO timestamp of first posting
     """
     try:
         with open(SLACK_POSTED_PATH, "r", encoding="utf-8") as f:
@@ -2751,16 +2772,50 @@ def _load_slack_posted() -> dict:
                 "posted_keys_with_dates": set(data.get("posted_keys_with_dates", [])),
                 "first_seen": data.get("first_seen", {}),
             }
-            # Migrate: extract dateless keys from legacy date-keyed entries
+            # Migrate: extract dateless keys AND new-format keys from legacy entries.
+            # Legacy entries can have embedded pipes in titles (e.g. "Cloud FinOps Engineer | Tel Aviv")
+            # so we use regex to find the trailing date instead of splitting by |.
             for legacy_key in list(result["posted_keys"]):
-                parts = legacy_key.split("|")
-                if len(parts) == 4 and re.match(r'^\d{4}-\d{2}-\d{2}$', parts[-1]):
-                    # This is an old date-keyed entry, extract dateless version
-                    dateless = "|".join(parts[:3])
+                # Check if key ends with |YYYY-MM-DD (date suffix)
+                m = re.match(r'^(.+)\|(\d{4}-\d{2}-\d{2})$', legacy_key)
+                if m:
+                    dateless = m.group(1)  # e.g. "torq|finops|cloud finops engineer | tel aviv district"
+                    date_str = m.group(2)
+                    # Add the dateless version (old format: company|category|title)
                     result["posted_keys"].add(dateless)
                     result["posted_keys_with_dates"].add(legacy_key)
                     if dateless not in result["first_seen"]:
-                        result["first_seen"][dateless] = parts[-1] + "T00:00:00+00:00"
+                        result["first_seen"][dateless] = date_str + "T00:00:00+00:00"
+                    # Also build new-format key (company|||title) by extracting company
+                    # and title from the old format: company|category|rest_is_title
+                    parts = dateless.split("|", 2)  # Split into at most 3 parts
+                    if len(parts) >= 3:
+                        company_part = parts[0]
+                        title_part = parts[2]  # Everything after company|category|
+                        # Add both raw and re-normalized versions of the new key
+                        # (re-normalize catches location suffixes that old code didn't strip)
+                        raw_new_key = f"{company_part}|||{title_part}"
+                        norm_new_key = f"{company_part}|||{_normalize_title(title_part)}"
+                        for nk in (raw_new_key, norm_new_key):
+                            result["posted_keys"].add(nk)
+                            if nk not in result["first_seen"]:
+                                result["first_seen"][nk] = date_str + "T00:00:00+00:00"
+
+            # Also migrate any dateless legacy keys (company|category|title) to new format
+            for key in list(result["posted_keys"]):
+                if "|||" not in key:  # Not already new format
+                    parts = key.split("|", 2)
+                    if len(parts) >= 3 and not re.match(r'^\d{4}-\d{2}-\d{2}$', parts[-1]):
+                        # Looks like company|category|title (not a date-keyed entry)
+                        company_part = parts[0]
+                        title_part = parts[2]
+                        raw_new_key = f"{company_part}|||{title_part}"
+                        norm_new_key = f"{company_part}|||{_normalize_title(title_part)}"
+                        for nk in (raw_new_key, norm_new_key):
+                            result["posted_keys"].add(nk)
+                            if nk not in result["first_seen"] and key in result["first_seen"]:
+                                result["first_seen"][nk] = result["first_seen"][key]
+
             return result
     except (FileNotFoundError, json.JSONDecodeError):
         return {"posted_keys": set(), "posted_keys_with_dates": set(), "first_seen": {}}
@@ -2781,9 +2836,9 @@ def _save_slack_posted(tracking: dict) -> None:
 def _filter_unposted_jobs(jobs: list[dict]) -> list[dict]:
     """Filter out jobs that have already been posted to Slack.
 
-    Uses dateless keys (company|category|title) to prevent re-posting the same
-    job when it's re-scraped with a different date. A staleness window allows
-    genuinely re-opened roles to be re-posted after SLACK_DEDUP_STALENESS_DAYS.
+    Uses multiple key formats (new company|||title and legacy company|category|title)
+    to prevent re-posting the same job. A staleness window allows genuinely
+    re-opened roles to be re-posted after SLACK_DEDUP_STALENESS_DAYS.
     """
     tracking = _load_slack_posted()
     posted_keys = tracking["posted_keys"]
@@ -2795,10 +2850,26 @@ def _filter_unposted_jobs(jobs: list[dict]) -> list[dict]:
     skipped_stale_repost = 0
 
     for j in jobs:
-        key = _slack_listing_key(j)
-        if key in posted_keys:
+        key = _slack_listing_key(j)  # New format: company|||title
+
+        # Build all possible key variants to check (handles format transitions)
+        company = _normalize_company(j.get("company") or "").lower().strip()
+        category = (j.get("category") or "").lower().strip()
+        title = _normalize_title(j.get("title") or "")
+        keys_to_check = [
+            key,                                    # New format: company|||title
+            f"{company}|{category}|{title}",        # Legacy format with category
+        ]
+
+        matched_key = None
+        for k in keys_to_check:
+            if k in posted_keys:
+                matched_key = k
+                break
+
+        if matched_key:
             # Check staleness: if first_seen is within the window, skip
-            seen_at = first_seen.get(key, "")
+            seen_at = first_seen.get(matched_key, "")
             if seen_at and seen_at >= cutoff:
                 skipped_dedup += 1
                 continue
@@ -2810,7 +2881,8 @@ def _filter_unposted_jobs(jobs: list[dict]) -> list[dict]:
             else:
                 skipped_dedup += 1
                 continue
-        # Also check legacy keys for backward compat
+
+        # Also check legacy keys with dates for backward compat
         legacy_key = _slack_listing_key_legacy(j)
         if legacy_key in tracking.get("posted_keys_with_dates", set()):
             skipped_dedup += 1
