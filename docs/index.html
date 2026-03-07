@@ -1112,57 +1112,6 @@
   .help-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.3); z-index:10000; display:none; }
   .help-backdrop.open { display:block; }
   @media(max-width:768px) { .help-panel { width:100%; right:-100%; } }
-
-  /* ── Wolf Pack Flow Timeline (Hybrid) ──────────── */
-  .wp-flow-timeline { grid-column:1/-1; padding:0 0 20px; }
-  .wp-flow-timeline h3 { font-size:15px; margin:0 0 16px; display:flex; align-items:center; gap:8px; }
-  .wp-ft-step { position:relative; margin-left:24px; padding-left:32px; padding-bottom:0; }
-  .wp-ft-step:last-child .wp-ft-line { display:none; }
-  .wp-ft-line { position:absolute; left:11px; top:36px; bottom:-4px; width:2px; background:var(--border); }
-  .wp-ft-line.done { background:var(--success); }
-  .wp-ft-line.active { background:var(--teal); }
-  .wp-ft-dot { position:absolute; left:3px; top:12px; width:18px; height:18px; border-radius:50%; border:2px solid var(--border); background:white; display:flex; align-items:center; justify-content:center; font-size:9px; z-index:1; }
-  .wp-ft-dot.done { border-color:var(--success); background:#E8F5E9; color:var(--success); }
-  .wp-ft-dot.active { border-color:var(--teal); background:var(--teal-light); color:var(--teal); animation:pulse 2s infinite; }
-  .wp-ft-dot.pending { border-color:var(--border); background:#F8F9FB; color:var(--text-light); }
-  .wp-ft-card { background:white; border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; transition:box-shadow 0.15s; }
-  .wp-ft-card:hover { box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .wp-ft-card-header { display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; user-select:none; }
-  .wp-ft-card-icon { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
-  .wp-ft-card-info { flex:1; min-width:0; }
-  .wp-ft-card-title { font-size:13px; font-weight:600; color:var(--text); }
-  .wp-ft-card-meta { font-size:11px; color:var(--text-light); margin-top:1px; }
-  .wp-ft-card-badges { display:flex; align-items:center; gap:6px; }
-  .wp-ft-card-badge { display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-  .wp-ft-card-badge.done { background:#E8F5E9; color:#2E7D32; }
-  .wp-ft-card-badge.active { background:#E3F2FD; color:#1565C0; }
-  .wp-ft-card-badge.pending { background:#FFF3E0; color:#E65100; }
-  .wp-ft-card-badge.waiting { background:#F3E5F5; color:#7B1FA2; }
-  .wp-ft-card-arrow { font-size:11px; color:var(--text-light); transition:transform 0.2s; }
-  .wp-ft-card-arrow.open { transform:rotate(90deg); }
-  .wp-ft-card-body { display:none; border-top:1px solid var(--border); }
-  .wp-ft-card-body.open { display:block; }
-  .wp-ft-dep { display:flex; align-items:center; gap:6px; margin:0 0 8px; padding:4px 10px 4px 14px; background:#FAFBFC; border-left:3px solid var(--teal); border-radius:0 6px 6px 0; font-size:11px; color:var(--text-light); }
-  .wp-ft-dep-icon { font-size:13px; }
-  .wp-ft-contacts-grid { padding:8px 14px 12px; }
-  .wp-ft-contact-row { display:grid; grid-template-columns:28px 1.2fr 1fr 0.8fr 0.6fr; gap:6px; padding:6px 0; align-items:center; border-bottom:1px solid #F0F2F5; font-size:12px; }
-  .wp-ft-contact-row:last-child { border-bottom:none; }
-  .wp-ft-contact-row.header { font-weight:600; color:var(--text-light); font-size:11px; border-bottom:1px solid var(--border); }
-  .wp-ft-contact-avatar { width:24px; height:24px; border-radius:50%; background:var(--teal-light); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--primary); overflow:hidden; }
-  .wp-ft-contact-avatar img { width:100%; height:100%; object-fit:cover; }
-  .wp-ft-qi-status { display:inline-block; padding:1px 7px; border-radius:8px; font-size:10px; font-weight:600; }
-  .wp-ft-qi-status.s-pending { background:#FFF3E0; color:#E65100; }
-  .wp-ft-qi-status.s-completed { background:#E8F5E9; color:#2E7D32; }
-  .wp-ft-qi-status.s-processing { background:#E3F2FD; color:#1565C0; }
-  .wp-ft-qi-status.s-failed { background:#FFEBEE; color:#C62828; }
-  .wp-ft-qi-status.s-paused { background:#F5F5F5; color:#757575; }
-  .wp-ft-qi-status.s-conn_pending { background:#F3E5F5; color:#7B1FA2; }
-  .wp-ft-qi-status.s-conn_accepted { background:#E8F5E9; color:#2E7D32; }
-  .wp-ft-qi-status.s-message_sent { background:#E3F2FD; color:#1565C0; }
-  .wp-ft-qi-status.s-email_sent { background:#FCE4EC; color:#AD1457; }
-  .wp-ft-qi-status.s-reply_received { background:#E8F5E9; color:#1B5E20; }
-  .wp-ft-config-info { padding:10px 14px; font-size:12px; color:var(--text-light); background:#FAFBFC; }
-  @media(max-width:768px) { .wp-ft-contact-row { grid-template-columns:24px 1fr 0.6fr; } .wp-ft-contact-row .wp-ft-hide-mobile { display:none; } }
 </style>
 </head>
 <body>
@@ -2282,7 +2231,7 @@ function handleCredentialResponse(r) {
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-07T14:03:30Z";
+let LAST_UPDATED = "2026-03-07T14:27:15Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -3571,7 +3520,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
+        "linkedin": "",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -5277,7 +5226,14 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Jeff! I wanted to share how Develeap helps companies like VAST Data accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=vastdata.com&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=vastdata.com&sz=128",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://il.linkedin.com/jobs/view/cloud-finops-engineer-at-vast-data-4376078265",
+        "title": "VAST Data גיוס עובדים Cloud FinOps Engineer | Tel Aviv- ..."
+      }
+    ]
   },
   {
     "id": "3494a416",
@@ -5638,7 +5594,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
+        "linkedin": "",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -6109,7 +6065,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
+        "linkedin": "",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -6198,26 +6154,6 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=chaoslabs.xyz&sz=128"
-  },
-  {
-    "id": "2e1c9996",
-    "title": "VAST Data גיוס עובדים Cloud FinOps Engineer | Tel Aviv- ...",
-    "subtitle": "VAST Data is looking for a Cloud FinOps Engineer to join our",
-    "company": "VAST Data",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/cloud-finops-engineer-at-vast-data-4376078265",
-    "category": "finops",
-    "posted": "2026-02-24",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "VAST Data is looking for a Cloud FinOps Engineer to join our growing team! This is a great opportunity to be part of one",
-    "skills": [],
-    "stakeholders": [],
-    "logo": ""
   },
   {
     "id": "c8157d39",
@@ -15400,134 +15336,6 @@ function _wpBuildSequenceSteps(campaign) {
   return steps;
 }
 
-// ── Wolf Pack Flow Timeline (Hybrid View) ────────────────────
-function _wpRenderFlowTimeline(campaign) {
-  var steps = _wpBuildSequenceSteps(campaign);
-  if (steps.length === 0) return '<div style="text-align:center;padding:30px;color:var(--text-light)">No flow steps configured. Edit the campaign flow to add steps.</div>';
-
-  var totalContacts = (campaign.targetContacts || []).length;
-  var totalQI = 0;
-  steps.forEach(function(s) { totalQI += s.queueItems.length; });
-
-  var h = '<div class="wp-flow-timeline">';
-  h += '<h3>🗺️ Campaign Flow <span style="font-size:12px;font-weight:400;color:var(--text-light)">(' + steps.length + ' steps · ' + totalContacts + ' contacts · ' + totalQI + ' queue items)</span></h3>';
-
-  steps.forEach(function(step, idx) {
-    var catColors = { trigger:'#E8F5E9', action:'#E3F2FD', marketing:'#FFF3E0', logic:'#F3E5F5', timing:'#FFF8E1', sync:'#E0F7FA' };
-    var bgColor = catColors[step.category] || '#F8F9FB';
-    var lineClass = step.status === 'done' ? ' done' : step.status === 'active' ? ' active' : '';
-    var dotClass = step.status;
-    var dotContent = step.status === 'done' ? '✓' : step.status === 'active' ? '▶' : (idx + 1);
-    var isAction = step.category === 'action' || step.category === 'marketing' || step.category === 'sync';
-    var contactCount = step.queueItems.length;
-    var completedCount = step.queueItems.filter(function(qi) { return qi.status === 'completed' || qi.status === 'conn_accepted' || qi.status === 'reply_received'; }).length;
-
-    h += '<div class="wp-ft-step">';
-    // Vertical line
-    h += '<div class="wp-ft-line' + lineClass + '"></div>';
-    // Dot
-    h += '<div class="wp-ft-dot ' + dotClass + '">' + dotContent + '</div>';
-
-    // Dependency arrows/labels
-    if (step.deps && step.deps.length > 0) {
-      step.deps.forEach(function(dep) {
-        h += '<div class="wp-ft-dep"><span class="wp-ft-dep-icon">' + dep.icon + '</span>' + dep.label + (dep.required ? ' <strong>(required)</strong>' : '') + '</div>';
-      });
-    }
-
-    // Card
-    h += '<div class="wp-ft-card">';
-    h += '<div class="wp-ft-card-header" onclick="_wpToggleFlowStep(' + idx + ')">';
-    h += '<div class="wp-ft-card-icon" style="background:' + bgColor + '">' + step.icon + '</div>';
-    h += '<div class="wp-ft-card-info">';
-    h += '<div class="wp-ft-card-title">' + step.label + '</div>';
-    if (isAction && contactCount > 0) {
-      h += '<div class="wp-ft-card-meta">' + completedCount + '/' + contactCount + ' contacts completed</div>';
-    } else if (step.type === 'wait') {
-      var waitDays = (step.config && step.config.days) || 1;
-      h += '<div class="wp-ft-card-meta">Wait ' + waitDays + ' day' + (waitDays > 1 ? 's' : '') + '</div>';
-    } else if (step.type === 'logic_wait_response') {
-      var timeout = (step.config && step.config.timeoutDays) || 3;
-      h += '<div class="wp-ft-card-meta">Wait for response (timeout: ' + timeout + 'd)</div>';
-    } else if (step.type === 'logic_if_response') {
-      h += '<div class="wp-ft-card-meta">Branch based on response</div>';
-    } else if (step.type === 'logic_switch_channel') {
-      h += '<div class="wp-ft-card-meta">Route by channel preference</div>';
-    }
-    h += '</div>';
-    h += '<div class="wp-ft-card-badges">';
-    h += '<span class="wp-ft-card-badge ' + step.status + '">' + step.status + '</span>';
-    if (isAction && contactCount > 0) {
-      h += '<span style="font-size:11px;color:var(--text-light)">' + contactCount + ' 👤</span>';
-    }
-    h += '</div>';
-    if (isAction && contactCount > 0) {
-      h += '<span class="wp-ft-card-arrow" id="wpFtArrow_' + idx + '">&#9654;</span>';
-    }
-    h += '</div>';
-
-    // Expandable body — contact table for action steps
-    if (isAction && contactCount > 0) {
-      h += '<div class="wp-ft-card-body" id="wpFtBody_' + idx + '">';
-      h += '<div class="wp-ft-contacts-grid">';
-      // Header row
-      h += '<div class="wp-ft-contact-row header">';
-      h += '<div></div><div>Contact</div><div class="wp-ft-hide-mobile">Title</div><div>Status</div><div class="wp-ft-hide-mobile">Assigned</div>';
-      h += '</div>';
-      // Contact rows
-      step.queueItems.forEach(function(qi) {
-        var contactName = qi.contact ? qi.contact.name : (qi.contactName || '');
-        var contactTitle = qi.contact ? qi.contact.title : (qi.contactTitle || '');
-        var contactPhoto = qi.contact ? qi.contact.photo : '';
-        var initials = contactName ? contactName.split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase() : '?';
-        var assignedTo = qi.assignedTo ? _getUserDisplayName(qi.assignedTo) : '-';
-        var statusClass = 's-' + (qi.status || 'pending');
-        h += '<div class="wp-ft-contact-row">';
-        h += '<div class="wp-ft-contact-avatar">';
-        if (contactPhoto) {
-          h += '<img src="' + contactPhoto + '" alt="" onerror="this.onerror=null;this.parentNode.textContent=\'' + initials + '\'">';
-        } else {
-          h += initials;
-        }
-        h += '</div>';
-        h += '<div><strong>' + contactName + '</strong></div>';
-        h += '<div class="wp-ft-hide-mobile" style="color:var(--text-light)">' + contactTitle + '</div>';
-        h += '<div><span class="wp-ft-qi-status ' + statusClass + '">' + (qi.status || 'pending') + '</span></div>';
-        h += '<div class="wp-ft-hide-mobile">' + assignedTo + '</div>';
-        h += '</div>';
-      });
-      h += '</div></div>';
-    } else if (step.type === 'wait' || step.type === 'logic_wait_response' || step.type === 'logic_if_response' || step.type === 'logic_switch_channel') {
-      // Config info for logic/timing steps
-      h += '<div class="wp-ft-card-body" id="wpFtBody_' + idx + '">';
-      h += '<div class="wp-ft-config-info">';
-      if (step.type === 'wait') {
-        h += '⏰ Pause execution for <strong>' + ((step.config && step.config.days) || 1) + ' day(s)</strong> before proceeding to the next step.';
-      } else if (step.type === 'logic_wait_response') {
-        h += '⏳ Wait up to <strong>' + ((step.config && step.config.timeoutDays) || 3) + ' days</strong> for a response. If no response, proceed to timeout branch.';
-      } else if (step.type === 'logic_if_response') {
-        h += '❓ Branch based on whether a response was received. Yes → next step. No → skip or alternate path.';
-      } else if (step.type === 'logic_switch_channel') {
-        h += '🔀 Route to the best channel based on contact preferences and prior engagement.';
-      }
-      h += '</div></div>';
-    }
-
-    h += '</div>'; // card
-    h += '</div>'; // step
-  });
-
-  h += '</div>';
-  return h;
-}
-
-function _wpToggleFlowStep(idx) {
-  var body = document.getElementById('wpFtBody_' + idx);
-  var arrow = document.getElementById('wpFtArrow_' + idx);
-  if (body) body.classList.toggle('open');
-  if (arrow) arrow.classList.toggle('open');
-}
-
 function _wpRenderSequence(campaign, cardIdx) {
   var steps = _wpBuildSequenceSteps(campaign);
   if (steps.length === 0) return '';
@@ -15764,9 +15572,6 @@ function _wpRenderDetail() {
       '<div style="font-size:11px;color:var(--text-light)">Engagement</div>' +
     '</div>' +
     '</div>';
-
-  // Flow Timeline (Hybrid view — steps with dependency arrows + expandable contact tables)
-  h += '<div class="wp-detail-section wp-detail-full">' + _wpRenderFlowTimeline(c) + '</div>';
 
   // Timeline
   h += '<div class="wp-detail-section">' +
