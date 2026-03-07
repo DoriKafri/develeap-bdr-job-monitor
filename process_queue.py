@@ -722,18 +722,76 @@ def update_execution_log(exec_log, queue, stats):
 
 # ── Main ──────────────────────────────────────────────────────────────────
 
+def _migrate_queue_to_multiuser(queue_data):
+    """Migrate old flat queue format to multi-user v2.0 format."""
+    if queue_data.get("version") == "2.0" and "users" in queue_data:
+        return queue_data  # Already migrated
+
+    # Old format: { queue: [...], lastProcessed: "..." }
+    old_queue = queue_data.get("queue", [])
+    admin_email = "dori.kafri@develeap.com"
+
+    new_data = {
+        "version": "2.0",
+        "users": {
+            admin_email: {
+                "queue": old_queue,
+                "lastProcessed": queue_data.get("lastProcessed", "")
+            }
+        },
+        "metadata": {
+            "migratedAt": _now_iso(),
+            "migratedFrom": "flat"
+        }
+    }
+    print(f"  Migrated old queue ({len(old_queue)} entries) to multi-user format under {admin_email}")
+    return new_data
+
+
+def _collect_all_entries(queue_data):
+    """Collect all entries from all users into a flat list with _ownerEmail tag."""
+    entries = []
+    for user_email, user_data in queue_data.get("users", {}).items():
+        for entry in user_data.get("queue", []):
+            entry["_ownerEmail"] = user_email
+            entries.append(entry)
+    return entries
+
+
+def _distribute_entries(queue_data, entries):
+    """Distribute entries back to their owner sections after processing."""
+    # Clear all queues
+    for user_email in queue_data.get("users", {}):
+        queue_data["users"][user_email]["queue"] = []
+
+    # Distribute
+    for entry in entries:
+        owner = entry.pop("_ownerEmail", "dori.kafri@develeap.com")
+        if owner not in queue_data["users"]:
+            queue_data["users"][owner] = {"queue": [], "lastProcessed": ""}
+        queue_data["users"][owner]["queue"].append(entry)
+
+
 def main():
     print("=" * 60)
-    print("BDR Queue Processor — Server-side automation")
+    print("BDR Queue Processor — Server-side automation (multi-user)")
     print("=" * 60)
 
     # Check workflow config
     wf_config = _load_workflow_config()
 
-    # Load queue
+    # Load queue (supports both old flat and new multi-user format)
     queue_data = _load_json(QUEUE_FILE, {"queue": []})
-    queue = queue_data.get("queue", [])
-    print(f"\nLoaded queue: {len(queue)} entries")
+    is_multiuser = queue_data.get("version") == "2.0"
+    queue_data = _migrate_queue_to_multiuser(queue_data)
+
+    # Collect all entries from all users for processing
+    queue = _collect_all_entries(queue_data)
+    user_count = len(queue_data.get("users", {}))
+    print(f"\nLoaded queue: {len(queue)} entries across {user_count} user(s)")
+    for user_email, user_data in queue_data.get("users", {}).items():
+        uq = user_data.get("queue", [])
+        print(f"  {user_email}: {len(uq)} entries")
 
     # Load execution log
     exec_log = _load_json(EXEC_LOG_FILE)
@@ -785,19 +843,25 @@ def main():
     else:
         print("\n── Step 5: Opportunity Detection — SKIPPED ──")
 
-    # Update execution log
+    # Update execution log (include user attribution)
     exec_log = update_execution_log(exec_log, queue, stats)
+
+    # Distribute entries back to their user sections
+    _distribute_entries(queue_data, queue)
+
+    # Update per-user lastProcessed timestamps
+    for user_email in queue_data.get("users", {}):
+        queue_data["users"][user_email]["lastProcessed"] = _now_iso()
 
     # Save outputs
     print("\n── Saving Results ──")
-    queue_data["queue"] = queue
-    queue_data["lastProcessed"] = _now_iso()
     _save_json(QUEUE_FILE, queue_data)
     _save_json(EXEC_LOG_FILE, exec_log)
 
     # Summary
     print(f"\n{'=' * 60}")
-    print(f"Queue Processor Complete")
+    print(f"Queue Processor Complete (multi-user)")
+    print(f"  Users processed:  {user_count}")
     print(f"  CRM created:      {stats['crmCreated']}")
     print(f"  Emails enrolled:  {stats['emailsEnrolled']}")
     print(f"  Replies found:    {stats['repliesFound']}")

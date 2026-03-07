@@ -1064,7 +1064,14 @@
   <!-- Queue View -->
   <div id="queueView">
     <div class="queue-header">
-      <h2>📋 LinkedIn Outreach Queue</h2>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">📋 Outreach Queue</h2>
+        <select id="queueUserSelect" onchange="switchQueueUser(this.value)" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;background:var(--bg);cursor:pointer"></select>
+        <div id="actingAsContainer" style="display:none;align-items:center;gap:6px">
+          <span style="font-size:12px;color:var(--text-light)">Acting as:</span>
+          <select id="actingAsSelect" onchange="switchActingAs(this.value)" style="padding:6px 12px;border-radius:8px;border:1px solid #7B1FA2;font-size:13px;background:#F3E5F5;color:#7B1FA2;font-weight:600;cursor:pointer"></select>
+        </div>
+      </div>
       <div class="queue-global-controls">
         <button class="btn queue-btn-play" id="queueGlobalToggle" onclick="toggleQueueGlobal()">
           <span id="queueToggleIcon">▶</span> <span id="queueToggleLabel">Resume All</span>
@@ -1111,6 +1118,14 @@
         <div class="settings-sidebar-item" onclick="switchSettingsSection('users')">
           <span>👤</span>
           <span>Users</span>
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('profile')">
+          <span>🪪</span>
+          <span>My Profile</span>
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('delegation')">
+          <span>🎭</span>
+          <span>Delegation</span>
         </div>
       </div>
 
@@ -1667,6 +1682,7 @@
                 <select id="inviteRoleSelect" class="intg-input" style="max-width:200px">
                   <option value="viewer">Viewer</option>
                   <option value="editor">Editor</option>
+                  <option value="bdr">BDR (Send on behalf)</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
@@ -1687,6 +1703,116 @@
               The user list below controls fine-grained roles: <strong>Admin</strong> can manage settings and users,
               <strong>Editor</strong> can modify templates and outreach, <strong>Viewer</strong> has read-only access to job listings.
               Without OAuth configured, the dashboard is open to anyone with the link.
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">🪪 Sender Profile</h3>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Your personal details used in outreach templates via <code>{sender_*}</code> variables</p>
+
+          <!-- Profile user selector (admin/bdr only) -->
+          <div id="profileUserSelectContainer" style="display:none;margin-bottom:16px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Editing profile for</label>
+            <select id="profileUserSelect" class="intg-input" style="max-width:300px" onchange="loadProfileForUser(this.value)"></select>
+          </div>
+
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Display Name</label>
+                <input type="text" id="profileDisplayName" class="intg-input" placeholder="Dori Kafri" style="max-width:400px">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Title / Position</label>
+                <input type="text" id="profileTitle" class="intg-input" placeholder="CEO & Co-Founder" style="max-width:400px">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Department / Role</label>
+                <input type="text" id="profileRole" class="intg-input" placeholder="Leadership" style="max-width:400px">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Phone Number</label>
+                <input type="text" id="profilePhone" class="intg-input" placeholder="+972-50-1234567" style="max-width:300px">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">LinkedIn Profile URL</label>
+                <input type="text" id="profileLinkedin" class="intg-input" placeholder="https://linkedin.com/in/your-profile" style="max-width:100%">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Email Signature</label>
+                <textarea id="profileSignature" class="intg-input" placeholder="Best regards,&#10;Dori Kafri&#10;CEO, Develeap" style="min-height:80px;resize:vertical;max-width:100%"></textarea>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Photo URL (optional)</label>
+                <input type="text" id="profilePhotoUrl" class="intg-input" placeholder="https://..." style="max-width:100%">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="intg-save-btn" style="background:var(--primary)" onclick="saveProfile()">Save Profile</button>
+                <span id="profileSaveResult" style="font-size:12px"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Template variable preview -->
+          <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:14px;padding:16px;font-size:12px;color:#0369A1">
+            <div style="font-weight:700;margin-bottom:8px">📋 Template Variables Preview</div>
+            <div id="profileVarPreview" style="font-family:monospace;line-height:1.8;white-space:pre-wrap"></div>
+          </div>
+        </div>
+
+        <!-- Delegation Section -->
+        <div id="delegationSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">🎭 Delegation Management</h3>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Allow BDR users to send messages on behalf of other team members</p>
+
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;border-radius:10px;background:#F3E5F5;display:flex;align-items:center;justify-content:center;font-size:18px">🎭</div>
+                <div>
+                  <div style="font-weight:700;font-size:14px">Active Delegations</div>
+                  <div style="font-size:12px;color:var(--text-light)" id="delegationCountLabel">0 delegations</div>
+                </div>
+              </div>
+              <button class="intg-save-btn" style="background:var(--success)" onclick="showAddDelegationDialog()">+ Add Delegation</button>
+            </div>
+            <div id="delegationListContainer" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <!-- Add Delegation Dialog -->
+          <div id="addDelegationDialog" style="display:none;background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:36px;height:36px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px">➕</div>
+              <div>
+                <div style="font-weight:700;font-size:14px">New Delegation</div>
+                <div style="font-size:12px;color:var(--text-light)">Select a BDR and choose who they can act as</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">BDR User</label>
+                <select id="delegationBdrSelect" class="intg-input" style="max-width:300px"></select>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;display:block;margin-bottom:4px">Can Act As (select one or more)</label>
+                <div id="delegationTargetCheckboxes" style="display:flex;flex-direction:column;gap:6px;margin-top:4px"></div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="intg-save-btn" style="background:var(--primary)" onclick="saveDelegation()">Save Delegation</button>
+                <button class="intg-save-btn" style="background:transparent;color:var(--text-light);border:1px solid var(--border)" onclick="document.getElementById('addDelegationDialog').style.display='none'">Cancel</button>
+                <span id="delegationSaveResult" style="font-size:12px"></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:16px;font-size:12px;color:#92400E">
+            <div style="font-weight:700;margin-bottom:6px">💡 How delegation works</div>
+            <div style="line-height:1.6">
+              When a BDR user selects "Acting as" another user, all template <code>{sender_*}</code> variables resolve to the
+              delegated user's profile. The recipient sees the message as if it came from that user. Queue entries track both
+              <strong>Created by</strong> and <strong>Acting as</strong> for audit purposes. Only admins can manage delegations.
             </div>
           </div>
         </div>
@@ -7338,7 +7464,7 @@ function buildOutreachSection(job) {
     </div>`;
 }
 
-function fillTemplate(tpl, job, stakeholder, lang) {
+function fillTemplate(tpl, job, stakeholder, lang, senderUser) {
   // Auto-detect Hebrew if lang not explicitly passed
   if (!lang) lang = /[\u0590-\u05FF]/.test(tpl) ? 'he' : 'en';
   const firstName = stakeholder ? stakeholder.name.split(' ')[0] : (job.company + ' team');
@@ -7361,6 +7487,17 @@ function fillTemplate(tpl, job, stakeholder, lang) {
     : (CAT_VALUE_PROPS[cat] || CAT_VALUE_PROPS.devops);
   const custs = _pickCustomers(job.company, 3).join(', ');
   const resultShort = vp.result.length > 50 ? vp.result.substring(0, 50).replace(/\s\S*$/, '...') : vp.result;
+
+  // Resolve sender profile (delegation-aware)
+  var senderEmail = senderUser || _actingAsUser || _getCurrentUserEmail();
+  var senderProfile = _userProfiles[senderEmail] || {};
+  var senderName = senderProfile.displayName || senderEmail.split('@')[0];
+  var senderTitle = senderProfile.title || '';
+  var senderRole = senderProfile.role || '';
+  var senderPhone = senderProfile.phone || '';
+  var senderLinkedin = senderProfile.linkedinUrl || '';
+  var senderSignature = senderProfile.signature || (senderName + ' | Develeap');
+
   return tpl
     .replace(/\{contact_name\}/g, name)
     .replace(/\{contact_title\}/g, title)
@@ -7373,7 +7510,13 @@ function fillTemplate(tpl, job, stakeholder, lang) {
     .replace(/\{cat_offer\}/g, vp.offer)
     .replace(/\{cat_audit\}/g, vp.audit)
     .replace(/\{cat_expertise\}/g, vp.expertise)
-    .replace(/\{cat_link\}/g, vp.link);
+    .replace(/\{cat_link\}/g, vp.link)
+    .replace(/\{sender_name\}/g, senderName)
+    .replace(/\{sender_title\}/g, senderTitle)
+    .replace(/\{sender_role\}/g, senderRole)
+    .replace(/\{sender_phone\}/g, senderPhone)
+    .replace(/\{sender_linkedin\}/g, senderLinkedin)
+    .replace(/\{sender_signature\}/g, senderSignature);
 }
 
 function switchTemplate(idx) {
@@ -7534,24 +7677,47 @@ var _LI_QUEUE_PATH, _LI_QUEUE_API;
 var _liQueueSha = null;
 
 async function _pushToLinkedInQueue(entry) {
+  // Add user attribution
+  var currentEmail = _getCurrentUserEmail();
+  var targetUser = _actingAsUser || currentEmail;
+  entry.createdBy = currentEmail;
+  if (_actingAsUser && _actingAsUser !== currentEmail) {
+    entry.actingAs = _actingAsUser;
+  }
+
   // Fetch current queue
   const resp = await fetch(_LI_QUEUE_API, {
     headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
   });
-  let queue = { queue: [], lastProcessed: '' };
+  var allQ = { version: '2.0', users: {}, metadata: {} };
   if (resp.ok) {
     const data = await resp.json();
     _liQueueSha = data.sha;
-    try { queue = JSON.parse(_base64ToUtf8(data.content)); } catch(e) {}
+    try {
+      var raw = JSON.parse(_base64ToUtf8(data.content));
+      // Handle old format
+      if (raw.queue && Array.isArray(raw.queue) && !raw.version) {
+        allQ.users[currentEmail] = { queue: raw.queue, lastProcessed: raw.lastProcessed || '' };
+      } else {
+        allQ = raw;
+      }
+    } catch(e) {}
   }
 
-  // Add new entry
-  queue.queue.push(entry);
+  // Ensure target user section exists
+  if (!allQ.users[targetUser]) {
+    allQ.users[targetUser] = { queue: [], lastProcessed: '', metadata: { createdAt: new Date().toISOString() } };
+  }
+
+  // Add entry to target user's queue
+  allQ.users[targetUser].queue.push(entry);
+  allQ.users[targetUser].metadata = allQ.users[targetUser].metadata || {};
+  allQ.users[targetUser].metadata.updatedAt = new Date().toISOString();
 
   // Push back to GitHub
   const body = {
-    message: `Queue LinkedIn message for ${entry.contactName}`,
-    content: _utf8ToBase64(JSON.stringify(queue, null, 2)),
+    message: 'Queue ' + (entry.type || 'message') + ' for ' + entry.contactName + ' (' + _getUserDisplayName(targetUser) + ')',
+    content: _utf8ToBase64(JSON.stringify(allQ, null, 2)),
     sha: _liQueueSha
   };
   const putResp = await fetch(_LI_QUEUE_API, {
@@ -7562,6 +7728,7 @@ async function _pushToLinkedInQueue(entry) {
   if (!putResp.ok) throw new Error('GitHub push failed: ' + putResp.status);
   const putData = await putResp.json();
   _liQueueSha = putData.content.sha;
+  _allQueueData = allQ;
 }
 
 // Legacy function kept for template picker button
@@ -9217,6 +9384,16 @@ async function _loadSettingsFromGitHub() {
         if (settings.oauth.domain) localStorage.setItem('_oauthDomain', settings.oauth.domain);
       }
 
+      // Apply user profiles
+      if (settings.userProfiles && typeof settings.userProfiles === 'object') {
+        _userProfiles = settings.userProfiles;
+      }
+
+      // Apply delegation config
+      if (settings.delegation && typeof settings.delegation === 'object') {
+        _delegationConfig = settings.delegation;
+      }
+
       // Re-flag develeap customers with updated lists
       ALL_JOBS.forEach(j => {
         j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
@@ -10217,6 +10394,11 @@ var _dashboardUsers = [
   { email: 'dori.kafri@develeap.com', name: 'Dori Kafri', role: 'admin', addedAt: '2026-03-06T00:00:00Z', status: 'active' }
 ];
 var _currentAuthUser = null; // set after Google sign-in
+var _userProfiles = {};       // { email: { displayName, title, role, phone, linkedinUrl, signature } }
+var _delegationConfig = {};   // { bdrEmail: { canActAs: [...], permissions: [...] } }
+var _selectedQueueUser = null; // which user's queue is being viewed
+var _actingAsUser = null;      // which user the current user is acting as (delegation)
+var _allQueueData = null;      // full multi-user queue structure from GitHub
 
 function _getCurrentUserRole() {
   if (!_currentAuthUser) return 'admin'; // no auth = full access
@@ -10226,6 +10408,54 @@ function _getCurrentUserRole() {
 
 function _isAdmin() {
   return _getCurrentUserRole() === 'admin';
+}
+
+function _isBdr() {
+  return _getCurrentUserRole() === 'bdr';
+}
+
+function _getCurrentUserEmail() {
+  return _currentAuthUser ? _currentAuthUser.email.toLowerCase() : 'dori.kafri@develeap.com';
+}
+
+function _canAccessQueue(userEmail, targetUserEmail) {
+  if (!userEmail || !targetUserEmail) return true;
+  if (userEmail.toLowerCase() === targetUserEmail.toLowerCase()) return true;
+  if (_isAdmin()) return true;
+  if (_hasDelegation(userEmail, targetUserEmail)) return true;
+  return false;
+}
+
+function _hasDelegation(bdrEmail, targetEmail) {
+  var d = _delegationConfig[bdrEmail.toLowerCase()];
+  return d && d.canActAs && d.canActAs.some(function(e) { return e.toLowerCase() === targetEmail.toLowerCase(); });
+}
+
+function _getVisibleUsers() {
+  var current = _getCurrentUserEmail();
+  var allEmails = _dashboardUsers.map(function(u) { return u.email.toLowerCase(); });
+  if (_isAdmin()) return allEmails;
+  var visible = [current];
+  var d = _delegationConfig[current];
+  if (d && d.canActAs) {
+    d.canActAs.forEach(function(e) { if (visible.indexOf(e.toLowerCase()) < 0) visible.push(e.toLowerCase()); });
+  }
+  return visible;
+}
+
+function _canManageOtherQueues() {
+  var role = _getCurrentUserRole();
+  return role === 'admin' || role === 'bdr';
+}
+
+function _canManageOtherProfiles() {
+  var role = _getCurrentUserRole();
+  return role === 'admin' || role === 'bdr';
+}
+
+function _getActingAsProfile() {
+  var email = _actingAsUser || _getCurrentUserEmail();
+  return _userProfiles[email] || _userProfiles[email.toLowerCase()] || { displayName: email.split('@')[0], title: '', role: '', phone: '', linkedinUrl: '', signature: '' };
 }
 
 function renderUsersSection() {
@@ -10263,8 +10493,8 @@ function renderUsersSection() {
 
   // Render user cards
   container.innerHTML = '';
-  const roleColors = { admin: '#DC2626', editor: '#2563EB', viewer: '#6B7280' };
-  const roleLabels = { admin: 'Admin', editor: 'Editor', viewer: 'Viewer' };
+  const roleColors = { admin: '#DC2626', editor: '#2563EB', bdr: '#7B1FA2', viewer: '#6B7280' };
+  const roleLabels = { admin: 'Admin', editor: 'Editor', bdr: 'BDR', viewer: 'Viewer' };
 
   _dashboardUsers.forEach((user, idx) => {
     const initials = (user.name || user.email).split(/[\s@]/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
@@ -10286,6 +10516,7 @@ function renderUsersSection() {
         <select class="intg-input" style="padding:4px 8px;font-size:11px;width:90px;border-radius:8px" onchange="_changeUserRole(${idx}, this.value)" ${user.email === 'dori.kafri@develeap.com' ? 'disabled title="Primary admin cannot be changed"' : ''}>
           <option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option>
           <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
+          <option value="bdr" ${user.role === 'bdr' ? 'selected' : ''}>BDR</option>
           <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
         </select>
         <span style="font-size:10px;padding:2px 8px;border-radius:6px;font-weight:600;background:${roleColor}15;color:${roleColor}">${roleLabels[user.role]}</span>
@@ -10447,6 +10678,8 @@ async function _saveSettingsToGitHub() {
     },
     integrations: _getCrmIntegrationConfig(),
     users: _dashboardUsers,
+    userProfiles: _userProfiles,
+    delegation: _delegationConfig,
     templateLang: _templateLang,
     oauth: {
       clientId: localStorage.getItem('_oauthClientId') || '',
@@ -10531,6 +10764,8 @@ function switchSettingsSection(section) {
     else if (section === 'integrations') renderIntegrationsSection();
     else if (section === 'templates') renderSettingsTab(_currentSettingsTab);
     else if (section === 'users') renderUsersSection();
+    else if (section === 'profile') renderProfileSection();
+    else if (section === 'delegation') renderDelegationSection();
   }
   updateUrlHash();
 }
@@ -10542,6 +10777,204 @@ function _settingsMobileBack() {
   if (contentArea) contentArea.classList.add('mobile-hidden');
   // Hide all sections
   document.querySelectorAll('.settings-section').forEach(sec => { sec.style.display = 'none'; });
+}
+
+// ── Profile Section ──────────────────────────────────────────────────
+function renderProfileSection() {
+  var currentEmail = _getCurrentUserEmail();
+  var editingEmail = currentEmail;
+
+  // Admin/BDR can edit other users' profiles
+  var selectContainer = document.getElementById('profileUserSelectContainer');
+  if (_canManageOtherProfiles()) {
+    selectContainer.style.display = 'block';
+    var sel = document.getElementById('profileUserSelect');
+    sel.innerHTML = '';
+    // Add self first
+    sel.innerHTML += '<option value="' + currentEmail + '">My Profile (' + currentEmail + ')</option>';
+    _dashboardUsers.forEach(function(u) {
+      if (u.email.toLowerCase() !== currentEmail) {
+        sel.innerHTML += '<option value="' + u.email.toLowerCase() + '">' + (u.name || u.email) + ' (' + u.email + ')</option>';
+      }
+    });
+  } else {
+    selectContainer.style.display = 'none';
+  }
+
+  loadProfileForUser(editingEmail);
+}
+
+function loadProfileForUser(email) {
+  email = email.toLowerCase();
+  var profile = _userProfiles[email] || {};
+  document.getElementById('profileDisplayName').value = profile.displayName || '';
+  document.getElementById('profileTitle').value = profile.title || '';
+  document.getElementById('profileRole').value = profile.role || '';
+  document.getElementById('profilePhone').value = profile.phone || '';
+  document.getElementById('profileLinkedin').value = profile.linkedinUrl || '';
+  document.getElementById('profileSignature').value = profile.signature || '';
+  document.getElementById('profilePhotoUrl').value = profile.photoUrl || '';
+  updateProfilePreview(email);
+}
+
+function updateProfilePreview(email) {
+  var profile = _userProfiles[email] || {};
+  var name = document.getElementById('profileDisplayName').value || profile.displayName || email.split('@')[0];
+  var title = document.getElementById('profileTitle').value || profile.title || '';
+  var role = document.getElementById('profileRole').value || profile.role || '';
+  var phone = document.getElementById('profilePhone').value || profile.phone || '';
+  var linkedin = document.getElementById('profileLinkedin').value || profile.linkedinUrl || '';
+  var sig = document.getElementById('profileSignature').value || profile.signature || '';
+
+  var preview = '{sender_name} → ' + name + '\n' +
+    '{sender_title} → ' + (title || '(not set)') + '\n' +
+    '{sender_role} → ' + (role || '(not set)') + '\n' +
+    '{sender_phone} → ' + (phone || '(not set)') + '\n' +
+    '{sender_linkedin} → ' + (linkedin || '(not set)') + '\n' +
+    '{sender_signature} → ' + (sig || '(not set)');
+  document.getElementById('profileVarPreview').textContent = preview;
+}
+
+function saveProfile() {
+  var selectEl = document.getElementById('profileUserSelect');
+  var email = (_canManageOtherProfiles() && selectEl) ? selectEl.value : _getCurrentUserEmail();
+  email = email.toLowerCase();
+
+  _userProfiles[email] = {
+    displayName: document.getElementById('profileDisplayName').value.trim(),
+    title: document.getElementById('profileTitle').value.trim(),
+    role: document.getElementById('profileRole').value.trim(),
+    phone: document.getElementById('profilePhone').value.trim(),
+    linkedinUrl: document.getElementById('profileLinkedin').value.trim(),
+    signature: document.getElementById('profileSignature').value.trim(),
+    photoUrl: document.getElementById('profilePhotoUrl').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+
+  _saveSettingsToGitHub();
+  updateProfilePreview(email);
+  var result = document.getElementById('profileSaveResult');
+  result.innerHTML = '<span style="color:var(--success)">✓ Profile saved</span>';
+  setTimeout(function() { result.innerHTML = ''; }, 3000);
+  _showToast('Profile saved for ' + email);
+}
+
+// ── Delegation Section ───────────────────────────────────────────────
+function renderDelegationSection() {
+  // Only admin can manage delegations
+  if (!_isAdmin()) {
+    var container = document.getElementById('delegationListContainer');
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">Only admins can manage delegations</div>';
+    document.querySelector('#delegationSection .intg-save-btn[onclick*=showAddDelegation]').style.display = 'none';
+    // Still show current user's delegation info if they are a BDR
+    if (_isBdr()) {
+      var myDelegation = _delegationConfig[_getCurrentUserEmail()];
+      if (myDelegation && myDelegation.canActAs && myDelegation.canActAs.length > 0) {
+        container.innerHTML = '<div style="padding:12px;background:#F3E5F5;border-radius:10px;font-size:13px;color:#7B1FA2">' +
+          '<strong>Your delegations:</strong> You can act as ' +
+          myDelegation.canActAs.map(function(e) { return _getUserDisplayName(e); }).join(', ') +
+          '</div>';
+      }
+    }
+    return;
+  }
+
+  renderDelegationList();
+}
+
+function renderDelegationList() {
+  var container = document.getElementById('delegationListContainer');
+  container.innerHTML = '';
+  var count = 0;
+
+  Object.keys(_delegationConfig).forEach(function(bdrEmail) {
+    var deleg = _delegationConfig[bdrEmail];
+    if (!deleg.canActAs || deleg.canActAs.length === 0) return;
+    count++;
+
+    var targetNames = deleg.canActAs.map(function(e) {
+      return '<span style="background:#E3F2FD;color:#1565C0;padding:2px 8px;border-radius:8px;font-size:11px;margin:2px">' + _getUserDisplayName(e) + '</span>';
+    }).join(' ');
+
+    container.innerHTML += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-light);border-radius:10px;border:1px solid var(--border)">' +
+      '<div style="flex:1">' +
+        '<div style="font-weight:600;font-size:13px">' + _getUserDisplayName(bdrEmail) + ' <span style="font-size:11px;color:#7B1FA2;background:#F3E5F5;padding:1px 6px;border-radius:6px">BDR</span></div>' +
+        '<div style="font-size:11px;color:var(--text-light);margin-top:2px">' + bdrEmail + '</div>' +
+        '<div style="margin-top:6px">Can act as: ' + targetNames + '</div>' +
+      '</div>' +
+      '<button class="intg-save-btn" style="background:var(--danger);font-size:11px;padding:4px 10px" onclick="removeDelegation(\'' + bdrEmail + '\')">Remove</button>' +
+    '</div>';
+  });
+
+  document.getElementById('delegationCountLabel').textContent = count + ' delegation' + (count !== 1 ? 's' : '');
+
+  if (count === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">No delegations configured. Click "+ Add Delegation" to allow a BDR user to send on behalf of another user.</div>';
+  }
+}
+
+function showAddDelegationDialog() {
+  document.getElementById('addDelegationDialog').style.display = 'block';
+
+  // Populate BDR select with users who are BDR or could be BDR
+  var bdrSel = document.getElementById('delegationBdrSelect');
+  bdrSel.innerHTML = '<option value="">Select a BDR user...</option>';
+  _dashboardUsers.forEach(function(u) {
+    bdrSel.innerHTML += '<option value="' + u.email.toLowerCase() + '">' + (u.name || u.email) + ' (' + u.role + ')</option>';
+  });
+
+  // Populate target checkboxes with all users
+  var checkboxes = document.getElementById('delegationTargetCheckboxes');
+  checkboxes.innerHTML = '';
+  _dashboardUsers.forEach(function(u) {
+    checkboxes.innerHTML += '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">' +
+      '<input type="checkbox" value="' + u.email.toLowerCase() + '"> ' +
+      (u.name || u.email) + ' <span style="font-size:11px;color:var(--text-light)">(' + u.email + ')</span>' +
+    '</label>';
+  });
+}
+
+function saveDelegation() {
+  var bdrEmail = document.getElementById('delegationBdrSelect').value;
+  if (!bdrEmail) {
+    document.getElementById('delegationSaveResult').innerHTML = '<span style="color:var(--danger)">Select a BDR user</span>';
+    return;
+  }
+
+  var targets = [];
+  document.querySelectorAll('#delegationTargetCheckboxes input:checked').forEach(function(cb) {
+    if (cb.value !== bdrEmail) targets.push(cb.value);
+  });
+
+  if (targets.length === 0) {
+    document.getElementById('delegationSaveResult').innerHTML = '<span style="color:var(--danger)">Select at least one target user</span>';
+    return;
+  }
+
+  _delegationConfig[bdrEmail] = {
+    canActAs: targets,
+    permissions: ['queue', 'profile', 'templates'],
+    createdAt: new Date().toISOString()
+  };
+
+  // Auto-set user role to BDR if not already admin
+  var user = _dashboardUsers.find(function(u) { return u.email.toLowerCase() === bdrEmail; });
+  if (user && user.role !== 'admin') {
+    user.role = 'bdr';
+  }
+
+  _saveSettingsToGitHub();
+  document.getElementById('addDelegationDialog').style.display = 'none';
+  renderDelegationList();
+  _showToast('Delegation saved: ' + _getUserDisplayName(bdrEmail) + ' can now act as ' + targets.length + ' user(s)');
+}
+
+function removeDelegation(bdrEmail) {
+  if (!confirm('Remove delegation for ' + _getUserDisplayName(bdrEmail) + '?')) return;
+  delete _delegationConfig[bdrEmail];
+  _saveSettingsToGitHub();
+  renderDelegationList();
+  _showToast('Delegation removed');
 }
 
 function renderCategoriesSection() {
@@ -11299,6 +11732,87 @@ var setView = function(v) {
   updateUrlHash();
 }
 
+// Build aggregated queue from visible users' data
+function _buildVisibleQueue() {
+  if (!_allQueueData || !_allQueueData.users) return { queue: [], lastProcessed: '' };
+  var visible = _getVisibleUsers();
+  var selectedUser = _selectedQueueUser;
+  var aggregated = [];
+
+  // If a specific user is selected, show only their queue
+  if (selectedUser && selectedUser !== '__all__') {
+    var uq = _allQueueData.users[selectedUser];
+    if (uq && uq.queue) {
+      uq.queue.forEach(function(e) { e._ownerEmail = selectedUser; });
+      aggregated = uq.queue;
+    }
+    return { queue: aggregated, lastProcessed: uq ? uq.lastProcessed : '' };
+  }
+
+  // Otherwise aggregate all visible users
+  visible.forEach(function(email) {
+    var uq = _allQueueData.users[email];
+    if (uq && uq.queue) {
+      uq.queue.forEach(function(e) { e._ownerEmail = email; });
+      aggregated = aggregated.concat(uq.queue);
+    }
+  });
+  return { queue: aggregated, lastProcessed: '' };
+}
+
+// Get user display name from email
+function _getUserDisplayName(email) {
+  if (!email) return '';
+  var u = _dashboardUsers.find(function(u) { return u.email.toLowerCase() === email.toLowerCase(); });
+  return u ? u.name : email.split('@')[0];
+}
+
+// Populate queue user selector dropdown
+function _populateQueueUserSelect() {
+  var sel = document.getElementById('queueUserSelect');
+  if (!sel) return;
+  var visible = _getVisibleUsers();
+  var html = '';
+  if (_isAdmin() || visible.length > 1) {
+    html += '<option value="__all__">All Users</option>';
+  }
+  visible.forEach(function(email) {
+    var name = _getUserDisplayName(email);
+    var isSelf = email === _getCurrentUserEmail();
+    html += '<option value="' + email + '"' + (_selectedQueueUser === email ? ' selected' : '') + '>' + name + (isSelf ? ' (You)' : '') + '</option>';
+  });
+  sel.innerHTML = html;
+
+  // Show/hide acting-as dropdown
+  var actDiv = document.getElementById('actingAsContainer');
+  if (actDiv) {
+    var d = _delegationConfig[_getCurrentUserEmail()];
+    if (d && d.canActAs && d.canActAs.length > 0) {
+      actDiv.style.display = 'flex';
+      var actSel = document.getElementById('actingAsSelect');
+      if (actSel) {
+        var actHtml = '<option value="">As myself</option>';
+        d.canActAs.forEach(function(e) {
+          actHtml += '<option value="' + e + '"' + (_actingAsUser === e ? ' selected' : '') + '>' + _getUserDisplayName(e) + '</option>';
+        });
+        actSel.innerHTML = actHtml;
+      }
+    } else {
+      actDiv.style.display = 'none';
+    }
+  }
+}
+
+function switchQueueUser(val) {
+  _selectedQueueUser = val;
+  _queueData = _buildVisibleQueue();
+  renderQueueView();
+}
+
+function switchActingAs(val) {
+  _actingAsUser = val || null;
+}
+
 var refreshQueueView = async function() {
   const listEl = document.getElementById('queueList');
   const statsEl = document.getElementById('queueStats');
@@ -11314,12 +11828,38 @@ var refreshQueueView = async function() {
     if (resp.ok) {
       const data = await resp.json();
       _liQueueSha = data.sha;
-      _queueData = JSON.parse(_base64ToUtf8(data.content));
+      var raw = JSON.parse(_base64ToUtf8(data.content));
+
+      // Detect and migrate old flat format to multi-user format
+      if (raw.queue && Array.isArray(raw.queue) && !raw.version) {
+        var adminEmail = _getCurrentUserEmail();
+        raw = {
+          version: '2.0',
+          users: {},
+          metadata: { migratedAt: new Date().toISOString() }
+        };
+        raw.users[adminEmail] = { queue: JSON.parse(_base64ToUtf8(data.content)).queue || [], lastProcessed: '', metadata: { createdAt: new Date().toISOString() } };
+        // Push migrated format
+        try {
+          await fetch(_LI_QUEUE_API, {
+            method: 'PUT',
+            headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: 'Migrate queue to multi-user format v2.0', content: _utf8ToBase64(JSON.stringify(raw, null, 2)), sha: _liQueueSha })
+          }).then(function(r) { if (r.ok) return r.json(); }).then(function(d) { if (d) _liQueueSha = d.content.sha; });
+        } catch(me) { console.warn('Migration push failed:', me); }
+      }
+
+      _allQueueData = raw;
+
+      // Build visible queue for current user
+      _queueData = _buildVisibleQueue();
     } else {
+      _allQueueData = { version: '2.0', users: {}, metadata: {} };
       _queueData = { queue: [], lastProcessed: '' };
     }
   } catch (e) {
     console.error('Failed to fetch queue:', e);
+    _allQueueData = { version: '2.0', users: {}, metadata: {} };
     _queueData = { queue: [], lastProcessed: '' };
   }
 
@@ -11358,6 +11898,8 @@ var renderQueueView = function() {
   const listEl = document.getElementById('queueList');
   const statsEl = document.getElementById('queueStats');
   if (!listEl || !statsEl) return;
+
+  _populateQueueUserSelect();
 
   const q = _queueData.queue || [];
 
@@ -11592,6 +12134,8 @@ var renderQueueView = function() {
       <div class="queue-card-info">
         <div class="queue-card-name">
           ${entry.contactName} ${typeBadge} ${custLabel} ${sosBadge}
+          ${entry._ownerEmail && entry._ownerEmail !== _getCurrentUserEmail() ? '<span style="font-size:10px;background:#E3F2FD;color:#1565C0;padding:1px 6px;border-radius:8px;margin-left:4px" title="Queue owner: '+entry._ownerEmail+'">👤 '+_getUserDisplayName(entry._ownerEmail)+'</span>' : ''}
+          ${entry.actingAs && entry.actingAs !== entry.createdBy ? '<span style="font-size:10px;background:#F3E5F5;color:#7B1FA2;padding:1px 6px;border-radius:8px;margin-left:4px" title="Created by '+_getUserDisplayName(entry.createdBy||'')+' acting as '+_getUserDisplayName(entry.actingAs)+'">🎭 via '+_getUserDisplayName(entry.createdBy||'')+'</span>' : ''}
           ${entry.error ? '<span style="font-size:11px;color:var(--danger)" title="'+entry.error+'">⚠ '+entry.error+'</span>' : ''}
         </div>
         <div class="queue-card-company">${entry.contactTitle ? entry.contactTitle + ' · ' : ''}${compLogoHtml}${entry.company}</div>${templateTabs}
@@ -11919,9 +12463,33 @@ var _saveQueueToGitHub = async function() {
       _liQueueSha = data.sha;
     }
 
+    // Sync _queueData entries back into _allQueueData user sections
+    if (_allQueueData && _allQueueData.users) {
+      // Group current queue entries by owner
+      var byOwner = {};
+      (_queueData.queue || []).forEach(function(e) {
+        var owner = e._ownerEmail || _getCurrentUserEmail();
+        if (!byOwner[owner]) byOwner[owner] = [];
+        // Remove internal _ownerEmail before saving
+        var clean = Object.assign({}, e);
+        delete clean._ownerEmail;
+        byOwner[owner].push(clean);
+      });
+      // Update each user's section
+      Object.keys(byOwner).forEach(function(email) {
+        if (!_allQueueData.users[email]) {
+          _allQueueData.users[email] = { queue: [], lastProcessed: '', metadata: { createdAt: new Date().toISOString() } };
+        }
+        _allQueueData.users[email].queue = byOwner[email];
+        _allQueueData.users[email].metadata = _allQueueData.users[email].metadata || {};
+        _allQueueData.users[email].metadata.updatedAt = new Date().toISOString();
+      });
+    }
+
+    var saveData = _allQueueData || _queueData;
     const body = {
       message: 'Update LinkedIn queue',
-      content: _utf8ToBase64(JSON.stringify(_queueData, null, 2)),
+      content: _utf8ToBase64(JSON.stringify(saveData, null, 2)),
       sha: _liQueueSha
     };
     const putResp = await fetch(_LI_QUEUE_API, {
