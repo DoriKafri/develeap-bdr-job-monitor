@@ -958,6 +958,34 @@
   .wp-empty-title { font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text); }
   .wp-empty-desc { font-size:14px; color:var(--text-light); margin-bottom:24px; max-width:400px; margin-left:auto; margin-right:auto; }
 
+  /* Sequence expand/collapse */
+  .wp-seq-toggle { display:flex;align-items:center;gap:6px;padding:8px 0 4px;cursor:pointer;font-size:12px;font-weight:600;color:var(--primary);border-top:1px solid var(--border);margin-top:8px;user-select:none; }
+  .wp-seq-toggle:hover { color:var(--teal); }
+  .wp-seq-toggle .wp-seq-arrow { transition:transform 0.2s;font-size:10px; }
+  .wp-seq-toggle .wp-seq-arrow.open { transform:rotate(90deg); }
+  .wp-seq-body { overflow:hidden;max-height:0;transition:max-height 0.3s ease-out; }
+  .wp-seq-body.open { max-height:2000px;transition:max-height 0.4s ease-in; }
+  .wp-seq-step { display:flex;align-items:flex-start;gap:10px;position:relative;padding:6px 0; }
+  .wp-seq-line { position:absolute;left:15px;top:30px;bottom:-6px;width:2px;background:var(--border); }
+  .wp-seq-step:last-child .wp-seq-line { display:none; }
+  .wp-seq-icon { width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1; }
+  .wp-seq-icon.done { background:#E8F5E9; }
+  .wp-seq-icon.active { background:#E3F2FD;box-shadow:0 0 0 3px rgba(50,187,215,0.3); }
+  .wp-seq-icon.pending { background:#F5F5F5; }
+  .wp-seq-icon.waiting { background:#FFF8E1; }
+  .wp-seq-info { flex:1;min-width:0; }
+  .wp-seq-label { font-size:12px;font-weight:600;color:var(--text); }
+  .wp-seq-meta { font-size:11px;color:var(--text-light);margin-top:1px; }
+  .wp-seq-q-badge { display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;margin-left:6px; }
+  .wp-seq-q-badge.q-pending { background:#FFF3E0;color:#E65100; }
+  .wp-seq-q-badge.q-completed { background:#E8F5E9;color:#2E7D32; }
+  .wp-seq-q-badge.q-conn_pending { background:#E3F2FD;color:#1565C0; }
+  .wp-seq-q-badge.q-failed { background:#FFEBEE;color:#C62828; }
+  .wp-seq-q-badge.q-paused { background:#F3E5F5;color:#6A1B9A; }
+  .wp-seq-q-badge.q-processing { background:#E0F7FA;color:#00838F; }
+  .wp-seq-dep { display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-lighter);margin-top:2px; }
+  .wp-seq-dep-arrow { color:var(--text-lighter); }
+
   /* Campaign detail */
   .wp-detail { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .wp-detail-header { grid-column:1/-1; background:white; border-radius:12px; padding:24px; box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; }
@@ -14876,6 +14904,187 @@ function _wpShowWizardForJob(jobId, customerType) {
   _wpRenderWizardStep();
 }
 
+/* ---- Campaign Sequence View ---- */
+function _wpGetCampaignQueueItems(campaignId) {
+  var items = [];
+  var q = _queueData.queue || [];
+  q.forEach(function(entry) {
+    if (entry.campaignId === campaignId) items.push(entry);
+  });
+  return items;
+}
+
+function _wpBuildSequenceSteps(campaign) {
+  var flow = campaign.flow || {};
+  var nodes = flow.nodes || {};
+  var nodeOrder = flow.nodeOrder || [];
+  var completedNodes = (campaign.executionState && campaign.executionState.completedNodes) || [];
+  var currentNodeId = campaign.executionState ? campaign.executionState.currentNodeId : null;
+  var queueItems = _wpGetCampaignQueueItems(campaign.id);
+
+  // Build a lookup of queue items by nodeId
+  var qByNode = {};
+  queueItems.forEach(function(qi) {
+    var nid = qi.campaignNodeId || '';
+    if (!qByNode[nid]) qByNode[nid] = [];
+    qByNode[nid].push(qi);
+  });
+
+  var steps = [];
+  nodeOrder.forEach(function(nodeId) {
+    var node = nodes[nodeId];
+    if (!node) return;
+    var typeDef = _WP_NODE_TYPES[node.type] || {};
+    var isDone = completedNodes.indexOf(nodeId) >= 0;
+    var isCurrent = nodeId === currentNodeId;
+    var isWaiting = node.type === 'wait' || node.type === 'logic_wait_response';
+
+    // Get queue items for this node
+    var nodeQItems = qByNode[nodeId] || [];
+
+    // Find dependencies — what must happen before this node can execute
+    var deps = [];
+    var prevIdx = nodeOrder.indexOf(nodeId) - 1;
+    if (prevIdx >= 0) {
+      var prevNodeId = nodeOrder[prevIdx];
+      var prevNode = nodes[prevNodeId];
+      if (prevNode) {
+        var prevType = _WP_NODE_TYPES[prevNode.type] || {};
+        // Build dependency label
+        if (prevNode.type === 'action_linkedin_connect') {
+          deps.push({ icon: '🔗', label: 'Connection accepted', required: true });
+        } else if (prevNode.type === 'wait') {
+          var waitDays = (prevNode.config && prevNode.config.days) || 1;
+          deps.push({ icon: '🕐', label: waitDays + ' day' + (waitDays > 1 ? 's' : '') + ' wait', required: false });
+        } else if (prevNode.type === 'logic_wait_response') {
+          deps.push({ icon: '⏳', label: 'Response or timeout', required: true });
+        } else if (prevNode.type === 'logic_if_response') {
+          deps.push({ icon: '❓', label: 'Condition evaluated', required: false });
+        }
+      }
+    }
+
+    steps.push({
+      nodeId: nodeId,
+      type: node.type,
+      icon: typeDef.icon || '📋',
+      label: typeDef.label || node.type,
+      color: typeDef.color || '#676879',
+      category: typeDef.category || 'other',
+      config: node.config || {},
+      status: isDone ? 'done' : (isCurrent ? 'active' : (isWaiting ? 'waiting' : 'pending')),
+      queueItems: nodeQItems,
+      deps: deps
+    });
+  });
+
+  return steps;
+}
+
+function _wpRenderSequence(campaign, cardIdx) {
+  var steps = _wpBuildSequenceSteps(campaign);
+  if (steps.length === 0) return '';
+
+  var queueItems = _wpGetCampaignQueueItems(campaign.id);
+  var qTotal = queueItems.length;
+  var qDone = queueItems.filter(function(qi) { return qi.status === 'completed' || qi.status === 'message_sent' || qi.status === 'email_sent' || qi.status === 'conn_accepted'; }).length;
+  var qPending = queueItems.filter(function(qi) { return qi.status === 'pending' || qi.status === 'processing'; }).length;
+
+  var summaryText = qTotal > 0
+    ? qTotal + ' Q items · ' + qDone + ' done · ' + qPending + ' pending'
+    : steps.length + ' steps in flow';
+
+  var html = '<div class="wp-seq-toggle" onclick="event.stopPropagation();_wpToggleSequence(\'' + cardIdx + '\')">';
+  html += '<span class="wp-seq-arrow" id="wpSeqArrow_' + cardIdx + '">▶</span>';
+  html += '<span>📋 Sequence</span>';
+  html += '<span style="font-weight:400;color:var(--text-light);margin-left:4px">' + summaryText + '</span>';
+  html += '</div>';
+
+  html += '<div class="wp-seq-body" id="wpSeqBody_' + cardIdx + '">';
+  html += '<div style="padding:6px 0 4px">';
+
+  steps.forEach(function(step, i) {
+    // Skip trigger_start and trigger_end for cleaner view
+    if (step.type === 'trigger_start') return;
+
+    var statusClass = step.status;
+    html += '<div class="wp-seq-step">';
+    html += '<div class="wp-seq-line"></div>';
+    html += '<div class="wp-seq-icon ' + statusClass + '" style="border:2px solid ' + step.color + '">' + step.icon + '</div>';
+    html += '<div class="wp-seq-info">';
+
+    // Label + queue badge
+    html += '<div class="wp-seq-label">' + step.label;
+
+    // Show contact name from config if available
+    if (step.config && step.config.sender) {
+      html += '<span style="font-weight:400;color:var(--text-light);font-size:11px"> · ' + _getUserDisplayName(step.config.sender) + '</span>';
+    }
+
+    // Queue status badges
+    step.queueItems.forEach(function(qi) {
+      var qLabel = {
+        pending: 'Pending', processing: 'Processing', completed: 'Done', failed: 'Failed',
+        paused: 'Paused', conn_pending: 'Awaiting Accept', conn_accepted: 'Accepted',
+        message_sent: 'Sent', email_sent: 'Sent', reply_received: 'Reply!',
+        sos_waiting: 'Seq. Waiting', whatsapp_waiting: 'Awaiting Reply'
+      }[qi.status] || qi.status;
+      html += '<span class="wp-seq-q-badge q-' + qi.status + '">' + qLabel + '</span>';
+    });
+
+    // If this is a wait node, show duration
+    if (step.type === 'wait' && step.config.days) {
+      html += '<span style="font-weight:400;color:var(--text-light);font-size:11px"> · ' + step.config.days + 'd</span>';
+    }
+
+    html += '</div>';
+
+    // Contact info from queue items
+    if (step.queueItems.length > 0) {
+      step.queueItems.forEach(function(qi) {
+        html += '<div class="wp-seq-meta">' + qi.contactName;
+        if (qi.contactTitle) html += ' · ' + qi.contactTitle;
+        if (qi.company) html += ' @ ' + qi.company;
+        if (qi.completedAt) html += ' · ' + _timeAgo(qi.completedAt);
+        html += '</div>';
+      });
+    } else if (step.config && typeof step.config.contactIdx === 'number') {
+      // Show target contact from campaign
+      var contacts = campaign.targetContacts || [];
+      var ci = step.config.contactIdx;
+      if (ci < contacts.length) {
+        var ct = contacts[ci];
+        html += '<div class="wp-seq-meta">' + (ct.name || ct.email || 'Contact') + (ct.title ? ' · ' + ct.title : '') + '</div>';
+      }
+    }
+
+    // Dependencies
+    if (step.deps.length > 0 && step.status !== 'done') {
+      html += '<div class="wp-seq-dep">';
+      step.deps.forEach(function(d, di) {
+        if (di > 0) html += '<span class="wp-seq-dep-arrow"> → </span>';
+        html += '<span>' + d.icon + ' ' + d.label + '</span>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>'; // info end
+    html += '</div>'; // step end
+  });
+
+  html += '</div></div>';
+  return html;
+}
+
+function _wpToggleSequence(cardIdx) {
+  var body = document.getElementById('wpSeqBody_' + cardIdx);
+  var arrow = document.getElementById('wpSeqArrow_' + cardIdx);
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open');
+}
+
 function _wpRenderCampaignCard(c, idx) {
   var completedNodes = (c.executionState && c.executionState.completedNodes) ? c.executionState.completedNodes.length : 0;
   var totalNodes = c.flow && c.flow.nodeOrder ? c.flow.nodeOrder.length : 1;
@@ -14935,6 +15144,7 @@ function _wpRenderCampaignCard(c, idx) {
       '<button onclick="event.stopPropagation();_wpTogglePauseById(\'' + c.id + '\')">' + (c.status === 'paused' ? '\u25B6 Resume' : '\u23F8 Pause') + '</button>' +
       '<button onclick="event.stopPropagation();_wpArchiveCampaign(\'' + c.id + '\')" title="Archive" style="max-width:40px">\u{1F5C4}</button>' +
     '</div>' +
+    _wpRenderSequence(c, c.id) +
     '</div>';
 }
 
