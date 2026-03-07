@@ -10520,27 +10520,32 @@ function _toggleCrmDeals(uid, total) {
   }
 }
 
+function _toggleApolloDetails(uid) {
+  var details = document.getElementById(uid + '_details');
+  var toggle = document.getElementById(uid + '_toggle');
+  var expanded = toggle.dataset.expanded === '1';
+  if (expanded) {
+    details.style.display = 'none';
+    toggle.textContent = 'Show more ▾';
+    toggle.dataset.expanded = '0';
+  } else {
+    details.style.display = 'block';
+    toggle.textContent = 'Show less ▴';
+    toggle.dataset.expanded = '1';
+  }
+}
+
 function _buildApolloDetailHtml(companyName) {
   if (!_apolloCache) return '';
   const key = (companyName || '').toLowerCase().trim();
   const org = (_apolloCache.organizations || {})[key];
   if (!org || !org.apolloId) return '';
 
+  const apolloUid = 'apollo_' + key.replace(/[^a-z0-9]/g, '_');
   let html = '<div class="detail-section" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">';
   html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:14px">🚀</span> Apollo Intel</div>';
 
-  // Company summary (truncated with "more" link)
-  if (org.shortDescription) {
-    const desc = org.shortDescription;
-    if (desc.length > 150) {
-      const short = desc.slice(0, 150).replace(/\s+\S*$/, '');
-      html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px"><span id="_apolloDescShort">' + short + '… <a href="#" onclick="event.preventDefault();document.getElementById(\'_apolloDescShort\').style.display=\'none\';document.getElementById(\'_apolloDescFull\').style.display=\'inline\'" style="color:#7B1FA2;font-size:11px">more</a></span><span id="_apolloDescFull" style="display:none">' + desc + '</span></div>';
-    } else {
-      html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px">' + desc + '</div>';
-    }
-  }
-
-  // Key metrics
+  // Key metrics (always visible as summary)
   const metrics = [];
   if (org.employeeCount) metrics.push(org.employeeCount.toLocaleString() + ' employees');
   if (org.annualRevenue) metrics.push('$' + (org.annualRevenue / 1e6).toFixed(0) + 'M revenue');
@@ -10550,23 +10555,21 @@ function _buildApolloDetailHtml(companyName) {
     html += '<div style="font-size:12px;color:var(--text);margin-bottom:8px">' + metrics.join(' · ') + '</div>';
   }
 
-  // Tech stack (truncated to 6 with "more" toggle)
+  // Collapsible details
+  html += '<div id="' + apolloUid + '_details" style="display:none">';
+
+  // Company summary
+  if (org.shortDescription) {
+    html += '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px">' + org.shortDescription + '</div>';
+  }
+
+  // Tech stack
   if (org.technologies && org.technologies.length > 0) {
-    const techs = org.technologies;
-    const limit = 6;
     html += '<div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--text-light)">Tech Stack</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">';
-    techs.slice(0, limit).forEach(t => {
+    org.technologies.forEach(t => {
       html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
     });
-    if (techs.length > limit) {
-      html += '<span id="_techMore" style="display:none">';
-      techs.slice(limit).forEach(t => {
-        html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
-      });
-      html += '</span>';
-      html += '<a href="#" onclick="event.preventDefault();document.getElementById(\'_techMore\').style.display=\'contents\';this.style.display=\'none\'" style="font-size:10px;padding:2px 6px;border-radius:4px;background:#EDE7F6;color:#7B1FA2;cursor:pointer;text-decoration:none">+' + (techs.length - limit) + ' more</a>';
-    }
     html += '</div>';
   }
 
@@ -10574,6 +10577,10 @@ function _buildApolloDetailHtml(companyName) {
   if (org.linkedinUrl) {
     html += '<a href="' + org.linkedinUrl + '" target="_blank" style="font-size:11px;color:#7B1FA2;text-decoration:none">Company LinkedIn &rarr;</a>';
   }
+
+  html += '</div>'; // end collapsible details
+
+  html += '<a href="#" id="' + apolloUid + '_toggle" onclick="event.preventDefault();_toggleApolloDetails(\'' + apolloUid + '\')" style="font-size:11px;color:#7B1FA2;text-decoration:none;display:inline-block;margin-top:4px">Show more ▾</a>';
 
   html += '</div>';
   return html;
