@@ -1121,6 +1121,13 @@
   .help-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.3); z-index:10000; display:none; }
   .help-backdrop.open { display:block; }
   @media(max-width:768px) { .help-panel { width:100%; right:-100%; } }
+
+  .toggle-switch { position:relative; display:inline-block; width:44px; height:24px; }
+  .toggle-switch input { opacity:0; width:0; height:0; }
+  .toggle-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#ccc; transition:.3s; border-radius:24px; }
+  .toggle-slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; transition:.3s; border-radius:50%; }
+  .toggle-switch input:checked + .toggle-slider { background:var(--primary, #00897B); }
+  .toggle-switch input:checked + .toggle-slider:before { transform:translateX(20px); }
 </style>
 </head>
 <body>
@@ -2246,107 +2253,126 @@ let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","
 
 let ALL_JOBS = [
   {
-  "id": "bc3d562e",
-  "title": "DevOps Engineer",
-  "subtitle": "Develeap - Tel Aviv, Israel",
-  "company": "Develeap",
-  "companyIndustry": "DevOps Consulting",
-  "location": "Tel Aviv, Israel",
-  "locationSlug": "tel-aviv-israel",
-  "source": "other",
-  "sourceUrl": "https://www.develeap.com/careers/devops-engineer-mock",
-  "category": "devops",
-  "posted": "2026-03-07",
-  "isNew": true,
-  "isDeveleapCustomer": true,
-  "isPastCustomer": false,
-  "_isMock": true,
-  "description": "[TEST MESSAGE] Mock DevOps Engineer position at Develeap for testing the Wolf Pack campaign feature. This is not a real job listing.",
-  "skills": [],
-  "stakeholders": [
-    {
-      "name": "May Alma",
-      "title": "Business Operations Manager & Team Lead",
-      "linkedin": "https://www.linkedin.com/in/may-alma/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi May, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, May! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFgvSwlYU6gtw/profile-displayphoto-scale_400_400/B4DZh46OctG8Ag-/0/1754375187862"
-    },
-    {
-      "name": "Lihi Pinto",
-      "title": "SaaS B2B Growth Strategist | CRO as a Service",
-      "linkedin": "https://www.linkedin.com/in/lihipinto/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Lihi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Lihi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D35AQE8UwioBct0wQ/profile-framedphoto-shrink_400_400/B4DZrAnp.SIgAc-/0/1764168212646"
-    },
-    {
-      "name": "Roni Nir",
-      "title": "Business Management & Entrepreneurship",
-      "linkedin": "https://www.linkedin.com/in/roni-nir/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Roni, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Roni! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG38FBHfkR_0A/profile-displayphoto-scale_400_400/B4DZpEgy4qGQAg-/0/1762086040236"
-    },
-    {
-      "name": "Efi Shimon",
-      "title": "DevOps Group Leader",
-      "linkedin": "https://www.linkedin.com/in/efishimon/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Efi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Efi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEzwRAL-FUgCg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1730195528965"
-    },
-    {
-      "name": "Saar Cohen",
-      "title": "Head of Education & AWS Training Partner",
-      "linkedin": "https://www.linkedin.com/in/saar--cohen/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Saar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Saar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFViBKtOk1b6g/profile-displayphoto-shrink_400_400/B4DZP8z2z5GgAg-/0/1735113273207"
-    },
-    {
-      "name": "Nofar Barzilay",
-      "title": "DevOps Engineer",
-      "linkedin": "https://www.linkedin.com/in/nofar-barzilay-03a81517b/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Nofar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Nofar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFP2fQ6-TLbuQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1725939310587"
-    },
-    {
-      "name": "Shoshi Revivo",
-      "title": "Senior DevOps Group Leader",
-      "linkedin": "https://www.linkedin.com/in/shoshi-revivo-69249b166/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi Shoshi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Shoshi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFKqpq9H_DT2A/profile-displayphoto-scale_400_400/B4DZhN0Y8eHsAg-/0/1753652240816"
-    },
-    {
-      "name": "ShemTov Fisher",
-      "title": "DevOps Team Lead",
-      "linkedin": "https://www.linkedin.com/in/shemtov-fisher-17b486194/",
-      "source": "LinkedIn",
-      "email": "",
-      "connectMsg": "[TEST MESSAGE] Hi ShemTov, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-      "followUpMsg": "[TEST MESSAGE] Thanks for connecting, ShemTov! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-      "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG7l7DgSX4FVA/profile-displayphoto-shrink_400_400/B4DZTWW3K.GkAg-/0/1738763105332"
-    }
-  ],
-  "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128"
-},
+    "id": "bc3d562e",
+    "title": "DevOps Engineer",
+    "subtitle": "Develeap - Tel Aviv, Israel",
+    "company": "Develeap",
+    "companyIndustry": "DevOps Consulting",
+    "location": "Tel Aviv, Israel",
+    "locationSlug": "tel-aviv-israel",
+    "source": "other",
+    "sourceUrl": "https://www.develeap.com/careers/devops-engineer-mock",
+    "category": "devops",
+    "posted": "2026-03-07",
+    "isNew": true,
+    "isDeveleapCustomer": true,
+    "isPastCustomer": false,
+    "_isMock": true,
+    "description": "[TEST MESSAGE] Mock DevOps Engineer position at Develeap for testing the Wolf Pack campaign feature. This is not a real job listing.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "May Alma",
+        "title": "Business Operations Manager & Team Lead",
+        "linkedin": "https://www.linkedin.com/in/may-alma/",
+        "source": "LinkedIn",
+        "email": "may.tzavchon@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi May, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, May! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFgvSwlYU6gtw/profile-displayphoto-scale_400_400/B4DZh46OctG8Ag-/0/1754375187862",
+        "phone": "+972 52-364-5621"
+      },
+      {
+        "name": "Lihi Pinto",
+        "title": "SaaS B2B Growth Strategist | CRO as a Service",
+        "linkedin": "https://www.linkedin.com/in/lihipinto/",
+        "source": "LinkedIn",
+        "email": "lihi.pinto@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Lihi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Lihi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D35AQE8UwioBct0wQ/profile-framedphoto-shrink_400_400/B4DZrAnp.SIgAc-/0/1764168212646",
+        "phone": "+972 58-630-7748"
+      },
+      {
+        "name": "Roni Nir",
+        "title": "Business Management & Entrepreneurship",
+        "linkedin": "https://www.linkedin.com/in/roni-nir/",
+        "source": "LinkedIn",
+        "email": "roni.nir@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Roni, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Roni! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG38FBHfkR_0A/profile-displayphoto-scale_400_400/B4DZpEgy4qGQAg-/0/1762086040236",
+        "phone": "+972 50-448-9802"
+      },
+      {
+        "name": "Efi Shimon",
+        "title": "DevOps Group Leader",
+        "linkedin": "https://www.linkedin.com/in/efishimon/",
+        "source": "LinkedIn",
+        "email": "effi.shimon@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Efi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Efi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEzwRAL-FUgCg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1730195528965",
+        "phone": "+972 52-536-1095"
+      },
+      {
+        "name": "Saar Cohen",
+        "title": "Head of Education & AWS Training Partner",
+        "linkedin": "https://www.linkedin.com/in/saar--cohen/",
+        "source": "LinkedIn",
+        "email": "saar.cohen@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Saar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Saar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFViBKtOk1b6g/profile-displayphoto-shrink_400_400/B4DZP8z2z5GgAg-/0/1735113273207",
+        "phone": "+972 50-234-8800"
+      },
+      {
+        "name": "Nofar Barzilay",
+        "title": "DevOps Engineer",
+        "linkedin": "https://www.linkedin.com/in/nofar-barzilay-03a81517b/",
+        "source": "LinkedIn",
+        "email": "nofar.barzilay@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Nofar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Nofar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFP2fQ6-TLbuQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1725939310587",
+        "phone": ""
+      },
+      {
+        "name": "Shoshi Revivo",
+        "title": "Senior DevOps Group Leader",
+        "linkedin": "https://www.linkedin.com/in/shoshi-revivo-69249b166/",
+        "source": "LinkedIn",
+        "email": "shoshi.revivo@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi Shoshi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Shoshi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFKqpq9H_DT2A/profile-displayphoto-scale_400_400/B4DZhN0Y8eHsAg-/0/1753652240816",
+        "phone": ""
+      },
+      {
+        "name": "ShemTov Fisher",
+        "title": "DevOps Team Lead",
+        "linkedin": "https://www.linkedin.com/in/shemtov-fisher-17b486194/",
+        "source": "LinkedIn",
+        "email": "shemtov.fisher@develeap.com",
+        "connectMsg": "[TEST MESSAGE] Hi ShemTov, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, ShemTov! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG7l7DgSX4FVA/profile-displayphoto-shrink_400_400/B4DZTWW3K.GkAg-/0/1738763105332",
+        "phone": ""
+      },
+      {
+        "name": "Gilad Neiger",
+        "title": "DevOps Engineer",
+        "linkedin": "",
+        "source": "Internal",
+        "email": "gilad.neiger@develeap.com",
+        "phone": "+972 52-822-9281",
+        "connectMsg": "[TEST MESSAGE] Hi Gilad, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
+        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Gilad! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
+        "photo": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128"
+  },
   {
     "id": "2ba45202",
     "title": "Senior FinOps Engineer (25020)",
@@ -11683,6 +11709,29 @@ function renderWolfPackSettingsSection() {
 
   el.innerHTML = html;
 }
+
+function _toggleMockListing(show) {
+  localStorage.setItem('bdr_show_mock_listing', show ? 'true' : 'false');
+  // Filter ALL_JOBS to show/hide mock listings
+  if (typeof ALL_JOBS !== 'undefined') {
+    ALL_JOBS.forEach(function(j) {
+      if (j._isMock) j._hideMock = !show;
+    });
+  }
+  // Re-render current view
+  if (typeof renderJobs === 'function') renderJobs();
+  if (typeof _wpRenderCurrentView === 'function') _wpRenderCurrentView();
+}
+
+// On load: apply mock listing visibility
+(function() {
+  var show = localStorage.getItem('bdr_show_mock_listing') !== 'false';
+  if (typeof ALL_JOBS !== 'undefined') {
+    ALL_JOBS.forEach(function(j) {
+      if (j._isMock) j._hideMock = !show;
+    });
+  }
+})();
 
 function _wpToggleSettingsAutoActivate(ct, val) { _wpStrategyDefaults[ct].autoActivate = val; }
 function _wpUpdateSettingsDefault(ct, key, val) { _wpStrategyDefaults[ct][key] = val; }

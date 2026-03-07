@@ -4469,6 +4469,30 @@
           "channel": "linkedin",
           "campaignId": "wp_73ive6xnjvma",
           "flowStep": "linkedin_connect"
+        },
+        {
+          "id": "k69frwftsf7b",
+          "contactName": "Gilad Neiger",
+          "contactTitle": "DevOps Engineer",
+          "contactKey": "gilad neiger",
+          "company": "Develeap",
+          "linkedinUrl": "",
+          "message": "[TEST MESSAGE] Hi Gilad, this is a test message for the Wolf Pack campaign feature — no action needed!",
+          "isConnected": false,
+          "customerType": "customer",
+          "status": "pending",
+          "createdAt": "2026-03-07T18:20:48.000Z",
+          "completedAt": null,
+          "companyLogo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
+          "contactPhoto": "",
+          "templateIdx": 0,
+          "companyId": "",
+          "contactId": "",
+          "hubspotSyncStatus": "pending",
+          "executionLog": [],
+          "channel": "linkedin",
+          "campaignId": "wp_73ive6xnjvma",
+          "flowStep": "linkedin_connect"
         }
       ],
       "lastProcessed": "2026-03-07T13:37:00.633551+00:00"

@@ -10957,7 +10957,7 @@
         {
           "id": "wp_g8swqr45pmgl",
           "name": "May Alma",
-          "email": "",
+          "email": "may.tzavchon@develeap.com",
           "title": "Business Operations Manager & Team Lead",
           "linkedin": "https://www.linkedin.com/in/may-alma/",
           "phone": "+972 52-364-5621",
@@ -10967,7 +10967,7 @@
         {
           "id": "wp_9031wjq30as1",
           "name": "Lihi Pinto",
-          "email": "",
+          "email": "lihi.pinto@develeap.com",
           "title": "SaaS B2B Growth Strategist | CRO as a Service",
           "linkedin": "https://www.linkedin.com/in/lihipinto/",
           "phone": "+972 58-630-7748",
@@ -10977,7 +10977,7 @@
         {
           "id": "wp_1w6690z41sn0",
           "name": "Roni Nir",
-          "email": "",
+          "email": "roni.nir@develeap.com",
           "title": "Business Management & Entrepreneurship",
           "linkedin": "https://www.linkedin.com/in/roni-nir/",
           "phone": "+972 50-448-9802",
@@ -10987,7 +10987,7 @@
         {
           "id": "wp_qosr57eh0u9c",
           "name": "Efi Shimon",
-          "email": "",
+          "email": "effi.shimon@develeap.com",
           "title": "DevOps Group Leader",
           "linkedin": "https://www.linkedin.com/in/efishimon/",
           "phone": "+972 52-536-1095",
@@ -10997,7 +10997,7 @@
         {
           "id": "wp_epj1h7au1jbd",
           "name": "Saar Cohen",
-          "email": "",
+          "email": "saar.cohen@develeap.com",
           "title": "Head of Education & AWS Training Partner",
           "linkedin": "https://www.linkedin.com/in/saar--cohen/",
           "phone": "+972 50-234-8800",
@@ -11007,7 +11007,7 @@
         {
           "id": "wp_mc8ia7aorfx1",
           "name": "Nofar Barzilay",
-          "email": "",
+          "email": "nofar.barzilay@develeap.com",
           "title": "DevOps Engineer",
           "linkedin": "https://www.linkedin.com/in/nofar-barzilay-03a81517b/",
           "phone": "",
@@ -11017,7 +11017,7 @@
         {
           "id": "wp_t2o95lnkmytu",
           "name": "Shoshi Revivo",
-          "email": "",
+          "email": "shoshi.revivo@develeap.com",
           "title": "Senior DevOps Group Leader",
           "linkedin": "https://www.linkedin.com/in/shoshi-revivo-69249b166/",
           "phone": "",
@@ -11027,12 +11027,22 @@
         {
           "id": "wp_d0k2cs4cdacn",
           "name": "ShemTov Fisher",
-          "email": "",
+          "email": "shemtov.fisher@develeap.com",
           "title": "DevOps Team Lead",
           "linkedin": "https://www.linkedin.com/in/shemtov-fisher-17b486194/",
           "phone": "",
           "isPrimary": false,
           "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG7l7DgSX4FVA/profile-displayphoto-shrink_400_400/B4DZTWW3K.GkAg-/0/1738763105332"
+        },
+        {
+          "id": "wp_08olzxhtgpjo",
+          "name": "Gilad Neiger",
+          "email": "gilad.neiger@develeap.com",
+          "title": "DevOps Engineer",
+          "linkedin": "",
+          "phone": "+972 52-822-9281",
+          "isPrimary": false,
+          "photo": ""
         }
       ],
       "teamMembers": [],
