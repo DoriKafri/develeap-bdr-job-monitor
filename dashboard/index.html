@@ -986,46 +986,6 @@
   .wp-seq-dep { display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-lighter);margin-top:2px; }
   .wp-seq-dep-arrow { color:var(--text-lighter); }
 
-  /* Step × Contact Matrix */
-  .wp-matrix { grid-column:1/-1; background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); }
-  .wp-matrix h3 { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .wp-step-card { border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; }
-  .wp-step-header { display:flex; align-items:center; gap:10px; padding:12px 16px; cursor:pointer; user-select:none; transition:background 0.15s; }
-  .wp-step-header:hover { background:var(--bg); }
-  .wp-step-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-  .wp-step-meta { flex:1; min-width:0; }
-  .wp-step-label { font-weight:700; font-size:13px; }
-  .wp-step-sub { font-size:11px; color:var(--text-light); margin-top:2px; }
-  .wp-step-badges { display:flex; gap:6px; align-items:center; }
-  .wp-step-badge { font-size:10px; font-weight:600; padding:3px 8px; border-radius:10px; }
-  .wp-step-badge.done { background:#E8F5E9; color:#2E7D32; }
-  .wp-step-badge.active { background:#E3F2FD; color:#1565C0; }
-  .wp-step-badge.pending { background:#FFF3E0; color:#E65100; }
-  .wp-step-badge.waiting { background:#F3E5F5; color:#7B1FA2; }
-  .wp-step-arrow { font-size:11px; color:var(--text-lighter); transition:transform 0.2s; }
-  .wp-step-arrow.open { transform:rotate(90deg); }
-  .wp-step-body { display:none; border-top:1px solid var(--border); }
-  .wp-step-body.open { display:block; }
-  .wp-qi-row { display:grid; grid-template-columns:36px 1.2fr 1fr 0.8fr 0.7fr 0.6fr; align-items:center; gap:8px; padding:10px 16px; font-size:12px; border-bottom:1px solid #f0f0f0; }
-  .wp-qi-row:last-child { border-bottom:none; }
-  .wp-qi-row.qi-header { background:#f8f9fa; font-weight:700; font-size:11px; color:var(--text-light); text-transform:uppercase; letter-spacing:0.3px; }
-  .wp-qi-avatar { width:28px; height:28px; border-radius:50%; background:var(--teal-light); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; }
-  .wp-qi-contact { font-weight:600; }
-  .wp-qi-contact-title { font-size:10px; color:var(--text-lighter); }
-  .wp-qi-status { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:10px; font-size:10px; font-weight:600; }
-  .wp-qi-status.s-pending { background:#FFF3E0; color:#E65100; }
-  .wp-qi-status.s-completed { background:#E8F5E9; color:#2E7D32; }
-  .wp-qi-status.s-processing { background:#E3F2FD; color:#1565C0; }
-  .wp-qi-status.s-failed { background:#FFEBEE; color:#C62828; }
-  .wp-qi-status.s-conn_pending { background:#E8EAF6; color:#283593; }
-  .wp-qi-status.s-conn_accepted { background:#E8F5E9; color:#2E7D32; }
-  .wp-qi-status.s-message_sent { background:#E0F7FA; color:#00695C; }
-  .wp-qi-status.s-email_sent { background:#E0F7FA; color:#00695C; }
-  .wp-qi-status.s-reply_received { background:#E8F5E9; color:#1B5E20; }
-  .wp-qi-status.s-not_created { background:#ECEFF1; color:#78909C; }
-  .wp-qi-dep { display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-lighter); padding:4px 16px 8px; }
-  .wp-step-empty { padding:16px; text-align:center; color:var(--text-lighter); font-size:12px; font-style:italic; }
-
   /* Campaign detail */
   .wp-detail { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .wp-detail-header { grid-column:1/-1; background:white; border-radius:12px; padding:24px; box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; }
@@ -2214,7 +2174,7 @@ function handleCredentialResponse(r) {
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-07T12:47:04Z";
+let LAST_UPDATED = "2026-03-07T13:37:07Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2446,7 +2406,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://jobs.vertexventures.co.il/companies/yotpo/jobs/59440875-senior-devops-engineer-finops",
     "category": "finops",
     "posted": "2026-03-07",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "What you'll do: Lead cloud cost optimization efforts. Our tech stack includes: AWS, EKS, CastAI, Akamai, Coralogix, GitH",
@@ -2886,16 +2846,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Ranga Kariyawasam",
-        "title": "Group Chief Technology Officer ...",
-        "linkedin": "https://lk.linkedin.com/in/ranga-kariyawasam-65876b96",
-        "source": "Auto-discovered",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQGfvzDTZY0vVw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516827968055?e=2147483647&v=beta&t=edZ4Kkfaa49N6lcpdTb5K5He6rOxQNDDj23UkQKXBRw",
-        "connectMsg": "Hi Ranga, I noticed Dialog is hiring a דרושים (Site Reliability Engineer) SRE, משרה (85938) ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Ranga! I wanted to share how Develeap helps companies like Dialog accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
         "name": "Alexis Smirnov",
         "title": "Co-Founder & CTO @ Dialogue, Health ...",
         "linkedin": "https://ca.linkedin.com/in/alexissmirnov",
@@ -2904,6 +2854,16 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/C4E03AQGmDjCfmS2-Cg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516169856969?e=2147483647&v=beta&t=Y433wAD4Yj19NYEKq5RPmZYGPY2M1PRTcoL7KUcju_M",
         "connectMsg": "Hi Alexis, I noticed Dialog is hiring a דרושים (Site Reliability Engineer) SRE, משרה (85938) ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Alexis! I wanted to share how Develeap helps companies like Dialog accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Lior Shwartz",
+        "title": "CEO's, VP's, Marketing VP's, VP R&D and mid-level executives",
+        "linkedin": "https://il.linkedin.com/in/liorshwartz",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFzQ50iGtDoiQ/profile-displayphoto-shrink_200_200/B4DZZepZRRHIAY-/0/1745344632684?e=2147483647&v=beta&t=Ql1uaBvEIQj62rVqyVdINr_t6BFu9-k6mZHhdZm0qrE",
+        "connectMsg": "Hi Lior, I noticed Dialog is hiring a דרושים (Site Reliability Engineer) SRE, משרה (85938) ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Lior! I wanted to share how Develeap helps companies like Dialog accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=dialog.com&sz=128"
@@ -3244,7 +3204,14 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Eyal! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=surecomp.com&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=surecomp.com&sz=128",
+    "altSources": [
+      {
+        "source": "comeet",
+        "sourceUrl": "https://www.comeet.com/jobs/Surecomp/24.00E/devops-team-lead/B2.E5F",
+        "title": "DevOps Team Lead"
+      }
+    ]
   },
   {
     "id": "49cd72ad",
@@ -3496,7 +3463,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -5561,7 +5528,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -5648,6 +5615,47 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=adaptive6.com&sz=128"
+  },
+  {
+    "id": "41ea6b5c",
+    "title": "Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ...",
+    "subtitle": "We're looking for a proactive and analytical Cloud FinOps En",
+    "company": "Torq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/cloud-finops-engineer-at-torq-4317936405",
+    "category": "finops",
+    "posted": "2026-03-01",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We're looking for a proactive and analytical Cloud FinOps Engineer to join our team and take ownership of our cloud fina",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Leonid Belkind",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/leonidbelkind/",
+        "source": "LinkedIn",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEIXsl0MrRtRg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1687942183401?e=2147483647&v=beta&t=tuLrpo7cX6hU8AL7RXb3NiYiPERGmrNDlwSQnL3lSdU",
+        "connectMsg": "Hi Leonid, I noticed Torq is hiring a Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Leonid! I wanted to share how Develeap helps companies like Torq accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Ofer Smadari",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/ofersmadari/",
+        "source": "LinkedIn",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEIkUHC38RPSw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720105184758?e=2147483647&v=beta&t=cYR-M9IP4s8yyq5mIOvpuP8G2ffdOwsQjPAv-H9uOXg",
+        "connectMsg": "Hi Ofer, I noticed Torq is hiring a Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Ofer! I wanted to share how Develeap helps companies like Torq accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=torq.com&sz=128"
   },
   {
     "id": "f31f801e",
@@ -5991,7 +5999,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -6080,6 +6088,26 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=chaoslabs.xyz&sz=128"
+  },
+  {
+    "id": "2e1c9996",
+    "title": "VAST Data גיוס עובדים Cloud FinOps Engineer | Tel Aviv- ...",
+    "subtitle": "VAST Data is looking for a Cloud FinOps Engineer to join our",
+    "company": "VAST Data",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/cloud-finops-engineer-at-vast-data-4376078265",
+    "category": "finops",
+    "posted": "2026-02-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "VAST Data is looking for a Cloud FinOps Engineer to join our growing team! This is a great opportunity to be part of one",
+    "skills": [],
+    "stakeholders": [],
+    "logo": ""
   },
   {
     "id": "c8157d39",
@@ -15454,177 +15482,6 @@ function _wpOpenDetail(campaignId) {
   _wpRenderCurrentView();
 }
 
-function _wpToggleStep(stepIdx) {
-  var body = document.getElementById('wpStepBody_' + stepIdx);
-  var arrow = document.getElementById('wpStepArrow_' + stepIdx);
-  if (!body) return;
-  if (body.classList.contains('open')) {
-    body.classList.remove('open');
-    if (arrow) arrow.classList.remove('open');
-  } else {
-    body.classList.add('open');
-    if (arrow) arrow.classList.add('open');
-  }
-}
-
-function _wpRenderStepMatrix(campaign) {
-  var steps = _wpBuildSequenceSteps(campaign);
-  var contacts = campaign.targetContacts || [];
-  var touchpoints = (campaign.responseTracking && campaign.responseTracking.touchpoints) || [];
-  if (steps.length === 0) return '<div class="wp-matrix"><h3>📋 Campaign Steps & Queue</h3><div style="color:var(--text-lighter);font-size:13px;text-align:center;padding:20px">No flow steps defined. Edit the flow to add steps.</div></div>';
-
-  var h = '<div class="wp-matrix"><h3>📋 Campaign Steps & Queue <span style="font-size:12px;font-weight:400;color:var(--text-light)">(' + steps.length + ' steps × ' + contacts.length + ' contacts)</span></h3>';
-
-  steps.forEach(function(step, idx) {
-    // Skip trigger_start and trigger_end for the cartesian view since they don't produce queue items
-    var isAction = step.category === 'action' || step.category === 'marketing';
-    var isLogicOrWait = step.category === 'logic' || step.category === 'timing';
-
-    var qCount = step.queueItems.length;
-    var completedQ = step.queueItems.filter(function(qi) { return qi.status === 'completed' || qi.status === 'conn_accepted' || qi.status === 'message_sent' || qi.status === 'email_sent' || qi.status === 'reply_received'; }).length;
-
-    h += '<div class="wp-step-card">';
-
-    // Step header
-    h += '<div class="wp-step-header" onclick="_wpToggleStep(' + idx + ')">';
-    h += '<div class="wp-step-icon" style="background:' + step.color + '20;color:' + step.color + '">' + step.icon + '</div>';
-    h += '<div class="wp-step-meta">';
-    h += '<div class="wp-step-label">' + step.label + '</div>';
-
-    // Sub-info line
-    var subParts = [];
-    if (step.config.sender) subParts.push('👤 ' + _getUserDisplayName(step.config.sender));
-    if (step.config.days) subParts.push('⏱ ' + step.config.days + ' day' + (step.config.days > 1 ? 's' : ''));
-    if (step.config.channel) subParts.push('📡 ' + step.config.channel);
-    if (isAction) subParts.push('👥 ' + contacts.length + ' contact' + (contacts.length !== 1 ? 's' : ''));
-    if (qCount > 0) subParts.push('📨 ' + completedQ + '/' + qCount + ' done');
-    h += '<div class="wp-step-sub">' + subParts.join(' · ') + '</div>';
-    h += '</div>';
-
-    // Status badge
-    h += '<div class="wp-step-badges">';
-    h += '<span class="wp-step-badge ' + step.status + '">' + step.status + '</span>';
-    h += '</div>';
-    h += '<span class="wp-step-arrow" id="wpStepArrow_' + idx + '">▶</span>';
-    h += '</div>';
-
-    // Step body — cartesian: each contact × this step
-    h += '<div class="wp-step-body" id="wpStepBody_' + idx + '">';
-
-    // Dependencies
-    if (step.deps.length > 0) {
-      step.deps.forEach(function(dep) {
-        h += '<div class="wp-qi-dep">' + dep.icon + ' Requires: <strong>' + dep.label + '</strong></div>';
-      });
-    }
-
-    if (isAction) {
-      // Column headers
-      h += '<div class="wp-qi-row qi-header"><div></div><div>Contact</div><div>Title / Role</div><div>Assigned To</div><div>Status</div><div>Created</div></div>';
-
-      // For each contact, find matching queue item(s)
-      contacts.forEach(function(tc) {
-        // Find queue items for this node + contact combo
-        var matchingQI = step.queueItems.filter(function(qi) {
-          return (qi.contactName === tc.name) ||
-                 (qi.email && tc.email && qi.email === tc.email) ||
-                 (qi.linkedinUrl && tc.linkedin && qi.linkedinUrl === tc.linkedin);
-        });
-
-        // Also find touchpoints
-        var matchingTP = touchpoints.filter(function(tp) {
-          return tp.nodeId === step.nodeId && tp.contactId === tc.id;
-        });
-
-        if (matchingQI.length > 0) {
-          // Render each queue item
-          matchingQI.forEach(function(qi) {
-            var statusLabel = (qi.status || 'pending').replace(/_/g, ' ');
-            var statusClass = 's-' + (qi.status || 'pending');
-            var initials = (tc.name || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
-            var actingAs = qi.actingAs ? _getUserDisplayName(qi.actingAs) : '-';
-            var created = qi.createdAt ? new Date(qi.createdAt).toLocaleDateString() : '-';
-
-            h += '<div class="wp-qi-row">';
-            h += '<div><div class="wp-qi-avatar">' + initials + '</div></div>';
-            h += '<div><div class="wp-qi-contact">' + (tc.name || qi.contactName || '-') + '</div></div>';
-            h += '<div><div class="wp-qi-contact-title">' + (tc.title || qi.contactTitle || '-') + '</div></div>';
-            h += '<div>' + actingAs + '</div>';
-            h += '<div><span class="wp-qi-status ' + statusClass + '">' + statusLabel + '</span></div>';
-            h += '<div style="font-size:11px;color:var(--text-light)">' + created + '</div>';
-            h += '</div>';
-
-            // Show responses if any
-            if (matchingTP.length > 0) {
-              matchingTP.forEach(function(tp) {
-                if (tp.responses && tp.responses.length > 0) {
-                  tp.responses.forEach(function(r) {
-                    h += '<div style="padding:4px 16px 4px 60px;font-size:11px;color:var(--success);font-weight:600">💬 Reply: ' + (r.text || r.type || 'Response received') + ' <span style="font-weight:400;color:var(--text-lighter)">' + (r.timestamp ? new Date(r.timestamp).toLocaleDateString() : '') + '</span></div>';
-                  });
-                }
-              });
-            }
-          });
-        } else {
-          // No queue item yet — show placeholder row
-          var initials2 = (tc.name || '?').split(' ').map(function(w) { return w[0]; }).join('').substr(0, 2).toUpperCase();
-          h += '<div class="wp-qi-row" style="opacity:0.5">';
-          h += '<div><div class="wp-qi-avatar" style="background:#ECEFF1;color:#90A4AE">' + initials2 + '</div></div>';
-          h += '<div><div class="wp-qi-contact">' + (tc.name || '-') + '</div></div>';
-          h += '<div><div class="wp-qi-contact-title">' + (tc.title || '-') + '</div></div>';
-          h += '<div>-</div>';
-          h += '<div><span class="wp-qi-status s-not_created">not created</span></div>';
-          h += '<div>-</div>';
-          h += '</div>';
-        }
-      });
-
-      if (contacts.length === 0) {
-        h += '<div class="wp-step-empty">No target contacts defined</div>';
-      }
-    } else if (isLogicOrWait) {
-      // Logic/wait nodes — show config info
-      h += '<div style="padding:12px 16px;font-size:12px">';
-      if (step.type === 'wait') {
-        h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">⏰</span> Wait <strong>' + (step.config.days || 1) + ' day' + ((step.config.days || 1) > 1 ? 's' : '') + '</strong> before proceeding to next step</div>';
-      } else if (step.type === 'logic_wait_response') {
-        h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">⏳</span> Wait for response with <strong>' + (step.config.timeoutDays || 3) + ' day timeout</strong></div>';
-      } else if (step.type === 'logic_if_response') {
-        h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">❓</span> Branch based on whether a response was received</div>';
-      } else if (step.type === 'logic_switch_channel') {
-        h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">🔀</span> Switch to next channel based on preference</div>';
-      } else {
-        h += '<div>' + step.label + '</div>';
-      }
-
-      // Show any queue items that exist for logic/wait nodes
-      if (step.queueItems.length > 0) {
-        h += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">';
-        h += '<div style="font-size:11px;font-weight:600;color:var(--text-light);margin-bottom:4px">Queue Items:</div>';
-        step.queueItems.forEach(function(qi) {
-          h += '<div style="font-size:11px;padding:2px 0">• ' + (qi.contactName || '-') + ' — <span class="wp-qi-status s-' + (qi.status || 'pending') + '">' + (qi.status || 'pending').replace(/_/g, ' ') + '</span></div>';
-        });
-        h += '</div>';
-      }
-      h += '</div>';
-    } else {
-      // Trigger nodes — minimal info
-      h += '<div style="padding:12px 16px;font-size:12px;color:var(--text-light)">';
-      if (step.type === 'trigger_start') h += '🚀 Campaign flow starts here';
-      else if (step.type === 'trigger_end') h += '✓ Campaign flow ends here';
-      else if (step.type === 'trigger_response') h += '📬 Triggered when a response is received';
-      else h += step.label;
-      h += '</div>';
-    }
-
-    h += '</div>'; // step body
-    h += '</div>'; // step card
-  });
-
-  h += '</div>'; // matrix container
-  return h;
-}
-
 function _wpRenderDetail() {
   var container = document.getElementById('wpDetailView');
   var c = _wpSelectedCampaign;
@@ -15667,9 +15524,6 @@ function _wpRenderDetail() {
       '<div style="font-size:11px;color:var(--text-light)">Engagement</div>' +
     '</div>' +
     '</div>';
-
-  // Step × Contact Matrix (full cartesian view)
-  h += _wpRenderStepMatrix(c);
 
   // Timeline
   h += '<div class="wp-detail-section">' +
