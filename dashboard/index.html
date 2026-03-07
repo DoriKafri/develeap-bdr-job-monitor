@@ -9758,20 +9758,28 @@ function _getCrmBadgeHtml(companyName) {
     return !sName.includes('closed lost') && !sName.includes('not interested');
   });
 
+  const portalId = CRM_CONFIG.portalId;
+  const companyUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-2/' + data.companyId : '';
+
   if (activeDeals.length > 0) {
     const topDeal = activeDeals[0];
     const stageColor = topDeal.stageColor || _resolveStageColor(topDeal.stage);
     const amount = topDeal.amount ? ' $' + Number(topDeal.amount).toLocaleString() : '';
-    return '<span class="badge" style="background:' + stageColor + '22;color:' + stageColor + ';font-size:10px;white-space:nowrap" title="' + topDeal.name + amount + '">' +
+    const dealUrl = portalId ? 'https://app-eu1.hubspot.com/contacts/' + portalId + '/record/0-3/' + topDeal.id : companyUrl;
+    const href = dealUrl || companyUrl;
+    const badge = '<span class="badge" style="background:' + stageColor + '22;color:' + stageColor + ';font-size:10px;white-space:nowrap;cursor:pointer" title="' + topDeal.name + amount + ' — click to open in HubSpot">' +
       'CRM: ' + (topDeal.stageName || 'Deal') + '</span>';
+    return href ? '<a href="' + href + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">' + badge + '</a>' : badge;
   }
 
   if (data.contacts.length > 0) {
-    return '<span class="badge" style="background:#32BBD722;color:#32BBD7;font-size:10px" title="' + data.contacts.length + ' contact(s) in CRM">' +
+    const badge = '<span class="badge" style="background:#32BBD722;color:#32BBD7;font-size:10px;cursor:pointer" title="' + data.contacts.length + ' contact(s) in CRM — click to open in HubSpot">' +
       'CRM: ' + data.contacts.length + ' contact(s)</span>';
+    return companyUrl ? '<a href="' + companyUrl + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">' + badge + '</a>' : badge;
   }
 
-  return '<span class="badge" style="background:#95A5A622;color:#95A5A6;font-size:10px">In CRM</span>';
+  const inCrmBadge = '<span class="badge" style="background:#95A5A622;color:#95A5A6;font-size:10px;cursor:pointer">In CRM</span>';
+  return companyUrl ? '<a href="' + companyUrl + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">' + inCrmBadge + '</a>' : inCrmBadge;
 }
 
 // ── CRM detail panel section ───────────────────────────────────────────
