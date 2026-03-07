@@ -1,11 +1,12 @@
 name: CRM & Enrichment Sync
 
 on:
-  # Run every 2 hours during business hours (Israel time UTC+2)
-  schedule:
-    - cron: '30 6-16 */2 * *'   # Every 2h from ~8:30-18:30 IST
+  # Scheduled runs disabled — were generating cancelled-run email spam
+  # To re-enable, uncomment the schedule block below:
+  # schedule:
+  #   - cron: '30 6-16 */2 * *'   # Every 2h from ~8:30-18:30 IST
 
-  # Manual trigger
+  # Manual trigger only
   workflow_dispatch:
 
 permissions:

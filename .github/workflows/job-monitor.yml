@@ -1,13 +1,13 @@
 name: Develeap BDR Job Monitor
 
 on:
-  # Daytime: every 15 min from 8:00-18:59 Israel time (UTC+2 = 6:00-16:59 UTC)
-  # Note: Israel DST (UTC+3) runs late March-late October; adjust if needed
-  schedule:
-    - cron: '*/15 6-16 * * *'   # Daytime (every 15 min, ~8:00-18:59 IST)
-    - cron: '0 17-23,0-5 * * *' # Nighttime (every 60 min, ~19:00-7:59 IST)
+  # Scheduled runs disabled — were generating cancelled-run email spam
+  # To re-enable, uncomment the schedule block below:
+  # schedule:
+  #   - cron: '*/15 6-16 * * *'   # Daytime (every 15 min, ~8:00-18:59 IST)
+  #   - cron: '0 17-23,0-5 * * *' # Nighttime (every 60 min, ~19:00-7:59 IST)
 
-  # Manual trigger
+  # Manual trigger only
   workflow_dispatch:
 
 permissions:
