@@ -14548,29 +14548,72 @@ function _wpRenderList() {
   var container = document.getElementById('wpListView');
   if (!container) return;
 
-  if (_wpCampaigns.length === 0) {
-    container.innerHTML = '<div class="wp-empty">' +
-      '<div class="wp-empty-icon">\u{1F43A}</div>' +
-      '<div class="wp-empty-title">No campaigns yet</div>' +
-      '<div class="wp-empty-desc">Create your first Wolf Pack campaign to coordinate multi-channel outreach and create the illusion that Develeap is everywhere.</div>' +
-      '<button class="btn btn-primary" onclick="_wpShowWizard()" style="font-size:15px;padding:12px 28px">+ Create First Campaign</button>' +
-      '</div>';
-    return;
+  var pending = _wpGetPendingListings();
+  var pendingCount = pending.length;
+  var activeCount = _wpCampaigns.filter(function(c) { return c.status === 'active'; }).length;
+
+  // Tab bar
+  var tabHtml = '<div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px">';
+  ['pending', 'active', 'all'].forEach(function(tab) {
+    var label = tab === 'pending' ? '\u{1F514} Pending' + (pendingCount > 0 ? ' (' + pendingCount + ')' : '') :
+                tab === 'active' ? '\u25B6 Active' + (activeCount > 0 ? ' (' + activeCount + ')' : '') :
+                '\u{1F4CB} All Campaigns';
+    var isActive = _wpPendingTab === tab;
+    tabHtml += '<div onclick="_wpSwitchTab(\'' + tab + '\')" style="padding:10px 20px;font-size:13px;font-weight:' + (isActive ? '700' : '500') + ';cursor:pointer;border-bottom:2px solid ' + (isActive ? 'var(--primary)' : 'transparent') + ';margin-bottom:-2px;color:' + (isActive ? 'var(--primary)' : 'var(--text-light)') + ';transition:all 0.2s">' + label + '</div>';
+  });
+  tabHtml += '</div>';
+
+  var bodyHtml = '';
+
+  if (_wpPendingTab === 'pending') {
+    bodyHtml = _wpRenderPendingTab(pending);
+  } else if (_wpPendingTab === 'active') {
+    var activeCampaigns = _wpCampaigns.filter(function(c) { return c.status === 'active'; });
+    if (activeCampaigns.length === 0) {
+      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u25B6</div><div class="wp-empty-title">No active campaigns</div><div class="wp-empty-desc">Launch a Wolf Pack strategy from the Pending tab to start campaigns.</div></div>';
+    } else {
+      bodyHtml = '<div class="wp-campaign-grid" id="wpCampaignGrid">';
+      activeCampaigns.forEach(function(c, idx) { bodyHtml += _wpRenderCampaignCard(c, idx); });
+      bodyHtml += '</div>';
+    }
+  } else {
+    // "all" tab
+    if (_wpCampaigns.length === 0) {
+      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u{1F43A}</div><div class="wp-empty-title">No campaigns yet</div><div class="wp-empty-desc">Launch Wolf Pack strategies from the Pending tab when new job listings appear.</div></div>';
+    } else {
+      bodyHtml = '<div class="wp-filter-bar">' +
+        '<input type="text" placeholder="Search campaigns..." oninput="_wpFilterList(this.value)" id="wpSearchInput">' +
+        '<div class="wp-filter-chip active" onclick="_wpFilterStatus(this,\'all\')">All</div>' +
+        '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'active\')">Active</div>' +
+        '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'paused\')">Paused</div>' +
+        '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'completed\')">Completed</div>' +
+        '</div>' +
+        '<div class="wp-campaign-grid" id="wpCampaignGrid">';
+      _wpCampaigns.forEach(function(c, idx) { bodyHtml += _wpRenderCampaignCard(c, idx); });
+      bodyHtml += '</div>';
+    }
   }
 
-  var filterHtml = '<div class="wp-filter-bar">' +
-    '<input type="text" placeholder="Search campaigns..." oninput="_wpFilterList(this.value)" id="wpSearchInput">' +
-    '<div class="wp-filter-chip active" onclick="_wpFilterStatus(this,\'all\')">All</div>' +
-    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'active\')">Active</div>' +
-    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'paused\')">Paused</div>' +
-    '<div class="wp-filter-chip" onclick="_wpFilterStatus(this,\'completed\')">Completed</div>' +
-    '</div>';
+  container.innerHTML = tabHtml + bodyHtml;
+}
 
-  var cardsHtml = '<div class="wp-campaign-grid" id="wpCampaignGrid">';
-  _wpCampaigns.forEach(function(c, idx) {
-    cardsHtml += _wpRenderCampaignCard(c, idx);
+function _wpSwitchTab(tab) {
+  _wpPendingTab = tab;
+  _wpRenderList();
+}
+
+/* ---- Pending Listings ---- */
+function _wpGetPendingListings() {
+  var result = [];
+  var campaignKeys = {};
+
+  // Build lookup of existing campaigns by company+job
+  _wpCampaigns.forEach(function(c) {
+    if (c.status !== 'archived') {
+      var key = (c.company.name || '').toLowerCase() + '::' + (c.targetJob && c.targetJob.title ? c.targetJob.title.toLowerCase() : '');
+      campaignKeys[key] = true;
+    }
   });
-  cardsHtml += '</div>';
 
   ALL_JOBS.forEach(function(j) {
     // Must have enriched stakeholders
