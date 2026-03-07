@@ -1,6 +1,6 @@
 {
   "provider": "apollo",
-  "syncedAt": "2026-03-07T09:11:06.560744Z",
+  "syncedAt": "2026-03-07T13:36:37.448648Z",
   "contacts": {
     "nataly kremer|checkpoint": {
       "apolloId": "54a40c697468693676355028",
@@ -4325,7 +4325,43 @@
       "shortDescription": "Xsolla is a global video game commerce company founded in 2005 by Aleksandr Agapitov. Headquartered in Sherman Oaks, California, it specializes in payment systems and digital tools that help game developers and publishers monetize, market, distribute, and manage their games worldwide. The company operates in over 200 countries, offering more than 1,000 payment methods and supporting over 130 currencies and 20 languages.\n\nXsolla's ecosystem includes a range of digital tools tailored for the video game industry, focusing on in-game payments and comprehensive commerce solutions. Its core offerings, including the PayStation payment system, facilitate global transactions and support game creators in financing, promoting, and monetizing their titles. With a team of over 300 members, Xsolla has experienced significant growth, achieving $67 million in revenue in 2020 and expanding its presence in key markets like the U.S. and Germany.",
       "logoUrl": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6985a8aa80ad4a0001d16678/picture"
     },
+    "abra": {
+      "apolloId": "54a1359969702d407ff2bb00",
+      "name": "Abra",
+      "domain": "abra.com",
+      "website": "http://www.abra.com",
+      "industry": "financial services",
+      "employeeCount": 180,
+      "annualRevenue": 25000000.0,
+      "foundedYear": 2016,
+      "technologies": [
+        "AI",
+        "Amazon SES",
+        "Android",
+        "Atlassian Cloud",
+        "Bootstrap Framework",
+        "CloudFlare CDN",
+        "CloudFlare Hosting",
+        "Formstack",
+        "Gmail",
+        "Google Apps",
+        "Google Tag Manager",
+        "MailChimp SPF",
+        "Mimecast",
+        "Mobile Friendly",
+        "Rackspace MailGun"
+      ],
+      "linkedinUrl": "http://www.linkedin.com/company/abra",
+      "city": "Mountain View",
+      "country": "United States",
+      "shortDescription": "Abra is a global digital asset prime services and wealth management company that specializes in solutions for institutional and high-net-worth clients in the cryptocurrency and decentralized finance (DeFi) sectors. The company aims to create abundant economic opportunities by bridging traditional finance with digital assets, offering secure and innovative services.\n\nAbra provides a range of institutional digital asset services, including prime services for liquidity and execution, wealth management solutions, asset-backed lending, and secure custody and trading. The company also integrates DeFi expertise to enhance yield generation and risk management. Its clientele includes private clients, family offices, hedge funds, venture capital firms, and financial institutions, all benefiting from Abra's commitment to fiduciary responsibility and capital protection. With a leadership team experienced in both traditional finance and crypto markets, Abra is positioned to deliver tailored financial solutions in a rapidly evolving landscape.",
+      "logoUrl": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69866d0ddf03c000019f4ac6/picture"
+    },
     "armissecurity": {
+      "apolloId": "",
+      "_notFound": true
+    },
+    "astrazeneca": {
       "apolloId": "",
       "_notFound": true
     },
@@ -4409,6 +4445,10 @@
       "apolloId": "",
       "_notFound": true
     },
+    "vertexventures": {
+      "apolloId": "",
+      "_notFound": true
+    },
     "voyantis": {
       "apolloId": "",
       "_notFound": true
@@ -4416,46 +4456,14 @@
     "zenity": {
       "apolloId": "",
       "_notFound": true
-    },
-    "abra": {
-      "apolloId": "54a1359969702d407ff2bb00",
-      "name": "Abra",
-      "domain": "abra.com",
-      "website": "http://www.abra.com",
-      "industry": "financial services",
-      "employeeCount": 180,
-      "annualRevenue": 25000000.0,
-      "foundedYear": 2016,
-      "technologies": [
-        "AI",
-        "Amazon SES",
-        "Android",
-        "Atlassian Cloud",
-        "Bootstrap Framework",
-        "CloudFlare CDN",
-        "CloudFlare Hosting",
-        "Formstack",
-        "Gmail",
-        "Google Apps",
-        "Google Tag Manager",
-        "MailChimp SPF",
-        "Mimecast",
-        "Mobile Friendly",
-        "Rackspace MailGun"
-      ],
-      "linkedinUrl": "http://www.linkedin.com/company/abra",
-      "city": "Mountain View",
-      "country": "United States",
-      "shortDescription": "Abra is a global digital asset prime services and wealth management company that specializes in solutions for institutional and high-net-worth clients in the cryptocurrency and decentralized finance (DeFi) sectors. The company aims to create abundant economic opportunities by bridging traditional finance with digital assets, offering secure and innovative services.\n\nAbra provides a range of institutional digital asset services, including prime services for liquidity and execution, wealth management solutions, asset-backed lending, and secure custody and trading. The company also integrates DeFi expertise to enhance yield generation and risk management. Its clientele includes private clients, family offices, hedge funds, venture capital firms, and financial institutions, all benefiting from Abra's commitment to fiduciary responsibility and capital protection. With a leadership team experienced in both traditional finance and crypto markets, Abra is positioned to deliver tailored financial solutions in a rapidly evolving landscape.",
-      "logoUrl": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69866d0ddf03c000019f4ac6/picture"
     }
   },
   "stats": {
-    "totalStakeholders": 116,
+    "totalStakeholders": 114,
     "contactsEnriched": 135,
-    "newContactsThisRun": 8,
+    "newContactsThisRun": 0,
     "totalCompanies": 77,
     "orgsEnriched": 61,
-    "newOrgsThisRun": 1
+    "newOrgsThisRun": 0
   }
 }

@@ -1,0 +1,26 @@
+{
+  "lastProcessed": "2026-03-07T13:37:00.633423+00:00",
+  "processRunId": "run-1772890620",
+  "dailyStats": {
+    "date": "2026-03-07",
+    "connectsSent": 0,
+    "messagesSent": 0,
+    "repliesReceived": 0,
+    "opportunitiesDetected": 0,
+    "crmSynced": 20,
+    "emailsEnrolled": 0
+  },
+  "opportunities": [],
+  "rateLimitStatus": {
+    "connections": {
+      "today": 0,
+      "limit": 20,
+      "resetDate": "2026-03-07"
+    },
+    "messages": {
+      "today": 0,
+      "limit": 50,
+      "resetDate": "2026-03-07"
+    }
+  }
+}

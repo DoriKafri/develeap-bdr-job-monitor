@@ -1,7 +1,7 @@
 {
   "provider": "hubspot",
   "portalId": "25695560",
-  "syncedAt": "2026-03-07T08:57:15.386556Z",
+  "syncedAt": "2026-03-07T13:23:21.844261Z",
   "dealStageMap": {
     "85640677": {
       "label": "Waiting for us",
@@ -589,6 +589,12 @@
     "armissecurity": {
       "companyId": null,
       "companyName": "Armissecurity",
+      "deals": [],
+      "contacts": []
+    },
+    "astrazeneca": {
+      "companyId": null,
+      "companyName": "Astrazeneca",
       "deals": [],
       "contacts": []
     },
@@ -3753,40 +3759,6 @@
       "deals": [],
       "contacts": []
     },
-    "torq": {
-      "companyId": "7124829161",
-      "companyName": "Torq",
-      "domain": "torq.io",
-      "industry": null,
-      "lifecyclestage": "lead",
-      "deals": [],
-      "contacts": [
-        {
-          "id": "3053601",
-          "name": "Eldad Rudich",
-          "email": null,
-          "title": "VP R&D"
-        },
-        {
-          "id": "2037151",
-          "name": "Liron Zizva",
-          "email": "lironz@torq.io",
-          "title": "Automation Team Leader"
-        },
-        {
-          "id": "538114668765",
-          "name": "Nadav Baumer",
-          "email": "nadav.baumer@torq.io",
-          "title": "DevOps Team Lead"
-        },
-        {
-          "id": "22947726798",
-          "name": "Nitzan Zror",
-          "email": null,
-          "title": "Talent Acquisition Partner & Employer Branding Lead"
-        }
-      ]
-    },
     "unframe": {
       "companyId": null,
       "companyName": "Unframe",
@@ -4033,6 +4005,12 @@
           "phone": "544790475"
         }
       ]
+    },
+    "vertexventures": {
+      "companyId": null,
+      "companyName": "Vertexventures",
+      "deals": [],
+      "contacts": []
     },
     "voyantis": {
       "companyId": null,
@@ -4378,60 +4356,12 @@
           "title": null
         }
       ]
-    },
-    "abra": {
-      "companyId": "6126626515",
-      "companyName": "ABRA-IT",
-      "domain": "abra-it.com",
-      "industry": "COMPUTER_SOFTWARE",
-      "lifecyclestage": "opportunity",
-      "deals": [
-        {
-          "id": "5401934557",
-          "name": "ABRA-IT",
-          "stage": "85616069",
-          "stageName": "Untapped lead A",
-          "stageColor": "#32BBD7",
-          "pipeline": "27850436",
-          "pipelineName": "Gardening",
-          "amount": null,
-          "closedate": null
-        }
-      ],
-      "contacts": [
-        {
-          "id": "2242351",
-          "name": "edev.gvily",
-          "email": "edev.gvily@abra-it.com",
-          "title": null
-        },
-        {
-          "id": "3274752",
-          "name": "Yariv Winestein",
-          "email": "yariv.winestein@abra-it.com",
-          "title": "CTO | Microsoft Cloud",
-          "phone": "+972 73-277-0000"
-        },
-        {
-          "id": "2593751",
-          "name": "Bill Barhydt",
-          "email": null,
-          "title": "Founder & CEO"
-        },
-        {
-          "id": "79887",
-          "name": "Noa Yaffe Ermoza",
-          "email": "noa.ya@abra-it.com",
-          "title": null,
-          "phone": "+972 52 597 2551"
-        }
-      ]
     }
   },
   "stats": {
     "totalCompanies": 77,
-    "matchedInCrm": 53,
-    "withDeals": 30,
-    "withContacts": 49
+    "matchedInCrm": 51,
+    "withDeals": 29,
+    "withContacts": 47
   }
 }
