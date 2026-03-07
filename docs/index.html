@@ -298,16 +298,23 @@
   .outreach-section { margin-top:28px; padding-top:24px; border-top:2px solid var(--teal-light); }
   .outreach-title { font-size:15px; font-weight:700; color:var(--teal); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
   .outreach-title svg { flex-shrink:0; }
-  .stakeholder-list { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
-  .stakeholder-card { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); transition:all 0.15s; }
-  .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(5,50,60,0.1); }
-  .stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; overflow:hidden; }
+  .stakeholder-list { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .stakeholder-card { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); transition:all 0.15s; }
+  .stakeholder-card:hover { border-color:var(--primary); box-shadow:0 2px 8px rgba(5,50,60,0.08); }
+  .stakeholder-avatar { width:36px; height:36px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; overflow:hidden; margin-top:1px; }
   .stakeholder-avatar img { width:100%; height:100%; object-fit:cover; }
   .stakeholder-info { flex:1; min-width:0; }
-  .stakeholder-name { font-weight:600; font-size:14px; color:var(--text); }
-  .stakeholder-role { font-size:12px; color:var(--text-light); }
-  .stakeholder-source { font-size:10px; padding:2px 6px; border-radius:4px; background:var(--primary-light); color:var(--primary); font-weight:600; margin-top:3px; display:inline-block; }
-  .stakeholder-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; align-items:flex-end; }
+  .stakeholder-name { font-weight:600; font-size:13px; color:var(--text); line-height:1.3; }
+  .stakeholder-role { font-size:11px; color:var(--text-light); margin-top:1px; }
+  .stakeholder-source { font-size:9px; padding:1px 5px; border-radius:3px; background:var(--primary-light); color:var(--primary); font-weight:600; display:inline-block; }
+  .stakeholder-actions { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+  .stakeholder-action-btn { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:6px; border:none; font-size:11px; font-weight:500; cursor:pointer; transition:all 0.15s; text-decoration:none; color:white; }
+  .stakeholder-action-btn:hover { opacity:0.85; }
+  .stakeholder-action-btn.li { background:#0A66C2; }
+  .stakeholder-action-btn.email { background:#EA4335; }
+  .stakeholder-action-btn.wa { background:#25D366; }
+  .stakeholder-badges { display:flex; align-items:center; gap:3px; flex-wrap:wrap; margin-top:3px; }
+  .stakeholder-badge { font-size:9px; padding:1px 5px; border-radius:3px; font-weight:600; }
   .add-contact-btn { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px; border:2px dashed var(--border); border-radius:10px; background:none; color:var(--text-light); font-size:13px; cursor:pointer; transition:all .15s; }
   .add-contact-btn:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
   .add-contact-form { padding:12px; border:1px solid var(--border); border-radius:10px; background:var(--bg); display:flex; flex-direction:column; gap:8px; }
@@ -7573,87 +7580,38 @@ function buildOutreachSection(job) {
       const st = statusStyles[outreachStatus] || statusStyles.not_contacted;
       const connBadge = `<span onclick="event.stopPropagation();cycleOutreachStatus('${key.replace(/'/g,"\\'")}',${i})" style="font-size:10px;padding:2px 6px;border-radius:4px;background:${st.bg};color:${st.color};font-weight:600;margin-left:4px;cursor:pointer" title="Click to change status">${st.label}</span>`;
 
-      // Action buttons — combo style: [Action Button | Template Picker | 🇬🇧]
+      // Action buttons — clean pill style
       let actionBtns = '';
-      // Build language-filtered template options (store real index in full array)
-      const liLang = _templateLang.linkedin || 'en';
-      const emailLang = _templateLang.email || 'en';
-      const waLang = _templateLang.whatsapp || 'he';
-      const liTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===liLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||t.subject||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
-      const emailTplOpts = OUTREACH_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===emailLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||t.subject||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
-      const liFlag = (TEMPLATE_LANGS.find(l=>l.code===liLang)||{}).flag||'🇬🇧';
-      const emailFlag = (TEMPLATE_LANGS.find(l=>l.code===emailLang)||{}).flag||'🇬🇧';
+      const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
       if (connected) {
-        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #0A66C2;flex:1 1 auto">
-          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})" style="border:none;cursor:pointer;border-radius:0;padding:6px 10px">${MSG_ICON} Message</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
-            ${liTplOpts}
-          </select>
-          <button onclick="event.stopPropagation();_toggleLang('linkedin',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E3F2FD;cursor:pointer;line-height:1" title="Switch language">${liFlag}</button>
-        </div>`;
+        actionBtns += `<button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${MSG_ICON} Message</button>`;
       } else if (hasLI) {
-        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #0A66C2;flex:1 1 auto">
-          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})" style="border:none;cursor:pointer;border-radius:0;padding:6px 10px">${LI_ICON} Connect</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E3F2FD;color:#0A66C2;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
-            ${liTplOpts}
-          </select>
-          <button onclick="event.stopPropagation();_toggleLang('linkedin',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E3F2FD;cursor:pointer;line-height:1" title="Switch language">${liFlag}</button>
-        </div>`;
+        actionBtns += `<button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${LI_ICON} Connect</button>`;
       }
       if (hasEmail) {
-        const shortEmail = s.email.length > 16 ? s.email.slice(0, 14) + '…' : s.email;
-        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #EA4335;flex:1 1 auto">
-          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" style="background:#EA4335;border:none;cursor:pointer;border-radius:0;padding:6px 10px" title="${s.email}">${MAIL_ICON} ${shortEmail}</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#FFEBEE;color:#C62828;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();selectStakeholderForMsg(${i});switchTemplate(+this.value);_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,OUTREACH_TEMPLATES)">
-            ${emailTplOpts}
-          </select>
-          <button onclick="event.stopPropagation();_toggleLang('email',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#FFEBEE;cursor:pointer;line-height:1" title="Switch language">${emailFlag}</button>
-        </div>`;
+        actionBtns += `<button class="stakeholder-action-btn email" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" title="${s.email}">${MAIL_ICON} Email</button>`;
       }
-      // WhatsApp button (when phone exists from Apollo or direct)
-      const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
       if (hasPhone) {
-        const waFlag = (TEMPLATE_LANGS.find(l=>l.code===waLang)||{}).flag||'🇮🇱';
-        const waTemplateOpts = WHATSAPP_TEMPLATES.map((t, ti) => ({t, ti})).filter(({t}) => (t.lang||'en')===waLang).map(({t,ti}) => `<option value="${ti}" title="${_tplPreview(t.body||'',200).replace(/"/g,'&quot;')}">${t.emoji} ${t.name}</option>`).join('');
-        actionBtns += `<div style="display:inline-flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid #25D366;flex:1 1 auto">
-          <button class="btn-linkedin" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})" style="background:#25D366;border:none;cursor:pointer;border-radius:0;padding:6px 10px;color:white">${WA_ICON} WhatsApp</button>
-          <select style="font-size:11px;padding:6px 4px;border:none;background:#E8F8F0;color:#128C7E;cursor:pointer;border-radius:0;outline:none;max-width:100px" onclick="event.stopPropagation()" onchange="event.stopPropagation();_activeWhatsAppTemplateIdx=+this.value;_updateTplSelectTooltip(this,WHATSAPP_TEMPLATES)" onmouseover="_updateTplSelectTooltip(this,WHATSAPP_TEMPLATES)">
-            ${waTemplateOpts}
-          </select>
-          <button onclick="event.stopPropagation();_toggleLang('whatsapp',${i})" style="font-size:10px;padding:4px 5px;border:none;background:#E8F8F0;cursor:pointer;line-height:1" title="Switch language">${waFlag}</button>
-        </div>`;
+        actionBtns += `<button class="stakeholder-action-btn wa" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})">${WA_ICON} WhatsApp</button>`;
       }
-      // No action buttons if contact has no LinkedIn, email, or phone — Pick Template removed as non-functional
 
-      // Toggle connected status button
-      const toggleBtn = (hasLI || connected)
-        ? `<button onclick="event.stopPropagation();toggleConnected('${key.replace(/'/g,"\\'")}',${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--text-lighter);padding:2px 4px;margin-top:2px" title="${connected?'Mark as not connected':'Mark as connected'}">${connected?'✓ mark not connected':'+ mark connected'}</button>`
-        : '';
-
-      // CRM enrichment indicators
-      const crmBadge = s._crmEnriched ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#E8F5E9;color:#2E7D32;font-weight:600">CRM</span>' : '';
-      const crmOnlyBadge = s._crmOnly ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;font-weight:600">HubSpot</span>' : '';
-      const hubspotLink = s._crmContactUrl ? `<a href="${s._crmContactUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--teal);text-decoration:none;margin-left:4px" title="View in HubSpot">HS&rarr;</a>` : '';
-
-      // Apollo enrichment indicators
-      const apolloBadge = s._apolloEnriched ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2;font-weight:600">Apollo</span>' : '';
-      const apolloPhone = (s._apolloData && s._apolloData.phone) ? `<span style="font-size:10px;color:var(--text-light)" title="Phone from Apollo">📞 ${s._apolloData.phone}</span>` : '';
-      const apolloEmail = (s._apolloEnriched && s._apolloData && s._apolloData.email && s._apolloData.emailStatus === 'verified') ? '<span style="font-size:10px;color:#2E7D32" title="Email verified by Apollo">✓</span>' : '';
+      // Source badges — consolidated into one subtle line
+      const badges = [];
+      if (s._crmContactUrl) badges.push(`<a href="${s._crmContactUrl}" target="_blank" onclick="event.stopPropagation()" class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32;text-decoration:none" title="View in HubSpot">HubSpot ↗</a>`);
+      else if (s._crmEnriched || s._crmOnly) badges.push('<span class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32">HubSpot</span>');
+      if (s._apolloEnriched) badges.push('<span class="stakeholder-badge" style="background:#F3E5F5;color:#7B1FA2">Apollo</span>');
+      if ((s._apolloEnriched && s._apolloData && s._apolloData.email && s._apolloData.emailStatus === 'verified')) badges.push('<span class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32">✓ Email</span>');
+      const badgeHtml = badges.length ? `<div class="stakeholder-badges">${badges.join('')}</div>` : '';
 
       return `
       <div class="stakeholder-card" data-idx="${i}">
         <div class="stakeholder-avatar">${_stakeholderAvatar(s)}</div>
         <div class="stakeholder-info">
-          <div class="stakeholder-name">${s.name} ${connBadge}${hubspotLink}</div>
-          <div class="stakeholder-role">${s.title}${s._apolloData && s._apolloData.seniority ? ` <span style="font-size:10px;color:var(--text-lighter)">(${s._apolloData.seniority})</span>` : ''}</div>
-          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px">
-            <span class="stakeholder-source">${s.source}</span>
-            ${crmBadge}${crmOnlyBadge}${apolloBadge}
-            ${apolloEmail}${apolloPhone}
-            ${toggleBtn}
-          </div>
+          <div class="stakeholder-name">${s.name} ${connBadge}</div>
+          <div class="stakeholder-role">${s.title}</div>
+          ${badgeHtml}
+          <div class="stakeholder-actions">${actionBtns}</div>
         </div>
-        <div class="stakeholder-actions">${actionBtns}</div>
       </div>`;
     }).join('') + '</div>';
   } else {
