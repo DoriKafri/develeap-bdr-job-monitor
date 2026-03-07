@@ -7394,8 +7394,56 @@ function _showAddContactForm(jobId) {
 }
 
 // ── Merge job stakeholders with CRM contacts ────────────────────────────
+function _wpFindCampaignForJob(job) {
+  if (!_wpCampaigns || !_wpCampaigns.length) return null;
+  var jobCompany = (job.company || '').toLowerCase().trim();
+  var jobTitle = (job.title || '').toLowerCase().trim();
+  for (var i = 0; i < _wpCampaigns.length; i++) {
+    var c = _wpCampaigns[i];
+    if (c.status === 'archived') continue;
+    var cCompany = ((c.company && c.company.name) || '').toLowerCase().trim();
+    var cTitle = ((c.targetJob && c.targetJob.title) || '').toLowerCase().trim();
+    if (cCompany === jobCompany && cTitle === jobTitle) return c;
+  }
+  return null;
+}
+
 function _mergeStakeholdersWithCrm(job) {
   const stakeholders = (job.stakeholders || []).map(s => Object.assign({}, s));
+
+  // 0. Merge contacts from Wolf Pack campaign (single source of truth)
+  const wpCampaign = _wpFindCampaignForJob(job);
+  if (wpCampaign && wpCampaign.targetContacts && wpCampaign.targetContacts.length) {
+    wpCampaign.targetContacts.forEach(wc => {
+      const wcNameNorm = (wc.name || '').toLowerCase().trim();
+      const existing = stakeholders.find(s => (s.name||'').toLowerCase().trim() === wcNameNorm);
+      if (existing) {
+        // Enrich existing stakeholder with campaign data (campaign is source of truth)
+        if (wc.email && !existing.email) existing.email = wc.email;
+        if (wc.phone && !existing.phone) existing.phone = wc.phone;
+        if (wc.linkedin && !existing.linkedin) existing.linkedin = wc.linkedin;
+        if (wc.title && !existing.title) existing.title = wc.title;
+        if (wc.photo && !existing.photo) existing.photo = wc.photo;
+        if (wc.connectMsg && !existing.connectMsg) existing.connectMsg = wc.connectMsg;
+        if (wc.followUpMsg && !existing.followUpMsg) existing.followUpMsg = wc.followUpMsg;
+      } else {
+        // Add campaign-only contact
+        stakeholders.push({
+          name: wc.name || '',
+          title: wc.title || '',
+          email: wc.email || '',
+          phone: wc.phone || '',
+          linkedin: wc.linkedin || '',
+          source: wc.source || 'LinkedIn',
+          connectMsg: wc.connectMsg || '',
+          followUpMsg: wc.followUpMsg || '',
+          photo: wc.photo || '',
+          _wpCampaignContact: true
+        });
+      }
+    });
+  }
+
   if (!CRM_CONFIG.provider || !_crmCacheBuilt) return stakeholders;
   const cacheKey = (job.company || '').toLowerCase().trim();
   const crmData = _crmCache[cacheKey];
@@ -14742,15 +14790,18 @@ function _wpEnsurePendingCampaigns() {
   var created = 0;
   pending.forEach(function(p) {
     var job = p.job;
-    var contacts = (job.stakeholders || []).map(function(s, si) {
+    var contacts = (job._mergedStakeholders || job.stakeholders || []).map(function(s, si) {
       return {
         id: 'contact_' + si,
         name: s.name || '',
         title: s.title || s.role || '',
         email: s.email || '',
         linkedin: s.linkedin || '',
+        phone: s.phone || '',
         photo: s.photo || '',
-        source: s.source || ''
+        source: s.source || '',
+        connectMsg: s.connectMsg || '',
+        followUpMsg: s.followUpMsg || ''
       };
     });
     // Build a minimal default flow
@@ -15122,7 +15173,7 @@ function _wpAutoLaunch(jobId, customerType) {
     source: job.source || ''
   };
 
-  // Build contacts from stakeholders
+  // Build contacts from stakeholders (preserve all fields for single source of truth)
   var contacts = (job._mergedStakeholders || job.stakeholders || []).map(function(s) {
     return {
       id: _wpGenerateId(),
@@ -15131,6 +15182,10 @@ function _wpAutoLaunch(jobId, customerType) {
       title: s.title || s.role || '',
       linkedin: s.linkedin || s.linkedinUrl || '',
       phone: s.phone || '',
+      photo: s.photo || '',
+      source: s.source || 'LinkedIn',
+      connectMsg: s.connectMsg || '',
+      followUpMsg: s.followUpMsg || '',
       isPrimary: false
     };
   });
