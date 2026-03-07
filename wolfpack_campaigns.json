@@ -1,1 +1,330 @@
-{ "version": 1, "campaigns": [] }
+{
+  "version": 1,
+  "lastUpdated": "2026-03-07T13:36:24.294Z",
+  "campaigns": [
+    {
+      "id": "wp_mmgda1uu0o5lc",
+      "company": {
+        "name": "Check Point Software",
+        "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
+        "isCustomer": false,
+        "isPastCustomer": false,
+        "customerType": "high_potential",
+        "source": "other"
+      },
+      "targetJob": {
+        "title": "Senior FinOps Engineer (25020)",
+        "url": "",
+        "location": "Israel",
+        "source": "other"
+      },
+      "targetContacts": [
+        {
+          "id": "wp_mmgda1us98yky",
+          "name": "Nataly Kremer",
+          "email": "natalyk@checkpoint.com",
+          "title": "CPO & Head of R&D",
+          "linkedin": "https://www.linkedin.com/in/nataly-kremer-12744b29/",
+          "phone": "",
+          "isPrimary": true
+        },
+        {
+          "id": "wp_mmgda1usp12fo",
+          "name": "Tomer Lev",
+          "email": "levtomer@checkpoint.com",
+          "title": "Engineering Director",
+          "linkedin": "https://www.linkedin.com/in/tomerlev/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uswetg0",
+          "name": "Ofir Israel",
+          "email": "ofiri@checkpoint.com",
+          "title": "Engineering Director",
+          "linkedin": "https://www.linkedin.com/in/ofirisrael/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1us9x48n",
+          "name": "Alex Spokoiny",
+          "email": "alexs@checkpoint.com",
+          "title": "Chief Information Officer",
+          "linkedin": "http://www.linkedin.com/in/spokoina",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1usbx9fh",
+          "name": "Regev Golan",
+          "email": "rgolan@checkpoint.com",
+          "title": "Research and Development Group Manager",
+          "linkedin": "",
+          "phone": "+1 650-628-2000",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1utdtid6",
+          "name": "shaharre",
+          "email": "shaharre@checkpoint.com",
+          "title": "",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1ut11aib",
+          "name": "Christian Sandberg",
+          "email": "",
+          "title": "Head of Engineering Experts, EMEA",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1utt0102",
+          "name": "Adi Sivan",
+          "email": "adis@checkpoint.com",
+          "title": "Director of IT engineering and DevOps",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1utxjfvg",
+          "name": "Yanai Lipshitz",
+          "email": "yanail@checkpoint.com",
+          "title": "Software Developer",
+          "linkedin": "",
+          "phone": "506330634",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1utrfjva",
+          "name": "Ido Haver",
+          "email": "idohaver@gmail.com",
+          "title": "Cloud Security Architect",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uumh6iy",
+          "name": "Mor Manor",
+          "email": "mmanor@checkpoint.com",
+          "title": "Head of Cyber Security Evangelists",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uutekp5",
+          "name": "Javier Scheinfeld",
+          "email": "javiers@checkpoint.com",
+          "title": "Head of Global Operations",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uu1h0x3",
+          "name": "Eitan Erez",
+          "email": "",
+          "title": "Head of Harmony Technologies Sales, WW",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uuzbe6a",
+          "name": "Shira Israeli",
+          "email": "",
+          "title": "",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uu20c1i",
+          "name": "Aviv Biton",
+          "email": "avivb@checkpoint.com",
+          "title": "Full stack developer",
+          "linkedin": "",
+          "phone": "544958341",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uu97moa",
+          "name": "Oded Gonda",
+          "email": "ogonda@checkpoint.com",
+          "title": "VP, Technology & Innovation",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uugwq3u",
+          "name": "Jonathan Maresky",
+          "email": "jonathan.maresky@checkpoint.com",
+          "title": "Head of Product Marketing and Technical Marketing, Cloud Security",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uux0txf",
+          "name": "Daniel Elias",
+          "email": "daniele@checkpoint.com",
+          "title": "HR Manager",
+          "linkedin": "",
+          "phone": "073-3798797",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uunul0u",
+          "name": "Eyal Fingold",
+          "email": "",
+          "title": "VP R&D",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uuxs9fl",
+          "name": "Danny Karpati",
+          "email": "danka@checkpoint.com",
+          "title": "Chief Technologist",
+          "linkedin": "",
+          "phone": "+972 52 619 9000",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uuhczwr",
+          "name": "Dorit Dor",
+          "email": "dorit@checkpoint.com",
+          "title": "Chief Technology Officer",
+          "linkedin": "",
+          "phone": "+1 650-628-2000",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uuxfoad",
+          "name": "Tom Kendrick",
+          "email": "",
+          "title": "EMEA Security Expert & Cyber Security Evangelist - Office of the CTO at Check Point Software Technol",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uu89in8",
+          "name": "Esti Dana",
+          "email": "estida@checkpoint.com",
+          "title": "Team Leader",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mmgda1uu2bjzv",
+          "name": "Amit Gadol",
+          "email": "amitg@checkpoint.com",
+          "title": "Head of worldwide QA",
+          "linkedin": "",
+          "phone": "",
+          "isPrimary": false
+        }
+      ],
+      "teamMembers": [],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "if_responded"
+            ]
+          },
+          "if_responded": {
+            "type": "logic_if_response",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "channels": [
+                "all"
+              ],
+              "sentiment": "positive",
+              "timeoutDays": 7
+            },
+            "trueBranch": [
+              "end_success"
+            ],
+            "falseBranch": [],
+            "next": []
+          },
+          "end_success": {
+            "type": "trigger_end",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "if_responded",
+          "end_success"
+        ],
+        "connections": [
+          {
+            "from": "start",
+            "to": "if_responded"
+          },
+          {
+            "from": "if_responded",
+            "to": "end_success"
+          }
+        ]
+      },
+      "status": "active",
+      "createdAt": "2026-03-07T13:36:24.294Z",
+      "createdBy": "unknown",
+      "autoLaunched": true,
+      "customerType": "high_potential",
+      "channels": [
+        "linkedin",
+        "email",
+        "whatsapp"
+      ],
+      "adaptiveRules": [
+        {
+          "trigger": "any_positive_reply",
+          "action": "pause_remaining",
+          "enabled": true
+        },
+        {
+          "trigger": "email_opened_3x",
+          "action": "escalate_priority",
+          "enabled": true
+        }
+      ],
+      "executionState": {
+        "currentNodeIndex": 0,
+        "completedNodes": [],
+        "nextExecutionTime": "2026-03-07T13:36:24.294Z"
+      },
+      "responseTracking": {
+        "touchpoints": [],
+        "engagementScore": 0,
+        "lastChecked": null
+      }
+    }
+  ]
+}
