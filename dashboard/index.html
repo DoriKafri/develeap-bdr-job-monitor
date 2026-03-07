@@ -7418,14 +7418,14 @@ function _mergeStakeholdersWithCrm(job) {
       const wcNameNorm = (wc.name || '').toLowerCase().trim();
       const existing = stakeholders.find(s => (s.name||'').toLowerCase().trim() === wcNameNorm);
       if (existing) {
-        // Enrich existing stakeholder with campaign data (campaign is source of truth)
-        if (wc.email && !existing.email) existing.email = wc.email;
-        if (wc.phone && !existing.phone) existing.phone = wc.phone;
-        if (wc.linkedin && !existing.linkedin) existing.linkedin = wc.linkedin;
-        if (wc.title && !existing.title) existing.title = wc.title;
-        if (wc.photo && !existing.photo) existing.photo = wc.photo;
-        if (wc.connectMsg && !existing.connectMsg) existing.connectMsg = wc.connectMsg;
-        if (wc.followUpMsg && !existing.followUpMsg) existing.followUpMsg = wc.followUpMsg;
+        // Campaign is the single source of truth — always override with campaign data when present
+        if (wc.email) existing.email = wc.email;
+        if (wc.phone) existing.phone = wc.phone;
+        if (wc.linkedin) existing.linkedin = wc.linkedin;
+        if (wc.title) existing.title = wc.title;
+        if (wc.photo) existing.photo = wc.photo;
+        if (wc.connectMsg) existing.connectMsg = wc.connectMsg;
+        if (wc.followUpMsg) existing.followUpMsg = wc.followUpMsg;
       } else {
         // Add campaign-only contact
         stakeholders.push({
