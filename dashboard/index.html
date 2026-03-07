@@ -1076,6 +1076,42 @@
   .wp-flow-template .ft-desc { font-size:12px; color:var(--text-light); margin-top:4px; }
 
   @media(max-width:768px) { #wolfPackView { left:0; top:48px; } .wp-campaign-grid { grid-template-columns:1fr; } .wp-detail { grid-template-columns:1fr; } .wp-editor-body { flex-direction:column; } .wp-editor-sidebar { width:100%; border-right:none; border-bottom:1px solid var(--border); max-height:120px; } .wp-editor-config { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } }
+
+  /* ── Help Panel ────────────────────────────────── */
+  .help-panel { position:fixed; top:0; right:-460px; width:450px; height:100vh; background:white; box-shadow:-4px 0 24px rgba(0,0,0,0.15); z-index:10001; transition:right 0.3s ease; display:flex; flex-direction:column; }
+  .help-panel.open { right:0; }
+  .help-panel-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); background:var(--primary); color:white; }
+  .help-panel-header h3 { margin:0; font-size:16px; font-weight:700; }
+  .help-close-btn { background:none; border:none; color:white; font-size:24px; cursor:pointer; padding:0 4px; line-height:1; opacity:0.8; }
+  .help-close-btn:hover { opacity:1; }
+  .help-search-box { padding:12px 20px; border-bottom:1px solid var(--border); }
+  .help-search-box input { width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; box-sizing:border-box; }
+  .help-search-box input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(50,187,215,0.1); }
+  .help-content { flex:1; overflow-y:auto; padding:16px 20px; }
+  .help-section { margin-bottom:16px; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .help-section-header { display:flex; align-items:center; gap:10px; padding:12px 16px; cursor:pointer; background:#FAFBFC; transition:background 0.15s; user-select:none; }
+  .help-section-header:hover { background:#F0F2F5; }
+  .help-section-header .help-icon { font-size:18px; }
+  .help-section-header .help-title { font-weight:600; font-size:14px; color:var(--text); flex:1; }
+  .help-section-header .help-arrow { font-size:12px; color:var(--text-light); transition:transform 0.2s; }
+  .help-section-header .help-arrow.open { transform:rotate(90deg); }
+  .help-section-body { display:none; padding:12px 16px; border-top:1px solid var(--border); font-size:13px; line-height:1.7; color:var(--text); }
+  .help-section-body.open { display:block; }
+  .help-section-body h4 { font-size:13px; font-weight:700; margin:12px 0 4px; color:var(--primary); }
+  .help-section-body h4:first-child { margin-top:0; }
+  .help-section-body code { background:#F0F2F5; padding:1px 5px; border-radius:4px; font-size:12px; font-family:monospace; }
+  .help-section-body .help-field { display:grid; grid-template-columns:140px 1fr; gap:4px 12px; margin:4px 0; }
+  .help-section-body .help-field dt { font-weight:600; font-size:12px; color:var(--text-light); }
+  .help-section-body .help-field dd { margin:0; font-size:12px; }
+  .help-section-body .help-badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+  .help-section-body ul { margin:4px 0 8px 0; padding-left:18px; }
+  .help-section-body li { margin:2px 0; font-size:12px; }
+  .help-subsection { margin:8px 0; padding:8px 12px; background:#F8F9FB; border-radius:8px; border-left:3px solid var(--teal); }
+  .help-subsection-title { font-weight:600; font-size:12px; color:var(--primary); margin-bottom:4px; }
+  .help-highlight { background:#FFF8E1; padding:0 3px; border-radius:2px; }
+  .help-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.3); z-index:10000; display:none; }
+  .help-backdrop.open { display:block; }
+  @media(max-width:768px) { .help-panel { width:100%; right:-100%; } }
 </style>
 </head>
 <body>
@@ -1141,6 +1177,12 @@
         <span>⚡</span>
         <span>Workflow Editor</span>
       </div>
+
+      <div class="nav-section">Support</div>
+      <div class="nav-item" onclick="toggleHelpPanel()" id="helpNavItem">
+        <span>❓</span>
+        <span>Help</span>
+      </div>
     </div>
 
     <div class="nav-bottom">
@@ -1156,6 +1198,21 @@
       </div>
     </div>
   </nav>
+
+  <!-- HELP PANEL (slide-out drawer) -->
+  <div id="helpPanel" class="help-panel">
+    <div class="help-panel-header">
+      <h3>Help & Documentation</h3>
+      <button class="help-close-btn" onclick="toggleHelpPanel()">&times;</button>
+    </div>
+    <div class="help-search-box">
+      <input type="text" id="helpSearchInput" placeholder="Search help topics..." oninput="_helpSearch(this.value)" />
+    </div>
+    <div class="help-content" id="helpContent">
+      <!-- Rendered dynamically by _renderHelpContent() -->
+    </div>
+  </div>
+  <div id="helpBackdrop" class="help-backdrop" onclick="toggleHelpPanel()"></div>
 
   <!-- SIDEBAR BACKDROP (mobile) -->
   <div class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
@@ -16398,6 +16455,360 @@ function _getUserDisplayName(email) {
   if (typeof _userProfiles !== 'undefined' && _userProfiles[email] && _userProfiles[email].displayName) return _userProfiles[email].displayName;
   return email ? email.split('@')[0] : '';
 }
+
+// ── Help Documentation System (AI-Agent Friendly) ──────────────────────────
+
+var _HELP_DOCS = {
+  meta: {
+    version: '1.0',
+    lastUpdated: '2026-03-07',
+    appName: 'Develeap BDR Job Monitor',
+    description: 'A BDR (Business Development Representative) dashboard for monitoring DevOps/AI/FinOps job listings in Israel, managing outreach campaigns, and tracking Wolf Pack multi-channel sales strategies.'
+  },
+  sections: [
+    {
+      id: 'overview',
+      icon: '📋',
+      title: 'Dashboard Overview',
+      keywords: ['dashboard', 'overview', 'home', 'main', 'navigation', 'sidebar', 'views', 'getting started'],
+      content: 'The BDR Job Monitor dashboard tracks job listings from 14+ sources across Israel, enriches them with stakeholder contacts and CRM data, and enables multi-channel outreach campaigns. The sidebar provides navigation between views: All Listings (default), Develeap Customers (filtered to current clients), New Today, Queue (outreach tasks), Wolf Pack (campaign automation), Workflow Editor, and Settings.',
+      subsections: [
+        {
+          id: 'views',
+          title: 'Main Views',
+          keywords: ['views', 'pages', 'navigation', 'sidebar'],
+          content: 'All Listings: Full job board with filters and search. Develeap Customers: Jobs from current/past clients only. New Today: Jobs posted today. Queue: Outreach task pipeline with status tracking. Wolf Pack: Multi-channel campaign automation. Workflow Editor: Visual flow builder for campaigns. Settings: Configuration for categories, customers, sources, templates, integrations, users, delegation, and Wolf Pack defaults.'
+        },
+        {
+          id: 'stats-bar',
+          title: 'Stats Bar',
+          keywords: ['stats', 'statistics', 'counts', 'summary', 'metrics'],
+          content: 'The stats bar at the top shows: Total Active listings, New Today count, Develeap Customers count, plus category-specific counts (DevOps, AI/ML, Agentic, FinOps, Cloud, Security, Data, Platform, SRE). Click any stat to filter.'
+        },
+        {
+          id: 'search-filter',
+          title: 'Search & Filtering',
+          keywords: ['search', 'filter', 'find', 'sort', 'columns'],
+          content: 'Use the search bar (keyboard shortcut: /) to search across all fields. Column headers have filter dropdowns for Title, Company, Location, Source, Category, and Status. Jobs can be sorted by any column. Category tabs filter by job type.'
+        }
+      ]
+    },
+    {
+      id: 'job-listings',
+      icon: '💼',
+      title: 'Job Listings',
+      keywords: ['job', 'listing', 'card', 'company', 'title', 'source', 'category', 'customer', 'status'],
+      content: 'Each job listing shows the company name with logo, job title, source icon, category badge, and customer type indicator. Listings from Develeap customers are highlighted. Each listing can have enriched stakeholders (contacts found via LinkedIn/Apollo) with connection messages and follow-up templates.',
+      subsections: [
+        {
+          id: 'categories',
+          title: 'Job Categories',
+          keywords: ['category', 'devops', 'ai', 'finops', 'agentic', 'cloud', 'security', 'data', 'platform', 'sre'],
+          content: 'Categories: DevOps (orange #FDAB3D), AI/ML (blue #579BFC), Agentic (purple #A25DDC), FinOps (teal #00897B), Cloud & Infrastructure (dark blue #0288D1), Security & DevSecOps (red #D32F2F), Data Engineering (dark purple #7B1FA2), Platform Engineering (dark teal #00695C), SRE (orange-red #E64A19). Categories are auto-detected from job titles and can be customized in Settings > Categories.'
+        },
+        {
+          id: 'sources',
+          title: 'Job Sources',
+          keywords: ['source', 'linkedin', 'glassdoor', 'greenhouse', 'lever', 'comeet', 'indeed'],
+          content: 'Supported sources: LinkedIn, AllJobs, Drushim, Glassdoor, Facebook, Telegram, BuiltIn, Goozali, Greenhouse, Lever, Ashby, Comeet, Workday, Google Jobs. Jobs can have alternate sources (same job found on multiple platforms). Source icons are shown on each listing card.'
+        },
+        {
+          id: 'customer-types',
+          title: 'Customer Types',
+          keywords: ['customer', 'develeap', 'past customer', 'prospect', 'high potential'],
+          content: 'Job listings are classified by customer relationship: Develeap Customer (current active client, gold star badge), Past Customer (previously worked with, clock badge), Prospect (no prior relationship), High Potential (prospect meeting criteria like multiple listings, C-level contacts, target industry). Customer lists are managed in Settings > Customers.'
+        },
+        {
+          id: 'stakeholders',
+          title: 'Stakeholders & Contacts',
+          keywords: ['stakeholder', 'contact', 'linkedin', 'email', 'photo', 'outreach', 'connect', 'message'],
+          content: 'Each listing can have enriched stakeholders: hiring managers, VPs, CTOs found via LinkedIn/Apollo auto-discovery. Stakeholder data includes: name, job title, LinkedIn URL, email (if found), profile photo, personalized connection message, and follow-up message. Stakeholders are auto-discovered when jobs are first scraped and can be refreshed.'
+        }
+      ]
+    },
+    {
+      id: 'queue',
+      icon: '📬',
+      title: 'Queue Management',
+      keywords: ['queue', 'task', 'outreach', 'status', 'assign', 'bulk', 'pending', 'completed'],
+      content: 'The Queue view manages outreach tasks. Each queue item represents a single action (LinkedIn connect, email, WhatsApp message) for a specific contact. Items flow through statuses and can be assigned to team members.',
+      subsections: [
+        {
+          id: 'queue-statuses',
+          title: 'Queue Statuses',
+          keywords: ['status', 'pending', 'processing', 'completed', 'failed', 'paused', 'sos'],
+          content: 'Statuses: pending (waiting to process, orange), processing (currently executing, blue pulsing), completed (done, green), failed (error, red), paused (manually paused, gray), sos_waiting (needs SOS action, yellow), conn_pending (LinkedIn connection sent, purple), conn_accepted (connection accepted, green), message_sent (message delivered, blue), email_sent (email sent, pink), reply_received (got reply, dark green), whatsapp_waiting (WhatsApp pending, teal), opportunity_flagged (CRM opportunity created, orange pulsing).'
+        },
+        {
+          id: 'queue-actions',
+          title: 'Queue Actions',
+          keywords: ['assign', 'delegate', 'bulk', 'action', 'complete', 'pause', 'retry'],
+          content: 'Queue items can be: assigned to team members, marked as completed/failed/paused, retried after failure, bulk-selected for batch operations. The delegation system (Settings > Delegation) allows automatic assignment of tasks to team members based on rules.'
+        }
+      ]
+    },
+    {
+      id: 'wolfpack',
+      icon: '🐺',
+      title: 'Wolf Pack Campaigns',
+      keywords: ['wolf pack', 'campaign', 'strategy', 'flow', 'team', 'multi-channel', 'outreach', 'automation'],
+      content: 'Wolf Pack is a multi-channel, multi-person campaign automation system. It coordinates LinkedIn, Email, and WhatsApp outreach across a team, with adaptive rules that respond to prospect engagement. Campaigns are built from flow templates and can be customized per target.',
+      subsections: [
+        {
+          id: 'wp-pending',
+          title: 'Pending Listings',
+          keywords: ['pending', 'new listing', 'auto-activate', 'quick launch'],
+          content: 'The Pending tab shows new job listings that need a Wolf Pack strategy assigned. Each card shows the company, job title, customer type badge, and contact count. Use the strategy picker to choose a flow template, then click Launch to create a campaign instantly. The badge in the sidebar shows the count of pending listings.'
+        },
+        {
+          id: 'wp-templates',
+          title: 'Strategy Templates',
+          keywords: ['template', 'quick strike', 'full siege', 'executive touch', 'content surround'],
+          content: 'Four built-in templates: Quick Strike (5-day blitz, 3 team members, LinkedIn + Email), Full Siege (14-day campaign, all channels + marketing, multiple logic gates), Executive Touch (7-day CEO-first cascade based on response), Content Surround (21-day marketing-heavy, content first then outreach). Templates define the flow structure, team size, channels, and adaptive rules. Defaults per customer type are configurable in Settings > Wolf Pack.'
+        },
+        {
+          id: 'wp-nodes',
+          title: 'Flow Node Types',
+          keywords: ['node', 'trigger', 'action', 'logic', 'wait', 'linkedin', 'email', 'whatsapp', 'marketing'],
+          content: 'Node types: Triggers (Campaign Start, Response Trigger, Campaign End), Actions (LinkedIn Connect, LinkedIn Message, Send Email, WhatsApp Message), Marketing (Blog Post, LinkedIn Ad, Social Engage), Logic (If Response branch, Wait Response with timeout, Switch Channel by preference), Timing (Wait N days), Sync (Notify Team, Escalate, Pause Campaign). Each node type has an icon, color, and category.'
+        },
+        {
+          id: 'wp-adaptive',
+          title: 'Adaptive Rules',
+          keywords: ['adaptive', 'rule', 'response', 'pause', 'escalate', 'archive'],
+          content: 'Adaptive rules auto-adjust campaigns based on prospect behavior: any_positive_reply:pause_remaining (pause other outreach when a contact replies positively), email_opened_3x:escalate_priority (escalate when email opened 3+ times), all_connections_declined:archive (archive campaign if all LinkedIn connections are declined). Rules are configured per strategy template in Settings > Wolf Pack.'
+        },
+        {
+          id: 'wp-settings',
+          title: 'Wolf Pack Settings',
+          keywords: ['settings', 'defaults', 'team', 'channels', 'auto-activate'],
+          content: 'Settings > Wolf Pack configures default strategy per customer type: flow template, team members, channels (LinkedIn/Email/WhatsApp), adaptive rules, and auto-activate toggle. When auto-activate is on, new listings matching that customer type will appear in the Pending tab with pre-filled defaults for one-click launch.'
+        }
+      ]
+    },
+    {
+      id: 'workflow',
+      icon: '⚡',
+      title: 'Workflow Editor',
+      keywords: ['workflow', 'editor', 'visual', 'flow', 'drag', 'drop', 'connect', 'canvas'],
+      content: 'The Workflow Editor is a visual drag-and-drop canvas for building campaign flows. Drag node types from the sidebar palette onto the canvas, connect nodes by clicking source then target, and configure each node in the right panel. Supports undo/redo (Ctrl+Z / Ctrl+Shift+Z), zoom, and auto-layout.',
+      subsections: [
+        {
+          id: 'wf-controls',
+          title: 'Editor Controls',
+          keywords: ['undo', 'redo', 'zoom', 'save', 'connect', 'delete'],
+          content: 'Toolbar: Save, Undo (Ctrl+Z), Redo (Ctrl+Shift+Z), Zoom In/Out, Delete Selected Node, Connect Mode (click source then target node to create connection). Canvas supports panning and zoom with mouse wheel.'
+        }
+      ]
+    },
+    {
+      id: 'settings',
+      icon: '⚙️',
+      title: 'Settings',
+      keywords: ['settings', 'configuration', 'config', 'setup', 'preferences'],
+      content: 'Settings panel has sections: Categories (manage job categories and colors), Customers (current and past Develeap customers), Sources (job listing sources), Templates (outreach message templates), Integrations (HubSpot CRM, WhatsApp), Users (team members), My Profile (your display name and email), Delegation (auto-assign rules), Wolf Pack (campaign strategy defaults). Settings persist via GitHub API.',
+      subsections: [
+        {
+          id: 'settings-integrations',
+          title: 'Integrations',
+          keywords: ['hubspot', 'crm', 'whatsapp', 'integration', 'api', 'connect'],
+          content: 'HubSpot CRM integration enriches job listings with company, deal, and contact data. Connect via HubSpot API key in Settings > Integrations. WhatsApp integration enables message templates for outreach. Anthropic API key (optional) enables AI Polish for enhanced outreach messages.'
+        },
+        {
+          id: 'settings-delegation',
+          title: 'Delegation',
+          keywords: ['delegation', 'assign', 'auto-assign', 'team', 'round-robin'],
+          content: 'Delegation rules auto-assign queue items to team members. Configure assignment strategies per category or customer type. Team members are managed in Settings > Users.'
+        }
+      ]
+    },
+    {
+      id: 'shortcuts',
+      icon: '⌨️',
+      title: 'Keyboard Shortcuts',
+      keywords: ['keyboard', 'shortcut', 'hotkey', 'ctrl', 'cmd', 'key'],
+      content: 'Available shortcuts: / (forward slash) focuses the search input. Escape closes open panels and sidebars. In the Workflow Editor: Ctrl+Z (Cmd+Z on Mac) for undo, Ctrl+Shift+Z (Cmd+Shift+Z on Mac) for redo.',
+      subsections: []
+    },
+    {
+      id: 'data-model',
+      icon: '🗄️',
+      title: 'Data Model Reference',
+      keywords: ['data', 'model', 'schema', 'field', 'object', 'json', 'structure', 'api', 'agent', 'technical'],
+      content: 'Technical reference for the data structures used in the dashboard. This section is designed for AI agents and automation scripts that need to understand the data format.',
+      subsections: [
+        {
+          id: 'dm-job',
+          title: 'Job Listing Object',
+          keywords: ['job', 'listing', 'fields', 'schema', 'ALL_JOBS'],
+          content: 'Fields: id (string, unique), title (string, job title), subtitle (string, brief description), company (string, normalized company name), companyIndustry (string), location (string), locationSlug (string), source (string: linkedin|alljobs|drushim|glassdoor|facebook|telegram|builtin|goozali|greenhouse|lever|ashby|comeet|workday|other), sourceUrl (string, URL), category (string: devops|ai|agentic|finops|cloud|security|data|platform|sre), posted (string, date), isNew (boolean), isDeveleapCustomer (boolean), isPastCustomer (boolean), description (string), skills (array of strings), logo (string, URL), altSources (array of {source, sourceUrl, title}), stakeholders (array of Stakeholder objects). Stored in window.ALL_JOBS array.'
+        },
+        {
+          id: 'dm-stakeholder',
+          title: 'Stakeholder Object',
+          keywords: ['stakeholder', 'contact', 'fields', 'schema'],
+          content: 'Fields: name (string), title (string, job title), linkedin (string, URL), source (string: Manual|Apollo|Auto-discovered), email (string, optional), phone (string, optional), connectMsg (string, personalized LinkedIn connection message), followUpMsg (string, follow-up message), photo (string, URL or base64 data URI), _apolloData (object, raw Apollo enrichment data).'
+        },
+        {
+          id: 'dm-campaign',
+          title: 'Wolf Pack Campaign Object',
+          keywords: ['campaign', 'wolf pack', 'fields', 'schema', '_wpCampaigns'],
+          content: 'Fields: id (string, unique), name (string), status (string: draft|active|paused|completed|archived), company (object: {name, isCustomer, isPastCustomer}), targetJob (object: {title, sourceUrl, category}), targetContacts (array of contact objects), teamMembers (array of {email, name, role}), flow (object: {nodes: array, connections: array}), adaptiveRules (array of rule strings), createdAt (ISO string), updatedAt (ISO string). Stored in window._wpCampaigns array.'
+        },
+        {
+          id: 'dm-queue',
+          title: 'Queue Item Object',
+          keywords: ['queue', 'item', 'fields', 'schema', '_queueData'],
+          content: 'Fields: id (string), type (string: linkedin_connect|linkedin_message|email|whatsapp), status (string: pending|processing|completed|failed|paused|sos_waiting|conn_pending|conn_accepted|message_sent|email_sent|reply_received|whatsapp_waiting|opportunity_flagged), contact (object: {name, title, linkedin, email}), company (string), assignedTo (string, email), campaignId (string, optional), campaignNodeId (string, optional), createdAt (ISO string), completedAt (ISO string, optional), notes (string). Stored in window._queueData.queue array.'
+        },
+        {
+          id: 'dm-settings',
+          title: 'Settings Schema',
+          keywords: ['settings', 'config', 'schema', 'persistence', 'github'],
+          content: 'Settings are persisted as JSON to GitHub via the API (file: settings.json in the repo). Key sections: categories (array of {name, color, keywords}), customers (array of company names), pastCustomers (array), sources (array of {name, url, icon}), templates (object: {connect, followUp}), hubspot (object: {apiKey, portalId}), users (array of {email, name, role}), delegation (object: rules), wolfPackDefaults (object: {customer, past, prospect, high_potential} each with {flowTemplate, teamMembers, channels, adaptiveRules, autoActivate}).'
+        }
+      ]
+    },
+    {
+      id: 'troubleshooting',
+      icon: '🔧',
+      title: 'Troubleshooting',
+      keywords: ['troubleshoot', 'problem', 'error', 'fix', 'issue', 'bug', 'help', 'not working'],
+      content: 'Common issues and solutions for the BDR dashboard.',
+      subsections: [
+        {
+          id: 'ts-sync',
+          title: 'Data Not Updating',
+          keywords: ['sync', 'refresh', 'stale', 'old data', 'not updating'],
+          content: 'The dashboard loads data from GitHub on startup. If data seems stale: check the "Last Updated" timestamp in the sidebar footer. The update_jobs.py script runs on a schedule (GitHub Actions) to scrape new listings. You can manually trigger a refresh by re-running the workflow.'
+        },
+        {
+          id: 'ts-github',
+          title: 'GitHub Sync Issues',
+          keywords: ['github', 'save', 'persist', 'sha', 'conflict'],
+          content: 'Settings and campaigns are saved to GitHub via API. If saves fail: check the sync indicator in the sidebar (should show green). SHA conflicts can occur if another session saved simultaneously — reload the page and try again. The GitHub token is stored in the browser; if expired, sign out and sign back in.'
+        },
+        {
+          id: 'ts-wolfpack',
+          title: 'Wolf Pack Issues',
+          keywords: ['wolf pack', 'campaign', 'empty', 'not showing', 'pending'],
+          content: 'If Wolf Pack page is empty: ensure campaigns are loaded (check browser console for errors). If Pending tab shows no listings: all current listings may already have campaigns. If Launch fails: check that strategy defaults have team members assigned (Settings > Wolf Pack). Campaign data is stored in wolfpack_campaigns.json in the repo.'
+        }
+      ]
+    }
+  ]
+};
+
+// ── Help Panel Functions ────────────────────────────
+
+var _helpPanelOpen = false;
+
+function toggleHelpPanel() {
+  _helpPanelOpen = !_helpPanelOpen;
+  var panel = document.getElementById('helpPanel');
+  var backdrop = document.getElementById('helpBackdrop');
+  if (_helpPanelOpen) {
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+    _renderHelpContent();
+    setTimeout(function() { document.getElementById('helpSearchInput').focus(); }, 100);
+  } else {
+    panel.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+}
+
+function _renderHelpContent(filter) {
+  var container = document.getElementById('helpContent');
+  var sections = _HELP_DOCS.sections;
+  if (filter) {
+    var q = filter.toLowerCase();
+    sections = sections.filter(function(s) {
+      var match = s.keywords.some(function(k) { return k.includes(q); }) ||
+                  s.title.toLowerCase().includes(q) ||
+                  s.content.toLowerCase().includes(q);
+      if (!match && s.subsections) {
+        match = s.subsections.some(function(ss) {
+          return ss.keywords.some(function(k) { return k.includes(q); }) ||
+                 ss.title.toLowerCase().includes(q) ||
+                 ss.content.toLowerCase().includes(q);
+        });
+      }
+      return match;
+    });
+  }
+  var html = '';
+  if (!sections.length) {
+    html = '<div style="text-align:center;padding:40px 20px;color:var(--text-light)">No matching help topics found.</div>';
+  }
+  sections.forEach(function(s, idx) {
+    var isOpen = filter ? ' open' : '';
+    html += '<div class="help-section">';
+    html += '<div class="help-section-header" onclick="_toggleHelpSection(' + idx + ')">';
+    html += '<span class="help-icon">' + s.icon + '</span>';
+    html += '<span class="help-title">' + _helpHighlight(s.title, filter) + '</span>';
+    html += '<span class="help-arrow' + isOpen + '" id="helpArrow_' + idx + '">&#9654;</span>';
+    html += '</div>';
+    html += '<div class="help-section-body' + isOpen + '" id="helpBody_' + idx + '">';
+    html += '<p>' + _helpHighlight(s.content, filter) + '</p>';
+    if (s.subsections && s.subsections.length) {
+      s.subsections.forEach(function(ss) {
+        html += '<div class="help-subsection">';
+        html += '<div class="help-subsection-title">' + _helpHighlight(ss.title, filter) + '</div>';
+        html += '<p>' + _helpHighlight(ss.content, filter) + '</p>';
+        html += '</div>';
+      });
+    }
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function _toggleHelpSection(idx) {
+  var body = document.getElementById('helpBody_' + idx);
+  var arrow = document.getElementById('helpArrow_' + idx);
+  if (body) body.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open');
+}
+
+function _helpSearch(query) {
+  _renderHelpContent(query.trim() || null);
+}
+
+function _helpHighlight(text, filter) {
+  if (!filter || !text) return text;
+  var q = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp('(' + q + ')', 'gi'), '<span class="help-highlight">$1</span>');
+}
+
+// AI-Agent-Friendly helper: query help docs programmatically
+window._getHelpFor = function(query) {
+  if (!query) return _HELP_DOCS;
+  var q = query.toLowerCase();
+  var results = [];
+  _HELP_DOCS.sections.forEach(function(s) {
+    var sectionScore = 0;
+    if (s.title.toLowerCase().includes(q)) sectionScore += 10;
+    s.keywords.forEach(function(k) { if (k.includes(q)) sectionScore += 5; });
+    if (s.content.toLowerCase().includes(q)) sectionScore += 2;
+    if (sectionScore > 0) {
+      results.push({ section: s.id, title: s.title, score: sectionScore, content: s.content, subsections: s.subsections });
+    }
+    if (s.subsections) {
+      s.subsections.forEach(function(ss) {
+        var subScore = 0;
+        if (ss.title.toLowerCase().includes(q)) subScore += 10;
+        ss.keywords.forEach(function(k) { if (k.includes(q)) subScore += 5; });
+        if (ss.content.toLowerCase().includes(q)) subScore += 2;
+        if (subScore > 0) {
+          results.push({ section: s.id + '/' + ss.id, title: s.title + ' > ' + ss.title, score: subScore, content: ss.content });
+        }
+      });
+    }
+  });
+  results.sort(function(a, b) { return b.score - a.score; });
+  return results;
+};
 
 </script>
 </body>
