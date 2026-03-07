@@ -1196,18 +1196,9 @@
       </div>
     </div>
 
-    <div class="nav-bottom">
-      <div class="nav-bottom-item" id="sidebarLastUpdate"></div>
-      <div class="nav-bottom-item">
-        <span id="sync-indicator-sidebar" style="font-size:10px">○ Local only</span>
-      </div>
-      <div class="nav-bottom-item" style="margin-top:12px;">
-        <button onclick="signOut()" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-size:12px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.7)'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-          Sign Out
-        </button>
-      </div>
-    </div>
+    <!-- Hidden elements for sync indicator (used by JS) -->
+    <span id="sidebarLastUpdate" style="display:none"></span>
+    <span id="sync-indicator-sidebar" style="display:none">○ Local only</span>
   </nav>
 
   <!-- HELP PANEL (slide-out drawer) -->
@@ -7696,22 +7687,6 @@ function buildOutreachSection(job) {
         Outreach (${stakeholders.length} contact${stakeholders.length !== 1 ? 's' : ''}${stakeholders.some(s => s._crmOnly || s._crmEnriched) ? ' - incl. CRM' : ''})
       </div>
       ${stakeholderHTML}
-      <div class="template-picker">
-        <div class="template-picker-label" style="display:flex;align-items:center;gap:6px">Message Templates <button onclick="_toggleLang('linkedin');if(_activeJobForOutreach)openDetail(_activeJobForOutreach.id)" style="font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:4px;background:var(--bg);cursor:pointer" title="Switch language">${_mainFlag}</button></div>
-        <select class="template-select" id="templateSelect" onchange="event.stopPropagation();switchTemplate(+this.value)">${templateOptions}</select>
-        <div class="template-preview" id="templatePreview" style="${_mainLang==='he'?'direction:rtl;text-align:right':''}">${firstMsg}</div>
-        <div class="template-actions">
-          <button class="btn btn-primary" onclick="event.stopPropagation();sendOnLinkedIn()" style="background:#0A66C2" id="btnLinkedInAction">
-            ${LI_ICON} ${isConn ? 'Send Message' : 'Connect on LinkedIn'}
-          </button>
-          <button class="btn btn-outline" onclick="event.stopPropagation();sendEmail()" style="flex:0.5" id="btnEmailAction">
-            ${MAIL_ICON} Email
-          </button>
-          <button class="btn btn-outline" onclick="event.stopPropagation();copyTemplate()" style="flex:0.4">
-            \uD83D\uDCCB Copy
-          </button>
-        </div>
-      </div>
     </div>`;
 }
 
