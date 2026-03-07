@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-07T16:59:08.908Z",
+  "lastUpdated": "2026-03-07T17:24:17.000Z",
   "campaigns": [
     {
       "id": "wp_mmgda1uu0o5lc",
@@ -10936,6 +10936,290 @@
         "pausedAt": "2026-03-07T16:59:08.908Z"
       },
       "_customerType": "customer"
+    },
+    {
+      "id": "wp_73ive6xnjvma",
+      "company": {
+        "name": "Develeap",
+        "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
+        "isCustomer": true,
+        "isPastCustomer": false,
+        "customerType": "customer",
+        "source": "other"
+      },
+      "targetJob": {
+        "title": "DevOps Engineer",
+        "url": "https://www.develeap.com/careers/devops-engineer-mock",
+        "location": "Tel Aviv, Israel",
+        "source": "other"
+      },
+      "targetContacts": [
+        {
+          "id": "wp_g8swqr45pmgl",
+          "name": "May Alma",
+          "email": "",
+          "title": "Partnership Business Development Lead",
+          "linkedin": "https://www.linkedin.com/in/may-alma/",
+          "phone": "",
+          "isPrimary": true
+        },
+        {
+          "id": "wp_9031wjq30as1",
+          "name": "Lihi Pinto",
+          "email": "",
+          "title": "Entrepreneur & Strategic Advisor",
+          "linkedin": "https://www.linkedin.com/in/lihipinto/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_1w6690z41sn0",
+          "name": "Roni Nir",
+          "email": "",
+          "title": "Business Development",
+          "linkedin": "https://www.linkedin.com/in/roni-nir/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_qosr57eh0u9c",
+          "name": "Efi Shimon",
+          "email": "",
+          "title": "DevOps Group Leader",
+          "linkedin": "https://www.linkedin.com/in/efishimon/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_epj1h7au1jbd",
+          "name": "Saar Cohen",
+          "email": "",
+          "title": "Head of Education",
+          "linkedin": "https://www.linkedin.com/in/saar--cohen/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_mc8ia7aorfx1",
+          "name": "Nofar Barzilay",
+          "email": "",
+          "title": "DevOps Engineer",
+          "linkedin": "https://www.linkedin.com/in/nofar-barzilay-03a81517b/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_t2o95lnkmytu",
+          "name": "Shoshi Revivo",
+          "email": "",
+          "title": "Senior DevOps Group Leader",
+          "linkedin": "https://www.linkedin.com/in/shoshi-revivo-69249b166/",
+          "phone": "",
+          "isPrimary": false
+        },
+        {
+          "id": "wp_d0k2cs4cdacn",
+          "name": "ShemTov Fisher",
+          "email": "",
+          "title": "DevOps Team Lead",
+          "linkedin": "https://www.linkedin.com/in/shemtov-fisher-17b486194/",
+          "phone": "",
+          "isPrimary": false
+        }
+      ],
+      "teamMembers": [],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "linkedin_connect"
+            ]
+          },
+          "linkedin_connect": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "messageTemplate": "[TEST MESSAGE] Hi {{contactName}}, I see we're both in the DevOps space at Develeap. This is a test message for the Wolf Pack campaign feature — no action needed!"
+            },
+            "next": [
+              "wait_3d"
+            ]
+          },
+          "wait_3d": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "linkedin_message"
+            ]
+          },
+          "linkedin_message": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "messageTemplate": "[TEST MESSAGE] Hi {{contactName}}, following up on my connection request. This is a test LinkedIn message for the Wolf Pack multi-channel campaign demo. No action needed!"
+            },
+            "next": [
+              "wait_2d"
+            ]
+          },
+          "wait_2d": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 460
+            },
+            "config": {
+              "days": 2
+            },
+            "next": [
+              "whatsapp_msg"
+            ]
+          },
+          "whatsapp_msg": {
+            "type": "action_whatsapp",
+            "position": {
+              "x": 300,
+              "y": 560
+            },
+            "config": {
+              "messageTemplate": "[TEST MESSAGE] Hi {{contactName}}, this is a test WhatsApp message for the Wolf Pack campaign feature. Testing multi-channel outreach flow — no action needed!"
+            },
+            "next": [
+              "wait_3d_2"
+            ]
+          },
+          "wait_3d_2": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 660
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "email_msg"
+            ]
+          },
+          "email_msg": {
+            "type": "action_email",
+            "position": {
+              "x": 300,
+              "y": 760
+            },
+            "config": {
+              "subject": "[TEST MESSAGE] DevOps collaboration opportunity",
+              "messageTemplate": "[TEST MESSAGE] Hi {{contactName}},\n\nThis is a test email for the Wolf Pack campaign feature demo.\n\nNo action needed — just verifying the full multi-channel outreach sequence (LinkedIn → WhatsApp → Email) works correctly in the BDR dashboard.\n\nBest regards,\nTest Campaign"
+            },
+            "next": [
+              "end_success"
+            ]
+          },
+          "end_success": {
+            "type": "trigger_end",
+            "position": {
+              "x": 300,
+              "y": 860
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "linkedin_connect",
+          "wait_3d",
+          "linkedin_message",
+          "wait_2d",
+          "whatsapp_msg",
+          "wait_3d_2",
+          "email_msg",
+          "end_success"
+        ],
+        "connections": [
+          {
+            "from": "start",
+            "to": "linkedin_connect"
+          },
+          {
+            "from": "linkedin_connect",
+            "to": "wait_3d"
+          },
+          {
+            "from": "wait_3d",
+            "to": "linkedin_message"
+          },
+          {
+            "from": "linkedin_message",
+            "to": "wait_2d"
+          },
+          {
+            "from": "wait_2d",
+            "to": "whatsapp_msg"
+          },
+          {
+            "from": "whatsapp_msg",
+            "to": "wait_3d_2"
+          },
+          {
+            "from": "wait_3d_2",
+            "to": "email_msg"
+          },
+          {
+            "from": "email_msg",
+            "to": "end_success"
+          }
+        ]
+      },
+      "status": "active",
+      "createdAt": "2026-03-07T17:24:17.000Z",
+      "createdBy": "dori.kafri@develeap.com",
+      "autoLaunched": false,
+      "customerType": "customer",
+      "channels": [
+        "linkedin",
+        "linkedin_msg",
+        "whatsapp",
+        "email"
+      ],
+      "adaptiveRules": [
+        {
+          "trigger": "any_positive_reply",
+          "action": "pause_remaining",
+          "enabled": true
+        },
+        {
+          "trigger": "email_opened_3x",
+          "action": "escalate_priority",
+          "enabled": true
+        }
+      ],
+      "executionState": {
+        "currentNodeIndex": 0,
+        "completedNodes": [],
+        "nextExecutionTime": "2026-03-07T17:24:17.000Z"
+      },
+      "responseTracking": {
+        "touchpoints": [],
+        "lastResponseAt": null,
+        "totalResponses": 0
+      }
     }
   ]
 }
