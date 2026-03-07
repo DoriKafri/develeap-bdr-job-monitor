@@ -59,11 +59,19 @@ jobs:
           APOLLO_WEBHOOK_URL: ${{ secrets.APOLLO_WEBHOOK_URL }}
         run: python enrich_apollo.py
 
+      - name: Process outreach queue
+        if: env.HUBSPOT_TOKEN != ''
+        env:
+          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+          HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python process_queue.py
+
       - name: Commit data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add crm_data.json apollo_data.json 2>/dev/null || true
+          git add crm_data.json apollo_data.json linkedin_queue.json queue_execution_log.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: sync CRM & enrichment data $(date -u '+%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push

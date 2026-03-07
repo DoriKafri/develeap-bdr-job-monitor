@@ -457,6 +457,13 @@
   .queue-card-status.paused { background:#F5F5F5; color:#757575; }
   .queue-card-status.conn_pending { background:#F3E5F5; color:#7B1FA2; }
   .queue-card-status.sos_waiting { background:#FFF3E0; color:#E65100; }
+  .queue-card-status.conn_accepted { background:#E8F5E9; color:#2E7D32; }
+  .queue-card-status.message_sent { background:#E3F2FD; color:#0A66C2; }
+  .queue-card-status.email_sent { background:#FCE4EC; color:#AD1457; }
+  .queue-card-status.reply_received { background:#E8F5E9; color:#1B5E20; }
+  .queue-card-status.whatsapp_waiting { background:#E8F8F0; color:#128C7E; }
+  .queue-card-status.opportunity_flagged { background:#FFF3E0; color:#E65100; animation:opp-pulse 2s infinite; }
+  @keyframes opp-pulse { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 8px rgba(255,109,0,0.4)} }
   .queue-card-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
   .queue-card-actions button { background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:4px; }
   .queue-card-actions button:hover { border-color:var(--primary); color:var(--primary); }
@@ -1066,6 +1073,8 @@
         <button class="btn" style="background:var(--primary);color:white" onclick="refreshQueueView()">↻ Refresh</button>
       </div>
     </div>
+    <div id="queueOpportunities"></div>
+    <div id="queueRateLimits"></div>
     <div class="queue-stats" id="queueStats"></div>
     <div class="queue-list" id="queueList"></div>
   </div>
@@ -1806,7 +1815,7 @@ function handleCredentialResponse(r) {
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-07T10:26:21Z";
+let LAST_UPDATED = "2026-03-07T09:51:46Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -1891,7 +1900,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Senior-DevOps-Engineer_JR1987448",
     "category": "devops",
     "posted": "2026-03-07",
-    "isNew": false,
+    "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Senior DevOps Engineer. Apply. locations: Israel, Raanana. time type: Full time ... We are looking for a DevOps/Verifica",
@@ -1958,7 +1967,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Yokneam/Senior-HPC-DevOps-Engineer_JR2008959",
     "category": "devops",
     "posted": "2026-03-07",
-    "isNew": false,
+    "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "NVIDIA is looking for an experienced HPC DevOps and Network Engineer to help us build the supercomputers and HPC cluster",
@@ -2018,7 +2027,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://astrazeneca.wd3.myworkdayjobs.com/he-IL/Careers/job/CloudOps-Engineer_R-237035",
     "category": "finops",
     "posted": "2026-03-07",
-    "isNew": false,
+    "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "... FinOps & Cost Management • Monitor cloud usage and support cost-optimization initiatives. • Assist in identifying op",
@@ -3058,7 +3067,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -4901,7 +4910,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://www.comeet.com/jobs/vastdata/43.001/finops-engineer/5A.66C",
     "category": "finops",
     "posted": "2026-03-04",
-    "isNew": false,
+    "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "VAST Data is looking for a FinOps Engineer to join our growing team! This is a great opportunity to be part of one of th",
@@ -4913,8 +4922,8 @@ let ALL_JOBS = [
         "linkedin": "https://www.linkedin.com/in/renenh/",
         "source": "Crunchbase",
         "email": "renen.hallak@vastdata.com",
-        "connectMsg": "Hi Renen, I noticed VAST Data is hiring a Senior Infrastructure Developer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Renen! I wanted to share how Develeap helps companies like VAST Data accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Renen, I noticed VAST Data is hiring a FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Renen! I wanted to share how Develeap helps companies like VAST Data accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Jeff Denworth",
@@ -4923,8 +4932,8 @@ let ALL_JOBS = [
         "source": "LinkedIn",
         "email": "jeff.denworth@vastdata.com",
         "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHkE23_lEJYmw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1664019749850?e=2147483647&v=beta&t=jRpdflfrGlo9M6qemq0EHH-p48OSKvPjYs-NB4bPaME",
-        "connectMsg": "Hi Jeff, I noticed VAST Data is hiring a Senior Infrastructure Developer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Jeff! I wanted to share how Develeap helps companies like VAST Data accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Jeff, I noticed VAST Data is hiring a FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Jeff! I wanted to share how Develeap helps companies like VAST Data accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=vastdata.com&sz=128"
@@ -5113,7 +5122,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -5584,7 +5593,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -6964,6 +6973,53 @@ CEO, Develeap`
 var SOS_PROSPECT = JSON.parse(JSON.stringify(DEFAULT_SOS_PROSPECT));
 var SOS_CUSTOMER = JSON.parse(JSON.stringify(DEFAULT_SOS_CUSTOMER));
 var SOS_PAST = JSON.parse(JSON.stringify(DEFAULT_SOS_PAST));
+
+// ── INBOUND CONNECTION TEMPLATES ──
+// Used when someone accepts a LinkedIn connection and matches an active job listing
+const DEFAULT_INBOUND_TEMPLATES = [
+  {
+    name: "Saw You Were Looking",
+    emoji: "🔍",
+    body: `Hi {contact_name},
+
+I noticed about {days_ago} that {company} was looking for a {role}.
+
+At Develeap, we help companies like {customers} build and scale their {expertise} teams — often 3x faster than traditional hiring.
+
+Would love to share how we've helped similar teams. Open to a quick 15-min chat?
+
+Best,
+Dori | Develeap`,
+    lang: 'en'
+  },
+  {
+    name: "We Can Help",
+    emoji: "🤝",
+    body: `Hey {contact_name},
+
+Thanks for connecting! I saw that {company} has been looking for {role} talent.
+
+We specialize in exactly this — our team at Develeap provides expert {expertise} engineers who can hit the ground running.
+
+Happy to share some case studies from {customers} if helpful. When works for a quick call?
+
+Dori`,
+    lang: 'en'
+  },
+  {
+    name: "Quick Question",
+    emoji: "💬",
+    body: `Hi {contact_name},
+
+I noticed {company} posted a {role} position {days_ago}. Quick question — are you still looking, or did you find someone?
+
+Either way, we've been helping companies like {customers} fill similar roles with our expert consulting teams. Happy to share what's worked.
+
+Dori | Develeap`,
+    lang: 'en'
+  }
+];
+var INBOUND_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_INBOUND_TEMPLATES));
 
 const LI_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
 const MSG_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
@@ -11215,6 +11271,7 @@ function resetToDefaults() {
 
 // ===== QUEUE VIEW MANAGEMENT =====
 var _queueData = { queue: [], lastProcessed: '' };
+var _queueExecLog = null; // loaded from queue_execution_log.json
 var _queuePaused = JSON.parse(localStorage.getItem('queuePaused') || 'false');
 var _queueFilter = null; // null = show all, or 'pending','paused','conn_pending','completed','failed'
 
@@ -11297,6 +11354,18 @@ var refreshQueueView = async function() {
     _queueData = { queue: [], lastProcessed: '' };
   }
 
+  // Load execution log
+  try {
+    const elResp = await fetch('https://api.github.com/repos/' + _GH_OWNER + '/' + _GH_REPO + '/contents/queue_execution_log.json', {
+      headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' },
+      cache: 'no-store'
+    });
+    if (elResp.ok) {
+      const elData = await elResp.json();
+      _queueExecLog = JSON.parse(_base64ToUtf8(elData.content));
+    }
+  } catch (e) { /* exec log is optional */ }
+
   // Backfill contactPhoto and companyLogo from ALL_JOBS for entries missing them
   if (typeof ALL_JOBS !== 'undefined' && ALL_JOBS.length > 0) {
     (_queueData.queue || []).forEach(entry => {
@@ -11327,10 +11396,13 @@ var renderQueueView = function() {
   const pendingCount = q.filter(e => e.status === 'pending' || e.status === 'processing').length;
   _updateQueueBadges(pendingCount);
 
-  // Stats
-  const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0, sos_waiting: 0 };
+  // Stats — include new statuses
+  const counts = { pending: 0, processing: 0, completed: 0, failed: 0, paused: 0, conn_pending: 0, conn_accepted: 0, sos_waiting: 0, message_sent: 0, email_sent: 0, reply_received: 0, whatsapp_waiting: 0, opportunity_flagged: 0 };
   q.forEach(e => { counts[e.status] = (counts[e.status] || 0) + 1; });
   const waCount = q.filter(e => e.type === 'whatsapp').length;
+  const emailCount = q.filter(e => e.type === 'email').length;
+  const inboundCount = q.filter(e => e.type === 'inbound_message').length;
+  const oppCount = q.filter(e => (e.opportunities || []).some(o => o.status === 'open')).length;
 
   const totalCount = q.length;
   statsEl.innerHTML = `
@@ -11338,11 +11410,63 @@ var renderQueueView = function() {
     <div class="queue-stat pending${_queueFilter === 'pending' ? ' filter-active' : ''}" onclick="filterQueue('pending')"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
     <div class="queue-stat paused${_queueFilter === 'sos_waiting' ? ' filter-active' : ''}" style="border-left-color:#FFB100" onclick="filterQueue('sos_waiting')"><div class="queue-stat-number" style="color:#FFB100">${counts.sos_waiting}</div><div class="queue-stat-label">🎬 Sequenced</div></div>
     ${waCount > 0 ? `<div class="queue-stat${_queueFilter === 'whatsapp' ? ' filter-active' : ''}" style="border-left-color:#25D366" onclick="filterQueue('whatsapp')"><div class="queue-stat-number" style="color:#25D366">${waCount}</div><div class="queue-stat-label">📱 WhatsApp</div></div>` : ''}
+    ${emailCount > 0 ? `<div class="queue-stat${_queueFilter === 'email' ? ' filter-active' : ''}" style="border-left-color:#EA4335" onclick="filterQueue('email')"><div class="queue-stat-number" style="color:#EA4335">${emailCount}</div><div class="queue-stat-label">📧 Email</div></div>` : ''}
+    ${inboundCount > 0 ? `<div class="queue-stat${_queueFilter === 'inbound' ? ' filter-active' : ''}" style="border-left-color:#00BCD4" onclick="filterQueue('inbound')"><div class="queue-stat-number" style="color:#00BCD4">${inboundCount}</div><div class="queue-stat-label">📥 Inbound</div></div>` : ''}
     <div class="queue-stat paused${_queueFilter === 'paused' ? ' filter-active' : ''}" onclick="filterQueue('paused')"><div class="queue-stat-number">${counts.paused}</div><div class="queue-stat-label">Paused</div></div>
-    <div class="queue-stat${_queueFilter === 'conn_pending' ? ' filter-active' : ''}" style="border-left-color:#7B1FA2" onclick="filterQueue('conn_pending')"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending}</div><div class="queue-stat-label">Conn. Pending</div></div>
-    <div class="queue-stat completed${_queueFilter === 'completed' ? ' filter-active' : ''}" onclick="filterQueue('completed')"><div class="queue-stat-number">${counts.completed}</div><div class="queue-stat-label">Completed</div></div>
+    <div class="queue-stat${_queueFilter === 'conn_pending' ? ' filter-active' : ''}" style="border-left-color:#7B1FA2" onclick="filterQueue('conn_pending')"><div class="queue-stat-number" style="color:#7B1FA2">${counts.conn_pending + counts.conn_accepted}</div><div class="queue-stat-label">Connections</div></div>
+    ${oppCount > 0 ? `<div class="queue-stat${_queueFilter === 'opportunity' ? ' filter-active' : ''}" style="border-left-color:#FF6D00" onclick="filterQueue('opportunity')"><div class="queue-stat-number" style="color:#FF6D00">${oppCount}</div><div class="queue-stat-label">🧠 Alerts</div></div>` : ''}
+    <div class="queue-stat completed${_queueFilter === 'completed' ? ' filter-active' : ''}" onclick="filterQueue('completed')"><div class="queue-stat-number">${counts.completed + counts.message_sent + counts.email_sent + counts.reply_received}</div><div class="queue-stat-label">Sent/Done</div></div>
     <div class="queue-stat failed${_queueFilter === 'failed' ? ' filter-active' : ''}" onclick="filterQueue('failed')"><div class="queue-stat-number">${counts.failed}</div><div class="queue-stat-label">Failed</div></div>
   `;
+
+  // ── Opportunity Alerts Panel ──
+  const oppsEl = document.getElementById('queueOpportunities');
+  if (oppsEl) {
+    const openOpps = [];
+    q.forEach(e => { (e.opportunities || []).forEach(o => { if (o.status === 'open') openOpps.push({ ...o, contact: e.contactName, company: e.company, entryIdx: q.indexOf(e) }); }); });
+    if (openOpps.length > 0) {
+      oppsEl.style.display = 'block';
+      oppsEl.innerHTML = openOpps.map(o => `
+        <div class="opportunity-alert${o.confidence > 0.8 ? ' high' : ''}" onclick="filterQueue('opportunity')">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:600;font-size:13px">🧠 ${o.type === 'buying_signal' ? 'Buying Signal' : o.type === 'interest_signal' ? 'Interest' : 'Objection'} — ${o.contact} at ${o.company}</span>
+            <span style="font-size:11px;color:var(--text-light)">${_timeAgo(o.detectedAt)} · ${Math.round(o.confidence*100)}% confidence</span>
+          </div>
+          <div style="font-size:12px;color:var(--text);margin-top:4px">${o.summary || ''}</div>
+          <div style="margin-top:6px;display:flex;gap:6px">
+            <button onclick="event.stopPropagation();acknowledgeOpportunity(${o.entryIdx},'${o.detectedAt}')" style="font-size:10px;padding:3px 10px;border:1px solid #FF6D00;color:#FF6D00;background:none;border-radius:4px;cursor:pointer">Acknowledge</button>
+            <button onclick="event.stopPropagation();actionOpportunity(${o.entryIdx},'${o.detectedAt}')" style="font-size:10px;padding:3px 10px;border:1px solid #2E7D32;color:#2E7D32;background:none;border-radius:4px;cursor:pointer">Take Action</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      oppsEl.style.display = 'none';
+      oppsEl.innerHTML = '';
+    }
+  }
+
+  // ── Rate Limit Indicators ──
+  const rlEl = document.getElementById('queueRateLimits');
+  if (rlEl && _queueExecLog) {
+    const rl = _queueExecLog.rateLimitStatus || {};
+    const conn = rl.connections || { today: 0, limit: 20 };
+    const msgs = rl.messages || { today: 0, limit: 50 };
+    const connPct = Math.min(100, Math.round((conn.today / conn.limit) * 100));
+    const msgPct = Math.min(100, Math.round((msgs.today / msgs.limit) * 100));
+    rlEl.innerHTML = `
+      <div style="display:flex;gap:16px;align-items:center;font-size:11px;color:var(--text-light)">
+        <div style="flex:1;max-width:180px" title="LinkedIn connections today">
+          🔗 ${conn.today}/${conn.limit}
+          <div style="height:3px;background:var(--border);border-radius:2px;margin-top:2px"><div style="height:100%;background:${connPct > 80 ? '#e53935' : 'var(--accent)'};border-radius:2px;width:${connPct}%;transition:width 0.3s"></div></div>
+        </div>
+        <div style="flex:1;max-width:180px" title="LinkedIn messages today">
+          💬 ${msgs.today}/${msgs.limit}
+          <div style="height:3px;background:var(--border);border-radius:2px;margin-top:2px"><div style="height:100%;background:${msgPct > 80 ? '#e53935' : 'var(--accent)'};border-radius:2px;width:${msgPct}%;transition:width 0.3s"></div></div>
+        </div>
+        ${_queueExecLog.lastProcessed ? `<span title="Last automation run">⏱ Last run: ${_timeAgo(_queueExecLog.lastProcessed)}</span>` : ''}
+      </div>
+    `;
+  }
 
   // Update global toggle button
   const toggleBtn = document.getElementById('queueGlobalToggle');
@@ -11368,8 +11492,8 @@ var renderQueueView = function() {
     return;
   }
 
-  // Sort: pending/processing first, then paused, conn_pending, then completed/failed
-  const statusOrder = { processing: 0, pending: 1, paused: 2, conn_pending: 3, failed: 4, completed: 5 };
+  // Sort: opportunity_flagged first, then pending/processing, then paused, etc.
+  const statusOrder = { opportunity_flagged: -1, processing: 0, pending: 1, paused: 2, conn_pending: 3, conn_accepted: 3.5, sos_waiting: 4, whatsapp_waiting: 4.5, email_sent: 5, message_sent: 5.5, reply_received: 6, failed: 7, completed: 8 };
   let sorted = [...q].sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
 
   // Apply filter if active
@@ -11378,6 +11502,12 @@ var renderQueueView = function() {
       sorted = sorted.filter(e => e.status === 'pending' || e.status === 'processing');
     } else if (_queueFilter === 'whatsapp') {
       sorted = sorted.filter(e => e.type === 'whatsapp');
+    } else if (_queueFilter === 'email') {
+      sorted = sorted.filter(e => e.type === 'email');
+    } else if (_queueFilter === 'inbound') {
+      sorted = sorted.filter(e => e.type === 'inbound_message');
+    } else if (_queueFilter === 'opportunity') {
+      sorted = sorted.filter(e => (e.opportunities || []).some(o => o.status === 'open'));
     } else {
       sorted = sorted.filter(e => e.status === _queueFilter);
     }
@@ -11394,16 +11524,26 @@ var renderQueueView = function() {
   listEl.innerHTML = sorted.map((entry, idx) => {
     const origIdx = q.indexOf(entry);
     const initials = entry.contactName.split(' ').map(n => n[0]).join('').substring(0, 2);
-    const isConnect = !entry.isConnected;
+    const isConnect = !entry.isConnected && entry.type !== 'email' && entry.type !== 'whatsapp' && entry.type !== 'inbound_message';
     const isWhatsApp = entry.type === 'whatsapp';
+    const isEmail = entry.type === 'email';
+    const isInbound = entry.type === 'inbound_message';
     const typeBadge = isWhatsApp
       ? '<span class="queue-type-badge" style="background:#E8F8F0;color:#128C7E">📱 WhatsApp</span>'
-      : isConnect
-        ? '<span class="queue-type-badge connect">🔗 Connect</span>'
-        : '<span class="queue-type-badge message">💬 Message</span>';
+      : isEmail
+        ? '<span class="queue-type-badge" style="background:#FDECEA;color:#EA4335">📧 Email Seq</span>'
+        : isInbound
+          ? '<span class="queue-type-badge" style="background:#E0F7FA;color:#00838F">📥 Inbound</span>'
+          : isConnect
+            ? '<span class="queue-type-badge connect">🔗 Connect</span>'
+            : '<span class="queue-type-badge message">💬 Message</span>';
     const statusLabel = {
       pending: 'Pending', processing: 'Processing...', completed: 'Completed',
-      failed: 'Failed', paused: 'Paused', conn_pending: 'Connection Pending'
+      failed: 'Failed', paused: 'Paused', conn_pending: 'Conn. Pending',
+      conn_accepted: 'Connected ✓', message_sent: 'Message Sent',
+      email_sent: 'Email Sent', reply_received: 'Reply Received',
+      whatsapp_waiting: 'Awaiting Reply', opportunity_flagged: '🧠 Opportunity',
+      sos_waiting: 'SOS Waiting'
     }[entry.status] || entry.status;
     const statusClass = entry.status;
     const timeAgo = _timeAgo(entry.createdAt);
@@ -11492,7 +11632,12 @@ var renderQueueView = function() {
           <span>🕐 ${timeAgo}${completedInfo}</span>
           ${entry.linkedinUrl ? '<a href="'+entry.linkedinUrl+'" target="_blank" style="font-size:11px;color:#0A66C2;text-decoration:none">🔗 LinkedIn</a>' : ''}
           ${entry.whatsappPhone ? '<span style="font-size:11px;color:#128C7E">📱 '+entry.whatsappPhone+'</span>' : ''}
+          ${entry.hubspotSyncStatus === 'synced' ? '<span style="font-size:10px;color:#FF7A00">CRM ✓</span>' : ''}
+          ${(entry.executionLog || []).length > 0 ? '<span onclick="event.stopPropagation();toggleExecLog('+origIdx+')" style="font-size:10px;color:var(--accent);cursor:pointer;text-decoration:underline">📋 '+entry.executionLog.length+' logs</span>' : ''}
+          ${entry.suggestedReply ? '<span style="font-size:10px;color:#FF6D00;cursor:pointer" onclick="event.stopPropagation();showSuggestedReply('+origIdx+')" title="AI suggested reply">💡 Suggestion</span>' : ''}
         </div>
+        ${_renderExecLog(entry, origIdx)}
+        ${_renderOpportunityBadges(entry)}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
         <span class="queue-card-status ${statusClass}">${statusLabel}</span>
@@ -11647,6 +11792,105 @@ var saveQueueMessage = async function(idx) {
   await _saveQueueToGitHub();
   renderQueueView();
   _showToast('✅ Message updated');
+}
+
+// ===== AUTOMATION UI HELPERS =====
+
+// Render execution log timeline for a queue entry
+function _renderExecLog(entry, origIdx) {
+  var logs = entry.executionLog || [];
+  if (logs.length === 0) return '';
+  var id = 'execLog_' + origIdx;
+  var items = logs.slice(-5).reverse().map(function(l) {
+    var icons = { connect_sent:'🔗', message_sent:'💬', check_accepted:'🔍', sos_sent:'🎬', email_enrolled:'📧', whatsapp_sent:'📱', reply_detected:'📩', opportunity_flagged:'🧠', crm_created:'🏢', error:'❌' };
+    var icon = icons[l.action] || '📋';
+    var statusColor = l.status === 'success' ? '#4CAF50' : l.status === 'error' ? '#f44336' : '#FF9800';
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light)">' +
+      '<span style="font-size:14px;flex-shrink:0">' + icon + '</span>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="font-size:11px;color:var(--text-light)">' + _timeAgo(l.timestamp) + '</div>' +
+        '<div style="font-size:12px;color:var(--text)">' + (l.details || l.action) + '</div>' +
+      '</div>' +
+      '<span style="width:8px;height:8px;border-radius:50%;background:' + statusColor + ';flex-shrink:0;margin-top:4px"></span>' +
+    '</div>';
+  }).join('');
+  return '<div id="' + id + '" style="display:none;margin-top:8px;padding:8px 12px;background:var(--bg-secondary);border-radius:6px;border:1px solid var(--border-light)">' +
+    '<div style="font-size:11px;font-weight:600;color:var(--text-light);margin-bottom:4px">Execution Log' + (logs.length > 5 ? ' (latest 5 of ' + logs.length + ')' : '') + '</div>' +
+    items +
+  '</div>';
+}
+
+// Render opportunity badges for a queue entry
+function _renderOpportunityBadges(entry) {
+  var opps = entry.opportunities || [];
+  if (opps.length === 0) return '';
+  return '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">' +
+    opps.map(function(o) {
+      var bg = o.confidence >= 0.7 ? '#FFF3E0' : '#F3E5F5';
+      var color = o.confidence >= 0.7 ? '#E65100' : '#7B1FA2';
+      var icon = o.type === 'buying_signal' ? '💰' : o.type === 'interest_signal' ? '👀' : '🤔';
+      var statusIcon = o.status === 'acknowledged' ? ' ✓' : o.status === 'actioned' ? ' ✅' : '';
+      return '<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:' + bg + ';color:' + color + '">' +
+        icon + ' ' + (o.summary || o.type).substring(0, 40) + statusIcon + '</span>';
+    }).join('') +
+  '</div>';
+}
+
+// Toggle execution log visibility
+function toggleExecLog(origIdx) {
+  var el = document.getElementById('execLog_' + origIdx);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// Show suggested reply in a modal-like toast
+function showSuggestedReply(origIdx) {
+  var entry = _queueData.queue[origIdx];
+  if (!entry || !entry.suggestedReply) return;
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center';
+  overlay.onclick = function(e) { if (e.target === overlay) document.body.removeChild(overlay); };
+  var modal = document.createElement('div');
+  modal.style.cssText = 'background:var(--bg);border-radius:12px;padding:24px;max-width:520px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.3)';
+  modal.innerHTML = '<div style="font-size:16px;font-weight:600;margin-bottom:12px">💡 AI Suggested Reply for ' + (entry.contactName || '') + '</div>' +
+    '<div style="background:var(--bg-secondary);padding:12px;border-radius:8px;font-size:13px;white-space:pre-wrap;max-height:300px;overflow-y:auto;border:1px solid var(--border-light)">' + (entry.suggestedReply || '').replace(/</g,'&lt;') + '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">' +
+      '<button onclick="navigator.clipboard.writeText(_queueData.queue[' + origIdx + '].suggestedReply);_showToast(\'📋 Copied to clipboard\');this.closest(\'div\').closest(\'div\').closest(\'div\').remove()" style="padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px">📋 Copy</button>' +
+      '<button onclick="this.closest(\'div\').closest(\'div\').closest(\'div\').remove()" style="padding:8px 16px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px">Close</button>' +
+    '</div>';
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+// Acknowledge an opportunity alert
+async function acknowledgeOpportunity(entryIdx, detectedAt) {
+  var entry = _queueData.queue[entryIdx];
+  if (!entry) return;
+  var opps = entry.opportunities || [];
+  for (var i = 0; i < opps.length; i++) {
+    if (opps[i].detectedAt === detectedAt && opps[i].status !== 'actioned') {
+      opps[i].status = 'acknowledged';
+    }
+  }
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('👁 Opportunity acknowledged');
+}
+
+// Action an opportunity — mark it and open relevant contact
+async function actionOpportunity(entryIdx, detectedAt) {
+  var entry = _queueData.queue[entryIdx];
+  if (!entry) return;
+  var opps = entry.opportunities || [];
+  for (var i = 0; i < opps.length; i++) {
+    if (opps[i].detectedAt === detectedAt) {
+      opps[i].status = 'actioned';
+    }
+  }
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast('✅ Opportunity marked as actioned');
+  // Open LinkedIn profile if available
+  if (entry.linkedinUrl) window.open(entry.linkedinUrl, '_blank');
 }
 
 var switchQueueTemplate = async function(idx, templateIdx) {
@@ -12105,21 +12349,27 @@ var _WF_OPERATORS = [
 
 var _WF_NODE_ORDER = [
   'discovery','dedup','customerMatch','enrichment','crmSync',
-  'review','throttle','outreach','followUp','responseTracking','crmUpdate'
+  'review','crmCreate','throttle','outreach','emailSequence','whatsappOut',
+  'followUp','responseTracking','opportunityAI','inboundHandler','crmUpdate'
 ];
 
 var _WF_NODES = {
-  discovery:        { icon:'🔍', label:'Job Discovery',     type:'auto',      desc:'Scrapes 50+ queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby.' },
-  dedup:            { icon:'🔄', label:'Dedup & Categorize', type:'auto',      desc:'Removes duplicate listings, categorizes by DevOps, AI/ML, FinOps, etc.' },
-  customerMatch:    { icon:'⭐', label:'Customer Match',     type:'auto',      desc:'Matches companies against 123 Develeap customers and 32 past customers.' },
-  enrichment:       { icon:'🧬', label:'Enrichment',         type:'auto',      desc:'Enriches contacts with emails, phones, titles via Apollo.io.' },
-  crmSync:          { icon:'🔗', label:'CRM Sync',           type:'auto',      desc:'Syncs company/deal/contact data from HubSpot every 2h.' },
-  review:           { icon:'👤', label:'Review & Select',    type:'human',     desc:'User reviews new listings, selects contacts, picks templates.' },
-  throttle:         { icon:'🛡️', label:'Queue & Throttle',   type:'throttled', desc:'Queues outreach with human-like timing to avoid LinkedIn detection.' },
-  outreach:         { icon:'📨', label:'LinkedIn Outreach',  type:'throttled', desc:'Sends connection requests and messages with throttled delivery.' },
-  followUp:         { icon:'🔁', label:'Follow-up Sequences',type:'auto',      desc:'Soap Opera Sequences: Day 0 → Day 3 → Day 7 → Day 14.' },
-  responseTracking: { icon:'📊', label:'Response Tracking',  type:'human',     desc:'Track responses, mark connections, qualify leads.' },
-  crmUpdate:        { icon:'💾', label:'CRM Update',         type:'auto',      desc:'Logs outreach activity back to HubSpot.' }
+  discovery:        { icon:'🔍', label:'Job Discovery',        type:'auto',      desc:'Scrapes 50+ queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby.' },
+  dedup:            { icon:'🔄', label:'Dedup & Categorize',   type:'auto',      desc:'Removes duplicate listings, categorizes by DevOps, AI/ML, FinOps, etc.' },
+  customerMatch:    { icon:'⭐', label:'Customer Match',       type:'auto',      desc:'Matches companies against 123 Develeap customers and 32 past customers.' },
+  enrichment:       { icon:'🧬', label:'Enrichment',           type:'auto',      desc:'Enriches contacts with emails, phones, titles via Apollo.io.' },
+  crmSync:          { icon:'🔗', label:'CRM Sync',             type:'auto',      desc:'Syncs company/deal/contact data from HubSpot every 2h.' },
+  review:           { icon:'👤', label:'Review & Select',      type:'human',     desc:'User reviews new listings, selects contacts, picks templates.' },
+  crmCreate:        { icon:'🏢', label:'CRM Create',           type:'auto',      desc:'Auto-create company + contacts in HubSpot when selected for outreach.' },
+  throttle:         { icon:'🛡️', label:'Queue & Throttle',     type:'throttled', desc:'Queues outreach with human-like timing to avoid LinkedIn detection.' },
+  outreach:         { icon:'📨', label:'LinkedIn Outreach',    type:'throttled', desc:'Sends connection requests and messages via browser automation.' },
+  emailSequence:    { icon:'📧', label:'Email Sequence',       type:'auto',      desc:'Enrolls contacts in HubSpot email sequences with reply tracking.' },
+  whatsappOut:      { icon:'📱', label:'WhatsApp Outreach',    type:'throttled', desc:'Sends WhatsApp messages and monitors for replies.' },
+  followUp:         { icon:'🔁', label:'Follow-up Sequences',  type:'auto',      desc:'Soap Opera Sequences: Day 0 → Day 3 → Day 7 → Day 14.' },
+  responseTracking: { icon:'📊', label:'Response Tracking',    type:'human',     desc:'Track responses, mark connections, qualify leads.' },
+  opportunityAI:    { icon:'🧠', label:'Opportunity Detection',type:'auto',      desc:'AI analyzes replies for buying signals, flags for human review.' },
+  inboundHandler:   { icon:'📥', label:'Inbound Handler',      type:'auto',      desc:'Detects inbound LinkedIn connections, auto-responds with job context.' },
+  crmUpdate:        { icon:'💾', label:'CRM Update',            type:'auto',      desc:'Logs outreach activity back to HubSpot.' }
 };
 
 var _WF_DEFAULTS = {
@@ -12129,10 +12379,15 @@ var _WF_DEFAULTS = {
   enrichment:       { enabled:true, provider:'apollo', rateLimit:600 },
   crmSync:          { enabled:true, provider:'hubspot', schedule:'every_2h_business' },
   review:           { enabled:true, mode:'manual', autoApproveCustomers:false, autoApproveCategories:false },
+  crmCreate:        { enabled:true, autoCreateOnOutreach:true, createDeal:false, dealPipeline:'default' },
   throttle:         { enabled:true, preset:'smart', maxConnectionsPerDay:20, maxMessagesPerDay:50, minDelay:45, maxDelay:180, activeHoursStart:'08:00', activeHoursEnd:'18:00', weekendPause:true, cooldownAfterN:10, cooldownMinutes:30, humanVariance:true, humanVariancePct:30 },
   outreach:         { enabled:true, autoSendOnApproval:false, requireReview:true },
+  emailSequence:    { enabled:true, defaultSequenceId:'', autoEnrollOnConnect:false },
+  whatsappOut:      { enabled:true, autoSend:false, monitorReplies:true },
   followUp:         { enabled:true, enableSequences:true, sequenceDays:[0,3,7,14] },
   responseTracking: { enabled:true },
+  opportunityAI:    { enabled:true, confidenceThreshold:0.7, autoFlag:true },
+  inboundHandler:   { enabled:true, autoRespond:false, matchWindowDays:30, requireReview:true },
   crmUpdate:        { enabled:true, autoLog:true }
 };
 
@@ -12615,6 +12870,11 @@ function _wfMetric(id) {
     case 'followUp': return cfg.enableSequences?'Days: '+(cfg.sequenceDays||[0,3,7,14]).join('→'):'Sequences off';
     case 'crmSync': return 'HubSpot — every 2h';
     case 'review': return cfg.mode==='manual'?'Manual review':'Auto-approve';
+    case 'crmCreate': return cfg.autoCreateOnOutreach?'Auto on outreach':'Manual trigger';
+    case 'emailSequence': return cfg.autoEnrollOnConnect?'Auto on connect':'Manual enroll';
+    case 'whatsappOut': return cfg.monitorReplies?'Monitoring replies':'Send only';
+    case 'opportunityAI': return cfg.autoFlag?'Auto-flag signals':'Manual scan';
+    case 'inboundHandler': return 'Window: '+(cfg.matchWindowDays||30)+' days';
     default:
       // Logic node metrics
       var nd = _WF_NODES[id];
@@ -12640,6 +12900,11 @@ function _wfStatus(id) {
     case 'throttle': return (cfg.preset||'smart').charAt(0).toUpperCase()+(cfg.preset||'smart').slice(1)+' mode';
     case 'review': return cfg.mode==='manual'?'Human-in-loop':'Auto';
     case 'outreach': return cfg.requireReview?'Requires review':'Auto-send';
+    case 'crmCreate': return cfg.autoCreateOnOutreach?'Auto-create':'Manual';
+    case 'emailSequence': return cfg.defaultSequenceId?'Seq: '+cfg.defaultSequenceId.substring(0,8)+'…':'No sequence set';
+    case 'whatsappOut': return cfg.autoSend?'Auto-send':'Manual review';
+    case 'opportunityAI': return 'Threshold: '+(cfg.confidenceThreshold||0.7)*100+'%';
+    case 'inboundHandler': return cfg.autoRespond?'Auto-respond':'Requires review';
     default:
       var nds = _WF_NODES[id];
       if(nds && nds.type === 'logic') {
@@ -12694,6 +12959,11 @@ function _wfRenderConfig(id) {
       case 'review': h += _wfReviewCfg(cfg); break;
       case 'followUp': h += _wfFollowUpCfg(cfg); break;
       case 'outreach': h += _wfOutreachCfg(cfg); break;
+      case 'crmCreate': h += _wfCrmCreateCfg(cfg); break;
+      case 'emailSequence': h += _wfEmailSeqCfg(cfg); break;
+      case 'whatsappOut': h += _wfWhatsAppCfg(cfg); break;
+      case 'opportunityAI': h += _wfOpportunityAICfg(cfg); break;
+      case 'inboundHandler': h += _wfInboundCfg(cfg); break;
       default: h += _wfSimpleCfg(id, cfg);
     }
   }
@@ -12780,6 +13050,50 @@ function _wfFollowUpCfg(c) {
     }).join('')+'</div>'+
     '<div class="wf-chip-add"><input type="number" id="wfNewDay" placeholder="Day #" min="0" max="365" style="width:80px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">'+
     '<button onclick="_wfAddDay()" style="padding:6px 12px;font-size:12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600">Add</button></div></div>';
+}
+
+function _wfCrmCreateCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">CRM Creation</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoCreateOnOutreach?'checked':'')+' onchange="_wfSet(\'crmCreate\',\'autoCreateOnOutreach\',this.checked)"> Auto-create on outreach</label>'+
+    '<span class="wf-form-hint">Automatically create company + contact in HubSpot when queued for outreach.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.createDeal?'checked':'')+' onchange="_wfSet(\'crmCreate\',\'createDeal\',this.checked)"> Also create a deal</label>'+
+    '<span class="wf-form-hint">Creates a deal in HubSpot linked to the contact and company.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label">Deal Pipeline</label>'+
+    '<input type="text" class="wf-input" value="'+(c.dealPipeline||'default')+'" onchange="_wfSet(\'crmCreate\',\'dealPipeline\',this.value)" placeholder="default"></div></div>';
+}
+
+function _wfEmailSeqCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">Email Sequences</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label">Default Sequence ID</label>'+
+    '<input type="text" class="wf-input" value="'+(c.defaultSequenceId||'')+'" onchange="_wfSet(\'emailSequence\',\'defaultSequenceId\',this.value)" placeholder="HubSpot sequence ID"></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoEnrollOnConnect?'checked':'')+' onchange="_wfSet(\'emailSequence\',\'autoEnrollOnConnect\',this.checked)"> Auto-enroll when connection accepted</label>'+
+    '<span class="wf-form-hint">When a LinkedIn connection is accepted, auto-enroll the contact in an email sequence.</span></div></div>';
+}
+
+function _wfWhatsAppCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">WhatsApp Outreach</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoSend?'checked':'')+' onchange="_wfSet(\'whatsappOut\',\'autoSend\',this.checked)"> Auto-send messages</label>'+
+    '<span class="wf-form-hint">⚠️ When disabled, messages queue for manual review before sending.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.monitorReplies?'checked':'')+' onchange="_wfSet(\'whatsappOut\',\'monitorReplies\',this.checked)"> Monitor for replies</label>'+
+    '<span class="wf-form-hint">Check WhatsApp Web periodically for incoming replies.</span></div></div>';
+}
+
+function _wfOpportunityAICfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">AI Opportunity Detection</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label">Confidence Threshold</label>'+
+    _wfSlider('Flag when confidence ≥','confidenceThreshold',Math.round((c.confidenceThreshold||0.7)*100),30,95,'opportunityAI')+
+    '<span class="wf-form-hint">Higher = fewer alerts but more certain buying signals.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoFlag?'checked':'')+' onchange="_wfSet(\'opportunityAI\',\'autoFlag\',this.checked)"> Auto-flag opportunities</label>'+
+    '<span class="wf-form-hint">Automatically flag queue entries when AI detects buying signals.</span></div></div>';
+}
+
+function _wfInboundCfg(c) {
+  return '<div class="wf-section"><div class="wf-section-title">Inbound Connection Handler</div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.autoRespond?'checked':'')+' onchange="_wfSet(\'inboundHandler\',\'autoRespond\',this.checked)"> Auto-respond to inbound connections</label>'+
+    '<span class="wf-form-hint">⚠️ When enabled, sends template message automatically. When disabled, queues for review.</span></div>'+
+    '<div class="wf-form-group"><label class="wf-form-label"><input type="checkbox" '+(c.requireReview?'checked':'')+' onchange="_wfSet(\'inboundHandler\',\'requireReview\',this.checked)"> Require review before responding</label></div>'+
+    _wfSlider('Match Window (days)','matchWindowDays',c.matchWindowDays||30,7,90,'inboundHandler')+
+    '<span class="wf-form-hint">Match inbound connections to job postings within this time window.</span></div>';
 }
 
 /* ---- Condition Builder (3 modes: rules, JS, vibe) ---- */
