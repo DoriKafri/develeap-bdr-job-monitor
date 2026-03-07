@@ -2247,132 +2247,11 @@ function handleCredentialResponse(r) {
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-07T17:32:16Z";
+let LAST_UPDATED = "2026-03-07T18:46:33Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
-  {
-    "id": "bc3d562e",
-    "title": "DevOps Engineer",
-    "subtitle": "Develeap - Tel Aviv, Israel",
-    "company": "Develeap",
-    "companyIndustry": "DevOps Consulting",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv-israel",
-    "source": "other",
-    "sourceUrl": "https://www.develeap.com/careers/devops-engineer-mock",
-    "category": "devops",
-    "posted": "2026-03-07",
-    "isNew": true,
-    "isDeveleapCustomer": true,
-    "isPastCustomer": false,
-    "_isMock": true,
-    "description": "[TEST MESSAGE] Mock DevOps Engineer position at Develeap for testing the Wolf Pack campaign feature. This is not a real job listing.",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "May Alma",
-        "title": "Business Operations Manager & Team Lead",
-        "linkedin": "https://www.linkedin.com/in/may-alma/",
-        "source": "LinkedIn",
-        "email": "may.tzavchon@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi May, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, May! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFgvSwlYU6gtw/profile-displayphoto-scale_400_400/B4DZh46OctG8Ag-/0/1754375187862",
-        "phone": "+972 52-364-5621"
-      },
-      {
-        "name": "Lihi Pinto",
-        "title": "SaaS B2B Growth Strategist | CRO as a Service",
-        "linkedin": "https://www.linkedin.com/in/lihipinto/",
-        "source": "LinkedIn",
-        "email": "lihi.pinto@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Lihi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Lihi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D35AQE8UwioBct0wQ/profile-framedphoto-shrink_400_400/B4DZrAnp.SIgAc-/0/1764168212646",
-        "phone": "+972 58-630-7748"
-      },
-      {
-        "name": "Roni Nir",
-        "title": "Business Management & Entrepreneurship",
-        "linkedin": "https://www.linkedin.com/in/roni-nir/",
-        "source": "LinkedIn",
-        "email": "roni.nir@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Roni, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Roni! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG38FBHfkR_0A/profile-displayphoto-scale_400_400/B4DZpEgy4qGQAg-/0/1762086040236",
-        "phone": "+972 50-448-9802"
-      },
-      {
-        "name": "Efi Shimon",
-        "title": "DevOps Group Leader",
-        "linkedin": "https://www.linkedin.com/in/efishimon/",
-        "source": "LinkedIn",
-        "email": "effi.shimon@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Efi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Efi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEzwRAL-FUgCg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1730195528965",
-        "phone": "+972 52-536-1095"
-      },
-      {
-        "name": "Saar Cohen",
-        "title": "Head of Education & AWS Training Partner",
-        "linkedin": "https://www.linkedin.com/in/saar--cohen/",
-        "source": "LinkedIn",
-        "email": "saar.cohen@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Saar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Saar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFViBKtOk1b6g/profile-displayphoto-shrink_400_400/B4DZP8z2z5GgAg-/0/1735113273207",
-        "phone": "+972 50-234-8800"
-      },
-      {
-        "name": "Nofar Barzilay",
-        "title": "DevOps Engineer",
-        "linkedin": "https://www.linkedin.com/in/nofar-barzilay-03a81517b/",
-        "source": "LinkedIn",
-        "email": "nofar.barzilay@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Nofar, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Nofar! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFP2fQ6-TLbuQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1725939310587",
-        "phone": "+972 52-896-6262"
-      },
-      {
-        "name": "Shoshi Revivo",
-        "title": "Senior DevOps Group Leader",
-        "linkedin": "https://www.linkedin.com/in/shoshi-revivo-69249b166/",
-        "source": "LinkedIn",
-        "email": "shoshi.revivo@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi Shoshi, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Shoshi! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFKqpq9H_DT2A/profile-displayphoto-scale_400_400/B4DZhN0Y8eHsAg-/0/1753652240816",
-        "phone": ""
-      },
-      {
-        "name": "ShemTov Fisher",
-        "title": "DevOps Team Lead",
-        "linkedin": "https://www.linkedin.com/in/shemtov-fisher-17b486194/",
-        "source": "LinkedIn",
-        "email": "shemtov.fisher@develeap.com",
-        "connectMsg": "[TEST MESSAGE] Hi ShemTov, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, ShemTov! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQG7l7DgSX4FVA/profile-displayphoto-shrink_400_400/B4DZTWW3K.GkAg-/0/1738763105332",
-        "phone": ""
-      },
-      {
-        "name": "Gilad Neiger",
-        "title": "DevOps Engineer",
-        "linkedin": "https://www.linkedin.com/in/gilad-neiger-696bab188/",
-        "source": "LinkedIn",
-        "email": "gilad.neiger@develeap.com",
-        "phone": "+972 52-822-9281",
-        "connectMsg": "[TEST MESSAGE] Hi Gilad, this is a test connection request for the Wolf Pack campaign feature demo. No action needed — just testing the BDR dashboard flow.",
-        "followUpMsg": "[TEST MESSAGE] Thanks for connecting, Gilad! This is a test follow-up message for the Wolf Pack campaign feature. No action needed — just verifying the multi-channel outreach flow works correctly.",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQH2fQMBs_0d9A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1691578429452"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128"
-  },
   {
     "id": "2ba45202",
     "title": "Senior FinOps Engineer (25020)",
@@ -2440,6 +2319,27 @@ let ALL_JOBS = [
         "title": "Check Point Software גיוס עובדים Senior FinOps Engineer"
       }
     ]
+  },
+  {
+    "id": "bc3d562e",
+    "title": "DevOps Engineer",
+    "subtitle": "Develeap - Tel Aviv, Israel",
+    "company": "Develeap",
+    "companyIndustry": "DevOps Consulting",
+    "location": "Tel Aviv, Israel",
+    "locationSlug": "tel-aviv-israel",
+    "source": "other",
+    "sourceUrl": "https://www.develeap.com/careers/devops-engineer-mock",
+    "category": "devops",
+    "posted": "2026-03-07",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "_isMock": true,
+    "description": "[TEST MESSAGE] Mock DevOps Engineer position at Develeap for testing the Wolf Pack campaign feature. This is not a real job listing.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128"
   },
   {
     "id": "3d855965",
@@ -3650,37 +3550,6 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=getport.io&sz=128"
-  },
-  {
-    "id": "b7346747",
-    "title": "Commit גיוס עובדים FinOps Engineer - Petah Tikva",
-    "subtitle": "We are seeking a Senior Cloud FinOps Specialist to join our ",
-    "company": "Commit",
-    "companyIndustry": "",
-    "location": "Petah Tikva",
-    "locationSlug": "petah-tikva",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/finops-engineer-at-commit-4379870368",
-    "category": "finops",
-    "posted": "2026-03-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are seeking a Senior Cloud FinOps Specialist to join our team and lead cloud financial services to our wide customers",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Ilan Sokolov",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/ilan-sokolov/",
-        "source": "LinkedIn",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHOa_jZ5lAD9w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1697281804260?e=2147483647&v=beta&t=ixyu7s97GptaVj9ANuGduwuF91MbdqeQVrGmJ34wOKQ",
-        "connectMsg": "Hi Ilan, I noticed Commit is hiring a Commit גיוס עובדים FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Ilan! I wanted to share how Develeap helps companies like Commit accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=commit.com&sz=128"
   },
   {
     "id": "0e15a0ac",
@@ -5626,36 +5495,6 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=silverfort.com&sz=128"
-  },
-  {
-    "id": "7c6f69e3",
-    "title": "Senior Cloud Operations Engineer (FinOps)",
-    "subtitle": "We are seeking a Senior Cloud Operations Engineer (FinOps) f",
-    "company": "Sqlink Group",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/senior-cloud-operations-engineer-finops-at-sqlink-group-4378160338",
-    "category": "finops",
-    "posted": "2026-03-03",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are seeking a Senior Cloud Operations Engineer (FinOps) for a government organization located in central Israel. Resp",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Tamir Goren",
-        "title": "CEO",
-        "linkedin": "https://www.linkedin.com/in/tamir-goren-8b666a4/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Tamir, I noticed Sqlink Group is hiring a Senior Cloud Operations Engineer (FinOps) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Tamir! I wanted to share how Develeap helps companies like Sqlink Group accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=sqlinkgroup.com&sz=128"
   },
   {
     "id": "7328882f",
@@ -8322,11 +8161,6 @@ function _showToast(msg) {
 }
 
 function sendEmail() {
-  if (!_wpIsWithinTimeWindow('email')) {
-    var nxt = _wpNextWindowOpens('email');
-    _showToast('🔴 Email sending is outside the allowed time window. Next window: ' + nxt, 'warning');
-    return;
-  }
   const job = _activeJobForOutreach;
   if (!job) return;
   const stakeholders = job._mergedStakeholders || job.stakeholders || [];
@@ -8359,11 +8193,6 @@ function _updateTplSelectTooltip(sel, templates) {
 }
 
 function sendWhatsApp(stakeholderIdx) {
-  if (!_wpIsWithinTimeWindow('whatsapp')) {
-    var nxt = _wpNextWindowOpens('whatsapp');
-    _showToast('🔴 WhatsApp sending is outside the allowed time window. Next window: ' + nxt, 'warning');
-    return;
-  }
   const job = _activeJobForOutreach;
   if (!job) return;
   if (typeof stakeholderIdx === 'number') _activeStakeholderIdx = stakeholderIdx;
@@ -8399,11 +8228,6 @@ function sendWhatsApp(stakeholderIdx) {
 }
 
 function sendWhatsAppFromQueue(queueIdx) {
-  if (!_wpIsWithinTimeWindow('whatsapp')) {
-    var nxt = _wpNextWindowOpens('whatsapp');
-    _showToast('🔴 WhatsApp sending is outside the allowed time window. Next window: ' + nxt, 'warning');
-    return;
-  }
   const entry = _liQueue[queueIdx];
   if (!entry) return;
   const phone = entry.whatsappPhone || '';
@@ -11718,57 +11542,6 @@ function renderWolfPackSettingsSection() {
     html += '</div>';
   });
 
-  // ── Messaging Time Windows ──
-  var _twDefaults = _wpGetTimeWindows();
-  html += '<div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;margin-top:24px">';
-  html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">';
-  html += '<div style="width:36px;height:36px;border-radius:10px;background:#FFF3E0;display:flex;align-items:center;justify-content:center;font-size:18px">⏰</div>';
-  html += '<div><div style="font-weight:700;font-size:14px">Messaging Time Windows</div>';
-  html += '<div style="font-size:12px;color:var(--text-light)">Messages will only be sent during these windows. Outside these hours, messages are queued until the next valid window.</div></div></div>';
-
-  var _twChannels = [
-    { key: 'whatsapp', icon: '📱', label: 'WhatsApp', color: '#E8F5E9' },
-    { key: 'linkedin', icon: '🔗', label: 'LinkedIn', color: '#E3F2FD' },
-    { key: 'email',    icon: '✉️', label: 'Email',    color: '#FFF3E0' }
-  ];
-  var _twDayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-  _twChannels.forEach(function(ch) {
-    var tw = _twDefaults[ch.key];
-    html += '<div style="border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;background:' + ch.color + '22">';
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
-    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">' + ch.icon + '</span><span style="font-weight:600;font-size:13px">' + ch.label + '</span></div>';
-    html += '<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span>Enforce</span>';
-    html += '<label class="toggle-switch" style="width:36px;height:20px"><input type="checkbox" ' + (tw.enabled ? 'checked' : '') + ' onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'enabled\', this.checked)">';
-    html += '<span class="toggle-slider" style="border-radius:20px"><span style="display:none"></span></span></label></label></div>';
-
-    // Days row
-    html += '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Active Days</label>';
-    html += '<div style="display:flex;gap:4px;flex-wrap:wrap">';
-    _twDayLabels.forEach(function(d, i) {
-      var active = tw.days && tw.days.indexOf(i) >= 0;
-      html += '<button onclick="_wpToggleTimeWindowDay(\'' + ch.key + '\',' + i + ')" style="width:38px;padding:5px 0;border:1px solid ' + (active ? 'var(--primary)' : 'var(--border)') + ';border-radius:6px;background:' + (active ? 'var(--primary)' : '#fff') + ';color:' + (active ? '#fff' : 'var(--text)') + ';font-size:11px;font-weight:600;cursor:pointer">' + d + '</button>';
-    });
-    html += '</div></div>';
-
-    // Hours row
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
-    html += '<div><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px">Start Time</label>';
-    html += '<input type="time" value="' + tw.startTime + '" onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'startTime\', this.value)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
-    html += '<div><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px">End Time</label>';
-    html += '<input type="time" value="' + tw.endTime + '" onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'endTime\', this.value)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
-    html += '</div>';
-
-    html += '</div>';
-  });
-
-  // Current status indicator
-  html += '<div style="margin-top:10px;padding:10px 14px;background:#F5F5F5;border-radius:8px;font-size:12px;color:var(--text-light)">';
-  html += '💡 <strong>Current status:</strong> ' + _wpTimeWindowStatus();
-  html += '</div>';
-
-  html += '</div>';
-
   html += '<div style="display:flex;justify-content:flex-end;margin-top:8px">';
   html += '<button class="intg-save-btn" onclick="_saveSettingsToGitHub()" style="background:var(--primary)">💾 Save Wolf Pack Defaults</button>';
   html += '</div>';
@@ -11828,94 +11601,6 @@ function _wpAddSettingsTeam(ct, email) {
 function _wpRemoveSettingsTeam(ct, email) {
   _wpStrategyDefaults[ct].teamMembers = (_wpStrategyDefaults[ct].teamMembers || []).filter(function(e) { return e !== email; });
   renderWolfPackSettingsSection();
-}
-
-// ── Messaging Time Windows ──
-var _wpTimeWindows = null;
-function _wpGetTimeWindows() {
-  if (_wpTimeWindows) return _wpTimeWindows;
-  var stored = localStorage.getItem('bdr_time_windows');
-  if (stored) {
-    try { _wpTimeWindows = JSON.parse(stored); return _wpTimeWindows; } catch(e) {}
-  }
-  _wpTimeWindows = {
-    whatsapp: { enabled: true, days: [0,1,2,3,4], startTime: '09:00', endTime: '18:00' },
-    linkedin: { enabled: true, days: [0,1,2,3,4], startTime: '07:00', endTime: '21:00' },
-    email:    { enabled: true, days: [0,1,2,3,4], startTime: '09:00', endTime: '21:00' }
-  };
-  return _wpTimeWindows;
-}
-
-function _wpSaveTimeWindows() {
-  localStorage.setItem('bdr_time_windows', JSON.stringify(_wpTimeWindows));
-}
-
-function _wpUpdateTimeWindow(channel, field, value) {
-  var tw = _wpGetTimeWindows();
-  tw[channel][field] = value;
-  _wpSaveTimeWindows();
-  renderWolfPackSettingsSection();
-}
-
-function _wpToggleTimeWindowDay(channel, dayIdx) {
-  var tw = _wpGetTimeWindows();
-  var days = tw[channel].days || [];
-  var idx = days.indexOf(dayIdx);
-  if (idx >= 0) days.splice(idx, 1);
-  else days.push(dayIdx);
-  days.sort();
-  tw[channel].days = days;
-  _wpSaveTimeWindows();
-  renderWolfPackSettingsSection();
-}
-
-function _wpTimeWindowStatus() {
-  var tw = _wpGetTimeWindows();
-  var now = new Date();
-  var day = now.getDay();
-  var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
-  var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  var parts = [];
-  ['whatsapp','linkedin','email'].forEach(function(ch) {
-    var w = tw[ch];
-    if (!w.enabled) { parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': disabled'); return; }
-    var inDay = w.days && w.days.indexOf(day) >= 0;
-    var inTime = hhmm >= w.startTime && hhmm <= w.endTime;
-    if (inDay && inTime) parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': ✅ active');
-    else parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': 🔴 outside window');
-  });
-  return dayNames[day] + ' ' + hhmm + ' — ' + parts.join(' · ');
-}
-
-function _wpIsWithinTimeWindow(channel) {
-  var tw = _wpGetTimeWindows();
-  var w = tw[channel];
-  if (!w || !w.enabled) return true;
-  var now = new Date();
-  var day = now.getDay();
-  if (!w.days || w.days.indexOf(day) < 0) return false;
-  var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
-  return hhmm >= w.startTime && hhmm <= w.endTime;
-}
-
-function _wpNextWindowOpens(channel) {
-  var tw = _wpGetTimeWindows();
-  var w = tw[channel];
-  if (!w || !w.enabled || !w.days || w.days.length === 0) return 'No active window';
-  var now = new Date();
-  var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  for (var offset = 0; offset < 7; offset++) {
-    var checkDay = (now.getDay() + offset) % 7;
-    if (w.days.indexOf(checkDay) >= 0) {
-      if (offset === 0) {
-        var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
-        if (hhmm < w.startTime) return 'Today at ' + w.startTime;
-        if (hhmm <= w.endTime) return 'Now';
-      }
-      return dayNames[checkDay] + ' at ' + w.startTime;
-    }
-  }
-  return 'No active window';
 }
 
 function renderSettingsView() {
@@ -12681,38 +12366,6 @@ var renderQueueView = function() {
     `;
   }
 
-  // ── Time Window Status Banner ──
-  var _twBanner = '';
-  var _twChannelStatus = [
-    { key: 'linkedin', icon: '🔗', label: 'LinkedIn' },
-    { key: 'whatsapp', icon: '📱', label: 'WhatsApp' },
-    { key: 'email', icon: '✉️', label: 'Email' }
-  ];
-  var _twAnyBlocked = false;
-  _twChannelStatus.forEach(function(ch) {
-    if (!_wpIsWithinTimeWindow(ch.key)) _twAnyBlocked = true;
-  });
-  if (_twAnyBlocked) {
-    _twBanner = '<div style="background:#FFF3E0;border:1px solid #FFE0B2;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
-    _twBanner += '<span style="font-weight:600">⏰ Time Windows:</span>';
-    _twChannelStatus.forEach(function(ch) {
-      var inWindow = _wpIsWithinTimeWindow(ch.key);
-      _twBanner += '<span style="padding:2px 8px;border-radius:10px;background:' + (inWindow ? '#E8F5E9' : '#FFEBEE') + ';color:' + (inWindow ? '#2E7D32' : '#C62828') + ';font-weight:600">';
-      _twBanner += ch.icon + ' ' + ch.label + ': ' + (inWindow ? '✅' : '🔴 ' + _wpNextWindowOpens(ch.key)) + '</span>';
-    });
-    _twBanner += '</div>';
-    var twBannerEl = document.getElementById('queueTimeWindowBanner');
-    if (!twBannerEl) {
-      twBannerEl = document.createElement('div');
-      twBannerEl.id = 'queueTimeWindowBanner';
-      listEl.parentNode.insertBefore(twBannerEl, listEl);
-    }
-    twBannerEl.innerHTML = _twBanner;
-  } else {
-    var twBannerEl2 = document.getElementById('queueTimeWindowBanner');
-    if (twBannerEl2) twBannerEl2.innerHTML = '';
-  }
-
   // Update global toggle button
   const toggleBtn = document.getElementById('queueGlobalToggle');
   const toggleIcon = document.getElementById('queueToggleIcon');
@@ -12830,10 +12483,7 @@ var renderQueueView = function() {
 
     // Action buttons based on status
     let actions = '';
-    const _waInWindow = _wpIsWithinTimeWindow('whatsapp');
-    const _liInWindow = _wpIsWithinTimeWindow('linkedin');
-    const _emInWindow = _wpIsWithinTimeWindow('email');
-    const waBtn = isWhatsApp && entry.whatsappPhone ? `<button onclick="event.stopPropagation();sendWhatsAppFromQueue(${origIdx})" title="${_waInWindow ? 'Send via WhatsApp' : '🔴 Outside WhatsApp time window (' + _wpNextWindowOpens('whatsapp') + ')'}" style="background:${_waInWindow ? '#25D366' : '#ccc'};color:white;border-color:${_waInWindow ? '#25D366' : '#ccc'}${_waInWindow ? '' : ';opacity:0.7'}">📱 ${_waInWindow ? 'Send' : '⏰'}</button>` : '';
+    const waBtn = isWhatsApp && entry.whatsappPhone ? `<button onclick="event.stopPropagation();sendWhatsAppFromQueue(${origIdx})" title="Send via WhatsApp" style="background:#25D366;color:white;border-color:#25D366">📱 Send</button>` : '';
     if (entry.status === 'pending' || entry.status === 'processing') {
       actions = `
         ${waBtn}
