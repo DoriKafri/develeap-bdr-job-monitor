@@ -277,10 +277,28 @@
     "mimmi berglund": "invited",
     "jeppe jensen": "invited",
     "aga wiszniewska": "invited",
-    "rakhesh sekhar": "invited"
+    "rakhesh sekhar": "invited",
+    "may alma": "connected",
+    "lihi pinto": "connected",
+    "roni nir": "connected",
+    "efi shimon": "connected",
+    "saar cohen": "connected",
+    "nofar barzilay": "connected",
+    "shoshi revivo": "connected",
+    "shemtov fisher": "connected",
+    "gilad neiger": "connected"
   },
   "connected": [
-    "check point|nataly kremer"
+    "check point|nataly kremer",
+    "may alma",
+    "lihi pinto",
+    "roni nir",
+    "efi shimon",
+    "saar cohen",
+    "nofar barzilay",
+    "shoshi revivo",
+    "shemtov fisher",
+    "gilad neiger"
   ],
   "hiddenCompanies": [
     "unknown"
