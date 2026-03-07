@@ -1,13 +1,10 @@
 name: Develeap BDR Job Monitor
 
 on:
-  # Scheduled runs disabled — were generating cancelled-run email spam
-  # To re-enable, uncomment the schedule block below:
-  # schedule:
-  #   - cron: '*/15 6-16 * * *'   # Daytime (every 15 min, ~8:00-18:59 IST)
-  #   - cron: '0 17-23,0-5 * * *' # Nighttime (every 60 min, ~19:00-7:59 IST)
+  schedule:
+    - cron: '*/15 6-16 * * *'   # Daytime (every 15 min, ~8:00-18:59 IST)
+    - cron: '0 17-23,0-5 * * *' # Nighttime (every 60 min, ~19:00-7:59 IST)
 
-  # Manual trigger only
   workflow_dispatch:
 
 permissions:
@@ -23,21 +20,34 @@ jobs:
     timeout-minutes: 15
 
     steps:
+      - name: Check required secrets
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+        run: |
+          if [ -z "$SERPAPI_KEY" ]; then
+            echo "⏭️ SERPAPI_KEY not configured — skipping run"
+            echo "SKIP_RUN=true" >> $GITHUB_ENV
+          fi
+
       - name: Checkout repository
+        if: env.SKIP_RUN != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
+        if: env.SKIP_RUN != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: 'pip'
 
       - name: Install dependencies
+        if: env.SKIP_RUN != 'true'
         run: pip install -r requirements.txt
 
       - name: Run job monitor update
+        if: env.SKIP_RUN != 'true'
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
@@ -47,6 +57,7 @@ jobs:
         run: python update_jobs.py
 
       - name: Commit updated dashboard
+        if: env.SKIP_RUN != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -65,7 +76,7 @@ jobs:
           git push
 
       - name: Notify Slack on failure
-        if: failure()
+        if: failure() && env.SKIP_RUN != 'true'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |

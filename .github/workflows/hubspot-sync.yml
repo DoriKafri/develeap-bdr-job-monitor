@@ -1,12 +1,9 @@
 name: CRM & Enrichment Sync
 
 on:
-  # Scheduled runs disabled — were generating cancelled-run email spam
-  # To re-enable, uncomment the schedule block below:
-  # schedule:
-  #   - cron: '30 6-16 */2 * *'   # Every 2h from ~8:30-18:30 IST
+  schedule:
+    - cron: '30 6-16 */2 * *'   # Every 2h from ~8:30-18:30 IST
 
-  # Manual trigger only
   workflow_dispatch:
 
 permissions:
@@ -29,46 +26,47 @@ jobs:
       - name: Check if any integration is configured
         run: |
           if [ -z "$HUBSPOT_TOKEN" ] && [ -z "$APOLLO_API_KEY" ]; then
-            echo "No integration secrets set, skipping"
-            exit 0
+            echo "⏭️ No integration secrets set — skipping run"
+            echo "SKIP_RUN=true" >> $GITHUB_ENV
           fi
 
       - name: Checkout repository
+        if: env.SKIP_RUN != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
+        if: env.SKIP_RUN != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install dependencies
+        if: env.SKIP_RUN != 'true'
         run: pip install requests
 
       - name: Run HubSpot CRM sync
-        if: env.HUBSPOT_TOKEN != ''
+        if: env.SKIP_RUN != 'true' && env.HUBSPOT_TOKEN != ''
         env:
-          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
         run: python sync_hubspot.py
 
       - name: Run Apollo.io enrichment
-        if: env.APOLLO_API_KEY != ''
+        if: env.SKIP_RUN != 'true' && env.APOLLO_API_KEY != ''
         env:
-          APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
           APOLLO_WEBHOOK_URL: ${{ secrets.APOLLO_WEBHOOK_URL }}
         run: python enrich_apollo.py
 
       - name: Process outreach queue
-        if: env.HUBSPOT_TOKEN != ''
+        if: env.SKIP_RUN != 'true' && env.HUBSPOT_TOKEN != ''
         env:
-          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python process_queue.py
 
       - name: Commit data
+        if: env.SKIP_RUN != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
