@@ -8528,6 +8528,8 @@ function initApp() {
   setInterval(checkForNewListings, 5 * 60 * 1000); // check for updates every 5 min
   // Initialize GitHub persistent storage sync
   _initGitHubSync();
+  // Load Wolf Pack campaigns early so contacts appear in job detail views
+  _loadCampaignsFromGitHub();
   // Initialize settings
   _loadSettingsFromGitHub();
   // Load CRM integration config from localStorage and trigger auto-match
