@@ -2704,47 +2704,122 @@ def deploy_to_netlify(html: str) -> bool:
 # ── Slack Dedup Tracking ───────────────────────────────────────────────────
 
 def _slack_listing_key(job: dict) -> str:
-    """Build a unique identifier for a listing: company|category|normalized_title|date.
+    """Build a unique identifier for a listing: company|category|normalized_title.
 
     Uses _normalize_company and _normalize_title so that different scrape variants
     of the same job (e.g. Hebrew vs English title, different source suffixes)
     resolve to the same key and avoid duplicate Slack posts.
+
+    NOTE: Date is intentionally excluded from the key. Including the date caused
+    the same job to be re-posted whenever it was re-scraped with a different date
+    (e.g., search engine returns it with today's date instead of original date).
+    A 30-day staleness window is used instead to allow genuinely re-opened roles
+    to be re-posted.
     """
     company = _normalize_company(job.get("company") or "").lower().strip()
     category = (job.get("category") or "").lower().strip()
     title = _normalize_title(job.get("title") or "")
-    posted = (job.get("posted") or "")[:10]  # YYYY-MM-DD
+    return f"{company}|{category}|{title}"
+
+
+def _slack_listing_key_legacy(job: dict) -> str:
+    """Legacy key format with date (for backward-compatible dedup)."""
+    company = _normalize_company(job.get("company") or "").lower().strip()
+    category = (job.get("category") or "").lower().strip()
+    title = _normalize_title(job.get("title") or "")
+    posted = (job.get("posted") or "")[:10]
     return f"{company}|{category}|{title}|{posted}"
 
 
-def _load_slack_posted() -> set:
-    """Load the set of listing keys already posted to Slack."""
+# Staleness window: don't re-post a job if seen within this many days
+SLACK_DEDUP_STALENESS_DAYS = 30
+
+
+def _load_slack_posted() -> dict:
+    """Load the posted tracking data.
+
+    Returns dict with:
+      - posted_keys: set of dateless keys (company|category|title)
+      - posted_keys_with_dates: set of legacy keys (for backward compat)
+      - first_seen: dict mapping dateless key → ISO timestamp of first posting
+    """
     try:
         with open(SLACK_POSTED_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
-            return set(data.get("posted_keys", []))
+            result = {
+                "posted_keys": set(data.get("posted_keys", [])),
+                "posted_keys_with_dates": set(data.get("posted_keys_with_dates", [])),
+                "first_seen": data.get("first_seen", {}),
+            }
+            # Migrate: extract dateless keys from legacy date-keyed entries
+            for legacy_key in list(result["posted_keys"]):
+                parts = legacy_key.split("|")
+                if len(parts) == 4 and re.match(r'^\d{4}-\d{2}-\d{2}$', parts[-1]):
+                    # This is an old date-keyed entry, extract dateless version
+                    dateless = "|".join(parts[:3])
+                    result["posted_keys"].add(dateless)
+                    result["posted_keys_with_dates"].add(legacy_key)
+                    if dateless not in result["first_seen"]:
+                        result["first_seen"][dateless] = parts[-1] + "T00:00:00+00:00"
+            return result
     except (FileNotFoundError, json.JSONDecodeError):
-        return set()
+        return {"posted_keys": set(), "posted_keys_with_dates": set(), "first_seen": {}}
 
 
-def _save_slack_posted(keys: set) -> None:
-    """Persist the set of posted listing keys. Keep last 2000 to avoid unbounded growth."""
-    # Sort to keep most recent entries (keys contain dates)
-    sorted_keys = sorted(keys, reverse=True)[:2000]
+def _save_slack_posted(tracking: dict) -> None:
+    """Persist the posted tracking data. Keep last 2000 dateless keys."""
+    dateless_keys = sorted(tracking["posted_keys"], reverse=True)[:2000]
+    first_seen = {k: v for k, v in tracking.get("first_seen", {}).items() if k in set(dateless_keys)}
     with open(SLACK_POSTED_PATH, "w", encoding="utf-8") as f:
-        json.dump({"posted_keys": sorted_keys, "updated": datetime.now(timezone.utc).isoformat()}, f, indent=2)
+        json.dump({
+            "posted_keys": dateless_keys,
+            "first_seen": first_seen,
+            "updated": datetime.now(timezone.utc).isoformat(),
+        }, f, indent=2)
 
 
 def _filter_unposted_jobs(jobs: list[dict]) -> list[dict]:
-    """Filter out jobs that have already been posted to Slack."""
-    posted = _load_slack_posted()
+    """Filter out jobs that have already been posted to Slack.
+
+    Uses dateless keys (company|category|title) to prevent re-posting the same
+    job when it's re-scraped with a different date. A staleness window allows
+    genuinely re-opened roles to be re-posted after SLACK_DEDUP_STALENESS_DAYS.
+    """
+    tracking = _load_slack_posted()
+    posted_keys = tracking["posted_keys"]
+    first_seen = tracking.get("first_seen", {})
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=SLACK_DEDUP_STALENESS_DAYS)).isoformat()
+
     unposted = []
+    skipped_dedup = 0
+    skipped_stale_repost = 0
+
     for j in jobs:
         key = _slack_listing_key(j)
-        if key not in posted:
-            unposted.append(j)
-    if len(jobs) != len(unposted):
-        log.info(f"  Slack dedup: {len(jobs)} candidates → {len(unposted)} new (filtered {len(jobs) - len(unposted)} already posted)")
+        if key in posted_keys:
+            # Check staleness: if first_seen is within the window, skip
+            seen_at = first_seen.get(key, "")
+            if seen_at and seen_at >= cutoff:
+                skipped_dedup += 1
+                continue
+            elif seen_at:
+                # Seen more than STALENESS_DAYS ago — allow re-post (genuinely re-opened role)
+                log.info(f"  Re-posting stale job (first seen {seen_at[:10]}): {j.get('title','')[:50]}")
+                unposted.append(j)
+                continue
+            else:
+                skipped_dedup += 1
+                continue
+        # Also check legacy keys for backward compat
+        legacy_key = _slack_listing_key_legacy(j)
+        if legacy_key in tracking.get("posted_keys_with_dates", set()):
+            skipped_dedup += 1
+            continue
+        unposted.append(j)
+
+    total_filtered = skipped_dedup + skipped_stale_repost
+    if total_filtered > 0:
+        log.info(f"  Slack dedup: {len(jobs)} candidates → {len(unposted)} new (filtered {skipped_dedup} duplicates)")
     return unposted
 
 
@@ -2840,10 +2915,14 @@ def notify_slack(new_jobs: list[dict]) -> bool:
         resp.raise_for_status()
         log.info(f"Slack notification sent for {len(new_jobs)} new listings")
         # Record posted keys so we never re-post these listings
-        posted = _load_slack_posted()
+        tracking = _load_slack_posted()
+        now_iso = datetime.now(timezone.utc).isoformat()
         for j in new_jobs:
-            posted.add(_slack_listing_key(j))
-        _save_slack_posted(posted)
+            key = _slack_listing_key(j)
+            tracking["posted_keys"].add(key)
+            if key not in tracking.get("first_seen", {}):
+                tracking.setdefault("first_seen", {})[key] = now_iso
+        _save_slack_posted(tracking)
         return True
     except Exception as e:
         log.error(f"Slack notification failed: {e}")
