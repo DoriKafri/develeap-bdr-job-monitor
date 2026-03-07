@@ -10609,6 +10609,10 @@ async function _crmAutoLoadFromFile() {
       _persistCrmConfigLocally();
       renderJobs(); // _preloadAllStakeholders() called inside renderJobs()
       _updateCrmStatusBanner();
+      // Refresh detail panel if already open (CRM data arrived after user clicked a job)
+      if (_activeJobForOutreach && _activeJobForOutreach.id) {
+        openDetail(_activeJobForOutreach.id);
+      }
       console.log('CRM data loaded: ' + Object.keys(data.companies).length + ' companies, synced ' + data.syncedAt);
     } catch (e) {
       console.warn('CRM auto-load skipped:', e);
