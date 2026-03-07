@@ -920,9 +920,9 @@
   .wp-body { flex:1; overflow-y:auto; padding:24px; }
 
   /* Campaign cards */
-  .wp-campaign-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(480px,1fr)); gap:20px; }
-  .wp-campaign-card { background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); border:1px solid var(--border); cursor:pointer; transition:all 0.15s; position:relative; }
-  .wp-campaign-card:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(0,0,0,0.12); transform:translateY(-2px); }
+  .wp-campaign-grid { display:flex; flex-direction:column; gap:16px; }
+  .wp-campaign-card { background:white; border-radius:12px; padding:20px; box-shadow:var(--shadow); border:1px solid var(--border); cursor:pointer; transition:all 0.15s; position:relative; width:100%; }
+  .wp-campaign-card:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(0,0,0,0.12); }
   .wp-card-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
   .wp-card-company { font-size:16px; font-weight:700; color:var(--text); }
   .wp-card-job { font-size:13px; color:var(--text-light); margin-top:2px; }
@@ -940,8 +940,8 @@
   .wp-card-stats { display:flex; gap:16px; margin-top:12px; }
   .wp-card-stat { font-size:11px; color:var(--text-light); }
   .wp-card-stat strong { color:var(--text); display:block; font-size:16px; }
-  .wp-card-actions { display:flex; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
-  .wp-card-actions button { flex:1; padding:6px 10px; border:1px solid var(--border); border-radius:6px; background:white; font-size:12px; cursor:pointer; transition:all 0.15s; }
+  .wp-card-actions { display:flex; gap:6px; }
+  .wp-card-actions button { padding:6px 12px; border:1px solid var(--border); border-radius:6px; background:white; font-size:12px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
   .wp-card-actions button:hover { background:var(--primary); color:white; border-color:var(--primary); }
   .wp-card-days { font-size:11px; color:var(--text-lighter); margin-top:4px; }
 
@@ -1084,7 +1084,7 @@
   .wp-flow-template .ft-name { font-size:14px; font-weight:700; }
   .wp-flow-template .ft-desc { font-size:12px; color:var(--text-light); margin-top:4px; }
 
-  @media(max-width:768px) { #wolfPackView { left:0; top:48px; } .wp-campaign-grid { grid-template-columns:1fr; } .wp-detail { grid-template-columns:1fr; } .wp-editor-body { flex-direction:column; } .wp-editor-sidebar { width:100%; border-right:none; border-bottom:1px solid var(--border); max-height:120px; } .wp-editor-config { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } }
+  @media(max-width:768px) { #wolfPackView { left:0; top:48px; } .wp-detail { grid-template-columns:1fr; } .wp-editor-body { flex-direction:column; } .wp-editor-sidebar { width:100%; border-right:none; border-bottom:1px solid var(--border); max-height:120px; } .wp-editor-config { width:100%; border-left:none; border-top:1px solid var(--border); max-height:40%; } }
 
   /* ── Help Panel ────────────────────────────────── */
   .help-panel { position:fixed; top:0; right:-460px; width:450px; height:100vh; background:white; box-shadow:-4px 0 24px rgba(0,0,0,0.15); z-index:10001; transition:right 0.3s ease; display:flex; flex-direction:column; }
@@ -14745,20 +14745,93 @@ function _wpUpdateBadge() {
   badge.title = pendingCount > 0 ? pendingCount + ' listings need Wolf Pack strategy' : activeCount + ' active campaigns';
 }
 
-/* ---- Campaign List with Pending/Active/All tabs ---- */
+/* ---- Auto-create paused campaigns from pending listings ---- */
+function _wpEnsurePendingCampaigns() {
+  var pending = _wpGetPendingListings();
+  if (pending.length === 0) return false;
+  var created = 0;
+  pending.forEach(function(p) {
+    var job = p.job;
+    var contacts = (job.stakeholders || []).map(function(s, si) {
+      return {
+        id: 'contact_' + si,
+        name: s.name || '',
+        title: s.title || s.role || '',
+        email: s.email || '',
+        linkedin: s.linkedin || '',
+        photo: s.photo || '',
+        source: s.source || ''
+      };
+    });
+    // Build a minimal default flow
+    var nodes = {};
+    var nodeOrder = [];
+    nodes['start'] = { type:'trigger_start', position:{x:300,y:60}, next:['conn_1'] };
+    nodeOrder.push('start');
+    nodes['conn_1'] = { type:'action_linkedin_connect', position:{x:300,y:160}, config:{ sender: _getCurrentUserEmail(), contactIdx: 0 }, next:['wait_1'] };
+    nodeOrder.push('conn_1');
+    nodes['wait_1'] = { type:'wait', position:{x:300,y:260}, config:{ days: 3 }, next:['msg_1'] };
+    nodeOrder.push('wait_1');
+    nodes['msg_1'] = { type:'action_linkedin_message', position:{x:300,y:360}, config:{ sender: _getCurrentUserEmail(), contactIdx: 0 }, next:[] };
+    nodeOrder.push('msg_1');
+
+    var campaign = {
+      id: _wpGenerateId('camp'),
+      name: (job.company || 'Unknown') + ' — ' + (job.title || 'Job'),
+      status: 'paused',
+      createdBy: _getCurrentUserEmail(),
+      createdAt: new Date().toISOString(),
+      company: {
+        name: job.company || '',
+        domain: '',
+        logo: job.logo || '',
+        source: job.source || ''
+      },
+      targetJob: {
+        title: job.title || '',
+        url: job.sourceUrl || '',
+        category: job.category || '',
+        source: job.source || '',
+        posted: job.posted || ''
+      },
+      teamMembers: [{ email: _getCurrentUserEmail(), displayName: _getUserDisplayName(_getCurrentUserEmail()), role: 'BDR', channels: ['linkedin'] }],
+      targetContacts: contacts,
+      flow: { nodes: nodes, nodeOrder: nodeOrder, connections: [] },
+      marketing: { linkedinAds: { enabled: false }, contentPlan: [], socialEngagement: { enabled: false } },
+      responseTracking: { engagementScore: 0, touchpoints: [] },
+      adaptiveRules: [],
+      executionState: {
+        currentNodeId: 'start',
+        completedNodes: [],
+        nextExecutionAt: null,
+        pausedAt: new Date().toISOString()
+      },
+      _customerType: p.customerType
+    };
+    _wpCampaigns.push(campaign);
+    created++;
+  });
+  if (created > 0) {
+    _saveCampaignsToGitHub();
+  }
+  return created > 0;
+}
+
+/* ---- Campaign List ---- */
 function _wpRenderList() {
   var container = document.getElementById('wpListView');
   if (!container) return;
 
-  var pending = _wpGetPendingListings();
-  var pendingCount = pending.length;
-  var activeCount = _wpCampaigns.filter(function(c) { return c.status === 'active'; }).length;
+  // Auto-create paused campaigns for any pending listings
+  _wpEnsurePendingCampaigns();
 
-  // Tab bar (Active + All only)
+  var activeCount = _wpCampaigns.filter(function(c) { return c.status === 'active' || c.status === 'paused'; }).length;
+
+  // Tab bar
   var tabHtml = '<div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px">';
   ['active', 'all'].forEach(function(tab) {
-    var label = tab === 'active' ? '\u25B6 Active' + (activeCount > 0 ? ' (' + activeCount + ')' : '') :
-                '\u{1F4CB} All Campaigns';
+    var label = tab === 'active' ? '\u{1F43A} Campaigns' + (activeCount > 0 ? ' (' + activeCount + ')' : '') :
+                '\u{1F4CB} All';
     var isActive = _wpPendingTab === tab;
     tabHtml += '<div onclick="_wpSwitchTab(\'' + tab + '\')" style="padding:10px 20px;font-size:13px;font-weight:' + (isActive ? '700' : '500') + ';cursor:pointer;border-bottom:2px solid ' + (isActive ? 'var(--primary)' : 'transparent') + ';margin-bottom:-2px;color:' + (isActive ? 'var(--primary)' : 'var(--text-light)') + ';transition:all 0.2s">' + label + '</div>';
   });
@@ -14767,18 +14840,26 @@ function _wpRenderList() {
   var bodyHtml = '';
 
   if (_wpPendingTab === 'active') {
-    var activeCampaigns = _wpCampaigns.filter(function(c) { return c.status === 'active'; });
-    if (activeCampaigns.length === 0) {
-      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u25B6</div><div class="wp-empty-title">No active campaigns</div><div class="wp-empty-desc">Launch a Wolf Pack strategy from the Pending tab to start campaigns.</div></div>';
+    // Show active + paused campaigns (sorted: active first, then paused by customer type priority)
+    var campaigns = _wpCampaigns.filter(function(c) { return c.status === 'active' || c.status === 'paused'; });
+    var typePriority = { customer: 0, past: 1, high_potential: 2, prospect: 3 };
+    campaigns.sort(function(a, b) {
+      if (a.status !== b.status) return a.status === 'active' ? -1 : 1;
+      var aPri = typePriority[a._customerType] !== undefined ? typePriority[a._customerType] : 9;
+      var bPri = typePriority[b._customerType] !== undefined ? typePriority[b._customerType] : 9;
+      return aPri - bPri;
+    });
+    if (campaigns.length === 0) {
+      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u{1F43A}</div><div class="wp-empty-title">No campaigns yet</div><div class="wp-empty-desc">Campaigns will appear here automatically when new job listings with stakeholders are detected.</div></div>';
     } else {
       bodyHtml = '<div class="wp-campaign-grid" id="wpCampaignGrid">';
-      activeCampaigns.forEach(function(c, idx) { bodyHtml += _wpRenderCampaignCard(c, idx); });
+      campaigns.forEach(function(c, idx) { bodyHtml += _wpRenderCampaignCard(c, idx); });
       bodyHtml += '</div>';
     }
   } else {
     // "all" tab
     if (_wpCampaigns.length === 0) {
-      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u{1F43A}</div><div class="wp-empty-title">No campaigns yet</div><div class="wp-empty-desc">Launch Wolf Pack strategies from the Pending tab when new job listings appear.</div></div>';
+      bodyHtml = '<div class="wp-empty"><div class="wp-empty-icon">\u{1F43A}</div><div class="wp-empty-title">No campaigns yet</div><div class="wp-empty-desc">Campaigns will appear here automatically when new job listings are detected.</div></div>';
     } else {
       bodyHtml = '<div class="wp-filter-bar">' +
         '<input type="text" placeholder="Search campaigns..." oninput="_wpFilterList(this.value)" id="wpSearchInput">' +
@@ -15493,40 +15574,58 @@ function _wpRenderCampaignCard(c, idx) {
   var cLogo = c.company.logo || '';
   var cName = c.company.name || 'Unknown';
   var cLogoHtml = cLogo
-    ? '<div class="company-logo" style="width:36px;height:36px;border-radius:8px"><img src="' + cLogo + '" alt="" onerror="this.onerror=null;this.parentNode.textContent=\'' + cName.charAt(0) + '\'"></div>'
-    : '<div class="company-logo" style="width:36px;height:36px;border-radius:8px">' + cName.charAt(0) + '</div>';
+    ? '<div class="company-logo" style="width:40px;height:40px;border-radius:8px"><img src="' + cLogo + '" alt="" onerror="this.onerror=null;this.parentNode.textContent=\'' + cName.charAt(0) + '\'"></div>'
+    : '<div class="company-logo" style="width:40px;height:40px;border-radius:8px;font-size:18px">' + cName.charAt(0) + '</div>';
 
   // Source badge
   var cSource = (c.targetJob && c.targetJob.source) || c.company.source || '';
-  var cSourceHtml = cSource && typeof sourceIcon === 'function' ? '<span class="source-badge" style="font-size:11px;margin-top:2px">' + sourceIcon(cSource) + (SOURCE_LABELS[cSource] || cSource) + '</span>' : '';
+  var cSourceHtml = cSource && typeof sourceIcon === 'function' ? '<span class="source-badge" style="font-size:11px">' + sourceIcon(cSource) + (SOURCE_LABELS[cSource] || cSource) + '</span>' : '';
 
-  return '<div class="wp-campaign-card" data-status="' + c.status + '" data-company="' + (c.company.name || '').toLowerCase() + '" onclick="_wpOpenDetail(\'' + c.id + '\')">' +
+  // Customer type badge
+  var custType = c._customerType || '';
+  var custBadge = '';
+  if (custType === 'customer') custBadge = '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:#E8F5E9;color:#2E7D32;font-weight:600">\u2B50 Customer</span>';
+  else if (custType === 'past') custBadge = '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:#FFF3E0;color:#E65100;font-weight:600">\u{1F504} Past</span>';
+  else if (custType === 'high_potential') custBadge = '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:#FCE4EC;color:#C62828;font-weight:600">\u{1F31F} High Potential</span>';
+
+  // Left border color for paused (customer type priority)
+  var borderColor = c.status === 'active' ? 'var(--teal)' :
+    custType === 'customer' ? '#2E7D32' : custType === 'past' ? '#E65100' :
+    custType === 'high_potential' ? '#C62828' : 'var(--border)';
+
+  // Full-width horizontal layout
+  return '<div class="wp-campaign-card" data-status="' + c.status + '" data-company="' + (c.company.name || '').toLowerCase() + '" onclick="_wpOpenDetail(\'' + c.id + '\')" style="border-left:4px solid ' + borderColor + '">' +
     '<div class="wp-card-status ' + c.status + '">' + c.status + '</div>' +
-    '<div class="wp-card-header">' +
-      '<div style="display:flex;align-items:center;gap:10px">' +
+    '<div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">' +
+      // Left: company info
+      '<div style="display:flex;align-items:center;gap:12px;min-width:240px;flex:1">' +
         cLogoHtml +
         '<div>' +
-          '<div class="wp-card-company">' + cName + '</div>' +
+          '<div class="wp-card-company" style="font-size:15px">' + cName + ' ' + custBadge + '</div>' +
           '<div class="wp-card-job">' + (c.targetJob && c.targetJob.title ? c.targetJob.title : 'No job specified') + '</div>' +
-          '<div style="display:flex;align-items:center;gap:8px"><span class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</span>' + cSourceHtml + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span class="wp-card-days">Day ' + daysRunning + ' \u00B7 ' + (c.targetContacts || []).length + ' contacts</span>' + cSourceHtml + '</div>' +
         '</div>' +
       '</div>' +
-    '</div>' +
-    '<div class="wp-card-team">' + teamAvatars + '</div>' +
-    '<div class="wp-card-progress">' +
-      '<div class="wp-card-progress-bar"><div class="wp-card-progress-fill" style="width:' + pct + '%"></div></div>' +
-      '<div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:var(--text-lighter)">' + completedNodes + '/' + totalNodes + ' steps</span><span style="font-size:10px;font-weight:600;color:var(--teal)">' + pct + '%</span></div>' +
-    '</div>' +
-    '<div class="wp-card-stats">' +
-      '<div class="wp-card-stat"><strong>' + sent + '</strong>Sent</div>' +
-      '<div class="wp-card-stat"><strong>' + replied + '</strong>Replied</div>' +
-      '<div class="wp-card-stat"><strong>' + score + '</strong>Score</div>' +
-    '</div>' +
-    '<div class="wp-card-actions">' +
-      '<button onclick="event.stopPropagation();_wpOpenDetail(\'' + c.id + '\')">View</button>' +
-      '<button onclick="event.stopPropagation();_wpEditFlowById(\'' + c.id + '\')">Edit Flow</button>' +
-      '<button onclick="event.stopPropagation();_wpTogglePauseById(\'' + c.id + '\')">' + (c.status === 'paused' ? '\u25B6 Resume' : '\u23F8 Pause') + '</button>' +
-      '<button onclick="event.stopPropagation();_wpArchiveCampaign(\'' + c.id + '\')" title="Archive" style="max-width:40px">\u{1F5C4}</button>' +
+      // Middle: team + progress + stats
+      '<div style="display:flex;align-items:center;gap:16px;flex:1;min-width:300px">' +
+        '<div class="wp-card-team" style="margin:0">' + teamAvatars + '</div>' +
+        '<div style="flex:1;max-width:160px">' +
+          '<div class="wp-card-progress-bar" style="margin:0"><div class="wp-card-progress-fill" style="width:' + pct + '%"></div></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-top:2px"><span style="font-size:10px;color:var(--text-lighter)">' + completedNodes + '/' + totalNodes + '</span><span style="font-size:10px;font-weight:600;color:var(--teal)">' + pct + '%</span></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:12px">' +
+          '<div style="text-align:center"><strong style="font-size:14px;display:block">' + sent + '</strong><span style="font-size:10px;color:var(--text-lighter)">Sent</span></div>' +
+          '<div style="text-align:center"><strong style="font-size:14px;display:block">' + replied + '</strong><span style="font-size:10px;color:var(--text-lighter)">Replied</span></div>' +
+          '<div style="text-align:center"><strong style="font-size:14px;display:block">' + score + '</strong><span style="font-size:10px;color:var(--text-lighter)">Score</span></div>' +
+        '</div>' +
+      '</div>' +
+      // Right: actions
+      '<div class="wp-card-actions" style="margin:0;flex-shrink:0">' +
+        '<button onclick="event.stopPropagation();_wpOpenDetail(\'' + c.id + '\')">View</button>' +
+        '<button onclick="event.stopPropagation();_wpEditFlowById(\'' + c.id + '\')">Edit Flow</button>' +
+        '<button onclick="event.stopPropagation();_wpTogglePauseById(\'' + c.id + '\')">' + (c.status === 'paused' ? '\u25B6 Launch' : '\u23F8 Pause') + '</button>' +
+        '<button onclick="event.stopPropagation();_wpArchiveCampaign(\'' + c.id + '\')" title="Archive" style="max-width:40px">\u{1F5C4}</button>' +
+      '</div>' +
     '</div>' +
     _wpRenderSequence(c, c.id) +
     '</div>';
