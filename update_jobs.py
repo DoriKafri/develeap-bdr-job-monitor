@@ -2656,6 +2656,16 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # Also filter truly_new to only include fresh listings
     truly_new = [j for j in truly_new if (j.get("posted") or "9999") >= cutoff]
 
+    # ── Fix isNew based on actual posted date ──
+    # isNew should only be True if the job was posted within the last 36 hours,
+    # NOT just because the scraper discovered it for the first time.
+    # Jobs posted days/weeks ago that we're seeing for the first time are NOT "new".
+    new_cutoff = (datetime.now(timezone.utc) - timedelta(hours=36)).strftime("%Y-%m-%d")
+    for j in merged:
+        posted = j.get("posted", "")
+        if j.get("isNew") and posted and posted < new_cutoff:
+            j["isNew"] = False
+
     return merged, truly_new
 
 
