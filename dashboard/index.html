@@ -313,6 +313,18 @@
   .stakeholder-action-btn.li { background:#0A66C2; }
   .stakeholder-action-btn.email { background:#EA4335; }
   .stakeholder-action-btn.wa { background:#25D366; }
+  .action-btn-group { display:inline-flex; align-items:stretch; border-radius:6px; overflow:hidden; }
+  .action-btn-group .stakeholder-action-btn { border-radius:0; }
+  .action-btn-group .tpl-trigger { display:inline-flex; align-items:center; padding:4px 5px; border:none; cursor:pointer; color:white; font-size:11px; border-left:1px solid rgba(255,255,255,0.25); position:relative; }
+  .action-btn-group .tpl-trigger.li { background:#0A66C2; }
+  .action-btn-group .tpl-trigger.email { background:#EA4335; }
+  .action-btn-group .tpl-trigger.wa { background:#25D366; }
+  .action-btn-group .tpl-trigger:hover { filter:brightness(0.9); }
+  .tpl-dropdown { position:absolute; top:100%; right:0; background:white; border:1px solid var(--border); border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:200; min-width:160px; padding:4px 0; display:none; }
+  .tpl-dropdown.open { display:block; }
+  .tpl-dropdown-item { display:flex; align-items:center; gap:6px; padding:6px 12px; font-size:12px; color:var(--text); cursor:pointer; white-space:nowrap; border:none; background:none; width:100%; text-align:left; }
+  .tpl-dropdown-item:hover { background:var(--primary-light); }
+  .tpl-dropdown-item.active { font-weight:700; background:#f0f0ff; }
   .stakeholder-badges { display:flex; align-items:center; gap:3px; flex-wrap:wrap; margin-top:3px; }
   .stakeholder-badge { font-size:9px; padding:1px 5px; border-radius:3px; font-weight:600; }
   .add-contact-btn { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px; border:2px dashed var(--border); border-radius:10px; background:none; color:var(--text-light); font-size:13px; cursor:pointer; transition:all .15s; }
@@ -6431,6 +6443,64 @@ function _langToggleBtn(channel, idx) {
   return `<button onclick="event.stopPropagation();_toggleLang('${channel}',${idx})" style="font-size:10px;padding:4px 5px;border:none;background:transparent;cursor:pointer;line-height:1" title="Switch language">${info.flag}</button>`;
 }
 
+// Per-channel template index (separate from _activeTemplateIdx for the legacy template picker)
+var _channelTemplateIdx = { linkedin: 0, email: 0, whatsapp: 0 };
+
+// Get the active template for a channel (respects per-channel language + selection)
+function _getChannelTemplate(channel) {
+  const lang = _templateLang[channel] || 'en';
+  const filtered = OUTREACH_TEMPLATES.map((t, i) => ({t, i})).filter(({t}) => (t.lang || 'en') === lang);
+  if (filtered.length === 0) return OUTREACH_TEMPLATES[0];
+  const chIdx = _channelTemplateIdx[channel] || 0;
+  const entry = filtered[chIdx % filtered.length] || filtered[0];
+  return entry.t;
+}
+
+// Get the current template emoji for a channel
+function _getChannelTemplateEmoji(channel) {
+  return _getChannelTemplate(channel).emoji || '📝';
+}
+
+// Build template dropdown HTML for a channel
+function _buildTplDropdown(channel, stakeholderIdx) {
+  const lang = _templateLang[channel] || 'en';
+  const filtered = OUTREACH_TEMPLATES.map((t, i) => ({t, i})).filter(({t}) => (t.lang || 'en') === lang);
+  const activeChIdx = _channelTemplateIdx[channel] || 0;
+  const langFlag = (TEMPLATE_LANGS.find(l => l.code === lang) || {}).flag || '🇬🇧';
+  let items = filtered.map(({t, i}, fIdx) => {
+    const isActive = fIdx === (activeChIdx % filtered.length);
+    return `<button class="tpl-dropdown-item${isActive ? ' active' : ''}" onclick="event.stopPropagation();_selectChannelTpl('${channel}',${fIdx},${i},${stakeholderIdx})">${t.emoji} ${t.name}</button>`;
+  }).join('');
+  // Add language toggle at bottom
+  items += `<div style="border-top:1px solid var(--border);margin-top:2px;padding-top:2px"><button class="tpl-dropdown-item" onclick="event.stopPropagation();_toggleLang('${channel}',${stakeholderIdx})">${langFlag} Switch language</button></div>`;
+  return `<div class="tpl-dropdown" id="tplDrop_${channel}_${stakeholderIdx}">${items}</div>`;
+}
+
+// Toggle a template dropdown open/closed
+function _toggleTplDropdown(channel, stakeholderIdx, evt) {
+  evt.stopPropagation();
+  // Close all other dropdowns first
+  document.querySelectorAll('.tpl-dropdown.open').forEach(d => {
+    if (d.id !== 'tplDrop_' + channel + '_' + stakeholderIdx) d.classList.remove('open');
+  });
+  const dd = document.getElementById('tplDrop_' + channel + '_' + stakeholderIdx);
+  if (dd) dd.classList.toggle('open');
+}
+
+// Select a template for a channel
+function _selectChannelTpl(channel, filteredIdx, globalIdx, stakeholderIdx) {
+  _channelTemplateIdx[channel] = filteredIdx;
+  _activeTemplateIdx = globalIdx;  // keep legacy global in sync
+  // Close dropdown and re-render
+  document.querySelectorAll('.tpl-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (_activeJobForOutreach) openDetail(_activeJobForOutreach.id);
+}
+
+// Close template dropdowns when clicking outside
+document.addEventListener('click', function() {
+  document.querySelectorAll('.tpl-dropdown.open').forEach(d => d.classList.remove('open'));
+});
+
 // Toggle language for a channel and re-render stakeholders
 function _toggleLang(channel, stakeholderIdx) {
   const current = _templateLang[channel] || 'en';
@@ -7580,19 +7650,22 @@ function buildOutreachSection(job) {
       const st = statusStyles[outreachStatus] || statusStyles.not_contacted;
       const connBadge = `<span onclick="event.stopPropagation();cycleOutreachStatus('${key.replace(/'/g,"\\'")}',${i})" style="font-size:10px;padding:2px 6px;border-radius:4px;background:${st.bg};color:${st.color};font-weight:600;margin-left:4px;cursor:pointer" title="Click to change status">${st.label}</span>`;
 
-      // Action buttons — clean pill style
+      // Action buttons — pill with template dropdown
       let actionBtns = '';
       const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
+      const liTplEmoji = _getChannelTemplateEmoji('linkedin');
+      const emailTplEmoji = _getChannelTemplateEmoji('email');
+      const waTplEmoji = _getChannelTemplateEmoji('whatsapp');
       if (connected) {
-        actionBtns += `<button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${MSG_ICON} Message</button>`;
+        actionBtns += `<span class="action-btn-group"><button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${MSG_ICON} Message</button><button class="tpl-trigger li" onclick="_toggleTplDropdown('linkedin',${i},event)" title="Pick template">${liTplEmoji} ▾</button>${_buildTplDropdown('linkedin',i)}</span>`;
       } else if (hasLI) {
-        actionBtns += `<button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${LI_ICON} Connect</button>`;
+        actionBtns += `<span class="action-btn-group"><button class="stakeholder-action-btn li" onclick="event.stopPropagation();selectStakeholderForMsg(${i});messageOnLinkedIn(${i})">${LI_ICON} Connect</button><button class="tpl-trigger li" onclick="_toggleTplDropdown('linkedin',${i},event)" title="Pick template">${liTplEmoji} ▾</button>${_buildTplDropdown('linkedin',i)}</span>`;
       }
       if (hasEmail) {
-        actionBtns += `<button class="stakeholder-action-btn email" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" title="${s.email}">${MAIL_ICON} Email</button>`;
+        actionBtns += `<span class="action-btn-group"><button class="stakeholder-action-btn email" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendEmail()" title="${s.email}">${MAIL_ICON} Email</button><button class="tpl-trigger email" onclick="_toggleTplDropdown('email',${i},event)" title="Pick template">${emailTplEmoji} ▾</button>${_buildTplDropdown('email',i)}</span>`;
       }
       if (hasPhone) {
-        actionBtns += `<button class="stakeholder-action-btn wa" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})">${WA_ICON} WhatsApp</button>`;
+        actionBtns += `<span class="action-btn-group"><button class="stakeholder-action-btn wa" onclick="event.stopPropagation();selectStakeholderForMsg(${i});sendWhatsApp(${i})">${WA_ICON} WhatsApp</button><button class="tpl-trigger wa" onclick="_toggleTplDropdown('whatsapp',${i},event)" title="Pick template">${waTplEmoji} ▾</button>${_buildTplDropdown('whatsapp',i)}</span>`;
       }
 
       // Source badges — consolidated into one subtle line
