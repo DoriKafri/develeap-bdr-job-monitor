@@ -8322,6 +8322,11 @@ function _showToast(msg) {
 }
 
 function sendEmail() {
+  if (!_wpIsWithinTimeWindow('email')) {
+    var nxt = _wpNextWindowOpens('email');
+    _showToast('🔴 Email sending is outside the allowed time window. Next window: ' + nxt, 'warning');
+    return;
+  }
   const job = _activeJobForOutreach;
   if (!job) return;
   const stakeholders = job._mergedStakeholders || job.stakeholders || [];
@@ -8354,6 +8359,11 @@ function _updateTplSelectTooltip(sel, templates) {
 }
 
 function sendWhatsApp(stakeholderIdx) {
+  if (!_wpIsWithinTimeWindow('whatsapp')) {
+    var nxt = _wpNextWindowOpens('whatsapp');
+    _showToast('🔴 WhatsApp sending is outside the allowed time window. Next window: ' + nxt, 'warning');
+    return;
+  }
   const job = _activeJobForOutreach;
   if (!job) return;
   if (typeof stakeholderIdx === 'number') _activeStakeholderIdx = stakeholderIdx;
@@ -8389,6 +8399,11 @@ function sendWhatsApp(stakeholderIdx) {
 }
 
 function sendWhatsAppFromQueue(queueIdx) {
+  if (!_wpIsWithinTimeWindow('whatsapp')) {
+    var nxt = _wpNextWindowOpens('whatsapp');
+    _showToast('🔴 WhatsApp sending is outside the allowed time window. Next window: ' + nxt, 'warning');
+    return;
+  }
   const entry = _liQueue[queueIdx];
   if (!entry) return;
   const phone = entry.whatsappPhone || '';
@@ -11703,6 +11718,57 @@ function renderWolfPackSettingsSection() {
     html += '</div>';
   });
 
+  // ── Messaging Time Windows ──
+  var _twDefaults = _wpGetTimeWindows();
+  html += '<div style="background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;margin-top:24px">';
+  html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">';
+  html += '<div style="width:36px;height:36px;border-radius:10px;background:#FFF3E0;display:flex;align-items:center;justify-content:center;font-size:18px">⏰</div>';
+  html += '<div><div style="font-weight:700;font-size:14px">Messaging Time Windows</div>';
+  html += '<div style="font-size:12px;color:var(--text-light)">Messages will only be sent during these windows. Outside these hours, messages are queued until the next valid window.</div></div></div>';
+
+  var _twChannels = [
+    { key: 'whatsapp', icon: '📱', label: 'WhatsApp', color: '#E8F5E9' },
+    { key: 'linkedin', icon: '🔗', label: 'LinkedIn', color: '#E3F2FD' },
+    { key: 'email',    icon: '✉️', label: 'Email',    color: '#FFF3E0' }
+  ];
+  var _twDayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  _twChannels.forEach(function(ch) {
+    var tw = _twDefaults[ch.key];
+    html += '<div style="border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;background:' + ch.color + '22">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">' + ch.icon + '</span><span style="font-weight:600;font-size:13px">' + ch.label + '</span></div>';
+    html += '<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span>Enforce</span>';
+    html += '<label class="toggle-switch" style="width:36px;height:20px"><input type="checkbox" ' + (tw.enabled ? 'checked' : '') + ' onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'enabled\', this.checked)">';
+    html += '<span class="toggle-slider" style="border-radius:20px"><span style="display:none"></span></span></label></label></div>';
+
+    // Days row
+    html += '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">Active Days</label>';
+    html += '<div style="display:flex;gap:4px;flex-wrap:wrap">';
+    _twDayLabels.forEach(function(d, i) {
+      var active = tw.days && tw.days.indexOf(i) >= 0;
+      html += '<button onclick="_wpToggleTimeWindowDay(\'' + ch.key + '\',' + i + ')" style="width:38px;padding:5px 0;border:1px solid ' + (active ? 'var(--primary)' : 'var(--border)') + ';border-radius:6px;background:' + (active ? 'var(--primary)' : '#fff') + ';color:' + (active ? '#fff' : 'var(--text)') + ';font-size:11px;font-weight:600;cursor:pointer">' + d + '</button>';
+    });
+    html += '</div></div>';
+
+    // Hours row
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+    html += '<div><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px">Start Time</label>';
+    html += '<input type="time" value="' + tw.startTime + '" onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'startTime\', this.value)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
+    html += '<div><label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px">End Time</label>';
+    html += '<input type="time" value="' + tw.endTime + '" onchange="_wpUpdateTimeWindow(\'' + ch.key + '\', \'endTime\', this.value)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
+    html += '</div>';
+
+    html += '</div>';
+  });
+
+  // Current status indicator
+  html += '<div style="margin-top:10px;padding:10px 14px;background:#F5F5F5;border-radius:8px;font-size:12px;color:var(--text-light)">';
+  html += '💡 <strong>Current status:</strong> ' + _wpTimeWindowStatus();
+  html += '</div>';
+
+  html += '</div>';
+
   html += '<div style="display:flex;justify-content:flex-end;margin-top:8px">';
   html += '<button class="intg-save-btn" onclick="_saveSettingsToGitHub()" style="background:var(--primary)">💾 Save Wolf Pack Defaults</button>';
   html += '</div>';
@@ -11762,6 +11828,94 @@ function _wpAddSettingsTeam(ct, email) {
 function _wpRemoveSettingsTeam(ct, email) {
   _wpStrategyDefaults[ct].teamMembers = (_wpStrategyDefaults[ct].teamMembers || []).filter(function(e) { return e !== email; });
   renderWolfPackSettingsSection();
+}
+
+// ── Messaging Time Windows ──
+var _wpTimeWindows = null;
+function _wpGetTimeWindows() {
+  if (_wpTimeWindows) return _wpTimeWindows;
+  var stored = localStorage.getItem('bdr_time_windows');
+  if (stored) {
+    try { _wpTimeWindows = JSON.parse(stored); return _wpTimeWindows; } catch(e) {}
+  }
+  _wpTimeWindows = {
+    whatsapp: { enabled: true, days: [0,1,2,3,4], startTime: '09:00', endTime: '18:00' },
+    linkedin: { enabled: true, days: [0,1,2,3,4], startTime: '07:00', endTime: '21:00' },
+    email:    { enabled: true, days: [0,1,2,3,4], startTime: '09:00', endTime: '21:00' }
+  };
+  return _wpTimeWindows;
+}
+
+function _wpSaveTimeWindows() {
+  localStorage.setItem('bdr_time_windows', JSON.stringify(_wpTimeWindows));
+}
+
+function _wpUpdateTimeWindow(channel, field, value) {
+  var tw = _wpGetTimeWindows();
+  tw[channel][field] = value;
+  _wpSaveTimeWindows();
+  renderWolfPackSettingsSection();
+}
+
+function _wpToggleTimeWindowDay(channel, dayIdx) {
+  var tw = _wpGetTimeWindows();
+  var days = tw[channel].days || [];
+  var idx = days.indexOf(dayIdx);
+  if (idx >= 0) days.splice(idx, 1);
+  else days.push(dayIdx);
+  days.sort();
+  tw[channel].days = days;
+  _wpSaveTimeWindows();
+  renderWolfPackSettingsSection();
+}
+
+function _wpTimeWindowStatus() {
+  var tw = _wpGetTimeWindows();
+  var now = new Date();
+  var day = now.getDay();
+  var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+  var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var parts = [];
+  ['whatsapp','linkedin','email'].forEach(function(ch) {
+    var w = tw[ch];
+    if (!w.enabled) { parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': disabled'); return; }
+    var inDay = w.days && w.days.indexOf(day) >= 0;
+    var inTime = hhmm >= w.startTime && hhmm <= w.endTime;
+    if (inDay && inTime) parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': ✅ active');
+    else parts.push(ch.charAt(0).toUpperCase() + ch.slice(1) + ': 🔴 outside window');
+  });
+  return dayNames[day] + ' ' + hhmm + ' — ' + parts.join(' · ');
+}
+
+function _wpIsWithinTimeWindow(channel) {
+  var tw = _wpGetTimeWindows();
+  var w = tw[channel];
+  if (!w || !w.enabled) return true;
+  var now = new Date();
+  var day = now.getDay();
+  if (!w.days || w.days.indexOf(day) < 0) return false;
+  var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+  return hhmm >= w.startTime && hhmm <= w.endTime;
+}
+
+function _wpNextWindowOpens(channel) {
+  var tw = _wpGetTimeWindows();
+  var w = tw[channel];
+  if (!w || !w.enabled || !w.days || w.days.length === 0) return 'No active window';
+  var now = new Date();
+  var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  for (var offset = 0; offset < 7; offset++) {
+    var checkDay = (now.getDay() + offset) % 7;
+    if (w.days.indexOf(checkDay) >= 0) {
+      if (offset === 0) {
+        var hhmm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+        if (hhmm < w.startTime) return 'Today at ' + w.startTime;
+        if (hhmm <= w.endTime) return 'Now';
+      }
+      return dayNames[checkDay] + ' at ' + w.startTime;
+    }
+  }
+  return 'No active window';
 }
 
 function renderSettingsView() {
@@ -12527,6 +12681,38 @@ var renderQueueView = function() {
     `;
   }
 
+  // ── Time Window Status Banner ──
+  var _twBanner = '';
+  var _twChannelStatus = [
+    { key: 'linkedin', icon: '🔗', label: 'LinkedIn' },
+    { key: 'whatsapp', icon: '📱', label: 'WhatsApp' },
+    { key: 'email', icon: '✉️', label: 'Email' }
+  ];
+  var _twAnyBlocked = false;
+  _twChannelStatus.forEach(function(ch) {
+    if (!_wpIsWithinTimeWindow(ch.key)) _twAnyBlocked = true;
+  });
+  if (_twAnyBlocked) {
+    _twBanner = '<div style="background:#FFF3E0;border:1px solid #FFE0B2;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+    _twBanner += '<span style="font-weight:600">⏰ Time Windows:</span>';
+    _twChannelStatus.forEach(function(ch) {
+      var inWindow = _wpIsWithinTimeWindow(ch.key);
+      _twBanner += '<span style="padding:2px 8px;border-radius:10px;background:' + (inWindow ? '#E8F5E9' : '#FFEBEE') + ';color:' + (inWindow ? '#2E7D32' : '#C62828') + ';font-weight:600">';
+      _twBanner += ch.icon + ' ' + ch.label + ': ' + (inWindow ? '✅' : '🔴 ' + _wpNextWindowOpens(ch.key)) + '</span>';
+    });
+    _twBanner += '</div>';
+    var twBannerEl = document.getElementById('queueTimeWindowBanner');
+    if (!twBannerEl) {
+      twBannerEl = document.createElement('div');
+      twBannerEl.id = 'queueTimeWindowBanner';
+      listEl.parentNode.insertBefore(twBannerEl, listEl);
+    }
+    twBannerEl.innerHTML = _twBanner;
+  } else {
+    var twBannerEl2 = document.getElementById('queueTimeWindowBanner');
+    if (twBannerEl2) twBannerEl2.innerHTML = '';
+  }
+
   // Update global toggle button
   const toggleBtn = document.getElementById('queueGlobalToggle');
   const toggleIcon = document.getElementById('queueToggleIcon');
@@ -12644,7 +12830,10 @@ var renderQueueView = function() {
 
     // Action buttons based on status
     let actions = '';
-    const waBtn = isWhatsApp && entry.whatsappPhone ? `<button onclick="event.stopPropagation();sendWhatsAppFromQueue(${origIdx})" title="Send via WhatsApp" style="background:#25D366;color:white;border-color:#25D366">📱 Send</button>` : '';
+    const _waInWindow = _wpIsWithinTimeWindow('whatsapp');
+    const _liInWindow = _wpIsWithinTimeWindow('linkedin');
+    const _emInWindow = _wpIsWithinTimeWindow('email');
+    const waBtn = isWhatsApp && entry.whatsappPhone ? `<button onclick="event.stopPropagation();sendWhatsAppFromQueue(${origIdx})" title="${_waInWindow ? 'Send via WhatsApp' : '🔴 Outside WhatsApp time window (' + _wpNextWindowOpens('whatsapp') + ')'}" style="background:${_waInWindow ? '#25D366' : '#ccc'};color:white;border-color:${_waInWindow ? '#25D366' : '#ccc'}${_waInWindow ? '' : ';opacity:0.7'}">📱 ${_waInWindow ? 'Send' : '⏰'}</button>` : '';
     if (entry.status === 'pending' || entry.status === 'processing') {
       actions = `
         ${waBtn}
