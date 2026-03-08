@@ -592,8 +592,18 @@
     .sidebar-header { padding:14px 16px; position:sticky; top:0; z-index:1; }
     .sidebar-header h3 { font-size:16px; }
     .sidebar-body { padding:16px; }
-    .stakeholder-card { flex-direction:column; align-items:stretch; gap:8px; }
-    .stakeholder-actions { flex-direction:row; flex-wrap:wrap; gap:6px; }
+    .stakeholder-card { flex-direction:row; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:white; border:1px solid var(--border); box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+    .stakeholder-avatar { width:40px; height:40px; font-size:15px; }
+    .stakeholder-name { font-size:14px; }
+    .stakeholder-role { font-size:12px; margin-top:2px; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+    .stakeholder-actions { flex-direction:row; flex-wrap:nowrap; gap:4px; margin-top:4px; }
+    .stakeholder-action-btn { padding:5px 8px; font-size:10px; border-radius:8px; gap:3px; }
+    .action-btn-group .tpl-trigger { padding:5px 4px; font-size:10px; }
+    .stakeholder-badges { margin-top:2px; }
+    .stakeholder-badge { font-size:8px; padding:1px 4px; }
+    .outreach-section { margin-top:20px; padding-top:16px; }
+    .outreach-title { font-size:14px; margin-bottom:10px; }
+    .stakeholder-list { gap:6px; }
     .btn-linkedin { font-size:12px; padding:8px 12px; flex:1 1 auto; justify-content:center; min-width:0; }
     .template-preview { font-size:12px; min-height:80px; max-height:180px; }
     .detail-section { margin-bottom:12px; }
@@ -1279,7 +1289,6 @@
   <div class="top-bar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
     <div class="nav-actions">
-      <div class="user-info" id="userInfo" onclick="toggleUserDropdown(event)"></div>
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
       <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
@@ -2309,18 +2318,7 @@ function handleCredentialResponse(r) {
 function _applyUserUI(user) {
   var firstName = (user.name || '').split(' ')[0];
   var pic = user.picture || '';
-  var initialHtml = '<div class="user-avatar" style="background:var(--accent);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>';
   var sidebarInitialHtml = '<div class="sidebar-user-initial">'+firstName.charAt(0)+'</div>';
-  // Top bar
-  var topAvatarHtml = pic ? '<img src="'+pic+'" class="user-avatar" referrerpolicy="no-referrer" onerror="this.outerHTML=\''+initialHtml.replace(/'/g,'\\&#39;')+'\'">' : initialHtml;
-  document.getElementById('userInfo').innerHTML =
-    topAvatarHtml +
-    '<span class="user-name">'+firstName+'</span>' +
-    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.4"><polyline points="6 9 12 15 18 9"/></svg>' +
-    '<div class="user-dropdown" id="userDropdown">' +
-      '<div class="user-dropdown-header"><div class="uname">'+user.name+'</div><div class="uemail">'+user.email+'</div></div>' +
-      '<div class="user-dropdown-item danger" onclick="event.stopPropagation();signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg> Sign out</div>' +
-    '</div>';
   // Sidebar user profile
   var sidebarUser = document.getElementById('sidebarUser');
   if (sidebarUser) {
