@@ -5,25 +5,57 @@
         "name": "Hormozi Value Lead",
         "emoji": "💰",
         "style": "Alex Hormozi",
+        "lang": "en",
         "body": "{contact_name}, I help companies like {company} solve the #1 reason {cat_expertise} hires fail  -  they take 6 months and burn $200K before producing anything.\n\nWe've embedded {cat_expertise} squads at {customers} that ship in 2 weeks  -  not 6 months.\n\nThat {role} role you're hiring for? I have a faster path. Open to hearing it?"
+      },
+      {
+        "name": "ערך מוביל 💰",
+        "emoji": "💰",
+        "style": "Hormozi ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, אני עוזר לחברות כמו {company} לפתור את הבעיה הכי גדולה בגיוסי {cat_expertise} - לוקח 6 חודשים ושורף 200K$ לפני שמישהו מתחיל לייצר.\n\nהטמענו צוותי {cat_expertise} ב-{customers} שמתחילים לספק תוך שבועיים - לא 6 חודשים.\n\nהמשרה של {role} שאתה מגייס? יש לי דרך מהירה יותר. מעניין אותך לשמוע?"
       },
       {
         "name": "Brunson Curiosity Hook",
         "emoji": "🎯",
         "style": "Russell Brunson",
+        "lang": "en",
         "body": "{contact_name}, I noticed something about that {role} role at {company} that 90% of hiring managers miss...\n\nThe companies who scale {cat_expertise} fastest aren't hiring  -  they're partnering. {customers} figured this out. Their secret? They called us.\n\nCurious what that looks like for {company}?"
+      },
+      {
+        "name": "וו סקרנות 🎯",
+        "emoji": "🎯",
+        "style": "Brunson ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, שמתי לב למשהו לגבי המשרה של {role} ב-{company} שרוב המגייסים מפספסים...\n\nהחברות שמצליחות לצמוח הכי מהר ב-{cat_expertise} לא מגייסות - הן משתפות פעולה. {customers} הבינו את זה. הסוד שלהם? הם התקשרו אלינו.\n\nסקרן איך זה נראה עבור {company}?"
       },
       {
         "name": "Carnegie Genuine Interest",
         "emoji": "🤝",
         "style": "Dale Carnegie",
+        "lang": "en",
         "body": "{contact_name}, I've been following {company}'s growth  -  really impressive what you're building.\n\nI noticed you're looking for a {role}. At Develeap, we specialize in exactly this kind of {cat_expertise} work  -  we've helped {customers} and 100+ companies.\n\nI'd genuinely love to learn more about your vision and see if there's a way we can help. Would you be open to connecting?"
+      },
+      {
+        "name": "עניין אמיתי 🤝",
+        "emoji": "🤝",
+        "style": "Carnegie ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, עוקב אחרי הצמיחה של {company} - באמת מרשים מה שאתם בונים.\n\nשמתי לב שאתם מחפשים {role}. ב-Develeap אנחנו מתמחים בדיוק בעבודת {cat_expertise} כזו - עזרנו ל-{customers} ולמעל 100 חברות.\n\nאשמח באמת ללמוד עוד על החזון שלכם ולראות אם יש דרך שנוכל לעזור. פתוח להתחבר?"
       },
       {
         "name": "Short & Direct",
         "emoji": "⚡",
         "style": "Quick Connect",
+        "lang": "en",
         "body": "Hey {contact_name}  -  I run Develeap, Israel's largest {cat_expertise} consulting firm. Noticed {company} is hiring a {role}. We've helped {customers} scale fast. Worth connecting?"
+      },
+      {
+        "name": "קצר וישיר ⚡",
+        "emoji": "⚡",
+        "style": "ישיר",
+        "lang": "he",
+        "body": "היי {contact_name} - אני דורי מ-Develeap, חברת ה-{cat_expertise} הגדולה בישראל. ראיתי ש-{company} מגייסת {role}. עזרנו ל-{customers} לצמוח מהר. שווה להתחבר?"
       }
     ],
     "customer": [
@@ -31,25 +63,57 @@
         "name": "Warm Reconnect",
         "emoji": "🤝",
         "style": "Warm Partner",
+        "lang": "en",
         "body": "{contact_name}, great to connect! Develeap has been working with {company} and I wanted to reach out personally.\n\nI saw you're looking for a {role}  -  we have {cat_expertise} squads already embedded at {company}, so spinning up for this should be seamless.\n\nHappy to chat about how we can help fill this gap fast."
+      },
+      {
+        "name": "חיבור חם 🤝",
+        "emoji": "🤝",
+        "style": "חם ואישי",
+        "lang": "he",
+        "body": "{contact_name}, שמח להתחבר! Develeap כבר עובדת עם {company} ורציתי לפנות אישית.\n\nראיתי שאתם מחפשים {role} - יש לנו צוותי {cat_expertise} שכבר מוטמעים ב-{company}, אז להרים את זה צריך להיות חלק.\n\nאשמח לדבר על איך אנחנו יכולים למלא את הפער הזה מהר."
       },
       {
         "name": "Insider Value",
         "emoji": "⭐",
         "style": "Hormozi Insider",
+        "lang": "en",
         "body": "{contact_name}, since Develeap already works with {company}, I wanted to flag something about that {role} role.\n\nWe've shipped {cat_expertise} projects for your team before  -  instead of a 6-month hire ramp, we can have someone producing in 2 weeks.\n\nWant me to loop in our team lead who knows your stack?"
+      },
+      {
+        "name": "ערך פנימי ⭐",
+        "emoji": "⭐",
+        "style": "Hormozi ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, מכיוון ש-Develeap כבר עובדת עם {company}, רציתי לסמן משהו לגבי המשרה של {role}.\n\nכבר סיפקנו פרויקטי {cat_expertise} לצוות שלכם - במקום 6 חודשים של הכנסת עובד חדש, אנחנו יכולים להביא מישהו שמייצר תוך שבועיים.\n\nרוצה שאחבר אותך עם ראש הצוות שלנו שמכיר את הסטאק שלכם?"
       },
       {
         "name": "Expansion Play",
         "emoji": "🚀",
         "style": "Growth Partner",
+        "lang": "en",
         "body": "Hey {contact_name}  -  Dori here from Develeap. We've been partnering with {company} and I noticed this {role} opening.\n\nOur {cat_expertise} squad already knows your environment. Fastest path to filling this: let us extend the team we already have in place.\n\nWorth a 15-min call?"
+      },
+      {
+        "name": "הרחבה 🚀",
+        "emoji": "🚀",
+        "style": "שותף צמיחה",
+        "lang": "he",
+        "body": "היי {contact_name} - דורי מ-Develeap. אנחנו כבר שותפים של {company} ושמתי לב למשרה של {role}.\n\nצוות ה-{cat_expertise} שלנו כבר מכיר את הסביבה שלכם. הדרך הכי מהירה למלא את זה: לתת לנו להרחיב את הצוות שכבר יש לנו אצלכם.\n\nשווה שיחה של 15 דקות?"
       },
       {
         "name": "Quick Existing",
         "emoji": "⚡",
         "style": "Quick Connect",
+        "lang": "en",
         "body": "Hey {contact_name}  -  Dori from Develeap. We already work with {company} on {cat_expertise}. Saw the {role} opening  -  we can ramp fast since we know your stack. Happy to connect!"
+      },
+      {
+        "name": "קיים מהיר ⚡",
+        "emoji": "⚡",
+        "style": "ישיר",
+        "lang": "he",
+        "body": "היי {contact_name} - דורי מ-Develeap. אנחנו כבר עובדים עם {company} על {cat_expertise}. ראיתי את המשרה של {role} - אנחנו יכולים להיכנס מהר כי אנחנו מכירים את הסטאק שלכם. אשמח להתחבר!"
       }
     ],
     "past": [
@@ -57,69 +121,217 @@
         "name": "Reunion Play",
         "emoji": "🔄",
         "style": "Carnegie Reunion",
+        "lang": "en",
         "body": "{contact_name}, Develeap had the pleasure of working with {company} in the past  -  it was a great partnership.\n\nI noticed you're hiring a {role}. Our {cat_expertise} team has grown a lot since then, and we'd love the chance to reconnect and show what's new.\n\nWould you be open to catching up?"
+      },
+      {
+        "name": "איחוד מחדש 🔄",
+        "emoji": "🔄",
+        "style": "Carnegie ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, ל-Develeap היה כיף לעבוד עם {company} בעבר - זה היה שיתוף פעולה מצוין.\n\nשמתי לב שאתם מגייסים {role}. צוות ה-{cat_expertise} שלנו גדל המון מאז, ונשמח לחדש את הקשר ולהראות מה חדש.\n\nפתוח לשיחת עדכון?"
       },
       {
         "name": "Win-Back Value",
         "emoji": "💎",
         "style": "Hormozi Win-Back",
+        "lang": "en",
         "body": "{contact_name}, since Develeap worked with {company} before, I can skip the sales pitch  -  you know we deliver.\n\nThat {role} role? We've helped {customers} fill similar gaps in 2 weeks. Our {cat_expertise} bench is stronger than ever.\n\nWorth reconnecting to see if there's a fit?"
+      },
+      {
+        "name": "ערך חוזר 💎",
+        "emoji": "💎",
+        "style": "Hormozi ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, מכיוון ש-Develeap כבר עבדה עם {company}, אני יכול לדלג על פיץ' המכירות - אתה יודע שאנחנו מספקים.\n\nהמשרה של {role}? עזרנו ל-{customers} למלא פערים דומים תוך שבועיים. צוות ה-{cat_expertise} שלנו חזק מתמיד.\n\nשווה לחדש קשר ולראות אם יש התאמה?"
       },
       {
         "name": "Nostalgia Hook",
         "emoji": "🎯",
         "style": "Brunson Nostalgia",
+        "lang": "en",
         "body": "{contact_name}, fun fact: {company} was one of our favorite {cat_expertise} engagements at Develeap.\n\nI noticed you're looking for a {role}  -  the companies scaling fastest right now aren't hiring for these roles, they're outsourcing to specialists like us. {customers} figured this out recently.\n\nCurious if {company} wants back in?"
+      },
+      {
+        "name": "נוסטלגיה 🎯",
+        "emoji": "🎯",
+        "style": "Brunson ישראלי",
+        "lang": "he",
+        "body": "{contact_name}, עובדה מעניינת: {company} היה אחד מהפרויקטים האהובים עלינו ב-{cat_expertise} ב-Develeap.\n\nשמתי לב שאתם מחפשים {role} - החברות שצומחות הכי מהר עכשיו לא מגייסות לתפקידים האלה, הן עובדות עם מומחים כמונו. {customers} הבינו את זה לאחרונה.\n\nסקרן אם {company} רוצה לחזור למשחק?"
       },
       {
         "name": "Quick Past",
         "emoji": "⚡",
         "style": "Quick Connect",
+        "lang": "en",
         "body": "Hey {contact_name}  -  Dori from Develeap. We worked with {company} before and loved it. Noticed the {role} opening  -  our {cat_expertise} team has grown and we'd love to reconnect. Worth chatting?"
+      },
+      {
+        "name": "עבר מהיר ⚡",
+        "emoji": "⚡",
+        "style": "ישיר",
+        "lang": "he",
+        "body": "היי {contact_name} - דורי מ-Develeap. עבדנו עם {company} בעבר ונהננו מאוד. ראיתי את המשרה של {role} - צוות ה-{cat_expertise} שלנו גדל ונשמח לחדש קשר. שווה לדבר?"
       }
     ],
     "outreach": [
       {
         "name": "Value Bomb",
         "emoji": "💣",
+        "lang": "en",
         "forConnected": true,
         "subject": "{company}'s {role} opening  -  we {cat_result_short}",
         "body": "Hey {contact_name},\n\nSaw {company} is hiring a {role}  -  that tells me {cat_expertise} is a priority right now.\n\nHere's what we just did for a company your size: {cat_result}. No fluff. Real results.\n\nI'm Dori from Develeap. We've built and embedded {cat_expertise} teams at 100+ Israeli tech companies  -  {customers} and more.\n\nWhat if instead of waiting 3-6 months to find + onboard the right {role}... you had a senior squad plugged in within 2 weeks, delivering {cat_offer}?\n\nWorth a 15-min chat? {cat_link}\n\nDori Kafri | CEO, Develeap"
       },
       {
+        "name": "פצצת ערך",
+        "emoji": "💣",
+        "lang": "he",
+        "forConnected": true,
+        "subject": "המשרה ב{company} — יש לנו פתרון מהיר",
+        "body": "היי {contact_name},\n\nראיתי שב-{company} מחפשים {role} — ברור שה-{cat_expertise} עכשיו על הכוונת.\n\nתשמע, בדיוק גמרנו פרויקט בחברה בגודל שלכם: {cat_result}. בלי בולשיט, תוצאות אמיתיות.\n\nאני דורי מ-Develeap. הקמנו והטמענו צוותי {cat_expertise} ביותר מ-100 חברות טק ישראליות — {customers} ועוד.\n\nמה אם במקום לחכות 3-6 חודשים למצוא + להכניס {role}... תהיה לכם חוליה בכירה שמתחילה לדלוור תוך שבועיים?\n\nשווה שיחה של 15 דקות? {cat_link}\n\nדורי כפרי | CEO, Develeap"
+      },
+      {
         "name": "Pain Agitator",
         "emoji": "🎯",
+        "lang": "en",
         "forConnected": true,
         "subject": "That {role} role at {company}  -  still open?",
         "body": "{contact_name}, quick question:\n\nThat {role} position at {company}  -  how long has it been open?\n\nHere's what I see every time: The role stays open 90+ days. Meanwhile, {cat_pain}\n\nSound familiar?\n\nI run Develeap. We've helped {customers} and 100+ other companies solve exactly this. We don't just fill the gap  -  we deliver {cat_offer}.\n\nThe ROI math is simple: hire us for 1 month, get 6 months of {cat_expertise} progress.\n\nCan I show you how? {cat_link}\n\nDori Kafri | CEO, Develeap"
       },
       {
+        "name": "לחץ על הכאב",
+        "emoji": "🎯",
+        "lang": "he",
+        "forConnected": true,
+        "subject": "המשרת {role} ב-{company} — עדיין פתוחה?",
+        "body": "{contact_name}, שאלה קצרה:\n\nהמשרה של {role} ב-{company} — כמה זמן היא כבר פתוחה?\n\nמה שאני רואה כל פעם: המשרה נשארת פתוחה 90+ יום. בינתיים, {cat_pain}\n\nמוכר?\n\nאני מנהל את Develeap. עזרנו ל-{customers} ולעוד 100+ חברות לפתור בדיוק את זה. אנחנו לא סתם סוגרים פער — אנחנו מדלוורים {cat_offer}.\n\nהחישוב פשוט: חודש איתנו = 6 חודשים של התקדמות ב-{cat_expertise}.\n\nרוצה שאראה לך? {cat_link}\n\nדורי כפרי | CEO, Develeap"
+      },
+      {
         "name": "Free Audit",
         "emoji": "🎁",
+        "lang": "en",
         "forConnected": true,
         "subject": "Free {cat_expertise} audit for {company}  -  no strings",
         "body": "{contact_name},\n\nI'll make this simple:\n\nI see {company} is looking for a {role}. Let my team audit your {cat_audit} for FREE  -  no strings. We'll deliver a report showing exactly where you're losing time and money, plus a roadmap to fix it.\n\nWhy free? Because once you see what 15 years of expertise looks like (we've done this for {customers}), you'll want us on speed dial.\n\nInterested? Just say \"yes\" and I'll set it up.\n\nDori Kafri, CEO @ Develeap\n{cat_link}"
       },
       {
+        "name": "אודיט חינם",
+        "emoji": "🎁",
+        "lang": "he",
+        "forConnected": true,
+        "subject": "אודיט {cat_expertise} בחינם ל-{company} — בלי התחייבות",
+        "body": "{contact_name},\n\nפשוט וקצר:\n\nראיתי ש-{company} מחפשים {role}. תנו לצוות שלי לעשות אודיט ל-{cat_audit} שלכם בחינם — בלי שום התחייבות. נדלוור דוח שמראה בדיוק איפה אתם מפסידים זמן וכסף, פלוס תוכנית פעולה.\n\nלמה בחינם? כי ברגע שתראו מה 15 שנות ניסיון עושות (עשינו את זה ל-{customers}), תרצו אותנו על חוגה.\n\nמעוניין? פשוט תגיד ואני אסדר.\n\nדורי כפרי, CEO @ Develeap\n{cat_link}"
+      },
+      {
         "name": "Case Study",
         "emoji": "📊",
+        "lang": "en",
         "forConnected": true,
         "subject": "How a team like {company} {cat_result_short} with Develeap",
         "body": "{contact_name},\n\nQuick story:\n\nA company similar to {company} came to us struggling with exactly what that {role} role is meant to solve. They needed serious {cat_expertise} help  -  fast.\n\nIn 6 weeks, we delivered {cat_offer}  -  end to end.\n\nResult: they {cat_result}. And they got there without the 3-6 month hiring cycle.\n\nWe've done the same for {customers} and dozens more.\n\nI see {company} is hiring for this. What if there's a faster, smarter path?\n\n15 minutes  -  I'll show you how: {cat_link}\n\nDori Kafri | Develeap"
       },
       {
+        "name": "סיפור לקוח",
+        "emoji": "📊",
+        "lang": "he",
+        "forConnected": true,
+        "subject": "איך חברה כמו {company} עשתה את זה עם Develeap",
+        "body": "{contact_name},\n\nסיפור קצר:\n\nחברה דומה ל-{company} הגיעה אלינו עם בדיוק האתגר שהמשרת {role} אמורה לפתור. הם היו צריכים עזרה רצינית ב-{cat_expertise} — מהר.\n\nתוך 6 שבועות דילוורנו {cat_offer} — מקצה לקצה.\n\nתוצאה: {cat_result}. והם הגיעו לשם בלי מעגל גיוס של 3-6 חודשים.\n\nעשינו את זה גם ל-{customers} ועוד עשרות חברות.\n\nאני רואה ש-{company} מגייסים לזה. מה אם יש דרך מהירה וחכמה יותר?\n\n15 דקות — אני אראה לך: {cat_link}\n\nדורי כפרי | Develeap"
+      },
+      {
         "name": "Connect Note",
         "emoji": "🤝",
+        "lang": "en",
         "forConnected": false,
         "subject": "{company}'s {role} hire  -  quick intro",
         "body": "Hey {contact_name}, noticed {company} is looking for a {role}  -  exciting!\n\nI'm Dori, CEO of Develeap (https://www.develeap.com). We help companies like {customers} scale their {cat_expertise} capabilities  -  100+ Israeli tech companies and counting.\n\nSince {company} is investing in {cat_expertise}, I'd love to share how we've helped similar teams move 3x faster. Open to connecting?"
       },
       {
+        "name": "חיבור",
+        "emoji": "🤝",
+        "lang": "he",
+        "forConnected": false,
+        "subject": "היי — לגבי המשרה ב-{company}",
+        "body": "היי {contact_name}, ראיתי ש-{company} מחפשים {role} — מגניב!\n\nאני דורי, CEO של Develeap (https://www.develeap.com). אנחנו עוזרים לחברות כמו {customers} לסקייל יכולות {cat_expertise} — מעל 100 חברות טק ישראליות.\n\nבגלל שב-{company} משקיעים ב-{cat_expertise}, אשמח לשתף איך עזרנו לצוותים דומים לזוז פי 3 יותר מהר. מעוניין להתחבר?"
+      },
+      {
         "name": "Direct Ask",
         "emoji": "⚡",
+        "lang": "en",
         "forConnected": true,
         "subject": "{contact_name}, senior {cat_expertise} talent ready for {company}",
         "body": "{contact_name},\n\nStraight to it:\n\n{company} needs a {role}. I have 50+ senior engineers who specialize in exactly this  -  {cat_offer}.\n\nDeveleap = Israel's largest DevOps & Cloud consulting firm. {customers} and 100+ companies trust us. 15 years deep.\n\n3 options:\n1. Staff augmentation  -  senior {cat_expertise} engineers in your team, this month\n2. Project-based  -  we deliver {cat_offer}, train your team, hand it off\n3. Ongoing consulting  -  fractional {cat_expertise} leadership\n\nWhich one fits {company} best? Let's talk.\n\nDori Kafri\nCEO, Develeap\nhttps://www.develeap.com/contact/"
+      },
+      {
+        "name": "ישיר לעניין",
+        "emoji": "⚡",
+        "lang": "he",
+        "forConnected": true,
+        "subject": "{contact_name}, מהנדסי {cat_expertise} בכירים מוכנים ל-{company}",
+        "body": "{contact_name},\n\nישר לעניין:\n\n{company} צריכים {role}. יש לי 50+ מהנדסים בכירים שמתמחים בדיוק בזה — {cat_offer}.\n\nDeveleap = חברת ה-DevOps & Cloud הגדולה בישראל. {customers} ו-100+ חברות סומכות עלינו. 15 שנות ניסיון.\n\n3 אפשרויות:\n1. הגדלת צוות — מהנדסי {cat_expertise} בכירים בצוות שלכם, החודש\n2. פרויקטלי — אנחנו מדלוורים {cat_offer}, מכשירים את הצוות, מעבירים\n3. ייעוץ שוטף — הובלת {cat_expertise} חלקית\n\nמה מתאים ל-{company}? בואו נדבר.\n\nדורי כפרי\nCEO, Develeap\nhttps://www.develeap.com/contact/"
+      }
+    ],
+    "whatsapp": [
+      {
+        "name": "Hey 👋",
+        "emoji": "👋",
+        "lang": "en",
+        "body": "Hey {contact_name}, Dori from Develeap 👋\nSaw you're looking for a {role} — we place senior {cat_expertise} engineers fast. Worth a quick chat?"
+      },
+      {
+        "name": "היי 👋",
+        "emoji": "👋",
+        "lang": "he",
+        "body": "היי {contact_name}, דורי מ-Develeap 👋\nראיתי שמחפשים {role} — אנחנו משבצים מהנדסי {cat_expertise} בכירים מהר. שווה שיחה קצרה?"
+      },
+      {
+        "name": "Intro + Proof",
+        "emoji": "💪",
+        "lang": "en",
+        "body": "Hi {contact_name}! Dori, Develeap.\nWe help companies like {customers} scale {cat_expertise} teams — senior engineers, ready in weeks not months.\nRelevant for {company}?"
+      },
+      {
+        "name": "הוכחה 💪",
+        "emoji": "💪",
+        "lang": "he",
+        "body": "מה קורה {contact_name}! דורי, Develeap.\nאנחנו עוזרים לחברות כמו {customers} לסקייל צוותי {cat_expertise} — מהנדסים בכירים, תוך שבועות ולא חודשים.\nרלוונטי ל-{company}?"
+      },
+      {
+        "name": "Follow Up",
+        "emoji": "🔄",
+        "lang": "en",
+        "body": "Hey {contact_name} 🙂 following up — still looking for {cat_expertise} talent at {company}?\nHappy to send profiles"
+      },
+      {
+        "name": "פולואפ 🔄",
+        "emoji": "🔄",
+        "lang": "he",
+        "body": "היי {contact_name} 🙂 עוקב — עדיין מחפשים אנשי {cat_expertise} ב-{company}?\nאשמח לשלוח פרופילים"
+      },
+      {
+        "name": "Quick Call?",
+        "emoji": "📞",
+        "lang": "en",
+        "body": "Hi {contact_name}, Dori from Develeap.\nGot 5 min this week? Want to show you something relevant for the {role} opening at {company} 🙏"
+      },
+      {
+        "name": "שיחה קצרה? 📞",
+        "emoji": "📞",
+        "lang": "he",
+        "body": "היי {contact_name}, דורי מ-Develeap.\nיש לך 5 דקות השבוע? רוצה להראות לך משהו רלוונטי למשרת ה-{role} ב-{company} 🙏"
+      },
+      {
+        "name": "Who's the right person?",
+        "emoji": "🤔",
+        "lang": "en",
+        "body": "Hey {contact_name}, quick one — who handles {cat_expertise} hiring at {company}?\nGot senior engineers available, want to make sure I reach the right person 🙏"
+      },
+      {
+        "name": "מי הבנאדם? 🤔",
+        "emoji": "🤔",
+        "lang": "he",
+        "body": "היי {contact_name}, שאלה קצרה — מי מטפל בגיוסי {cat_expertise} ב-{company}?\nיש לי מהנדסים בכירים פנויים, רוצה לוודא שאני מגיע לבנאדם הנכון 🙏"
       }
     ],
     "sos_prospect": [
@@ -330,6 +542,202 @@
         "expertise": "site reliability",
         "link": "https://www.develeap.com/"
       }
+    },
+    "valuePropsHe": {
+      "devops": {
+        "pain": "המהנדסים הקיימים שלכם טובעים בעבודת תשתיות שלא אמורה להיות שלהם. הרילוסים נהיים איטיים. חוב טכני מצטבר.",
+        "result": "קיצרנו מחזורי פריסה משבועיים ל-45 דקות",
+        "offer": "צינורות CI/CD, קוברנטיס, טראפורם, IaC — כל הסטאק",
+        "audit": "צינור ה-CI/CD והתשתיות",
+        "expertise": "DevOps",
+        "link": "https://www.develeap.com/devops-consulting/"
+      },
+      "ai": {
+        "pain": "הצוות שלכם תקוע בבניית תשתית ML מאפס במקום לשלוח מודלים לפרודקשן. צינורות אימון נשברים. עלויות GPU מתפוצצות.",
+        "result": "קיצרנו זמן מודל-לפרודקשן מחודשים לימים עם MLOps ברמת פרודקשן",
+        "offer": "צינורות ML, הגשת מודלים, אופטימיזציית GPU, ו-MLOps מקצה לקצה",
+        "audit": "תשתית ה-ML וצינור הפריסה של המודלים",
+        "expertise": "תשתיות AI/ML",
+        "link": "https://www.develeap.com/"
+      },
+      "agentic": {
+        "pain": "לבנות סוכני AI אמינים זה קשה יותר ממה שנראה — הזיות, כשלי אורקסטרציה ובעיות סקייל מאטים הכל.",
+        "result": "עזרנו לצוותים לפרוס סוכני AI ברמת פרודקשן עם גארדריילס תוך פחות מ-4 שבועות",
+        "offer": "אורקסטרציית סוכנים, צינורות LLM, מערכות RAG, וגארדריילס לפרודקשן",
+        "audit": "ארכיטקטורת סוכני ה-AI וצינור ה-LLM",
+        "expertise": "AI אגנטי",
+        "link": "https://www.develeap.com/"
+      },
+      "finops": {
+        "pain": "הוצאות הענן גדלות מהר יותר מההכנסות. אף אחד לא אחראי על אופטימיזציית עלויות, ומהנדסים ממשיכים להרים משאבים בלי שקיפות.",
+        "result": "עזרנו לצוותים לחתוך הוצאות ענן ב-30-40% תוך שמירה על ביצועים",
+        "offer": "אופטימיזציית עלויות ענן, מסגרות FinOps, מודלי showback/chargeback, וממשל עלויות אוטומטי",
+        "audit": "הוצאות הענן והזדמנויות לאופטימיזציית עלויות",
+        "expertise": "FinOps ועלויות ענן",
+        "link": "https://www.develeap.com/"
+      },
+      "cloud": {
+        "pain": "ניהול מורכבות מולטי-ענן בלי צוותי פלטפורמה ייעודיים",
+        "result": "קיצרנו זמן הקצאת ענן ב-80% עם תשתית בשירות עצמי",
+        "offer": "ארכיטקטורת AWS/Azure/GCP, מיגרציה לענן, IaC, landing zones",
+        "audit": "תשתית הענן ואסטרטגיית מולטי-ענן",
+        "expertise": "תשתיות ענן",
+        "link": "https://www.develeap.com/"
+      },
+      "security": {
+        "pain": "פרצות אבטחה מתגלות מאוחר מדי במחזור הפיתוח",
+        "result": "הזזנו אבטחה שמאלה וצמצמנו פרצות קריטיות ב-90%",
+        "offer": "צינורות DevSecOps, SAST/DAST, אבטחת קונטיינרים, אוטומציית compliance",
+        "audit": "מצב האבטחה וצינור ה-DevSecOps",
+        "expertise": "הנדסת אבטחה",
+        "link": "https://www.develeap.com/"
+      },
+      "data": {
+        "pain": "צינורות דאטה נשברים כל הזמן ואנליסטים מחכים ימים לדאטה טרי",
+        "result": "בנינו צינורות דאטה בזמן אמת שמעבדים 10M+ אירועים ביום עם 99.9% זמינות",
+        "offer": "צינורות דאטה, ETL/ELT, data lakes, ארכיטקטורת סטרימינג, dbt",
+        "audit": "צינור הדאטה והארכיטקטורה",
+        "expertise": "הנדסת דאטה",
+        "link": "https://www.develeap.com/"
+      },
+      "platform": {
+        "pain": "מפתחים מבזבזים 40% מהזמן על תשתיות במקום פיצ'רים",
+        "result": "בנינו פלטפורמת מפתחים פנימית שקיצרה אונבורדינג משבועות לשעות",
+        "offer": "פלטפורמות מפתחים פנימיות, golden paths, קטלוגי שירותים, פורטלים למפתחים",
+        "audit": "חוויית המפתח והנדסת פלטפורמה",
+        "expertise": "הנדסת פלטפורמה",
+        "link": "https://www.develeap.com/"
+      },
+      "sre": {
+        "pain": "כיבוי שריפות בפרודקשן במקום לבנות אמינות",
+        "result": "הגענו ל-99.99% זמינות וקיצרנו MTTR משעות לדקות",
+        "offer": "מסגרות SLO/SLI, ניהול תקריות, chaos engineering, observability",
+        "audit": "הנדסת אמינות ותגובה לתקריות",
+        "expertise": "אמינות אתר",
+        "link": "https://www.develeap.com/"
+      }
+    },
+    "keywords": {
+      "agentic": [
+        "agentic",
+        "agent",
+        "llm agent",
+        "autonomous agent",
+        "ai agent",
+        "sales agent"
+      ],
+      "ai": [
+        "ai engineer",
+        "machine learning",
+        "ml engineer",
+        "mlops",
+        "data scientist",
+        "deep learning",
+        "nlp",
+        "llm",
+        "generative ai",
+        "genai",
+        "artificial intelligence",
+        "ai ops",
+        "large scale training"
+      ],
+      "finops": [
+        "finops",
+        "fin ops",
+        "cloud cost",
+        "cloud financial",
+        "cost optimization",
+        "cloud economics",
+        "cloud spend",
+        "cost management",
+        "cloud billing",
+        "cost engineer",
+        "cloud finance",
+        "cost analyst"
+      ],
+      "security": [
+        "devsecops",
+        "security engineer",
+        "appsec",
+        "application security",
+        "cybersecurity",
+        "infosec",
+        "information security",
+        "cloud security",
+        "security architect",
+        "penetration test",
+        "soc analyst",
+        "threat",
+        "vulnerability",
+        "compliance engineer",
+        "security operations"
+      ],
+      "sre": [
+        "sre",
+        "site reliability",
+        "reliability engineer",
+        "production engineer",
+        "availability engineer",
+        "incident management",
+        "on-call",
+        "observability"
+      ],
+      "platform": [
+        "platform engineer",
+        "platform team",
+        "internal developer platform",
+        "developer experience",
+        "developer platform",
+        "idp ",
+        "backstage",
+        "platform infrastructure",
+        "developer productivity"
+      ],
+      "data": [
+        "data engineer",
+        "data pipeline",
+        "data platform",
+        "etl",
+        "elt ",
+        "data warehouse",
+        "data lake",
+        "apache spark",
+        "apache kafka",
+        "data infrastructure",
+        "analytics engineer",
+        "dbt ",
+        "airflow",
+        "databricks",
+        "snowflake engineer"
+      ],
+      "cloud": [
+        "cloud engineer",
+        "cloud architect",
+        "cloud infrastructure",
+        "aws engineer",
+        "azure engineer",
+        "gcp engineer",
+        "multi-cloud",
+        "cloud migration",
+        "cloud native",
+        "cloud operations"
+      ],
+      "devops": [
+        "devops",
+        "ci/cd",
+        "kubernetes",
+        "terraform",
+        "docker",
+        "infrastructure as code",
+        "iac",
+        "jenkins",
+        "gitops",
+        "argocd",
+        "helm",
+        "ansible",
+        "puppet",
+        "chef"
+      ]
     }
   },
   "customers": {
@@ -822,5 +1230,80 @@
         "color": "#32BBD7"
       }
     }
+  },
+  "users": [
+    {
+      "email": "dori.kafri@develeap.com",
+      "name": "Dori Kafri",
+      "role": "admin",
+      "addedAt": "2026-03-06T00:00:00Z",
+      "status": "active"
+    }
+  ],
+  "userProfiles": {},
+  "delegation": {},
+  "templateLang": {
+    "linkedin": "en",
+    "email": "en",
+    "whatsapp": "he"
+  },
+  "wolfPackDefaults": {
+    "customer": {
+      "flowTemplate": "executive_touch",
+      "teamMembers": [],
+      "channels": [
+        "linkedin",
+        "email"
+      ],
+      "adaptiveRules": [
+        "any_positive_reply:pause_remaining",
+        "email_opened_3x:escalate_priority"
+      ],
+      "autoActivate": true
+    },
+    "past": {
+      "flowTemplate": "quick_strike",
+      "teamMembers": [],
+      "channels": [
+        "linkedin",
+        "email",
+        "whatsapp"
+      ],
+      "adaptiveRules": [
+        "any_positive_reply:pause_remaining"
+      ],
+      "autoActivate": true
+    },
+    "prospect": {
+      "flowTemplate": "full_siege",
+      "teamMembers": [],
+      "channels": [
+        "linkedin",
+        "email"
+      ],
+      "adaptiveRules": [
+        "any_positive_reply:pause_remaining",
+        "all_connections_declined:archive"
+      ],
+      "autoActivate": true
+    },
+    "high_potential": {
+      "flowTemplate": "content_surround",
+      "teamMembers": [],
+      "channels": [
+        "linkedin",
+        "email",
+        "whatsapp"
+      ],
+      "adaptiveRules": [
+        "any_positive_reply:pause_remaining",
+        "email_opened_3x:escalate_priority"
+      ],
+      "autoActivate": true
+    }
+  },
+  "oauth": {
+    "clientId": "580259572786-2ohgv8qcanvps70ua23ach5vbq5pe7u5.apps.googleusercontent.com",
+    "domain": "https://dorikafri.github.io/develeap-bdr-job-monitor/develeap.com"
   }
 }
