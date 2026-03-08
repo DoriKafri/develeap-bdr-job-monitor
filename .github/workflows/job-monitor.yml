@@ -2,7 +2,7 @@ name: Develeap BDR Job Monitor
 
 on:
   schedule:
-    - cron: '0 6,10,14 * * *'   # 3x daily (~8:00, 12:00, 16:00 IST)
+    - cron: '0 6,8,10,12,14,16 * * *'   # Every 2h daytime (~8:00-18:00 IST)
 
   workflow_dispatch:
 

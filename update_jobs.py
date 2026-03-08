@@ -937,11 +937,11 @@ def search_duckduckgo(query: str) -> list[dict]:
 
 
 def search_jobs(query: str) -> list[dict]:
-    """Search with SerpAPI first, fall back to DuckDuckGo."""
-    results = search_serpapi(query)
+    """Search with DuckDuckGo first, fall back to SerpAPI (conserve SerpAPI quota)."""
+    results = search_duckduckgo(query)
     if not results:
         time.sleep(random.uniform(1.5, 3.0))  # Rate limiting
-        results = search_duckduckgo(query)
+        results = search_serpapi(query)
     return results
 
 
