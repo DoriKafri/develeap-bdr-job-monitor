@@ -6956,7 +6956,9 @@ function _getChannelTemplateEmoji(channel) {
 // Build template dropdown HTML for a channel
 function _buildTplDropdown(channel, stakeholderIdx) {
   const lang = _templateLang[channel] || 'en';
-  const filtered = OUTREACH_TEMPLATES.map((t, i) => ({t, i})).filter(({t}) => (t.lang || 'en') === lang);
+  const source = channel === 'whatsapp' ? WHATSAPP_TEMPLATES : OUTREACH_TEMPLATES;
+  const defaultLang = channel === 'whatsapp' ? 'he' : 'en';
+  const filtered = source.map((t, i) => ({t, i})).filter(({t}) => (t.lang || defaultLang) === lang);
   const activeChIdx = _channelTemplateIdx[channel] || 0;
   const langFlag = (TEMPLATE_LANGS.find(l => l.code === lang) || {}).flag || '🇬🇧';
   let items = filtered.map(({t, i}, fIdx) => {
@@ -8759,8 +8761,11 @@ function sendWhatsApp(stakeholderIdx) {
   // Clean phone number: remove spaces, dashes, parentheses; keep + and digits
   const cleanPhone = phone.replace(/[\s\-\(\)]/g, '').replace(/^\+/, '');
 
-  // Get WhatsApp template
-  const tpl = WHATSAPP_TEMPLATES[_activeWhatsAppTemplateIdx || 0];
+  // Get WhatsApp template — use channel-based selection with language filter
+  const waLang = _templateLang.whatsapp || 'he';
+  const waFiltered = WHATSAPP_TEMPLATES.filter(function(t) { return (t.lang || 'he') === waLang; });
+  const waChIdx = _channelTemplateIdx.whatsapp || 0;
+  const tpl = waFiltered[waChIdx % waFiltered.length] || WHATSAPP_TEMPLATES[0];
   const body = fillTemplate(tpl.body, job, s);
 
   // Open wa.me deep link
@@ -8811,7 +8816,10 @@ function queueWhatsApp(stakeholderIdx) {
   }
 
   const key = _contactKey(s);
-  const tpl = WHATSAPP_TEMPLATES[_activeWhatsAppTemplateIdx || 0];
+  const _waLang = _templateLang.whatsapp || 'he';
+  const _waF = WHATSAPP_TEMPLATES.filter(function(t) { return (t.lang || 'he') === _waLang; });
+  const _waI = _channelTemplateIdx.whatsapp || 0;
+  const tpl = _waF[_waI % _waF.length] || WHATSAPP_TEMPLATES[0];
   const msg = fillTemplate(tpl.body, job, s);
 
   _pushToLinkedInQueue({
