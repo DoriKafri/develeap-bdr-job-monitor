@@ -46,9 +46,17 @@
   .sidebar-nav .nav-item:hover { background:rgba(255,255,255,0.08); color:white; }
   .sidebar-nav .nav-item.active { background:rgba(255,255,255,0.12); color:white; border-left-color:var(--accent); font-weight:600; }
   .sidebar-nav .nav-item-badge { margin-left:auto; background:var(--accent); color:var(--primary); font-size:10px; padding:2px 6px; border-radius:8px; font-weight:700; }
-  .sidebar-nav .nav-bottom { margin-top:auto; padding:16px 24px; border-top:1px solid rgba(255,255,255,0.1); }
+  .sidebar-nav .nav-bottom { margin-top:auto; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.1); }
   .sidebar-nav .nav-bottom-item { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
   .sidebar-nav .nav-bottom-item:last-child { margin-bottom:0; }
+  .sidebar-user { display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; margin-bottom:8px; }
+  .sidebar-user img { width:32px; height:32px; border-radius:50%; border:2px solid rgba(255,255,255,0.2); object-fit:cover; flex-shrink:0; }
+  .sidebar-user-initial { width:32px; height:32px; border-radius:50%; border:2px solid rgba(255,255,255,0.2); background:var(--accent); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+  .sidebar-user-info { overflow:hidden; }
+  .sidebar-user-name { font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar-user-email { font-size:11px; color:rgba(255,255,255,0.45); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar-signout { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:6px; font-size:12px; color:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.15s; }
+  .sidebar-signout:hover { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); }
   .sidebar-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:199; }
   .sidebar-backdrop.open { display:block; }
   .sidebar-nav.open { transform:translateX(0); }
@@ -1236,8 +1244,12 @@
       </div>
     </div>
 
-    <div class="nav-bottom" style="cursor:pointer;color:rgba(255,255,255,0.5);font-size:12px;text-align:center" onclick="signOut()">
-      Sign Out
+    <div class="nav-bottom" id="sidebarUserArea">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <div class="sidebar-signout" onclick="signOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Sign Out
+      </div>
     </div>
 
     <!-- Hidden elements for sync indicator (used by JS) -->
@@ -2261,27 +2273,74 @@ const AUTH_ENABLED = GOOGLE_CLIENT_ID !== 'YOUR_CLIENT_ID.apps.googleusercontent
 
 function initGoogleAuth() {
   if (!AUTH_ENABLED) { document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block'; initApp(); return; }
+  // Check for stored session first
+  var stored = null;
+  try { stored = JSON.parse(localStorage.getItem('bdr_auth_user')); } catch(e) {}
+  if (stored && stored.email && (stored.email.split('@')[1] === ALLOWED_DOMAIN)) {
+    _currentAuthUser = stored;
+    _applyUserUI(stored);
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+    // Still initialize GIS in background for token refresh
+    google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleCredentialResponse, hosted_domain:ALLOWED_DOMAIN, auto_select:true });
+    return;
+  }
   google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleCredentialResponse, hosted_domain:ALLOWED_DOMAIN, auto_select:true });
   google.accounts.id.renderButton(document.getElementById('google-signin-btn'),{theme:'outline',size:'large',width:300,text:'signin_with',shape:'rectangular'});
   google.accounts.id.prompt();
 }
 function handleCredentialResponse(r) {
-  const p=JSON.parse(atob(r.credential.split('.')[1]));
-  if((p.email||'').split('@')[1]!==ALLOWED_DOMAIN){const e=document.getElementById('authError');e.textContent='Access restricted to @develeap.com. You signed in with '+p.email;e.style.display='block';return;}
-  _currentAuthUser = { email: p.email, name: p.name, picture: p.picture };
-  document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block';
-  var firstName = (p.name || '').split(' ')[0];
+  var p = JSON.parse(atob(r.credential.split('.')[1]));
+  if ((p.email||'').split('@')[1] !== ALLOWED_DOMAIN) {
+    var e = document.getElementById('authError');
+    e.textContent = 'Access restricted to @develeap.com. You signed in with ' + p.email;
+    e.style.display = 'block';
+    return;
+  }
+  var user = { email: p.email, name: p.name, picture: p.picture };
+  _currentAuthUser = user;
+  try { localStorage.setItem('bdr_auth_user', JSON.stringify(user)); } catch(e) {}
+  _applyUserUI(user);
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  initApp();
+}
+function _applyUserUI(user) {
+  var firstName = (user.name || '').split(' ')[0];
+  var avatarHtml = user.picture
+    ? '<img src="'+user.picture+'" class="user-avatar">'
+    : '<div class="user-avatar" style="background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>';
+  // Top bar user info
   document.getElementById('userInfo').innerHTML =
-    (p.picture ? '<img src="'+p.picture+'" class="user-avatar">' : '<div class="user-avatar" style="background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>') +
+    avatarHtml +
     '<span class="user-name">'+firstName+'</span>' +
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.4"><polyline points="6 9 12 15 18 9"/></svg>' +
     '<div class="user-dropdown" id="userDropdown">' +
-      '<div class="user-dropdown-header"><div class="uname">'+p.name+'</div><div class="uemail">'+p.email+'</div></div>' +
+      '<div class="user-dropdown-header"><div class="uname">'+user.name+'</div><div class="uemail">'+user.email+'</div></div>' +
       '<div class="user-dropdown-item danger" onclick="event.stopPropagation();signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg> Sign out</div>' +
     '</div>';
-  initApp();
+  // Sidebar user profile
+  var sidebarUser = document.getElementById('sidebarUser');
+  if (sidebarUser) {
+    var sAvatarHtml = user.picture
+      ? '<img src="'+user.picture+'">'
+      : '<div class="sidebar-user-initial">'+firstName.charAt(0)+'</div>';
+    sidebarUser.innerHTML =
+      sAvatarHtml +
+      '<div class="sidebar-user-info">' +
+        '<div class="sidebar-user-name">'+user.name+'</div>' +
+        '<div class="sidebar-user-email">'+user.email+'</div>' +
+      '</div>';
+  }
 }
-function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+function signOut() {
+  if (AUTH_ENABLED) google.accounts.id.disableAutoSelect();
+  try { localStorage.removeItem('bdr_auth_user'); } catch(e) {}
+  _currentAuthUser = null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('auth-screen').style.display='flex';
+}
 function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById('userDropdown');if(d)d.classList.toggle('open');}
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
