@@ -76,21 +76,27 @@
   .btn-run .countdown { font-weight:400; font-size:11px; opacity:0.85; margin-left:2px; }
 
   /* ── Run Progress Bar ── */
-  .run-progress { position:fixed; top:48px; left:240px; right:0; z-index:999; transition:opacity 0.4s; }
-  .run-progress.hidden { opacity:0; pointer-events:none; }
-  .run-progress-track { height:3px; background:var(--border); }
-  .run-progress-fill { height:100%; background:var(--accent); transition:width 0.6s ease; width:0; }
-  .run-progress-status { display:flex; align-items:center; gap:8px; padding:6px 16px; background:var(--surface); border-bottom:1px solid var(--border); font-size:11px; color:var(--text-light); }
-  .run-progress-status .run-step { display:flex; align-items:center; gap:3px; }
-  .run-progress-status .run-step.active { color:var(--accent-dark); font-weight:600; }
-  .run-progress-status .run-step.done { color:var(--teal); }
-  .run-progress-status .run-step.fail { color:#e53935; }
-  .run-progress-dot { width:6px; height:6px; border-radius:50%; background:var(--border); flex-shrink:0; }
-  .run-step.active .run-progress-dot { background:var(--accent); animation:pulse-dot 1s infinite; }
-  .run-step.done .run-progress-dot { background:var(--teal); }
-  .run-step.fail .run-progress-dot { background:#e53935; }
-  .run-progress-arrow { color:var(--border); font-size:9px; }
-  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .run-progress { position:fixed; top:48px; left:240px; right:0; z-index:999; transition:all 0.4s ease; }
+  .run-progress.hidden { opacity:0; pointer-events:none; transform:translateY(-100%); }
+  .run-progress-inner { display:flex; align-items:center; height:40px; padding:0 24px; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+  .run-progress-steps { display:flex; align-items:center; flex:1; gap:0; }
+  .run-step { display:flex; align-items:center; gap:6px; position:relative; }
+  .run-step-icon { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:rgba(255,255,255,0.35); border:2px solid rgba(255,255,255,0.15); background:transparent; transition:all 0.3s ease; flex-shrink:0; }
+  .run-step-label { font-size:11px; color:rgba(255,255,255,0.4); font-weight:500; letter-spacing:0.02em; transition:all 0.3s ease; white-space:nowrap; }
+  .run-step-connector { flex:1; height:2px; background:rgba(255,255,255,0.1); margin:0 8px; min-width:16px; position:relative; overflow:hidden; border-radius:1px; }
+  .run-step-connector-fill { position:absolute; left:0; top:0; height:100%; width:0; background:var(--accent); transition:width 0.5s ease; border-radius:1px; }
+  .run-step.done .run-step-icon { background:var(--accent); border-color:var(--accent); color:white; }
+  .run-step.done .run-step-label { color:rgba(255,255,255,0.85); }
+  /* connector fill is set via inline style in JS */
+  .run-step.active .run-step-icon { border-color:var(--accent); color:white; background:rgba(255,176,0,0.25); animation:pulse-ring 1.5s ease infinite; }
+  .run-step.active .run-step-label { color:white; font-weight:600; }
+  .run-step.fail .run-step-icon { background:#e53935; border-color:#e53935; color:white; }
+  .run-step.fail .run-step-label { color:#ff8a80; }
+  .run-progress-result { display:flex; align-items:center; gap:6px; margin-left:12px; padding-left:12px; border-left:1px solid rgba(255,255,255,0.15); }
+  .run-progress-result span { font-size:11px; font-weight:600; letter-spacing:0.02em; }
+  .run-progress-result.success span { color:#69f0ae; }
+  .run-progress-result.failure span { color:#ff8a80; }
+  @keyframes pulse-ring { 0%,100%{ box-shadow:0 0 0 0 rgba(255,176,0,0.4); } 50%{ box-shadow:0 0 0 5px rgba(255,176,0,0); } }
 
   /* ── MAIN CONTENT ── */
   .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
@@ -1257,8 +1263,7 @@
 
   <!-- Run Progress -->
   <div class="run-progress hidden" id="runProgress">
-    <div class="run-progress-track"><div class="run-progress-fill" id="runProgressFill"></div></div>
-    <div class="run-progress-status" id="runProgressStatus"></div>
+    <div class="run-progress-inner" id="runProgressInner"></div>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -9118,33 +9123,48 @@ function _hideRunProgress() {
   if (el) el.classList.add('hidden');
 }
 function _renderRunSteps(steps, conclusion) {
-  const statusEl = document.getElementById('runProgressStatus');
-  const fillEl = document.getElementById('runProgressFill');
-  if (!statusEl || !fillEl) return;
+  var el = document.getElementById('runProgressInner');
+  if (!el) return;
 
-  let doneCount = 0;
-  let html = '';
-  _RUN_STEPS.forEach((s, i) => {
-    const match = steps.find(st => st.name === s.key);
-    let cls = '';
+  var icons = ['📥','📦','🔍','💾'];
+  var html = '<div class="run-progress-steps">';
+  var prevDone = false;
+
+  _RUN_STEPS.forEach(function(s, i) {
+    var match = steps.find(function(st) { return st.name === s.key; });
+    var cls = '';
+    var done = false;
     if (match) {
-      if (match.conclusion === 'success') { cls = 'done'; doneCount++; }
-      else if (match.conclusion === 'failure') { cls = 'fail'; doneCount++; }
-      else if (match.status === 'in_progress') { cls = 'active'; doneCount += 0.5; }
+      if (match.conclusion === 'success') { cls = 'done'; done = true; }
+      else if (match.conclusion === 'failure') { cls = 'fail'; }
+      else if (match.status === 'in_progress') { cls = 'active'; }
     }
-    if (i > 0) html += '<span class="run-progress-arrow">›</span>';
-    html += '<span class="run-step ' + cls + '"><span class="run-progress-dot"></span>' + s.label + '</span>';
+    // Mark all steps done if conclusion is success
+    if (conclusion === 'success') { cls = 'done'; done = true; }
+
+    // Connector before each step (except first)
+    if (i > 0) {
+      html += '<div class="run-step-connector"><div class="run-step-connector-fill" style="width:' + (prevDone ? '100' : '0') + '%"></div></div>';
+    }
+
+    var iconContent = done ? '✓' : (cls === 'fail' ? '✕' : (i + 1));
+    html += '<div class="run-step ' + cls + '">';
+    html += '<div class="run-step-icon">' + iconContent + '</div>';
+    html += '<span class="run-step-label">' + s.label + '</span>';
+    html += '</div>';
+    prevDone = done;
   });
 
+  html += '</div>';
+
+  // Result badge
   if (conclusion === 'success') {
-    html += '<span class="run-progress-arrow">›</span><span class="run-step done"><span class="run-progress-dot"></span>Done ✓</span>';
-    doneCount = _RUN_STEPS.length;
+    html += '<div class="run-progress-result success"><span>✓ Complete</span></div>';
   } else if (conclusion === 'failure') {
-    html += '<span class="run-progress-arrow">›</span><span class="run-step fail"><span class="run-progress-dot"></span>Failed</span>';
+    html += '<div class="run-progress-result failure"><span>✕ Failed</span></div>';
   }
 
-  statusEl.innerHTML = html;
-  fillEl.style.width = Math.round((doneCount / _RUN_STEPS.length) * 100) + '%';
+  el.innerHTML = html;
 }
 
 function startRunTracking() {
