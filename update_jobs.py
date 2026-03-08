@@ -1481,7 +1481,7 @@ def _get_stakeholders(company: str) -> list:
 # ── Auto-stakeholder discovery cache ──────────────────────────────────────
 _stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
 _auto_discover_count = 0                    # Track SerpAPI usage per run
-AUTO_DISCOVER_MAX = 30                      # Max auto-lookups per pipeline run
+AUTO_DISCOVER_MAX = 5                       # Max auto-lookups per pipeline run (conserve SerpAPI quota)
 
 # Leadership title patterns for auto-discovery
 _LEADERSHIP_RE = re.compile(
@@ -3122,7 +3122,7 @@ def main():
     # Second pass: fetch missing photos (deduplicated by LinkedIn URL)
     photo_count = 0
     fetch_count = 0
-    max_fetches = 80  # Rate limit: max SerpAPI image searches per run
+    max_fetches = 10  # Rate limit: max SerpAPI image searches per run (conserve quota)
     for j in merged:
         company = j.get("company", "")
         for s in j.get("stakeholders", []):
