@@ -6803,33 +6803,150 @@ let CAT_VALUE_PROPS = {
 
 // ===== HEBREW NAME MAPPING =====
 const HEBREW_NAMES = {
-  'erez': 'ארז', 'yaakov': 'יעקב', 'jacob': 'יעקב', 'nir': 'ניר', 'udi': 'אודי',
-  'gal': 'גל', 'adar': 'אדר', 'nimrod': 'נמרוד', 'raphael': 'רפאל', 'gabriel': 'גבריאל',
-  'kostya': 'קוסטיה', 'johai': 'יוחאי', 'eugene': 'יוג\'ין', 'alon': 'אלון',
-  'david': 'דוד', 'daniel': 'דניאל', 'dan': 'דן', 'yoav': 'יואב', 'oren': 'אורן',
-  'amit': 'עמית', 'avi': 'אבי', 'aviad': 'אביעד', 'moshe': 'משה', 'eli': 'אלי',
-  'elad': 'אלעד', 'itai': 'איתי', 'itay': 'איתי', 'guy': 'גיא', 'ido': 'עידו',
-  'tal': 'טל', 'ron': 'רון', 'ronen': 'רונן', 'ran': 'רן', 'ilan': 'אילן',
-  'yossi': 'יוסי', 'yoni': 'יוני', 'yonatan': 'יונתן', 'jonathan': 'יונתן',
-  'michael': 'מיכאל', 'mike': 'מייק', 'ori': 'אורי', 'omri': 'עמרי', 'noam': 'נועם',
-  'gilad': 'גלעד', 'barak': 'ברק', 'assaf': 'אסף', 'asaf': 'אסף', 'lior': 'ליאור',
-  'rotem': 'רותם', 'chen': 'חן', 'ofir': 'אופיר', 'ofer': 'עופר', 'matan': 'מתן',
-  'shai': 'שי', 'shay': 'שי', 'yuval': 'יובל', 'zohar': 'זוהר', 'tomer': 'תומר',
-  'niv': 'ניב', 'omer': 'עומר', 'adam': 'אדם', 'yaron': 'ירון', 'boaz': 'בועז',
-  'dor': 'דור', 'harel': 'הראל', 'shahar': 'שחר', 'ariel': 'אריאל', 'eyal': 'אייל',
-  'maya': 'מאיה', 'noa': 'נועה', 'shira': 'שירה', 'dana': 'דנה', 'yael': 'יעל',
-  'tamar': 'תמר', 'michal': 'מיכל', 'liron': 'לירון', 'maor': 'מאור', 'bar': 'בר',
-  'sapir': 'ספיר', 'keren': 'קרן', 'lee': 'לי', 'li': 'לי', 'tom': 'תום',
-  'ben': 'בן', 'liran': 'לירן', 'dori': 'דורי', 'doron': 'דורון', 'eran': 'ערן',
-  'omer': 'עומר', 'hillel': 'הלל', 'nadav': 'נדב', 'roi': 'רועי', 'roi': 'רועי',
-  'alex': 'אלכס', 'alexander': 'אלכסנדר', 'max': 'מקס', 'mark': 'מארק',
-  'sergey': 'סרגיי', 'igor': 'איגור', 'roman': 'רומן', 'vlad': 'ולאד',
-  'simon': 'סיימון', 'peter': 'פיטר', 'john': 'ג\'ון', 'james': 'ג\'יימס'
+  // A
+  'aaron': 'אהרון', 'ada': 'עדה', 'adam': 'אדם', 'adar': 'אדר', 'adi': 'עדי', 'adir': 'אדיר',
+  'alex': 'אלכס', 'alexander': 'אלכסנדר', 'alexis': 'אלכסיס', 'ali': 'עלי', 'alina': 'אלינה',
+  'aliza': 'עליזה', 'alon': 'אלון', 'ami': 'עמי', 'amichai': 'עמיחי', 'amir': 'אמיר',
+  'amitai': 'אמיתי', 'amit': 'עמית', 'anat': 'ענת', 'anna': 'אנה', 'ariel': 'אריאל',
+  'arik': 'אריק', 'asaf': 'אסף', 'assaf': 'אסף', 'asi': 'אסי', 'avi': 'אבי',
+  'aviad': 'אביעד', 'avihai': 'אביחי', 'avihay': 'אביחי', 'aviv': 'אביב', 'avner': 'אבנר',
+  // B
+  'bar': 'בר', 'barak': 'ברק', 'bat': 'בת', 'ben': 'בן', 'benny': 'בני', 'boaz': 'בועז',
+  // C-D
+  'chen': 'חן', 'chris': 'כריס', 'danny': 'דני', 'dan': 'דן', 'dana': 'דנה', 'daniel': 'דניאל',
+  'david': 'דוד', 'dean': 'דין', 'dekel': 'דקל', 'dima': 'דימה', 'dina': 'דינה',
+  'dor': 'דור', 'doreen': 'דורין', 'dori': 'דורי', 'dorit': 'דורית', 'doron': 'דורון',
+  'dror': 'דרור', 'dvora': 'דבורה',
+  // E
+  'efi': 'אפי', 'eilon': 'אילון', 'eitan': 'איתן', 'elad': 'אלעד', 'eli': 'אלי',
+  'eliah': 'אליה', 'elior': 'אליאור', 'eliran': 'אלירן', 'ella': 'אלה', 'eran': 'ערן',
+  'erez': 'ארז', 'erik': 'אריק', 'esti': 'אסתי', 'etamar': 'איתמר', 'eugene': 'יוג\'ין',
+  'eyal': 'אייל',
+  // G
+  'gabriel': 'גבריאל', 'gad': 'גד', 'gadi': 'גדי', 'gal': 'גל', 'george': 'ג\'ורג\'',
+  'gideon': 'גדעון', 'gil': 'גיל', 'gilad': 'גלעד', 'guy': 'גיא',
+  // H
+  'hadas': 'הדס', 'hanna': 'חנה', 'harel': 'הראל', 'hed': 'הד', 'hen': 'חן', 'hillel': 'הלל',
+  // I
+  'idan': 'עידן', 'ido': 'עידו', 'igor': 'איגור', 'ilan': 'אילן', 'inbal': 'ענבל',
+  'israel': 'ישראל', 'itai': 'איתי', 'itamar': 'איתמר', 'itay': 'איתי', 'itzik': 'איציק',
+  // J
+  'jacob': 'יעקב', 'james': 'ג\'יימס', 'jeff': 'ג\'ף', 'jim': 'ג\'ים', 'johai': 'יוחאי',
+  'john': 'ג\'ון', 'jonathan': 'יונתן', 'jordan': 'ירדן', 'joseph': 'יוסף',
+  // K-L
+  'katya': 'קטיה', 'ken': 'קן', 'keren': 'קרן', 'kobi': 'קובי', 'kostya': 'קוסטיה',
+  'laliv': 'לביב', 'lee': 'לי', 'lena': 'לנה', 'lenny': 'לני', 'leonid': 'לאוניד',
+  'li': 'לי', 'liav': 'ליאב', 'lihi': 'ליהי', 'lilach': 'לילך', 'lior': 'ליאור',
+  'liran': 'לירן', 'liraz': 'לירז', 'liron': 'לירון', 'lotan': 'לוטן',
+  // M
+  'maayan': 'מעיין', 'magnus': 'מגנוס', 'maor': 'מאור', 'mark': 'מארק', 'matan': 'מתן',
+  'max': 'מקס', 'maya': 'מאיה', 'meir': 'מאיר', 'meni': 'מני', 'michael': 'מיכאל',
+  'michal': 'מיכל', 'mike': 'מייק', 'miki': 'מיקי', 'miri': 'מירי', 'mor': 'מור',
+  'mordechai': 'מרדכי', 'moria': 'מוריה', 'moshe': 'משה',
+  // N
+  'nadav': 'נדב', 'naftali': 'נפתלי', 'natali': 'נטלי', 'nati': 'נתי', 'netanel': 'נתנאל',
+  'nimrod': 'נמרוד', 'nir': 'ניר', 'niv': 'ניב', 'noa': 'נועה', 'noam': 'נועם',
+  'nofar': 'נופר', 'noy': 'נוי',
+  // O
+  'oded': 'עודד', 'ofer': 'עופר', 'ofir': 'אופיר', 'omer': 'עומר', 'omri': 'עמרי',
+  'oren': 'אורן', 'ori': 'אורי', 'orly': 'אורלי',
+  // P-R
+  'paz': 'פז', 'peter': 'פיטר', 'raf': 'רף', 'ran': 'רן', 'raphael': 'רפאל',
+  'raz': 'רז', 'roi': 'רועי', 'roman': 'רומן', 'ron': 'רון', 'ronen': 'רונן',
+  'rotem': 'רותם', 'roni': 'רוני', 'ruth': 'רות',
+  // S
+  'saar': 'סער', 'sapir': 'ספיר', 'sarit': 'שרית', 'sergey': 'סרגיי', 'shachar': 'שחר',
+  'shahar': 'שחר', 'shai': 'שי', 'shani': 'שני', 'sharon': 'שרון', 'shay': 'שי',
+  'shemtov': 'שמטוב', 'shimi': 'שימי', 'shimon': 'שמעון', 'shira': 'שירה', 'shlomi': 'שלומי',
+  'shlomo': 'שלמה', 'shmulik': 'שמוליק', 'shoshi': 'שושי', 'sigal': 'סיגל', 'simon': 'סיימון',
+  'stav': 'סתיו',
+  // T
+  'tal': 'טל', 'tamar': 'תמר', 'tom': 'תום', 'tomer': 'תומר', 'tsahi': 'צחי',
+  // U-V
+  'udi': 'אודי', 'uri': 'אורי', 'vlad': 'ולאד', 'vered': 'ורד',
+  // Y
+  'yaakov': 'יעקב', 'yael': 'יעל', 'yair': 'יאיר', 'yaniv': 'יניב', 'yaron': 'ירון',
+  'yehuda': 'יהודה', 'yiftach': 'יפתח', 'yigal': 'יגאל', 'yinon': 'ינון', 'yishai': 'ישי',
+  'yoav': 'יואב', 'yoni': 'יוני', 'yonatan': 'יונתן', 'yossi': 'יוסי', 'yuval': 'יובל',
+  // Z
+  'ziv': 'זיו', 'zohar': 'זוהר'
 };
+
+// Phonetic English-to-Hebrew transliteration fallback
+function _transliterateToHebrew(name) {
+  if (!name) return name;
+  const lower = name.toLowerCase();
+  const vowels = 'aeiou';
+  // Multi-char patterns (checked first, order matters)
+  const multi = [
+    ['sh', 'ש'], ['ch', "צ'"], ['th', 'ת'], ['ph', 'פ'], ['tz', 'צ'], ['ts', 'צ'],
+    ['zh', "ז'"], ['ee', 'י'], ['oo', 'ו'], ['ou', 'או'], ['ow', 'או'],
+    ['ai', 'יי'], ['ay', 'יי'], ['ei', 'יי'], ['ey', 'יי']
+  ];
+  // Single consonant map
+  const cons = {
+    'b':'ב','c':'ק','d':'ד','f':'פ','g':'ג','h':'ה','j':"ג'",'k':'ק','l':'ל',
+    'm':'מ','n':'נ','p':'פ','q':'ק','r':'ר','s':'ס','t':'ט','v':'ו','w':'ו',
+    'x':'קס','y':'י','z':'ז'
+  };
+  let result = '';
+  let i = 0;
+  while (i < lower.length) {
+    let matched = false;
+    // Try multi-char match
+    if (i + 1 < lower.length) {
+      const two = lower.substring(i, i + 2);
+      for (const [from, to] of multi) {
+        if (two === from) { result += to; i += 2; matched = true; break; }
+      }
+    }
+    if (!matched) {
+      const ch = lower[i];
+      if (cons[ch]) {
+        result += cons[ch]; i++; matched = true;
+      } else if (vowels.includes(ch)) {
+        // Vowel handling: position-aware
+        if (i === 0) {
+          // Word-initial vowel: א prefix (except i→י, o/u→ו)
+          if (ch === 'i') result += 'י';
+          else if (ch === 'o' || ch === 'u') result += 'ו';
+          else result += 'א';
+        } else if (i === lower.length - 1) {
+          // Word-final vowel
+          if (ch === 'a') result += 'ה';
+          else if (ch === 'i') result += 'י';
+          else if (ch === 'o') result += 'ו';
+          else if (ch === 'u') result += 'ו';
+          // silent final -e: skip
+        } else {
+          // Mid-word vowel: i→י, o/u→ו, a/e→skip (Hebrew typically omits)
+          if (ch === 'i') result += 'י';
+          else if (ch === 'o' || ch === 'u') result += 'ו';
+          // a and e are silent mid-word in Hebrew
+        }
+        i++; matched = true;
+      }
+    }
+    if (!matched) { result += lower[i]; i++; }
+  }
+  // Sofit (final-form letters)
+  if (result.endsWith('מ')) result = result.slice(0, -1) + 'ם';
+  if (result.endsWith('נ')) result = result.slice(0, -1) + 'ן';
+  if (result.endsWith('פ')) result = result.slice(0, -1) + 'ף';
+  if (result.endsWith('צ')) result = result.slice(0, -1) + 'ץ';
+  if (result.endsWith('כ')) result = result.slice(0, -1) + 'ך';
+  return result;
+}
+
 function _hebrewName(englishName) {
   if (!englishName) return englishName;
   const lower = englishName.toLowerCase().trim();
-  return HEBREW_NAMES[lower] || englishName;
+  // Already Hebrew
+  if (/[\u0590-\u05FF]/.test(englishName)) return englishName;
+  // Dictionary lookup
+  if (HEBREW_NAMES[lower]) return HEBREW_NAMES[lower];
+  // Phonetic transliteration fallback
+  return _transliterateToHebrew(lower);
 }
 
 // ===== HEBREW VALUE PROPS =====
@@ -8379,10 +8496,12 @@ function selectStakeholderForMsg(idx) {
   const tpl = OUTREACH_TEMPLATES[_activeTemplateIdx];
   const msg = fillTemplate(tpl.body, job, stakeholder);
   const preview = document.getElementById('templatePreview');
-  preview.textContent = msg;
-  const isRtl = (tpl.lang || 'en') === 'he';
-  preview.style.direction = isRtl ? 'rtl' : 'ltr';
-  preview.style.textAlign = isRtl ? 'right' : 'left';
+  if (preview) {
+    preview.textContent = msg;
+    const isRtl = (tpl.lang || 'en') === 'he';
+    preview.style.direction = isRtl ? 'rtl' : 'ltr';
+    preview.style.textAlign = isRtl ? 'right' : 'left';
+  }
   // Update button labels based on connected status
   if (stakeholder) {
     const sKey = _contactKey(stakeholder);
@@ -8395,7 +8514,8 @@ function selectStakeholderForMsg(idx) {
       c.style.background = i===idx ? 'var(--primary-light)' : '';
     });
   }
-  document.querySelector('.template-picker').scrollIntoView({behavior:'smooth', block:'nearest'});
+  const picker = document.querySelector('.template-picker');
+  if (picker) picker.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function toggleConnected(key, idx) {
