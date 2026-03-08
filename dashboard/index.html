@@ -63,8 +63,19 @@
   .new-listings-banner:hover { background:linear-gradient(135deg,var(--accent-dark),#C68A00); }
   .new-listings-banner.show { display:block; }
   @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
-  .user-info { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); }
-  .user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); }
+  .user-info { position:relative; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; padding:4px 8px; border-radius:8px; transition:background 0.15s; }
+  .user-info:hover { background:var(--bg); }
+  .user-avatar { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); object-fit:cover; }
+  .user-name { font-weight:500; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .user-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:200px; z-index:1000; display:none; overflow:hidden; }
+  .user-dropdown.open { display:block; }
+  .user-dropdown-header { padding:12px 16px; border-bottom:1px solid var(--border); }
+  .user-dropdown-header .uname { font-weight:600; font-size:13px; color:var(--text); }
+  .user-dropdown-header .uemail { font-size:11px; color:var(--text-light); margin-top:2px; }
+  .user-dropdown-item { display:flex; align-items:center; gap:10px; padding:10px 16px; font-size:13px; color:var(--text); cursor:pointer; transition:background 0.1s; }
+  .user-dropdown-item:hover { background:var(--bg); }
+  .user-dropdown-item.danger { color:var(--danger); }
+  .user-dropdown-item.danger:hover { background:#FFF0F0; }
   .btn { padding:8px 16px; border-radius:8px; border:none; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
   .btn-primary { background:var(--primary); color:white; }
   .btn-primary:hover { background:var(--primary-dark); }
@@ -1256,7 +1267,7 @@
   <div class="top-bar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
     <div class="nav-actions">
-      <div class="user-info" id="userInfo"></div>
+      <div class="user-info" id="userInfo" onclick="toggleUserDropdown(event)"></div>
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
       <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
@@ -2259,10 +2270,20 @@ function handleCredentialResponse(r) {
   if((p.email||'').split('@')[1]!==ALLOWED_DOMAIN){const e=document.getElementById('authError');e.textContent='Access restricted to @develeap.com. You signed in with '+p.email;e.style.display='block';return;}
   _currentAuthUser = { email: p.email, name: p.name, picture: p.picture };
   document.getElementById('auth-screen').style.display='none'; document.getElementById('app').style.display='block';
-  document.getElementById('userInfo').innerHTML=(p.picture?'<img src="'+p.picture+'" class="user-avatar">':'')+'<span>'+p.name+'</span>';
+  var firstName = (p.name || '').split(' ')[0];
+  document.getElementById('userInfo').innerHTML =
+    (p.picture ? '<img src="'+p.picture+'" class="user-avatar">' : '<div class="user-avatar" style="background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>') +
+    '<span class="user-name">'+firstName+'</span>' +
+    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.4"><polyline points="6 9 12 15 18 9"/></svg>' +
+    '<div class="user-dropdown" id="userDropdown">' +
+      '<div class="user-dropdown-header"><div class="uname">'+p.name+'</div><div class="uemail">'+p.email+'</div></div>' +
+      '<div class="user-dropdown-item danger" onclick="event.stopPropagation();signOut()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg> Sign out</div>' +
+    '</div>';
   initApp();
 }
 function signOut(){if(AUTH_ENABLED)google.accounts.id.disableAutoSelect();document.getElementById('app').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById('userDropdown');if(d)d.classList.toggle('open');}
+document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
 let LAST_UPDATED = "2026-03-08T13:13:26Z";
