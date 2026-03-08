@@ -1,7 +1,313 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-08T14:08:22.905Z",
+  "lastUpdated": "2026-03-08T19:41:39.680180Z",
   "campaigns": [
+    {
+      "id": "wp_test_dori_sim",
+      "company": {
+        "name": "Develeap",
+        "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
+        "isCustomer": false,
+        "isPastCustomer": false,
+        "customerType": "prospect",
+        "source": "manual",
+        "domain": "develeap.com"
+      },
+      "targetJob": {
+        "title": "[SIMULATION] DevOps Team Lead",
+        "url": "https://www.develeap.com/careers",
+        "location": "Tel Aviv, Israel",
+        "source": "simulation"
+      },
+      "targetContacts": [
+        {
+          "id": "wp_test_dori_contact",
+          "name": "Dori Kafri",
+          "email": "dori.kafri@develeap.com",
+          "title": "CEO",
+          "linkedin": "https://www.linkedin.com/in/dorikafri/",
+          "phone": "+972528877665",
+          "isPrimary": true
+        }
+      ],
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin",
+            "email",
+            "whatsapp"
+          ]
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_dori"
+            ]
+          },
+          "conn_dori": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0,
+              "templateIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 2
+            },
+            "next": [
+              "msg_dori"
+            ]
+          },
+          "msg_dori": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0,
+              "templateIdx": 1
+            },
+            "next": [
+              "wait_2"
+            ]
+          },
+          "wait_2": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 460
+            },
+            "config": {
+              "days": 1
+            },
+            "next": [
+              "email_dori"
+            ]
+          },
+          "email_dori": {
+            "type": "action_email",
+            "position": {
+              "x": 300,
+              "y": 560
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0,
+              "templateIdx": 0
+            },
+            "next": [
+              "wait_3"
+            ]
+          },
+          "wait_3": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 660
+            },
+            "config": {
+              "days": 2
+            },
+            "next": [
+              "wa_dori"
+            ]
+          },
+          "wa_dori": {
+            "type": "action_whatsapp",
+            "position": {
+              "x": 300,
+              "y": 760
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0,
+              "templateIdx": 0
+            },
+            "next": [
+              "if_responded"
+            ]
+          },
+          "if_responded": {
+            "type": "logic_if_response",
+            "position": {
+              "x": 300,
+              "y": 860
+            },
+            "config": {
+              "channels": [
+                "all"
+              ],
+              "sentiment": "positive",
+              "timeoutDays": 3
+            },
+            "trueBranch": [
+              "end_success"
+            ],
+            "falseBranch": [
+              "escalate"
+            ],
+            "next": [
+              "end_success"
+            ]
+          },
+          "escalate": {
+            "type": "action_escalate",
+            "position": {
+              "x": 500,
+              "y": 960
+            },
+            "config": {
+              "reason": "No response after full sequence"
+            },
+            "next": [
+              "end_fail"
+            ]
+          },
+          "end_success": {
+            "type": "trigger_end",
+            "position": {
+              "x": 300,
+              "y": 1060
+            },
+            "next": []
+          },
+          "end_fail": {
+            "type": "trigger_end",
+            "position": {
+              "x": 500,
+              "y": 1060
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_dori",
+          "wait_1",
+          "msg_dori",
+          "wait_2",
+          "email_dori",
+          "wait_3",
+          "wa_dori",
+          "if_responded",
+          "escalate",
+          "end_success",
+          "end_fail"
+        ],
+        "connections": [
+          {
+            "from": "start",
+            "to": "conn_dori"
+          },
+          {
+            "from": "conn_dori",
+            "to": "wait_1"
+          },
+          {
+            "from": "wait_1",
+            "to": "msg_dori"
+          },
+          {
+            "from": "msg_dori",
+            "to": "wait_2"
+          },
+          {
+            "from": "wait_2",
+            "to": "email_dori"
+          },
+          {
+            "from": "email_dori",
+            "to": "wait_3"
+          },
+          {
+            "from": "wait_3",
+            "to": "wa_dori"
+          },
+          {
+            "from": "wa_dori",
+            "to": "if_responded"
+          },
+          {
+            "from": "if_responded",
+            "to": "end_success"
+          },
+          {
+            "from": "if_responded",
+            "to": "escalate"
+          },
+          {
+            "from": "escalate",
+            "to": "end_fail"
+          }
+        ]
+      },
+      "status": "active",
+      "createdAt": "2026-03-08T19:41:39.664072Z",
+      "createdBy": "dori.kafri@develeap.com",
+      "autoLaunched": false,
+      "customerType": "prospect",
+      "channels": [
+        "linkedin",
+        "email",
+        "whatsapp"
+      ],
+      "adaptiveRules": [
+        {
+          "id": "rule_sim_1",
+          "trigger": "any_positive_reply",
+          "action": "pause_remaining",
+          "notify": [
+            "dori.kafri@develeap.com"
+          ]
+        },
+        {
+          "id": "rule_sim_2",
+          "trigger": "email_opened_3x",
+          "action": "escalate_priority"
+        },
+        {
+          "id": "rule_sim_3",
+          "trigger": "all_connections_declined",
+          "action": "archive"
+        }
+      ],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": "2026-03-08T20:41:39.680164Z",
+        "pausedAt": null
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      }
+    },
     {
       "id": "wp_mmgda1uu0o5lc",
       "company": {
