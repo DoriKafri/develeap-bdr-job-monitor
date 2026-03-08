@@ -2308,12 +2308,13 @@ function handleCredentialResponse(r) {
 }
 function _applyUserUI(user) {
   var firstName = (user.name || '').split(' ')[0];
-  var avatarHtml = user.picture
-    ? '<img src="'+user.picture+'" class="user-avatar">'
-    : '<div class="user-avatar" style="background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>';
-  // Top bar user info
+  var pic = user.picture || '';
+  var initialHtml = '<div class="user-avatar" style="background:var(--accent);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">'+firstName.charAt(0)+'</div>';
+  var sidebarInitialHtml = '<div class="sidebar-user-initial">'+firstName.charAt(0)+'</div>';
+  // Top bar
+  var topAvatarHtml = pic ? '<img src="'+pic+'" class="user-avatar" referrerpolicy="no-referrer" onerror="this.outerHTML=\''+initialHtml.replace(/'/g,'\\&#39;')+'\'">' : initialHtml;
   document.getElementById('userInfo').innerHTML =
-    avatarHtml +
+    topAvatarHtml +
     '<span class="user-name">'+firstName+'</span>' +
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.4"><polyline points="6 9 12 15 18 9"/></svg>' +
     '<div class="user-dropdown" id="userDropdown">' +
@@ -2323,9 +2324,7 @@ function _applyUserUI(user) {
   // Sidebar user profile
   var sidebarUser = document.getElementById('sidebarUser');
   if (sidebarUser) {
-    var sAvatarHtml = user.picture
-      ? '<img src="'+user.picture+'">'
-      : '<div class="sidebar-user-initial">'+firstName.charAt(0)+'</div>';
+    var sAvatarHtml = pic ? '<img src="'+pic+'" referrerpolicy="no-referrer" onerror="this.outerHTML=\''+sidebarInitialHtml.replace(/'/g,'\\&#39;')+'\'">' : sidebarInitialHtml;
     sidebarUser.innerHTML =
       sAvatarHtml +
       '<div class="sidebar-user-info">' +
