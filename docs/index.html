@@ -16223,8 +16223,10 @@ function _wpBuildSequenceSteps(campaign) {
         if (prevNode.type === 'action_linkedin_connect') {
           deps.push({ icon: '🔗', label: 'Connection accepted', required: true });
         } else if (prevNode.type === 'wait') {
-          var waitDays = (prevNode.config && prevNode.config.days) || 1;
-          deps.push({ icon: '🕐', label: waitDays + ' day' + (waitDays > 1 ? 's' : '') + ' wait', required: false });
+          var waitMin = prevNode.config && prevNode.config.minutes;
+          var waitDays = (prevNode.config && prevNode.config.days) || (waitMin ? 0 : 1);
+          var waitLabel = waitMin ? waitMin + ' min' : waitDays + ' day' + (waitDays > 1 ? 's' : '');
+          deps.push({ icon: '🕐', label: waitLabel + ' wait', required: false });
         } else if (prevNode.type === 'logic_wait_response') {
           deps.push({ icon: '⏳', label: 'Response or timeout', required: true });
         } else if (prevNode.type === 'logic_if_response') {
@@ -16302,8 +16304,9 @@ function _wpRenderSequence(campaign, cardIdx) {
     });
 
     // If this is a wait node, show duration
-    if (step.type === 'wait' && step.config.days) {
-      html += '<span style="font-weight:400;color:var(--text-light);font-size:11px"> · ' + step.config.days + 'd</span>';
+    if (step.type === 'wait' && (step.config.days || step.config.minutes)) {
+      var durLabel = step.config.minutes ? step.config.minutes + 'min' : step.config.days + 'd';
+      html += '<span style="font-weight:400;color:var(--text-light);font-size:11px"> · ' + durLabel + '</span>';
     }
 
     html += '</div>';
@@ -17122,7 +17125,7 @@ function _wpDrawFlowCanvas(container) {
         '<span class="wp-node-label">' + ntype.label + '</span>' +
       '</div>' +
       '<div class="wp-node-body">' +
-        (n.config && n.config.days ? 'Wait ' + n.config.days + ' day(s)' : ntype.desc || '') +
+        (n.config && n.config.minutes ? 'Wait ' + n.config.minutes + ' min' : n.config && n.config.days ? 'Wait ' + n.config.days + ' day(s)' : ntype.desc || '') +
         senderInfo +
       '</div>' +
       '<div class="wp-node-port in" onmousedown="_wpPortMouseDown(event,\'' + nid + '\',\'in\')"></div>' +
@@ -17191,7 +17194,8 @@ function _wpRenderNodeConfig(nodeId) {
   }
 
   if (node.type === 'wait') {
-    h += '<div class="wp-wiz-field"><label>Wait Days</label><input type="number" value="' + (node.config && node.config.days || 1) + '" min="1" max="30" onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'days\',parseInt(this.value))"></div>';
+    var hasMinutes = node.config && node.config.minutes;
+    h += '<div class="wp-wiz-field"><label>Wait ' + (hasMinutes ? 'Minutes' : 'Days') + '</label><input type="number" value="' + (hasMinutes ? node.config.minutes : (node.config && node.config.days || 1)) + '" min="1" max="' + (hasMinutes ? '1440' : '30') + '" onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'' + (hasMinutes ? 'minutes' : 'days') + '\',parseInt(this.value))"></div>';
     h += '<div class="wp-wiz-field"><label><input type="checkbox"' + (node.config && node.config.businessDaysOnly ? ' checked' : '') + ' onchange="_wpUpdateNodeConfig(\'' + nodeId + '\',\'businessDaysOnly\',this.checked)"> Business days only</label></div>';
   }
 

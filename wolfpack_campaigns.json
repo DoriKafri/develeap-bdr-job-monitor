@@ -76,7 +76,7 @@
               "y": 260
             },
             "config": {
-              "days": 2
+              "minutes": 15
             },
             "next": [
               "msg_dori"
@@ -104,7 +104,7 @@
               "y": 460
             },
             "config": {
-              "days": 1
+              "minutes": 15
             },
             "next": [
               "email_dori"
@@ -132,7 +132,7 @@
               "y": 660
             },
             "config": {
-              "days": 2
+              "minutes": 15
             },
             "next": [
               "wa_dori"
