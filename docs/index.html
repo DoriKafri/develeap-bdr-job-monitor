@@ -76,8 +76,10 @@
   .btn-run .countdown { font-weight:400; font-size:11px; opacity:0.85; margin-left:2px; }
 
   /* ── Run Progress Bar ── */
-  .run-progress { position:fixed; top:48px; left:240px; right:0; z-index:999; transition:all 0.4s ease; }
+  .run-progress { position:fixed; top:48px; left:240px; right:0; z-index:999; transition:opacity 0.4s ease, transform 0.4s ease; }
   .run-progress.hidden { opacity:0; pointer-events:none; transform:translateY(-100%); }
+  /* Push main content down when progress bar is visible */
+  body.run-active .main-content { margin-top:88px; transition:margin-top 0.4s ease; }
   .run-progress-inner { display:flex; align-items:center; height:40px; padding:0 24px; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
   .run-progress-steps { display:flex; align-items:center; flex:1; gap:0; }
   .run-step { display:flex; align-items:center; gap:6px; position:relative; }
@@ -99,7 +101,7 @@
   @keyframes pulse-ring { 0%,100%{ box-shadow:0 0 0 0 rgba(255,176,0,0.4); } 50%{ box-shadow:0 0 0 5px rgba(255,176,0,0); } }
 
   /* ── MAIN CONTENT ── */
-  .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; }
+  .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; transition:margin-top 0.4s ease; }
 
   .stats-bar-wrap { position:relative; padding:12px 0; }
   .stats-bar { display:flex; gap:8px; background:transparent; border-bottom:none; flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; padding:2px 0 6px; }
@@ -9117,10 +9119,12 @@ let _runTrackId = null;
 function _showRunProgress() {
   const el = document.getElementById('runProgress');
   if (el) el.classList.remove('hidden');
+  document.body.classList.add('run-active');
 }
 function _hideRunProgress() {
   const el = document.getElementById('runProgress');
   if (el) el.classList.add('hidden');
+  document.body.classList.remove('run-active');
 }
 function _renderRunSteps(steps, conclusion) {
   var el = document.getElementById('runProgressInner');
@@ -9191,7 +9195,12 @@ function startRunTracking() {
             _runTrackId = r2.id;
             if (r2.status === 'completed') {
               _renderRunSteps([], r2.conclusion);
-              setTimeout(_hideRunProgress, 5000);
+              setTimeout(function() {
+                _hideRunProgress();
+                if (r2.conclusion === 'success') {
+                  setTimeout(function() { location.reload(); }, 500);
+                }
+              }, 2500);
             } else {
               pollRunStatus();
             }
@@ -9216,11 +9225,14 @@ function pollRunStatus() {
 
     if (job.status === 'completed') {
       _runTrackId = null;
-      if (job.conclusion === 'success') {
-        setTimeout(function() { _hideRunProgress(); location.reload(); }, 4000);
-      } else {
-        setTimeout(_hideRunProgress, 8000);
-      }
+      // Show completion state briefly, then hide bar and reload
+      setTimeout(function() {
+        _hideRunProgress();
+        if (job.conclusion === 'success') {
+          // Wait for hide transition (0.4s) then reload
+          setTimeout(function() { location.reload(); }, 500);
+        }
+      }, 2500);
     } else {
       _runPollTimer = setTimeout(pollRunStatus, 8000);
     }
