@@ -2612,7 +2612,8 @@ let ALL_JOBS = [
         "title": "CEO, I lead our employee-owned, people-first professional se",
         "linkedin": "https://il.linkedin.com/in/dori-kafri",
         "source": "Auto-discovered",
-        "email": "",
+        "email": "dori.kafri@develeap.com",
+        "phone": "+972542289888",
         "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
         "connectMsg": "Hi Dori, I noticed Develeap is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Dori! I wanted to share how Develeap helps companies like Develeap accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
@@ -7478,76 +7479,77 @@ var OUTREACH_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_OUTREACH_TEMPLATES));
 // ── WHATSAPP TEMPLATES ──
 const DEFAULT_WHATSAPP_TEMPLATES = [
   {
-    name: "Hey 👋",
-    emoji: "👋",
+    name: "Hey",
+    emoji: "\uD83D\uDC4B",
     lang: "en",
-    body: `Hey {contact_name}, Dori from Develeap 👋
-Saw you're looking for a {role} — we place senior {cat_expertise} engineers fast. Worth a quick chat?`
+    body: `Hey {contact_name}, Dori from Develeap.
+Saw you're looking for a {role} \u2014 we place senior {cat_expertise} engineers fast. Worth a quick chat?`
   },
   {
-    name: "היי 👋",
-    emoji: "👋",
+    name: "\u05D4\u05D9\u05D9",
+    emoji: "\uD83D\uDC4B",
     lang: "he",
-    body: `היי {contact_name}, דורי מ-Develeap 👋
-ראיתי שמחפשים {role} — אנחנו משבצים מהנדסי {cat_expertise} בכירים מהר. שווה שיחה קצרה?`
+    body: `\u05D4\u05D9\u05D9 {contact_name}, \u05D0\u05E0\u05D9 \u05D3\u05D5\u05E8\u05D9 \u05DE-Develeap.
+\u05E8\u05D0\u05D9\u05EA\u05D9 \u05E9\u05D0\u05EA\u05DD \u05DE\u05D7\u05E4\u05E9\u05D9\u05DD {role} \u2014 \u05D0\u05E0\u05D7\u05E0\u05D5 \u05DE\u05EA\u05DE\u05D7\u05D9\u05DD \u05D1-{cat_expertise} \u05D5\u05DE\u05E9\u05D1\u05E6\u05D9\u05DD \u05DE\u05D4\u05E0\u05D3\u05E1\u05D9\u05DD \u05D1\u05DB\u05D9\u05E8\u05D9\u05DD \u05DE\u05D4\u05E8.
+\u05E9\u05D5\u05D5\u05D4 \u05E9\u05D9\u05D7\u05D4 \u05E7\u05E6\u05E8\u05D4?`
   },
   {
     name: "Intro + Proof",
-    emoji: "💪",
+    emoji: "\uD83D\uDCAA",
     lang: "en",
     body: `Hi {contact_name}! Dori, Develeap.
-We help companies like {customers} scale {cat_expertise} teams — senior engineers, ready in weeks not months.
+We help companies like {customers} scale {cat_expertise} teams \u2014 senior engineers, ready in weeks not months.
 Relevant for {company}?`
   },
   {
-    name: "הוכחה 💪",
-    emoji: "💪",
+    name: "\u05D4\u05D5\u05DB\u05D7\u05D4",
+    emoji: "\uD83D\uDCAA",
     lang: "he",
-    body: `מה קורה {contact_name}! דורי, Develeap.
-אנחנו עוזרים לחברות כמו {customers} לסקייל צוותי {cat_expertise} — מהנדסים בכירים, תוך שבועות ולא חודשים.
-רלוונטי ל-{company}?`
+    body: `\u05DE\u05D4 \u05E7\u05D5\u05E8\u05D4 {contact_name}, \u05D3\u05D5\u05E8\u05D9 \u05DE-Develeap.
+\u05D0\u05E0\u05D7\u05E0\u05D5 \u05E2\u05D5\u05D6\u05E8\u05D9\u05DD \u05DC\u05D7\u05D1\u05E8\u05D5\u05EA \u05DB\u05DE\u05D5 {customers} \u05DC\u05D2\u05D3\u05DC \u05E6\u05D5\u05D5\u05EA\u05D9 {cat_expertise} \u2014 \u05DE\u05D4\u05E0\u05D3\u05E1\u05D9\u05DD \u05D1\u05DB\u05D9\u05E8\u05D9\u05DD, \u05EA\u05D5\u05DA \u05E9\u05D1\u05D5\u05E2\u05D5\u05EA \u05D5\u05DC\u05D0 \u05D7\u05D5\u05D3\u05E9\u05D9\u05DD.
+\u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05DC-{company}?`
   },
   {
     name: "Follow Up",
-    emoji: "🔄",
+    emoji: "\uD83D\uDD04",
     lang: "en",
-    body: `Hey {contact_name} 🙂 following up — still looking for {cat_expertise} talent at {company}?
-Happy to send profiles`
+    body: `Hey {contact_name}, following up \u2014 still looking for {cat_expertise} talent at {company}?
+Happy to send profiles.`
   },
   {
-    name: "פולואפ 🔄",
-    emoji: "🔄",
+    name: "\u05E4\u05D5\u05DC\u05D5\u05D0\u05E4",
+    emoji: "\uD83D\uDD04",
     lang: "he",
-    body: `היי {contact_name} 🙂 עוקב — עדיין מחפשים אנשי {cat_expertise} ב-{company}?
-אשמח לשלוח פרופילים`
+    body: `\u05D4\u05D9\u05D9 {contact_name}, \u05D7\u05D5\u05D6\u05E8 \u05D0\u05DC\u05D9\u05DA \u2014 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DE\u05D7\u05E4\u05E9\u05D9\u05DD \u05D0\u05E0\u05E9\u05D9 {cat_expertise} \u05D1-{company}?
+\u05D0\u05E9\u05DE\u05D7 \u05DC\u05E9\u05DC\u05D5\u05D7 \u05E4\u05E8\u05D5\u05E4\u05D9\u05DC\u05D9\u05DD.`
   },
   {
     name: "Quick Call?",
-    emoji: "📞",
+    emoji: "\uD83D\uDCDE",
     lang: "en",
     body: `Hi {contact_name}, Dori from Develeap.
-Got 5 min this week? Want to show you something relevant for the {role} opening at {company} 🙏`
+Got 5 min this week? Want to show you something relevant for the {role} opening at {company}.`
   },
   {
-    name: "שיחה קצרה? 📞",
-    emoji: "📞",
+    name: "\u05E9\u05D9\u05D7\u05D4 \u05E7\u05E6\u05E8\u05D4?",
+    emoji: "\uD83D\uDCDE",
     lang: "he",
-    body: `היי {contact_name}, דורי מ-Develeap.
-יש לך 5 דקות השבוע? רוצה להראות לך משהו רלוונטי למשרת ה-{role} ב-{company} 🙏`
+    body: `\u05D4\u05D9\u05D9 {contact_name}, \u05D3\u05D5\u05E8\u05D9 \u05DE-Develeap.
+\u05D9\u05E9 \u05DC\u05DA 5 \u05D3\u05E7\u05D5\u05EA \u05D4\u05E9\u05D1\u05D5\u05E2? \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D4\u05E8\u05D0\u05D5\u05EA \u05DC\u05DA \u05DE\u05E9\u05D4\u05D5 \u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05DC\u05DE\u05E9\u05E8\u05EA {role} \u05D1-{company}.`
   },
   {
-    name: "Who's the right person?",
-    emoji: "🤔",
+    name: "Who's hiring?",
+    emoji: "\uD83E\uDD14",
     lang: "en",
-    body: `Hey {contact_name}, quick one — who handles {cat_expertise} hiring at {company}?
-Got senior engineers available, want to make sure I reach the right person 🙏`
+    body: `Hey {contact_name}, quick one \u2014 who handles {cat_expertise} hiring at {company}?
+Got senior engineers available, want to make sure I reach the right person.`
   },
   {
-    name: "מי הבנאדם? 🤔",
-    emoji: "🤔",
+    name: "\u05DE\u05D9 \u05D0\u05D7\u05E8\u05D0\u05D9?",
+    emoji: "\uD83E\uDD14",
     lang: "he",
-    body: `היי {contact_name}, שאלה קצרה — מי מטפל בגיוסי {cat_expertise} ב-{company}?
-יש לי מהנדסים בכירים פנויים, רוצה לוודא שאני מגיע לבנאדם הנכון 🙏`
+    body: `\u05D4\u05D9\u05D9 {contact_name}, \u05E9\u05D0\u05DC\u05D4 \u05E7\u05E6\u05E8\u05D4 \u2014 \u05DE\u05D9 \u05D0\u05D7\u05E8\u05D0\u05D9 \u05E2\u05DC \u05D2\u05D9\u05D5\u05E1\u05D9 {cat_expertise} \u05D1-{company}?
+\u05D9\u05E9 \u05DC\u05D9 \u05DE\u05D4\u05E0\u05D3\u05E1\u05D9\u05DD \u05D1\u05DB\u05D9\u05E8\u05D9\u05DD \u05E4\u05E0\u05D5\u05D9\u05D9\u05DD, \u05E8\u05D5\u05E6\u05D4 \u05DC\u05D5\u05D5\u05D3\u05D0 \u05E9\u05D0\u05E0\u05D9 \u05DE\u05D2\u05D9\u05E2 \u05DC\u05D1\u05E0\u05D0\u05D3\u05DD \u05D4\u05E0\u05DB\u05D5\u05DF.`
   }
 ];
 var WHATSAPP_TEMPLATES = JSON.parse(JSON.stringify(DEFAULT_WHATSAPP_TEMPLATES));

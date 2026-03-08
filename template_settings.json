@@ -1240,7 +1240,16 @@
       "status": "active"
     }
   ],
-  "userProfiles": {},
+  "userProfiles": {
+    "dori.kafri@develeap.com": {
+      "displayName": "Dori Kafri",
+      "title": "CEO",
+      "role": "admin",
+      "phone": "+972542289888",
+      "linkedinUrl": "",
+      "signature": "Dori Kafri | Develeap"
+    }
+  },
   "delegation": {},
   "templateLang": {
     "linkedin": "en",
