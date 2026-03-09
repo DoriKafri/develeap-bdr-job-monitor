@@ -210,6 +210,7 @@
     "terasky|finops|careers israel|2026-03-04",
     "terasky|finops|careers israel",
     "tel aviv, israel|||devops engineer",
+    "tastewise|||ai engineer",
     "taboola||||senior mlops engineer",
     "taboola||||security devops engineer",
     "taboola|||senior mlops engineer|2026-03-05",
@@ -385,6 +386,7 @@
     "pentera|devops|ctf infrastructure engineer at pentera - comeet|2026-02-25",
     "pentera|devops|ctf infrastructure engineer at pentera - comeet",
     "pentera|devops|ctf infrastructure engineer",
+    "pango|||senior devops engineer",
     "pango|||devex platform engineer",
     "oligo security||||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
     "oligo security|||senior fullstack engineer \u2013 tel aviv, israel | oligo careers|2026-02-26",
@@ -900,6 +902,7 @@
     "biocatch|||senior devops infra engineer at biocatch - comeet|2026-03-06",
     "biocatch|||senior devops infra engineer at biocatch - comeet",
     "biocatch|||senior devops infra engineer",
+    "biocatch|||devops engineer (data platform group)",
     "biocatch|devops|senior devops infra engineer|2026-03-06",
     "biocatch|devops|senior devops infra engineer at biocatch - comeet|2026-03-06",
     "biocatch|devops|senior devops infra engineer at biocatch - comeet",
@@ -985,7 +988,8 @@
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...|2026-03-05",
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...",
     "abra|data|abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...|2026-03-05",
-    "abra|data|abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ..."
+    "abra|data|abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...",
+    "$84k|||$84k-$181k engineer in israel jobs (now hiring) mar 2026"
   ],
   "first_seen": {
     "surecomp|devops|devops team lead": "2026-03-05T00:00:00+00:00",
@@ -1595,7 +1599,11 @@
     "pango|||devex platform engineer": "2026-03-09T11:03:43.860491+00:00",
     "lightricks|||senior software engineer - research, haifa \u2022 r&d": "2026-03-09T13:29:21.116804+00:00",
     "taboola|||devops engineer": "2026-03-09T15:11:34.741113+00:00",
-    "legitsecurity|||senior platform engineer": "2026-03-09T15:11:34.741113+00:00"
+    "legitsecurity|||senior platform engineer": "2026-03-09T15:11:34.741113+00:00",
+    "biocatch|||devops engineer (data platform group)": "2026-03-09T17:14:27.239656+00:00",
+    "pango|||senior devops engineer": "2026-03-09T17:14:27.239656+00:00",
+    "tastewise|||ai engineer": "2026-03-09T17:14:27.239656+00:00",
+    "$84k|||$84k-$181k engineer in israel jobs (now hiring) mar 2026": "2026-03-09T17:14:27.239656+00:00"
   },
-  "updated": "2026-03-09T15:11:34.748998+00:00"
+  "updated": "2026-03-09T17:14:27.248947+00:00"
 }
