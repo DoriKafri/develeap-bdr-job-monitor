@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-09T10:18:38.011Z",
+  "lastUpdated": "2026-03-09T14:24:36.211Z",
   "campaigns": [
     {
       "id": "wp_test_dori_sim",
@@ -13250,6 +13250,280 @@
         "completedNodes": [],
         "nextExecutionAt": null,
         "pausedAt": "2026-03-09T10:18:38.011Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmj9vqlvn9daa",
+      "name": "Lightricks — Senior Software Engineer - Research, Haifa • R&D",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-09T14:24:36.211Z",
+      "company": {
+        "name": "Lightricks",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=lightricks.com&sz=128",
+        "source": "greenhouse"
+      },
+      "targetJob": {
+        "title": "Senior Software Engineer - Research, Haifa • R&D",
+        "url": "https://job-boards.greenhouse.io/lightricks/jobs/7800851002",
+        "category": "devops",
+        "source": "greenhouse",
+        "posted": "2026-03-09"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Yaron Inger",
+          "title": "Co-Founder & CTO",
+          "email": "yaron@lightricks.com",
+          "linkedin": "https://www.linkedin.com/in/yaroninger/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C5603AQF2N5680s94Zg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1576677135412?e=2147483647&v=beta&t=OwZYbe45jc_mVInR5SaAXgcPon8O4tUAOPhWnWpovvs",
+          "source": "Crunchbase",
+          "connectMsg": "Hi Yaron, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Yaron! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Alon Roth",
+          "title": "Engineering Manager",
+          "email": "alon@lightricks.com",
+          "linkedin": "https://www.linkedin.com/in/alonroth/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGsNS0jkymsMw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1684729548063?e=2147483647&v=beta&t=3ZICm0WONWv06jvJfo7VyiAAcEDFeXLIo_8jzSMiuE8",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Alon, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Alon! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_2",
+          "name": "Noa Lichtenstein",
+          "title": "Engineering Manager, AI Photo Tools",
+          "email": "noa@lightricks.com",
+          "linkedin": "https://www.linkedin.com/in/noa-licht/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQF384YxIA0Fzw/profile-displayphoto-scale_200_200/B4DZoF31qMGgAY-/0/1761035116069?e=2147483647&v=beta&t=NsnF1WzuLfDop4uDf0BDUPj2-HlOBgxCfY8yaOKPALE",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Noa, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Noa! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-09T14:24:36.211Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmj9vqlv38iac",
+      "name": "Pango — DevEx Platform Engineer at Pango - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-09T14:24:36.211Z",
+      "company": {
+        "name": "Pango",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=pango.co.il&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "DevEx Platform Engineer at Pango - Comeet",
+        "url": "https://www.comeet.com/jobs/pango/59.002/devex-platform-engineer/3C.162",
+        "category": "platform",
+        "source": "comeet",
+        "posted": "2026-03-04"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Hari Ravichandran",
+          "title": "Founder & CEO (Aura)",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/hariravichandran/",
+          "phone": "",
+          "photo": "",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Hari, I noticed Pango is hiring a DevEx Platform Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Hari! I wanted to share how Develeap helps companies like Pango accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-09T14:24:36.211Z"
       },
       "_customerType": "high_potential"
     }
