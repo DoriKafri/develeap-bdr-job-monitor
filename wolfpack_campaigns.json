@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-08T19:55:12.164Z",
+  "lastUpdated": "2026-03-09T10:18:38.011Z",
   "campaigns": [
     {
       "id": "wp_test_dori_sim",
@@ -13077,6 +13077,179 @@
         "completedNodes": [],
         "nextExecutionAt": null,
         "pausedAt": "2026-03-08T19:55:12.164Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmj13f3u19fl8",
+      "name": "Terasky — Senior Private Cloud Engineer at TeraSky - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-09T10:18:38.010Z",
+      "company": {
+        "name": "Terasky",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=terasky.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "Senior Private Cloud Engineer at TeraSky - Comeet",
+        "url": "https://www.comeet.com/jobs/terasky/B7.009/senior-private-cloud-engineer/02.358",
+        "category": "cloud",
+        "source": "comeet",
+        "posted": "2026-03-08"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Or Yaacov",
+          "title": "CEO & Co-Founder",
+          "email": "or@terasky.com",
+          "linkedin": "https://www.linkedin.com/in/oryaacov/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4D03AQHwCbuHt1pmZw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1639414026457?e=2147483647&v=beta&t=rx1-o91uNiWVQGACytmEKzcb0-ZlJDOqHtRGxI7ms6Q",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Or, I noticed Terasky is hiring a FinOps & Customer Success Manager — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Or! I wanted to share how Develeap helps companies like Terasky accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Yael Bismut",
+          "title": "Talent Acquisition Partner",
+          "email": "yael@terasky.com",
+          "linkedin": "",
+          "phone": "+972-3-5224628",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_2",
+          "name": "Gilad Broun",
+          "title": "EUC Delivery Manager",
+          "email": "giladb@terasky.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_3",
+          "name": "Dor Netanel",
+          "title": "Account manager",
+          "email": "dor@terasky.com",
+          "linkedin": "",
+          "phone": "528930083",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_4",
+          "name": "Itamar Hadad",
+          "title": "Devops Engineer",
+          "email": "itamar@terasky.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-09T10:18:38.011Z"
       },
       "_customerType": "high_potential"
     }
