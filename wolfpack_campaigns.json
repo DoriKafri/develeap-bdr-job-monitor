@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-09T14:24:36.211Z",
+  "lastUpdated": "2026-03-09T15:16:12.755Z",
   "campaigns": [
     {
       "id": "wp_test_dori_sim",
@@ -13524,6 +13524,155 @@
         "completedNodes": [],
         "nextExecutionAt": null,
         "pausedAt": "2026-03-09T14:24:36.211Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmjbq3wz5g8lc",
+      "name": "Taboola — DevOps Engineer",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-09T15:16:12.755Z",
+      "company": {
+        "name": "Taboola",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+        "source": "greenhouse"
+      },
+      "targetJob": {
+        "title": "DevOps Engineer",
+        "url": "https://job-boards.greenhouse.io/taboola/jobs/7497833",
+        "category": "devops",
+        "source": "greenhouse",
+        "posted": "2026-03-09"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Tal Sliwowicz",
+          "title": "Senior VP R&D - Infrastructure",
+          "email": "tal@taboola.com",
+          "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG62LtnTZAN_Q/profile-displayphoto-scale_400_400/B4EZmgLEXoIoAg-/0/1759328880839?e=2147483647&v=beta&t=zaR-7cxwMHRCCdert7zZ7NGwyvk3Di8u3w71rq0vs08",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Tal, I noticed Taboola is hiring a Security DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Tal! I wanted to share how Develeap helps companies like Taboola accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Lior Golan",
+          "title": "CTO",
+          "email": "lior.golan@taboola.com",
+          "linkedin": "https://www.linkedin.com/in/liorgolan/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4E03AQEeUsTlzr_RRQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516163475338?e=2147483647&v=beta&t=3CkM5iKtN4oA6PxkE9bCYGneTTUPxvpGOuRLDzMCzuY",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Lior, I noticed Taboola is hiring a Security DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Lior! I wanted to share how Develeap helps companies like Taboola accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_2",
+          "name": "Anjali Oldfield",
+          "title": "Head of HR, EMEA & APAC",
+          "email": "anjali@taboola.com",
+          "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+          "phone": "",
+          "photo": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Anjali, I noticed Taboola is hiring a Security DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Anjali! I wanted to share how Develeap helps companies like Taboola accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-09T15:16:12.755Z"
       },
       "_customerType": "high_potential"
     }
