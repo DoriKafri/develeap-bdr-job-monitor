@@ -2288,10 +2288,12 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             # Only skip if the page returned a non-200 HTTP status (truly gone).
             if "linkedin.com" in url and not snippet_date and not page_data.get("date"):
                 http_status = page_data.get("_http_status", 200)
-                if http_status != 200:
-                    log.info(f"  Skipping LinkedIn listing (HTTP {http_status}, no date): {j['title'][:50]}")
+                # 429 = rate limited (not gone), 200 = reachable but data blocked
+                # Only skip if page returned 404/410 (listing truly removed)
+                if http_status in (404, 410):
+                    log.info(f"  Skipping LinkedIn listing (HTTP {http_status}, listing removed): {j['title'][:50]}")
                     continue
-                log.info(f"  Keeping LinkedIn listing without date (page reachable): {j['title'][:50]}")
+                log.info(f"  Keeping LinkedIn listing without date (HTTP {http_status}): {j['title'][:50]}")
 
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
