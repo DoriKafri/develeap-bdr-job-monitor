@@ -1049,7 +1049,7 @@ def extract_posting_date(url: str) -> str:
 def scrape_job_page(url: str) -> dict:
     """Scrape a job listing page for date, company name, closed status, and location.
     Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool}."""
-    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False}
+    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0}
     if not url:
         return result
     try:
@@ -1060,9 +1060,12 @@ def scrape_job_page(url: str) -> dict:
         }
         resp = requests.get(url, headers=headers, timeout=10, allow_redirects=True)
         if resp.status_code != 200:
+            log.info(f"  Scrape {url[:60]}: status={resp.status_code} (non-200, skipping)")
+            result["_http_status"] = resp.status_code
             return result
         text = resp.text[:100000]  # Limit to first 100KB
         final_url = resp.url  # URL after redirects
+        result["_http_status"] = 200
         log.info(f"  Scrape {url[:60]}: status={resp.status_code}, size={len(resp.text)}, truncated={len(text)}")
 
         # ── Detect career/multi-listing pages (e.g. expired Greenhouse job IDs redirect to careers page) ──
@@ -2275,21 +2278,20 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 except ValueError:
                     pass
 
-            # ── 7. LinkedIn with no date: keep if page looks active ──
-            # LinkedIn blocks listedAt/JSON-LD from data center IPs, so most LinkedIn
-            # listings won't have a date. Instead of dropping ALL dateless LinkedIn
-            # listings, keep them if the page wasn't explicitly closed.
-            # The closed-phrase check (step 4) and stale-indicator check already
-            # filtered genuinely old listings. Remaining dateless listings are likely
-            # active jobs where LinkedIn simply hid the date from our scraper.
+            # ── 7. LinkedIn with no date: keep if page is reachable ──
+            # LinkedIn aggressively blocks page content (listedAt, JSON-LD, companyName)
+            # from data center IPs. Since the listing was found via search engine results
+            # (DuckDuckGo/SerpAPI), the URL is valid and the job likely exists.
+            # Genuinely closed/expired listings are already caught by:
+            #   - Step 1: Google snippet closed signals
+            #   - Step 4: Page-level "job closed" / "no longer accepting" phrases
+            # Only skip if the page returned a non-200 HTTP status (truly gone).
             if "linkedin.com" in url and not snippet_date and not page_data.get("date"):
-                # Only skip if page showed NO job content at all (completely blocked)
-                has_job_content = page_data.get("_has_job_ld") or page_data.get("company")
-                if not has_job_content:
-                    log.info(f"  Skipping LinkedIn listing with no date and no job content: {j['title'][:50]}")
+                http_status = page_data.get("_http_status", 200)
+                if http_status != 200:
+                    log.info(f"  Skipping LinkedIn listing (HTTP {http_status}, no date): {j['title'][:50]}")
                     continue
-                else:
-                    log.info(f"  Keeping LinkedIn listing without date (page has job content): {j['title'][:50]}")
+                log.info(f"  Keeping LinkedIn listing without date (page reachable): {j['title'][:50]}")
 
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
