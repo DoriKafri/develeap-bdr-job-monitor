@@ -14544,7 +14544,7 @@ function _wpRemoveSettingsTeam(ct, email) {
 function renderHealthSection() {
   var grid = document.getElementById('healthCheckGrid');
   if (!grid) return;
-  var data = window.SOURCE_HEALTH || [];
+  var data = (typeof SOURCE_HEALTH !== 'undefined' ? SOURCE_HEALTH : []);
   if (!data.length) {
     grid.innerHTML = '<p style="color:var(--text-light);font-size:13px">No health data yet. Data will appear after the next pipeline run.</p>';
     return;
