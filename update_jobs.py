@@ -1098,13 +1098,22 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         job_title = role_match.group(1).strip()
         # Trim common trailing words
         job_title = re.sub(r'\s+(?:to|in|at|for|who|that|with)$', '', job_title, flags=re.IGNORECASE)
+        # Reject if it looks like a person name (e.g. "Israel Zalmanov")
+        if re.match(r'^[A-Z][a-z]+\s+[A-Z][a-z]+$', job_title):
+            job_title = ""
 
     if not job_title:
-        # Fall back: check if any category keyword appears in the text
+        # Fall back: use a standard role title based on the category keyword found
+        _cat_role_titles = {
+            "devops": "DevOps Engineer", "ai": "AI Engineer", "cloud": "Cloud Engineer",
+            "platform": "Platform Engineer", "sre": "Site Reliability Engineer",
+            "security": "Security Engineer", "data": "Data Engineer",
+            "finops": "FinOps Engineer", "agentic": "AI/Agentic Engineer",
+        }
         for cat, keywords in CATEGORY_KEYWORDS.items():
             for kw in keywords:
                 if kw.lower() in combined:
-                    job_title = kw.title()
+                    job_title = _cat_role_titles.get(cat, kw.title())
                     break
             if job_title:
                 break
@@ -2992,7 +3001,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
 
         # Skip Unknown/empty company jobs from new — they stay in existing for dedup
         # but we don't want to re-add them as new listings
-        if j.get("company", "").strip() in ("Unknown", ""):
+        # Exception: linkedin_fts results are allowed with Unknown company (they're social
+        # posts where company extraction is harder; the hiring signal is still valuable)
+        if j.get("company", "").strip() in ("Unknown", "") and j.get("source") != "linkedin_fts":
             continue
 
         # Skip company-page listings from new jobs too
