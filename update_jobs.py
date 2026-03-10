@@ -17,7 +17,7 @@ import html as html_mod
 import base64
 import logging
 from datetime import datetime, timedelta, timezone
-from urllib.parse import quote_plus, urljoin
+from urllib.parse import quote_plus, unquote, urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -2345,6 +2345,12 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         "salesforce": "Salesforce",
     }
 
+    # Decode URL-encoded characters (e.g. Hebrew %D7%90 → א) so all
+    # patterns work with readable text instead of percent-encoded bytes.
+    url = unquote(url)
+    title = unquote(title)
+    snippet = unquote(snippet)
+
     # 0. ATS URL patterns — HIGHEST PRIORITY (most reliable source of company name)
     # Greenhouse / Lever / Ashby / Comeet / Workday URLs embed the company slug
     for ats_pat in [
@@ -2368,7 +2374,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
                 return _fix_casing(clean)
 
     # 0b. Hebrew LinkedIn title pattern: "COMPANY גיוס עובדים ROLE"
-    heb_match = re.match(r'^([A-Za-z0-9\.\-\s&]+?)\s+גיוס\s+עובדים', title)
+    heb_match = re.match(r'^([A-Za-z0-9\u0590-\u05FF\.\-\s&]+?)\s+גיוס\s+עובדים', title)
     if heb_match:
         company = heb_match.group(1).strip()
         if company and not _is_job_title(company):
