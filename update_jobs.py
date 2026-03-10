@@ -22,6 +22,43 @@ from urllib.parse import quote_plus, unquote, urljoin
 import requests
 from bs4 import BeautifulSoup
 
+# Playwright (lazy-loaded for LinkedIn fallback scraping)
+_playwright_browser = None
+_playwright_instance = None
+
+def _get_playwright_browser():
+    """Lazy-init a Playwright Chromium browser for LinkedIn scraping fallback.
+    Returns browser instance or None if Playwright is not available."""
+    global _playwright_browser, _playwright_instance
+    if _playwright_browser is not None:
+        return _playwright_browser
+    try:
+        from playwright.sync_api import sync_playwright
+        _playwright_instance = sync_playwright().start()
+        _playwright_browser = _playwright_instance.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+        )
+        log.info("Playwright browser launched successfully")
+        return _playwright_browser
+    except Exception as e:
+        log.warning(f"Playwright not available: {e}")
+        _playwright_browser = False  # Mark as unavailable
+        return None
+
+def _shutdown_playwright():
+    """Clean up Playwright resources."""
+    global _playwright_browser, _playwright_instance
+    try:
+        if _playwright_browser and _playwright_browser is not False:
+            _playwright_browser.close()
+        if _playwright_instance:
+            _playwright_instance.stop()
+    except Exception:
+        pass
+    _playwright_browser = None
+    _playwright_instance = None
+
 # ── Configuration ──────────────────────────────────────────────────────────
 NETLIFY_SITE_ID = os.environ.get("NETLIFY_SITE_ID", "9533027e-5008-40ca-924c-dede933f0473")
 NETLIFY_TOKEN = os.environ.get("NETLIFY_TOKEN", "")
@@ -1885,6 +1922,114 @@ def scrape_job_page(url: str) -> dict:
     return result
 
 
+def _scrape_linkedin_playwright(url: str) -> dict:
+    """Fallback: scrape a LinkedIn job page using Playwright headless browser.
+    Used when regular HTTP returns 429 (rate-limited by LinkedIn).
+    Returns same format as scrape_job_page: {date, company, closed, ...}."""
+    result = {"date": "", "company": "", "closed": False, "location_country": "",
+              "is_career_page": False, "_http_status": 0, "_has_job_ld": False}
+    browser = _get_playwright_browser()
+    if not browser:
+        return result
+
+    page = None
+    try:
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            locale="en-US",
+            viewport={"width": 1280, "height": 900},
+        )
+        page = context.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=20000)
+        # Wait a bit for dynamic content to render
+        page.wait_for_timeout(3000)
+
+        # Get full visible text from the page
+        text = page.inner_text("body")
+        text_lower = text.lower()
+        result["_http_status"] = 200
+        log.info(f"  Playwright scrape {url[:60]}: text_len={len(text)}")
+
+        # ── Check if listing is closed ──
+        closed_phrases = [
+            "no longer accepting applications",
+            "this job is no longer available",
+            "this position has been filled",
+            "this job has expired",
+            "job closed",
+            "application closed",
+        ]
+        for phrase in closed_phrases:
+            if phrase in text_lower:
+                result["closed"] = True
+                log.info(f"  CLOSED (playwright): {url[:60]} — '{phrase}'")
+                break
+
+        # ── Check for stale time-ago indicators ──
+        if not result["closed"]:
+            stale_match = re.search(
+                r'(?:posted|listed|published|reposted)\s+(\d+)\s+(month|year)s?\s+ago',
+                text_lower
+            )
+            if stale_match:
+                num = int(stale_match.group(1))
+                unit = stale_match.group(2)
+                if unit == "year" or (unit == "month" and num >= 1):
+                    result["closed"] = True
+                    log.info(f"  CLOSED (playwright stale): {url[:60]} — '{stale_match.group(0)}'")
+
+        # ── Extract date from relative time indicators ──
+        if not result["date"]:
+            rel_match = re.search(
+                r'(?:reposted\s+)?(\d+)\s+(hour|day|week|month|year)s?\s+ago',
+                text_lower
+            )
+            if rel_match:
+                n = int(rel_match.group(1))
+                unit = rel_match.group(2)
+                now = datetime.now(timezone.utc)
+                if unit == "hour":
+                    dt = now - timedelta(hours=n)
+                elif unit == "day":
+                    dt = now - timedelta(days=n)
+                elif unit == "week":
+                    dt = now - timedelta(weeks=n)
+                elif unit == "month":
+                    dt = now - timedelta(days=n * 30)
+                elif unit == "year":
+                    dt = now - timedelta(days=n * 365)
+                result["date"] = dt.strftime("%Y-%m-%d")
+                log.info(f"  Date from playwright: {result['date']} ({rel_match.group()}) for {url[:40]}")
+
+        # ── Extract company name ──
+        try:
+            # LinkedIn topcard company name
+            company_el = page.query_selector(".topcard__org-name-link, .topcard__org-name, .job-details-jobs-unified-top-card__company-name a")
+            if company_el:
+                result["company"] = company_el.inner_text().strip()
+        except Exception:
+            pass
+
+        # ── Extract location ──
+        try:
+            loc_el = page.query_selector(".topcard__flavor--bullet, .job-details-jobs-unified-top-card__bullet")
+            if loc_el:
+                result["location_country"] = loc_el.inner_text().strip()
+        except Exception:
+            pass
+
+        context.close()
+    except Exception as e:
+        log.info(f"  Playwright scrape failed for {url[:60]}: {e}")
+        if page:
+            try:
+                page.context.close()
+            except Exception:
+                pass
+    return result
+
+
 def _normalize_date(raw: str) -> str:
     """Normalize various date formats to YYYY-MM-DD."""
     raw = raw.strip()
@@ -2775,6 +2920,13 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if url:
             page_data = scrape_job_page(url)
 
+            # Playwright fallback for LinkedIn 429 responses
+            if "linkedin.com" in url and page_data.get("_http_status") == 429:
+                log.info(f"  LinkedIn 429 — trying Playwright fallback: {j['title'][:50]}")
+                pw_data = _scrape_linkedin_playwright(url)
+                if pw_data.get("_http_status") == 200:
+                    page_data = pw_data  # Use Playwright results
+
             # Skip career/multi-listing pages (e.g. expired Greenhouse job IDs)
             if page_data.get("is_career_page"):
                 log.info(f"  Skipping career page (not a specific job): {j['title'][:50]}")
@@ -3237,6 +3389,12 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
+            # Playwright fallback for LinkedIn 429 responses
+            if page_data.get("_http_status") == 429:
+                log.info(f"  LinkedIn 429 — trying Playwright fallback: {j.get('title', '')[:50]}")
+                pw_data = _scrape_linkedin_playwright(url)
+                if pw_data.get("_http_status") == 200:
+                    page_data = pw_data
             if page_data.get("closed"):
                 log.info(f"  Removing closed listing: {j.get('title', '')[:50]}")
                 if url: removed_urls.add(url)
@@ -3998,4 +4156,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        _shutdown_playwright()
