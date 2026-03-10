@@ -215,7 +215,7 @@
   .col-filter-dropdown {
     display:none; position:fixed; min-width:220px; max-height:320px;
     background:white; border:1px solid var(--border); border-radius:10px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200; overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:9999; overflow:hidden;
   }
   .col-filter-dropdown.open { display:block; }
   .col-filter-search { padding:8px; border-bottom:1px solid var(--border); }
@@ -1377,13 +1377,13 @@
       <table>
         <thead><tr>
           <th style="width:30px"><div class="th-wrap"><div class="th-inner" style="cursor:default"></div></div></th>
-          <th style="width:280px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-title"></div></th>
-          <th style="width:200px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-company"></div></th>
-          <th style="width:130px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-location"></div></th>
-          <th style="width:100px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-source"></div></th>
-          <th style="width:100px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-category"></div></th>
+          <th style="width:280px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div></th>
+          <th style="width:200px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div></th>
+          <th style="width:130px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div></th>
+          <th style="width:100px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div></th>
+          <th style="width:100px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div></th>
           <th style="width:100px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
-          <th style="width:130px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-status"></div></th>
+          <th style="width:130px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div></th>
         </tr></thead>
         <tbody id="jobsTable"></tbody>
       </table>
@@ -10403,32 +10403,31 @@ function getUniqueValues(col) {
 }
 
 function toggleColFilter(col, iconEl) {
-  const dropdown = document.getElementById('filter-'+col);
-  // Close any other open dropdown
-  document.querySelectorAll('.col-filter-dropdown.open').forEach(d => { if(d!==dropdown) d.classList.remove('open'); });
-  if (dropdown.classList.contains('open')) { dropdown.classList.remove('open'); openFilterCol=null; return; }
+  var dropdown = document.getElementById('col-filter-portal');
+  if (dropdown.classList.contains('open') && dropdown.dataset.col === col) { dropdown.classList.remove('open'); openFilterCol=null; return; }
   openFilterCol = col;
-  const values = getUniqueValues(col);
-  const selected = columnFilters[col] || new Set(values);
-  dropdown.innerHTML = `
-    <div class="col-filter-search"><input type="text" placeholder="Search..." oninput="filterColOptions('${col}',this.value)"></div>
-    <div class="col-filter-options" id="opts-${col}">
-      ${values.map(v => `<label class="col-filter-option" data-val="${v}"><input type="checkbox" ${selected.has(v)?'checked':''} onchange="updateColFilterPreview('${col}')"> ${v}</label>`).join('')}
-    </div>
-    <div class="col-filter-actions">
-      <button onclick="clearColFilter('${col}')">Clear</button>
-      <button onclick="selectAllColFilter('${col}')">Select All</button>
-      <button class="apply-btn" onclick="applyColFilter('${col}')">Apply</button>
-    </div>`;
+  dropdown.dataset.col = col;
+  var values = getUniqueValues(col);
+  var selected = columnFilters[col] || new Set(values);
+  dropdown.innerHTML = '<div class="col-filter-search"><input type="text" placeholder="Search..." oninput="filterColOptions(\''+col+'\',this.value)"></div>' +
+    '<div class="col-filter-options" id="opts-'+col+'">' +
+    values.map(function(v){ return '<label class="col-filter-option" data-val="'+v+'"><input type="checkbox" '+(selected.has(v)?'checked':'')+' onchange="updateColFilterPreview(\''+col+'\')"> '+v+'</label>'; }).join('') +
+    '</div>' +
+    '<div class="col-filter-actions">' +
+    '<button onclick="clearColFilter(\''+col+'\')">Clear</button>' +
+    '<button onclick="selectAllColFilter(\''+col+'\')">Select All</button>' +
+    '<button class="apply-btn" onclick="applyColFilter(\''+col+'\')">Apply</button>' +
+    '</div>';
   dropdown.classList.add('open');
-  // Position the fixed dropdown below the filter icon
   var rect = iconEl.getBoundingClientRect();
   dropdown.style.top = (rect.bottom + 4) + 'px';
   dropdown.style.left = rect.left + 'px';
-  // Ensure it doesn't go off-screen to the right
   var ddRect = dropdown.getBoundingClientRect();
   if (ddRect.right > window.innerWidth - 8) {
     dropdown.style.left = Math.max(8, window.innerWidth - ddRect.width - 8) + 'px';
+  }
+  if (ddRect.bottom > window.innerHeight - 8) {
+    dropdown.style.top = Math.max(8, rect.top - ddRect.height - 4) + 'px';
   }
 }
 
@@ -10461,7 +10460,7 @@ function applyColFilter(col) {
   document.querySelectorAll(`th[data-col="${col}"] .filter-icon`).forEach(icon => {
     icon.classList.toggle('active-filter', !!columnFilters[col]);
   });
-  document.getElementById('filter-'+col).classList.remove('open');
+  document.getElementById('col-filter-portal').classList.remove('open');
   applyAllFilters();
 }
 
@@ -18782,6 +18781,7 @@ window._getHelpFor = function(query) {
 };
 
 </script>
+<div id="col-filter-portal" class="col-filter-dropdown" style="position:fixed;z-index:9999;"></div>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
