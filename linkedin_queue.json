@@ -4510,11 +4510,28 @@
           "createdAt": "2026-03-09T14:23:09.463Z",
           "completedAt": null,
           "createdBy": "dori.kafri@develeap.com"
+        },
+        {
+          "id": "mmkf3v8hcafg",
+          "contactName": "Dori Kafri‏",
+          "contactTitle": "CEO, I lead our employee-owned, people-first professional se",
+          "contactKey": "dori kafri‏",
+          "contactPhoto": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
+          "company": "Develeap",
+          "companyLogo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
+          "linkedinUrl": "https://il.linkedin.com/in/dori-kafri",
+          "message": "Hey Dori,\n\nSaw Develeap is hiring a DevOps Engineer  -  that tells me DevOps is a priority right now.\n\nHere's what we just did for a company your size: cut deployment cycles from 2 weeks to 45 minutes. No fluff. Real results.\n\nI'm Dori from Develeap. We've built and embedded DevOps teams at 100+ Israeli tech companies  -  CyberArk, Monday.com, Mobileye and more.\n\nWhat if instead of waiting 3-6 months to find + onboard the right DevOps Engineer... you had a senior squad plugged in within 2 weeks, delivering CI/CD pipelines, Kubernetes, Terraform, IaC  -  the whole stack?\n\nWorth a 15-min chat? https://www.develeap.com/devops-consulting/\n\nDori Kafri | CEO, Develeap",
+          "isConnected": true,
+          "customerType": "prospect",
+          "status": "pending",
+          "createdAt": "2026-03-10T09:38:39.713Z",
+          "completedAt": null,
+          "createdBy": "dori.kafri@develeap.com"
         }
       ],
       "lastProcessed": "2026-03-07T13:37:00.633551+00:00",
       "metadata": {
-        "updatedAt": "2026-03-09T14:23:10.493Z"
+        "updatedAt": "2026-03-10T09:38:40.397Z"
       }
     }
   },
