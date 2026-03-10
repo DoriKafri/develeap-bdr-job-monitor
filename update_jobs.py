@@ -853,14 +853,17 @@ SEED_JOBS = [
 
 # ── Search Functions ───────────────────────────────────────────────────────
 
-def search_serpapi(query: str) -> list[dict]:
-    """Search using SerpAPI (free tier: 100/month)."""
+def search_serpapi(query: str, tbs: str = "") -> list[dict]:
+    """Search using SerpAPI (free tier: 100/month).
+    tbs: optional time-based search filter, e.g. 'qdr:m3' for last 3 months.
+    """
     if not SERPAPI_KEY:
         return []
     try:
-        resp = requests.get("https://serpapi.com/search", params={
-            "q": query, "api_key": SERPAPI_KEY, "gl": "il", "hl": "en", "num": 10
-        }, timeout=15)
+        params = {"q": query, "api_key": SERPAPI_KEY, "gl": "il", "hl": "en", "num": 10}
+        if tbs:
+            params["tbs"] = tbs
+        resp = requests.get("https://serpapi.com/search", params=params, timeout=15)
         resp.raise_for_status()
         data = resp.json()
         results = []
@@ -950,15 +953,20 @@ def search_google_jobs() -> list[dict]:
     return all_results
 
 
-def search_duckduckgo(query: str) -> list[dict]:
-    """Search using DuckDuckGo HTML (no API key needed)."""
+def search_duckduckgo(query: str, timelimit: str = "") -> list[dict]:
+    """Search using DuckDuckGo HTML (no API key needed).
+    timelimit: optional date filter, e.g. 'm-3' for last 3 months, 'm-1' for last month.
+    """
     try:
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
+        url_params = f"https://html.duckduckgo.com/html/?q={quote_plus(query)}"
+        if timelimit:
+            url_params += f"&df={quote_plus(timelimit)}"
         resp = requests.get(
-            f"https://html.duckduckgo.com/html/?q={quote_plus(query)}",
+            url_params,
             headers=headers, timeout=15
         )
         resp.raise_for_status()
@@ -1049,6 +1057,16 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     # Must be a LinkedIn post URL
     if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
         return None
+
+    # Reject old posts — LinkedIn search results often contain age like "2yr", "1yr", "6mo"
+    age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month)s?\b', f"{title} {snippet}", re.IGNORECASE)
+    if age_match:
+        num = int(age_match.group(1))
+        unit = age_match.group(2).lower()
+        if unit in ("yr", "year"):
+            return None  # Any post >= 1 year old is too stale
+        if unit in ("mo", "month") and num > 3:
+            return None  # Posts older than 3 months are stale
 
     # Must contain hiring-related signals
     hiring_signals = ["hiring", "we're hiring", "we are hiring", "join our team",
@@ -1160,10 +1178,10 @@ def search_linkedin_fts() -> list[dict]:
 
         for query in selected_queries:
             log.info(f"  LinkedIn FTS query: {query}")
-            results = search_duckduckgo(query)
+            results = search_duckduckgo(query, timelimit="m-3")
             if not results:
                 time.sleep(random.uniform(2.0, 4.0))
-                results = search_serpapi(query)
+                results = search_serpapi(query, tbs="qdr:m3")
 
             for r in results:
                 url = r.get("url", "")
