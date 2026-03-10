@@ -1197,16 +1197,16 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
         return None
 
-    # Reject very old posts — search snippets may contain age like "2yr", "5mo"
-    # NOTE: We're lenient here because FTS posts stay relevant longer than
-    # regular job listings. The "1yr" age shown in search results is often
-    # approximate and the position may still be open. Only reject posts >= 2yr.
+    # Reject posts older than ~1 week based on age indicators in search snippets
     combined_text = f"{title} {snippet}"
-    age_match = re.search(r'\b(\d+)\s*(yr|year)s?\b', combined_text, re.IGNORECASE)
+    age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month|w|wk|week)s?\b', combined_text, re.IGNORECASE)
     if age_match:
         num = int(age_match.group(1))
-        if num >= 2:
-            return None  # Posts >= 2 years old are too stale
+        unit = age_match.group(2).lower()
+        if unit in ("yr", "year", "mo", "month"):
+            return None  # Any post months/years old is too stale
+        if unit in ("w", "wk", "week") and num > 1:
+            return None  # Posts older than 1 week are stale
 
     # Must contain hiring-related signals
     hiring_signals = ["hiring", "is hiring", "we're hiring", "we are hiring", "join our team",
@@ -1362,33 +1362,33 @@ def _fts_search_all_engines(query: str) -> list[dict]:
                 seen.add(u)
                 all_results.append(r)
 
-    # 1. Google CSE (best for freshness)
+    # 1. Google CSE (best for freshness) — last 7 days
     if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
         try:
-            _add(search_google_cse(query, date_restrict="m3"))
+            _add(search_google_cse(query, date_restrict="w1"))
         except Exception as e:
             log.warning(f"Google CSE failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 2. Bing (good for LinkedIn — Microsoft owns it)
+    # 2. Bing (good for LinkedIn — Microsoft owns it) — last week
     if BING_SEARCH_KEY:
         try:
-            _add(search_bing(query, freshness="Month"))
+            _add(search_bing(query, freshness="Week"))
         except Exception as e:
             log.warning(f"Bing failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 3. SerpAPI (Google via API)
+    # 3. SerpAPI (Google via API) — last 7 days
     if SERPAPI_KEY:
         try:
-            _add(search_serpapi(query, tbs="qdr:m3"))
+            _add(search_serpapi(query, tbs="qdr:w"))
         except Exception as e:
             log.warning(f"SerpAPI failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 4. DuckDuckGo (free, always available)
+    # 4. DuckDuckGo (free, always available) — last week
     try:
-        _add(search_duckduckgo(query, timelimit="m-3"))
+        _add(search_duckduckgo(query, timelimit="w"))
     except Exception as e:
         log.warning(f"DuckDuckGo failed for FTS: {e}")
 
@@ -2737,13 +2737,16 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 snippet_date = dt.strftime("%Y-%m-%d")
                 log.info(f"  Date from Hebrew snippet: {snippet_date} for {j['title'][:40]}")
 
-        # ── 3. Skip listings older than 14 days (except FTS posts) ──
-        if snippet_date and j.get("source") != "linkedin_fts":
+        # ── 3. Skip listings older than threshold ──
+        # FTS posts: 7 days (we want only fresh hiring announcements)
+        # Regular listings: 14 days
+        if snippet_date:
             from datetime import datetime as dt_cls
             try:
                 post_dt = dt_cls.strptime(snippet_date, "%Y-%m-%d")
                 age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
-                if age_days > 14:
+                max_age = 7 if j.get("source") == "linkedin_fts" else 14
+                if age_days > max_age:
                     log.info(f"  Skipping old listing ({age_days} days): {j['title'][:50]}")
                     continue
             except ValueError:
@@ -3180,20 +3183,19 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         url = j.get("sourceUrl", "")
 
         # ── Age-check existing jobs by their stored date ──
-        # FTS jobs (linkedin posts) are kept regardless of age — they're hiring
-        # announcements that stay relevant longer than regular job listings.
-        if j.get("source") != "linkedin_fts":
-            posted = j.get("posted", "")
-            if posted:
-                try:
-                    from datetime import datetime as dt_cls3
-                    post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
-                    age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
-                    if age_days3 > 14:
-                        log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
-                        continue
-                except ValueError:
-                    pass
+        # FTS jobs use a shorter window (7 days) since we only want fresh posts.
+        posted = j.get("posted", "")
+        if posted:
+            try:
+                from datetime import datetime as dt_cls3
+                post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
+                age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
+                max_age = 7 if j.get("source") == "linkedin_fts" else 14
+                if age_days3 > max_age:
+                    log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
+                    continue
+            except ValueError:
+                pass
 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
