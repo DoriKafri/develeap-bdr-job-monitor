@@ -2861,6 +2861,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
         j["posted"] = snippet_date if snippet_date else today
+        # Track when we first saw this job — used for stale-detection when
+        # LinkedIn blocks the real posted date (HTTP 429) and we fall back to today.
+        j["_first_seen"] = today
         j.pop("_snippet", None)  # Remove internal field before dashboard
 
         # Skip Develeap's own listings
@@ -3175,6 +3178,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # Re-check existing listings — remove closed, stale (>14d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
+    removed_urls = set()  # Track URLs of removed jobs to prevent re-adding as "new"
     for j in existing:
         # Skip all cleanup checks for mock/test listings
         if j.get("_isMock"):
@@ -3182,18 +3186,35 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             continue
         url = j.get("sourceUrl", "")
 
-        # ── Age-check existing jobs by their stored date ──
+        # ── Age-check existing jobs by their stored date AND _first_seen ──
         # FTS jobs use a shorter window (7 days) since we only want fresh posts.
+        # For regular LinkedIn jobs, also check _first_seen to catch listings
+        # where the pipeline keeps resetting posted=today because LinkedIn
+        # returns HTTP 429 (no real date available from data-center IPs).
         posted = j.get("posted", "")
-        if posted:
+        first_seen = j.get("_first_seen", "")
+        if posted or first_seen:
             try:
                 from datetime import datetime as dt_cls3
-                post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
-                age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
+                now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
                 max_age = 7 if j.get("source") == "linkedin_fts" else 14
-                if age_days3 > max_age:
-                    log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
-                    continue
+
+                # Use the OLDEST known date (posted vs _first_seen) for age check.
+                # This prevents the stale-refresh cycle where LinkedIn 429 → posted=today
+                # but _first_seen reveals the job has been known for weeks.
+                check_date = posted
+                if first_seen and posted:
+                    check_date = min(posted, first_seen)  # earliest date wins
+                elif first_seen:
+                    check_date = first_seen
+
+                if check_date:
+                    check_dt = dt_cls3.strptime(check_date, "%Y-%m-%d")
+                    age_days3 = (now_naive - check_dt).days
+                    if age_days3 > max_age:
+                        log.info(f"  Removing stale existing listing ({age_days3}d, posted={posted}, first_seen={first_seen}): {j.get('title', '')[:50]}")
+                        if url: removed_urls.add(url)
+                        continue
             except ValueError:
                 pass
 
@@ -3201,6 +3222,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             page_data = scrape_job_page(url)
             if page_data.get("closed"):
                 log.info(f"  Removing closed listing: {j.get('title', '')[:50]}")
+                if url: removed_urls.add(url)
                 continue
             # If we now got a real date from the page, update stored date
             if page_data.get("date"):
@@ -3214,6 +3236,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     age_days4 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt4).days
                     if age_days4 > 14:
                         log.info(f"  Removing stale listing after date update ({age_days4} days): {j.get('title', '')[:50]}")
+                        if url: removed_urls.add(url)
                         continue
                 except ValueError:
                     pass
@@ -3238,11 +3261,14 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 is_non_israel = any(ind in loc_country for ind in non_israel_countries)
                 if is_non_israel and not is_israel:
                     log.info(f"  Removing non-Israel existing listing ({loc_country}): {j.get('title', '')[:50]}")
+                    if url: removed_urls.add(url)
                     continue
             time.sleep(random.uniform(0.3, 0.8))
         cleaned.append(j)
 
     log.info(f"  Existing cleanup: {len(existing)} → {len(cleaned)} (removed {len(existing) - len(cleaned)} closed)")
+    if removed_urls:
+        log.info(f"  Blocklisted {len(removed_urls)} removed URLs to prevent re-adding as new")
     existing = cleaned
 
     # Normalize company names (e.g. "Checkpoint" → "Check Point Software")
@@ -3260,6 +3286,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # Mark existing jobs as not new; update stakeholders (preserve enrichment)
     for j in existing:
         j["isNew"] = False
+        # Preserve _first_seen — if missing (legacy job), seed from posted date
+        if "_first_seen" not in j:
+            j["_first_seen"] = j.get("posted", today)
         old_stakeholders = j.get("stakeholders", [])
         new_stakeholders = _get_stakeholders(j.get("company", ""))
         # Preserve ALL enrichment data from previously enriched stakeholders
@@ -3316,6 +3345,14 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             continue
 
         url = j.get("sourceUrl", "")
+
+        # Block re-adding jobs that were just removed as stale/closed in this run.
+        # This breaks the cycle: search engine finds old listing → pipeline removes
+        # it as stale → same listing appears in new_jobs → re-added with posted=today.
+        if url and url in removed_urls:
+            log.info(f"  Blocking re-add of removed URL: {j.get('title', '')[:50]} ({url[:60]})")
+            continue
+
         comp_lower = j.get("company", "").lower()
         key = f'{comp_lower}|{j.get("title","").lower()}'
         norm_key = f'{comp_lower}|{_normalize_title(j.get("title",""))}'
@@ -3345,9 +3382,15 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     merged = _consolidate_duplicates(merged)
 
     # ── Freshness cutoff: remove anything older than 14 days ──
+    # Use min(posted, _first_seen) to catch jobs with artificially fresh posted dates
     cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).strftime("%Y-%m-%d")
     before_count = len(merged)
-    merged = [j for j in merged if (j.get("posted") or "9999") >= cutoff]
+    def _effective_date(j):
+        """Oldest known date for a job — prevents stale jobs hiding behind posted=today."""
+        posted = j.get("posted") or "9999"
+        first_seen = j.get("_first_seen") or "9999"
+        return min(posted, first_seen)
+    merged = [j for j in merged if _effective_date(j) >= cutoff]
     dropped = before_count - len(merged)
     if dropped:
         log.info(f"  Freshness filter: dropped {dropped} listings older than {cutoff}")
