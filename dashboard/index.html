@@ -1368,7 +1368,7 @@
       </button>
     </div>
     <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
-    <div class="filter-chip" id="inProgressChip" style="display:none" onclick="toggleInProgressFilter()">🔄 In Progress <span class="hidden-count" id="inProgressCount" style="background:#f59e0b">0</span></div>
+    <div class="filter-chip" id="inProgressChip" onclick="toggleInProgressFilter()">🔄 In Progress <span class="hidden-count" id="inProgressCount" style="background:#f59e0b">0</span></div>
   </div>
 
   <div class="table-container">
@@ -9762,7 +9762,7 @@ function updateStats() {
   // Update In Progress filter chip count
   const inProgressCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'in_progress').length;
   const ipChip = document.getElementById('inProgressChip');
-  if (ipChip) { document.getElementById('inProgressCount').textContent = inProgressCount; ipChip.style.display = inProgressCount > 0 ? '' : 'none'; }
+  if (ipChip) { document.getElementById('inProgressCount').textContent = inProgressCount; }
 
   // Dynamically render category stats
   const catStatsContainer = document.getElementById('categoryStatsContainer');
