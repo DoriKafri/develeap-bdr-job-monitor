@@ -99,6 +99,7 @@
   .run-progress.hidden { opacity:0; pointer-events:none; transform:translateY(-100%); }
   /* Push main content down when progress bar is visible */
   body.run-active .main-content { margin-top:88px; transition:margin-top 0.4s ease; }
+  body.run-active .filters-bar { top:88px; }
   .run-progress-inner { display:flex; align-items:center; height:40px; padding:0 24px; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
   .run-progress-steps { display:flex; align-items:center; flex:1; gap:0; }
   .run-step { display:flex; align-items:center; gap:6px; position:relative; }
@@ -146,8 +147,7 @@
   .stat-number { font-size:22px; font-weight:800; line-height:1; }
   .stat-label { font-size:11px; color:var(--text-light); margin-top:4px; white-space:nowrap; }
 
-  .filters-bar { display:flex; align-items:center; gap:8px; padding:12px 0; background:transparent; border-bottom:none; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch; }
-  .filters-bar::-webkit-scrollbar { display:none; }
+  .filters-bar { display:flex; align-items:center; gap:8px; padding:10px 20px; background:white; border-bottom:1px solid var(--border); flex-wrap:nowrap; overflow:visible; position:sticky; top:48px; z-index:90; margin:0 -20px; }
   .filter-chip { white-space:nowrap; }
   .search-box { flex:0 0 auto; width:260px; position:relative; }
   .search-box input { width:100%; padding:10px 16px 10px 40px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; }
@@ -443,7 +443,8 @@
     .stat-card { padding:8px 10px; }
     .stat-number { font-size:18px; }
     .stat-label { font-size:10px; }
-    .filters-bar { padding:8px 0; gap:6px; }
+    .filters-bar { padding:8px 16px; gap:6px; margin:0 -16px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; }
+    .filters-bar::-webkit-scrollbar { display:none; }
     .search-box { width:180px; flex:0 0 auto; }
     .search-box input { padding:8px 12px 8px 36px; font-size:13px; }
     .filter-chip { padding:6px 12px; font-size:12px; }
