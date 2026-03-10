@@ -1,13 +1,7 @@
 {
-  "lastUpdated": "2026-03-10T09:24:48.562Z",
+  "lastUpdated": "2026-03-10T09:24:55.748Z",
   "statuses": {},
   "connected": [],
-  "hiddenCompanies": [
-    "tel aviv, israel"
-  ],
-  "listingStatuses": {
-    "2ba45202": "in_progress",
-    "70b62ea7": "not_relevant",
-    "84ad8af7": "not_relevant"
-  }
+  "hiddenCompanies": [],
+  "listingStatuses": {}
 }
