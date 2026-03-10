@@ -1223,6 +1223,44 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if company:
         display_title = f"{job_title} at {company}"
 
+    # ── Extract post author name ──
+    # Patterns: "John Smith on LinkedIn: ..." or "John Smith posted on LinkedIn: ..."
+    fts_author = ""
+    author_match = re.search(r'^(.+?)\s+(?:posted\s+)?on\s+LinkedIn', title)
+    if author_match:
+        raw_author = author_match.group(1).strip()
+        # Remove company suffix patterns: "Name at Company", "Name | Company"
+        raw_author = re.sub(r'\s+(?:at|@|\|)\s+.*$', '', raw_author).strip()
+        # Only keep if it looks like a person name (2-4 words, first letters capitalized)
+        name_parts = raw_author.split()
+        if 2 <= len(name_parts) <= 4 and all(p[0].isupper() for p in name_parts if p):
+            fts_author = raw_author
+
+    # ── Extract author LinkedIn profile URL from post URL ──
+    fts_author_linkedin = ""
+    if fts_author:
+        # LinkedIn post URLs: linkedin.com/posts/firstname-lastname-XXX_activity-...
+        post_url_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9\-]+?)[-_](?:activity|ugcPost)', url)
+        if post_url_match:
+            username_slug = post_url_match.group(1)
+            fts_author_linkedin = f"https://www.linkedin.com/in/{username_slug}/"
+
+    # ── Extract external job listing URL from snippet/title ──
+    fts_job_url = ""
+    job_link_domains = [
+        "greenhouse.io", "lever.co", "ashbyhq.com", "comeet.com",
+        "myworkdayjobs.com", "jobs.lever.co", "boards.greenhouse.io",
+        "apply.workable.com", "jobs.ashbyhq.com",
+        "smartrecruiters.com", "breezy.hr", "recruitee.com",
+        "bamboohr.com", "icims.com", "jobvite.com",
+    ]
+    # Look for URLs in the combined text
+    url_pattern = re.findall(r'https?://[^\s<>"\')\]]+', f"{title} {snippet}")
+    for found_url in url_pattern:
+        if any(d in found_url.lower() for d in job_link_domains):
+            fts_job_url = found_url
+            break
+
     # Use first 120 chars of snippet as description
     desc = snippet[:120] if snippet else title[:120]
 
@@ -1232,6 +1270,9 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         "url": url,
         "company": company or "Unknown",
         "_source_override": "linkedin_fts",
+        "_fts_author": fts_author,
+        "_fts_author_linkedin": fts_author_linkedin,
+        "_fts_job_url": fts_job_url,
     }
 
 
@@ -2521,6 +2562,25 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # Generate stable ID from URL
         job_id = hashlib.md5(url.encode()).hexdigest()[:8]
 
+        # Build stakeholders list — start with company stakeholders
+        stakeholders = _get_stakeholders(company)
+
+        # For LinkedIn FTS results, add the post author as a "Post Publisher" contact
+        if r.get("_source_override") == "linkedin_fts" and r.get("_fts_author"):
+            publisher_contact = {
+                "name": r["_fts_author"],
+                "title": "Post Publisher",
+                "linkedin": r.get("_fts_author_linkedin", ""),
+                "source": "Post Publisher",
+                "email": "",
+                "photo": "",
+            }
+            # Add publisher at the beginning so they appear first
+            stakeholders = [publisher_contact] + stakeholders
+
+        # For FTS results with an external job listing URL, store it
+        fts_job_url = r.get("_fts_job_url", "")
+
         jobs.append({
             "id": job_id,
             "title": title[:80],
@@ -2539,8 +2599,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "_snippet": snippet,  # Keep full snippet for closed/date detection
             "description": snippet[:120] if snippet else title,
             "skills": [],
-            "stakeholders": _get_stakeholders(company),
+            "stakeholders": stakeholders,
             "logo": _get_company_logo(company, url),
+            "ftsJobUrl": fts_job_url if fts_job_url else "",
         })
 
     # Fetch real posting dates, company names, and closed status
