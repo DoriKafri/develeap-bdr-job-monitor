@@ -787,7 +787,7 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
     ],
 }
 # How many categories to search per run (rotation)
-LINKEDIN_FTS_CATS_PER_RUN = 3
+LINKEDIN_FTS_CATS_PER_RUN = 4
 # Max queries per category per run
 LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 1
 # File to track which categories were searched last, for round-robin rotation
@@ -1362,15 +1362,15 @@ def _fts_search_all_engines(query: str) -> list[dict]:
                 seen.add(u)
                 all_results.append(r)
 
-    # 1. Google CSE (best for freshness) — last 7 days
+    # 1. Google CSE (best for freshness) — last 2 weeks (wider net, age filter trims)
     if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
         try:
-            _add(search_google_cse(query, date_restrict="w1"))
+            _add(search_google_cse(query, date_restrict="w2"))
         except Exception as e:
             log.warning(f"Google CSE failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 2. Bing (good for LinkedIn — Microsoft owns it) — last week
+    # 2. Bing (good for LinkedIn — Microsoft owns it) — last month (wider net)
     if BING_SEARCH_KEY:
         try:
             _add(search_bing(query, freshness="Week"))
@@ -1378,17 +1378,17 @@ def _fts_search_all_engines(query: str) -> list[dict]:
             log.warning(f"Bing failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 3. SerpAPI (Google via API) — last 7 days
+    # 3. SerpAPI (Google via API) — last 2 weeks
     if SERPAPI_KEY:
         try:
-            _add(search_serpapi(query, tbs="qdr:w"))
+            _add(search_serpapi(query, tbs="qdr:w2"))
         except Exception as e:
             log.warning(f"SerpAPI failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 4. DuckDuckGo (free, always available) — last week
+    # 4. DuckDuckGo (free, always available) — last month (DDG index is slower)
     try:
-        _add(search_duckduckgo(query, timelimit="w"))
+        _add(search_duckduckgo(query, timelimit="m"))
     except Exception as e:
         log.warning(f"DuckDuckGo failed for FTS: {e}")
 
