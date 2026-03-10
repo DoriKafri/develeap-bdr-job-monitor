@@ -453,9 +453,17 @@
     .sidebar-nav.open { transform:translateX(0); }
     .sidebar-backdrop { display:none; }
     .sidebar-backdrop.open { display:block; }
-    .top-bar { left:0; }
-    .top-bar .hamburger { display:flex; }
-    .main-content { margin-left:0; margin-top:48px; padding:12px; background:#f8f9fb; }
+    .top-bar { left:0; padding:0 12px; gap:8px; height:52px; background:var(--primary); border-bottom:none; }
+    .top-bar .hamburger { display:flex; color:white; padding:6px; }
+    .nav-actions { gap:8px !important; }
+    .nav-actions .last-update { font-size:11px !important; color:rgba(255,255,255,0.7) !important; }
+    .nav-actions .last-update .freshness-relative { color:rgba(255,255,255,0.5) !important; }
+    .nav-actions .btn { padding:6px 10px !important; font-size:11px !important; border-radius:8px !important; }
+    .nav-actions .btn svg { width:12px !important; height:12px !important; }
+    .nav-actions .btn-run { background:var(--accent) !important; }
+    .nav-actions .btn-outline { background:rgba(255,255,255,0.12) !important; color:white !important; border-color:rgba(255,255,255,0.2) !important; }
+    .mobile-logo { display:block !important; }
+    .main-content { margin-left:0; margin-top:52px; padding:12px; background:#f8f9fb; }
     .stat-card { padding:8px 12px; border-radius:10px; }
     .stat-number { font-size:18px; }
     .stat-label { font-size:10px; }
@@ -1360,7 +1368,8 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <button class="hamburger" onclick="toggleSidebar()">â°</button>
+    <button class="hamburger" onclick="toggleSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <img class="mobile-logo" src="https://www.develeap.com/wp-content/uploads/2025/12/develeap-logo.svg" alt="Develeap" style="height:18px;width:auto;filter:brightness(0) invert(1);display:none">
     <div class="nav-actions">
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
@@ -2424,7 +2433,7 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-10T15:35:30Z";
+let LAST_UPDATED = "2026-03-10T15:53:46Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -4397,7 +4406,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -6593,7 +6602,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
@@ -7153,7 +7162,7 @@ let ALL_JOBS = [
       {
         "name": "Yonatan Boguslavski",
         "title": "Co-Founder & CTO",
-        "linkedin": "",
+        "linkedin": "https://il.linkedin.com/in/yonatan-boguslavski-36354b125",
         "source": "LinkedIn",
         "email": "yonatan@getport.io",
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGd_u4wXLP7eQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718306096221?e=2147483647&v=beta&t=ZCUFhykRYNLkgt2_hXrVaHyHatconTXoDA1QKhhIxV0",
