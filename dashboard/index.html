@@ -163,7 +163,7 @@
   .source-dropdown-btn.has-selection { background:var(--primary); color:white; border-color:var(--primary); }
   .source-dropdown-btn .arrow { font-size:10px; opacity:0.6; transition:transform .2s; }
   .source-dropdown-btn.open .arrow { transform:rotate(180deg); }
-  .source-dropdown-panel { display:none; position:absolute; top:calc(100% + 6px); left:0; background:white; border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:220px; z-index:200; padding:8px 0; }
+  .source-dropdown-panel { display:none; position:fixed; background:white; border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:220px; z-index:9999; padding:8px 0; }
   .source-dropdown-panel.open { display:block; }
   .source-dropdown-item { display:flex; align-items:center; gap:10px; padding:8px 16px; cursor:pointer; font-size:13px; color:var(--text); transition:background .1s; }
   .source-dropdown-item:hover { background:var(--bg); }
@@ -1363,7 +1363,6 @@
         <span id="sourceDropdownLabel">Sources</span>
         <span class="arrow">&#9660;</span>
       </button>
-      <div class="source-dropdown-panel" id="sourceDropdownPanel"></div>
     </div>
     <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
   </div>
@@ -10022,13 +10021,24 @@ function buildSourceDropdown() {
 
 function toggleSourceDropdown(e) {
   e.stopPropagation();
-  const btn = document.getElementById('sourceDropdownBtn');
-  const panel = document.getElementById('sourceDropdownPanel');
-  const isOpen = panel.classList.contains('open');
-  // Close any other open dropdowns
-  document.querySelectorAll('.col-filter-dropdown.open').forEach(d => d.classList.remove('open'));
+  var btn = document.getElementById('sourceDropdownBtn');
+  var panel = document.getElementById('sourceDropdownPanel');
+  var isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.col-filter-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
   if (isOpen) { panel.classList.remove('open'); btn.classList.remove('open'); }
-  else { panel.classList.add('open'); btn.classList.add('open'); }
+  else {
+    panel.classList.add('open'); btn.classList.add('open');
+    var rect = btn.getBoundingClientRect();
+    panel.style.top = (rect.bottom + 6) + 'px';
+    panel.style.left = rect.left + 'px';
+    var pRect = panel.getBoundingClientRect();
+    if (pRect.right > window.innerWidth - 8) {
+      panel.style.left = Math.max(8, window.innerWidth - pRect.width - 8) + 'px';
+    }
+    if (pRect.bottom > window.innerHeight - 8) {
+      panel.style.top = Math.max(8, rect.top - pRect.height - 6) + 'px';
+    }
+  }
 }
 
 function onSourceCheckChange() {
@@ -10073,9 +10083,10 @@ function updateSourceBtnLabel() {
 
 // Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
-  const wrap = document.getElementById('sourceDropdownWrap');
-  if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('sourceDropdownPanel').classList.remove('open');
+  var wrap = document.getElementById('sourceDropdownWrap');
+  var panel = document.getElementById('sourceDropdownPanel');
+  if (wrap && !wrap.contains(e.target) && !panel.contains(e.target)) {
+    panel.classList.remove('open');
     document.getElementById('sourceDropdownBtn').classList.remove('open');
   }
 });
@@ -18161,6 +18172,7 @@ window._getHelpFor = function(query) {
 
 </script>
 <div id="col-filter-portal" class="col-filter-dropdown" style="position:fixed;z-index:9999;"></div>
+<div class="source-dropdown-panel" id="sourceDropdownPanel" style="position:fixed;z-index:9999;"></div>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
