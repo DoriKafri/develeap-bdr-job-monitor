@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T09:38:28.182Z",
+  "lastUpdated": "2026-03-10T09:41:19.004Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -308,6 +308,7 @@
     "dialog"
   ],
   "listingStatuses": {
-    "0814d173": "not_relevant"
+    "0814d173": "not_relevant",
+    "db9337a7": "in_progress"
   }
 }
