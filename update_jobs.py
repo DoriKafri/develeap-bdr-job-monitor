@@ -27,6 +27,9 @@ NETLIFY_SITE_ID = os.environ.get("NETLIFY_SITE_ID", "9533027e-5008-40ca-924c-ded
 NETLIFY_TOKEN = os.environ.get("NETLIFY_TOKEN", "")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
 SERPAPI_KEY = os.environ.get("SERPAPI_KEY", "")  # Optional: for better search results
+GOOGLE_CSE_KEY = os.environ.get("GOOGLE_CSE_KEY", "")  # Google Custom Search API key
+GOOGLE_CSE_CX = os.environ.get("GOOGLE_CSE_CX", "")    # Google Custom Search Engine ID
+BING_SEARCH_KEY = os.environ.get("BING_SEARCH_KEY", "")  # Bing Web Search API key
 DASHBOARD_PATH = os.environ.get("DASHBOARD_PATH", "dashboard/index.html")
 SLACK_POSTED_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slack_posted.json")
 
@@ -901,6 +904,64 @@ def search_serpapi(query: str, tbs: str = "") -> list[dict]:
         return []
 
 
+def search_google_cse(query: str, date_restrict: str = "") -> list[dict]:
+    """Search using Google Custom Search Engine (free tier: 100 queries/day).
+    date_restrict: e.g. 'm1' for last month, 'm3' for last 3 months, 'w2' for last 2 weeks.
+    """
+    if not GOOGLE_CSE_KEY or not GOOGLE_CSE_CX:
+        return []
+    try:
+        params = {
+            "q": query, "key": GOOGLE_CSE_KEY, "cx": GOOGLE_CSE_CX,
+            "num": 10, "gl": "il", "hl": "en",
+        }
+        if date_restrict:
+            params["dateRestrict"] = date_restrict
+        resp = requests.get("https://www.googleapis.com/customsearch/v1",
+                            params=params, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        results = []
+        for item in data.get("items", []):
+            results.append({
+                "title": item.get("title", ""),
+                "snippet": item.get("snippet", ""),
+                "url": item.get("link", ""),
+            })
+        return results
+    except Exception as e:
+        log.warning(f"Google CSE search failed: {e}")
+        return []
+
+
+def search_bing(query: str, freshness: str = "") -> list[dict]:
+    """Search using Bing Web Search API (free tier: 1000 calls/month).
+    freshness: 'Day', 'Week', 'Month', or specific range like '2025-01-01..2025-03-10'.
+    """
+    if not BING_SEARCH_KEY:
+        return []
+    try:
+        headers = {"Ocp-Apim-Subscription-Key": BING_SEARCH_KEY}
+        params = {"q": query, "count": 10, "mkt": "en-IL"}
+        if freshness:
+            params["freshness"] = freshness
+        resp = requests.get("https://api.bing.microsoft.com/v7.0/search",
+                            headers=headers, params=params, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        results = []
+        for item in data.get("webPages", {}).get("value", []):
+            results.append({
+                "title": item.get("name", ""),
+                "snippet": item.get("snippet", ""),
+                "url": item.get("url", ""),
+            })
+        return results
+    except Exception as e:
+        log.warning(f"Bing search failed: {e}")
+        return []
+
+
 GOOGLE_JOBS_QUERIES = [
     ("FinOps Engineer", "Tel Aviv, Israel"),
     ("FinOps", "Israel"),
@@ -1174,17 +1235,82 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     }
 
 
+def _fts_search_all_engines(query: str) -> list[dict]:
+    """Run a single FTS query across all available search engines and merge results.
+
+    Priority order (all attempted for maximum coverage):
+      1. Google CSE  — best freshness for LinkedIn posts
+      2. Bing        — good freshness (Microsoft owns LinkedIn)
+      3. SerpAPI     — Google results via API
+      4. DuckDuckGo  — free fallback, slowest index
+
+    Returns deduplicated results by URL.
+    """
+    all_results = []
+    seen = set()
+
+    def _add(results):
+        for r in results:
+            u = r.get("url", "").split("?")[0].rstrip("/")  # Normalize URL
+            if u and u not in seen:
+                seen.add(u)
+                all_results.append(r)
+
+    # 1. Google CSE (best for freshness)
+    if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
+        try:
+            _add(search_google_cse(query, date_restrict="m3"))
+        except Exception as e:
+            log.warning(f"Google CSE failed for FTS: {e}")
+        time.sleep(random.uniform(0.5, 1.5))
+
+    # 2. Bing (good for LinkedIn — Microsoft owns it)
+    if BING_SEARCH_KEY:
+        try:
+            _add(search_bing(query, freshness="Month"))
+        except Exception as e:
+            log.warning(f"Bing failed for FTS: {e}")
+        time.sleep(random.uniform(0.5, 1.5))
+
+    # 3. SerpAPI (Google via API)
+    if SERPAPI_KEY:
+        try:
+            _add(search_serpapi(query, tbs="qdr:m3"))
+        except Exception as e:
+            log.warning(f"SerpAPI failed for FTS: {e}")
+        time.sleep(random.uniform(0.5, 1.5))
+
+    # 4. DuckDuckGo (free, always available)
+    try:
+        _add(search_duckduckgo(query, timelimit="m-3"))
+    except Exception as e:
+        log.warning(f"DuckDuckGo failed for FTS: {e}")
+
+    return all_results
+
+
 def search_linkedin_fts() -> list[dict]:
-    """Search LinkedIn posts for hiring announcements via DuckDuckGo/SerpAPI.
+    """Search LinkedIn posts for hiring announcements via multiple search engines.
 
     Uses round-robin category rotation: only LINKEDIN_FTS_CATS_PER_RUN categories
-    are searched each run. Results are LinkedIn post URLs with extracted job info.
+    are searched each run. Queries Google CSE, Bing, SerpAPI, and DuckDuckGo for
+    maximum coverage. Results are LinkedIn post URLs with extracted job info.
     No LinkedIn pages are scraped directly.
     """
     state = _load_linkedin_fts_state()
     seen_urls = set(state.get("seen_urls", [])[-500:])  # Keep last 500 URLs for dedup
     picked_cats = _pick_fts_categories()
     log.info(f"LinkedIn FTS: searching categories {picked_cats}")
+
+    engines_available = []
+    if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
+        engines_available.append("Google CSE")
+    if BING_SEARCH_KEY:
+        engines_available.append("Bing")
+    if SERPAPI_KEY:
+        engines_available.append("SerpAPI")
+    engines_available.append("DuckDuckGo")
+    log.info(f"LinkedIn FTS: engines available: {', '.join(engines_available)}")
 
     all_results = []
 
@@ -1196,10 +1322,8 @@ def search_linkedin_fts() -> list[dict]:
 
         for query in selected_queries:
             log.info(f"  LinkedIn FTS query: {query}")
-            results = search_duckduckgo(query, timelimit="m-3")
-            if not results:
-                time.sleep(random.uniform(2.0, 4.0))
-                results = search_serpapi(query, tbs="qdr:m3")
+            results = _fts_search_all_engines(query)
+            log.info(f"    Raw results from all engines: {len(results)}")
 
             for r in results:
                 url = r.get("url", "")
