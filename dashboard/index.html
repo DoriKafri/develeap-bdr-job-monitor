@@ -10045,6 +10045,10 @@ function _isCareerPage(j) {
   const u = (j.sourceUrl || '').toLowerCase();
   if (/greenhouse\.io\/[^/]+\/?(\?|$)/.test(u) && !/\/jobs\/\d+/.test(u)) return true;
   if (/comeet\.com\/jobs\/[^/]+\/?(\?|$)/.test(u) && !/\/\d{2,}/.test(u)) return true;
+  // Detect descriptions that look like career page scrapes (company overview text)
+  var desc = (j.description || '').toLowerCase();
+  if (/\.\s*apply\.\s*about\s+/i.test(desc)) return true;
+  if (/\.\s*about\s+the\s+company\b/i.test(desc) && /\bapply\b/i.test(desc) && desc.length < 150) return true;
   return false;
 }
 
