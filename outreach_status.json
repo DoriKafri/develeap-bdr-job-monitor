@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-10T09:36:30.745Z",
+  "lastUpdated": "2026-03-10T09:37:04.338Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -304,7 +304,10 @@
     "gilad neiger"
   ],
   "hiddenCompanies": [
-    "unknown"
+    "unknown",
+    "dialog"
   ],
-  "listingStatuses": {}
+  "listingStatuses": {
+    "0814d173": "not_relevant"
+  }
 }
