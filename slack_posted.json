@@ -28,6 +28,7 @@
     "zenity|agentic|ai agent security | devops engineer|2026-03-06",
     "zenity|agentic|ai agent security | devops engineer",
     "yafo ...|||ai engineer",
+    "yael group|||enterprise infrastructure engineer - yael group",
     "yael group|||devsecops",
     "xsolla||||senior finops engineer - xsolla",
     "xsolla|||senior finops engineer - xsolla|2026-03-04",
@@ -320,6 +321,7 @@
     "scylladb|||job opportunity: controller",
     "scylladb|devops|job opportunity: controller|2026-02-20",
     "scylladb|devops|job opportunity: controller",
+    "scaleops|||sales engineer - il",
     "rise|||data engineer",
     "remoterockethub||||mlops engineer, usa israel | remoterockethub",
     "remoterockethub||||mlops engineer, usa israel",
@@ -523,6 +525,7 @@
     "millennium|||platform engineer",
     "millennium|||machine learning engineer",
     "millennium|||cloud engineer",
+    "microsoft|||senior ai product manager - agentic edge ai",
     "meta|||data engineer, product analytics",
     "metalbear|||devsecops engineer",
     "mentaily|||ai engineer",
@@ -565,6 +568,7 @@
     "mastercard|devops|devops tech lead in ramat-gan, israel, 5252212 - careers|2026-02-20",
     "mastercard|devops|devops tech lead in ramat-gan, israel, 5252212 - careers",
     "mantis tech|||senior devsecops",
+    "lumen|||senior devops engineer",
     "loris|||senior backend engineer",
     "logica-it|||infrastructure engineer",
     "linearb||||site reliability engineer (sre) at linearb - expertini.work",
@@ -702,6 +706,7 @@
     "gsk|||search for jobs",
     "gsk|devops|search for jobs|2026-03-04",
     "gsk|devops|search for jobs",
+    "gotfriends|||ai engineer",
     "globallogic||||sre engineer irc282026 | globallogic israel",
     "globallogic||||sre engineer irc282026",
     "globallogic|||sre engineer irc282026 | globallogic israel|2026-03-04",
@@ -935,6 +940,7 @@
     "check point software|||senior finops engineer",
     "check point software|||senior devops engineer|2026-02-22",
     "check point software|||senior devops engineer",
+    "check point software|||network infrastructure engineer",
     "check point software|||devops cloud engineer owning high-scale",
     "check point software|||cloud finops engineer",
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior finops engineer|2026-03-01",
@@ -1865,7 +1871,13 @@
     "bleader|||data engineer": "2026-03-10T22:41:23.279728+00:00",
     "essence group|||cloud engineer": "2026-03-10T22:41:23.279728+00:00",
     "matrix|||cloud engineer | center district, israel": "2026-03-10T22:41:23.279728+00:00",
-    "ibm|||devops sales engineer": "2026-03-10T22:41:23.279728+00:00"
+    "ibm|||devops sales engineer": "2026-03-10T22:41:23.279728+00:00",
+    "lumen|||senior devops engineer": "2026-03-10T22:57:24.327677+00:00",
+    "gotfriends|||ai engineer": "2026-03-10T22:57:24.327677+00:00",
+    "microsoft|||senior ai product manager - agentic edge ai": "2026-03-10T22:57:24.327677+00:00",
+    "check point software|||network infrastructure engineer": "2026-03-10T22:57:24.327677+00:00",
+    "yael group|||enterprise infrastructure engineer - yael group": "2026-03-10T22:57:24.327677+00:00",
+    "scaleops|||sales engineer - il": "2026-03-10T22:57:24.327677+00:00"
   },
-  "updated": "2026-03-10T22:41:23.292407+00:00"
+  "updated": "2026-03-10T22:57:24.338167+00:00"
 }
