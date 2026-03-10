@@ -120,7 +120,7 @@
   @keyframes pulse-ring { 0%,100%{ box-shadow:0 0 0 0 rgba(255,176,0,0.4); } 50%{ box-shadow:0 0 0 5px rgba(255,176,0,0); } }
 
   /* ── MAIN CONTENT ── */
-  .main-content { margin-left:240px; margin-top:48px; padding:24px 32px; transition:margin-top 0.4s ease; overflow-x:hidden; max-width:calc(100vw - 240px); }
+  .main-content { margin-left:240px; margin-top:48px; padding:24px 20px; transition:margin-top 0.4s ease; }
 
   .stats-bar-wrap { position:relative; padding:12px 0; }
   .stats-bar { display:flex; gap:8px; background:transparent; border-bottom:none; flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; padding:2px 0 6px; }
@@ -197,7 +197,7 @@
     vertical-align:middle;
   }
   .th-wrap {
-    display:flex; align-items:center; padding:10px 16px; gap:2px; white-space:nowrap;
+    display:flex; align-items:center; padding:8px 10px; gap:2px; white-space:nowrap;
   }
   .th-inner {
     display:flex; align-items:center; gap:4px;
@@ -240,7 +240,7 @@
   .col-filter-actions button.apply-btn { background:var(--primary); color:white; border-color:var(--primary); }
   .col-filter-actions button.apply-btn:hover { background:var(--primary-dark); }
 
-  td { padding:10px 12px; font-size:14px; border-bottom:1px solid #F0F1F3; vertical-align:middle; }
+  td { padding:8px 10px; font-size:13px; border-bottom:1px solid #F0F1F3; vertical-align:middle; }
   tr:hover td { background:#F8F9FD; }
   tr.develeap-customer td { background:#FFFAF0; }
   tr.develeap-customer:hover td { background:#FFF3D6; }
@@ -1380,13 +1380,13 @@
       <table>
         <thead><tr>
           <th style="width:30px"><div class="th-wrap"><div class="th-inner" style="cursor:default"></div></div></th>
-          <th style="min-width:180px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div></th>
-          <th style="min-width:140px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div></th>
-          <th style="min-width:100px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div></th>
-          <th style="min-width:90px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div></th>
-          <th style="min-width:90px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div></th>
-          <th style="min-width:80px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
-          <th style="min-width:110px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div></th>
+          <th style="min-width:150px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div></th>
+          <th style="min-width:110px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div></th>
+          <th style="min-width:80px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div></th>
+          <th style="min-width:70px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div></th>
+          <th style="min-width:70px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div></th>
+          <th style="min-width:60px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
+          <th style="min-width:90px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div></th>
         </tr></thead>
         <tbody id="jobsTable"></tbody>
       </table>
