@@ -1048,8 +1048,8 @@ def extract_posting_date(url: str) -> str:
 
 def scrape_job_page(url: str) -> dict:
     """Scrape a job listing page for date, company name, closed status, and location.
-    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": ""}."""
-    result = {"date": "", "company": "", "closed": False, "location_country": ""}
+    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool}."""
+    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False}
     if not url:
         return result
     try:
@@ -1062,7 +1062,56 @@ def scrape_job_page(url: str) -> dict:
         if resp.status_code != 200:
             return result
         text = resp.text[:100000]  # Limit to first 100KB
+        final_url = resp.url  # URL after redirects
         log.info(f"  Scrape {url[:60]}: status={resp.status_code}, size={len(resp.text)}, truncated={len(text)}")
+
+        # ── Detect career/multi-listing pages (e.g. expired Greenhouse job IDs redirect to careers page) ──
+        # 1. Check <title> for career page patterns
+        title_match = re.search(r'<title[^>]*>([^<]+)</title>', text, re.IGNORECASE)
+        if title_match:
+            page_title = title_match.group(1).strip().lower()
+            career_title_patterns = [
+                r'^current\s+openings?\s+(at|@)\s+',
+                r'^open\s+positions?\s+(at|@)\s+',
+                r'^(careers|career\s+opportunities)\s+(at|@)\s+',
+                r'^(all|current|available)\s+(open\s+)?(positions|jobs|roles|openings)\s',
+                r'^jobs?\s+(at|@)\s+',
+                r'^(join\s+us|join\s+our\s+team|we\'?re\s+hiring)',
+                r'^[\w\s]+\s*[-\|]\s*careers?\s*$',
+                r'\bcareer\s*(?:page|portal|site|hub)\b',
+            ]
+            for pat in career_title_patterns:
+                if re.search(pat, page_title):
+                    result["is_career_page"] = True
+                    log.info(f"  CAREER PAGE (title): '{page_title[:60]}' for {url[:60]}")
+                    break
+
+        # 2. For ATS URLs (Greenhouse, Lever, etc.): detect if redirected away from specific job
+        if not result["is_career_page"]:
+            url_lower = url.lower()
+            final_lower = final_url.lower()
+            # Greenhouse: original URL had /jobs/\d+ but final URL lost it
+            if 'greenhouse.io' in url_lower and re.search(r'/jobs/\d+', url_lower):
+                if not re.search(r'/jobs/\d+', final_lower):
+                    result["is_career_page"] = True
+                    log.info(f"  CAREER PAGE (redirect lost job ID): {url[:60]} → {final_url[:60]}")
+            # Lever: original URL had specific path but redirected to company root
+            if 'lever.co' in url_lower and url_lower.count('/') > 4:
+                if final_lower.rstrip('/').count('/') <= 3:
+                    result["is_career_page"] = True
+                    log.info(f"  CAREER PAGE (lever redirect): {url[:60]} → {final_url[:60]}")
+
+        # 3. Check for multiple job listing links on the page (strong signal of a career page)
+        if not result["is_career_page"]:
+            # Count distinct job links on the page (Greenhouse pattern: /jobs/\d+)
+            if 'greenhouse.io' in (final_url or url).lower():
+                job_links = set(re.findall(r'/jobs/(\d+)', text))
+                if len(job_links) > 5:
+                    result["is_career_page"] = True
+                    log.info(f"  CAREER PAGE ({len(job_links)} job links): {url[:60]}")
+
+        if result["is_career_page"]:
+            return result
 
         # ── Check if listing is closed ──
         closed_phrases = [
@@ -2146,6 +2195,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if url:
             page_data = scrape_job_page(url)
 
+            # Skip career/multi-listing pages (e.g. expired Greenhouse job IDs)
+            if page_data.get("is_career_page"):
+                log.info(f"  Skipping career page (not a specific job): {j['title'][:50]}")
+                continue
+
             # Skip closed listings detected from page HTML
             if page_data.get("closed"):
                 log.info(f"  Skipping closed (page): {j['title'][:50]}")
@@ -2484,6 +2538,44 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing = [j for j in existing if j.get("sourceUrl", "").startswith("http")]
     if before_url != len(existing):
         log.info(f"  Removed {before_url - len(existing)} jobs with empty/broken URLs")
+
+    # Validate existing ATS listings by checking for career-page redirects
+    # (e.g. expired Greenhouse job IDs redirect to company careers page)
+    def _is_ats_career_page(j):
+        u = j.get("sourceUrl", "").lower()
+        if not u:
+            return False
+        # Only check ATS URLs where expired IDs can redirect to career pages
+        ats_patterns = [
+            (r'greenhouse\.io/.+/jobs/\d+', 'greenhouse.io'),
+            (r'lever\.co/.+/[a-f0-9-]{20,}', 'lever.co'),
+        ]
+        is_ats = False
+        for pat, domain in ats_patterns:
+            if domain in u and re.search(pat, u):
+                is_ats = True
+                break
+        if not is_ats:
+            return False
+        # Spot-check: HEAD request to detect redirect to career page
+        try:
+            resp = requests.head(u, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            }, timeout=8, allow_redirects=True)
+            final = resp.url.lower()
+            # Greenhouse: lost the /jobs/\d+ in final URL
+            if 'greenhouse.io' in u and re.search(r'/jobs/\d+', u):
+                if not re.search(r'/jobs/\d+', final):
+                    log.info(f"  Existing job redirects to career page: {u[:60]} → {final[:60]}")
+                    return True
+        except Exception:
+            pass
+        return False
+
+    before_ats_cp = len(existing)
+    existing = [j for j in existing if not _is_ats_career_page(j)]
+    if before_ats_cp != len(existing):
+        log.info(f"  Removed {before_ats_cp - len(existing)} ATS career-page redirects from existing jobs")
 
     # Remove SPA career sites where location can't be verified server-side
     # (e.g. jobs.apple.com /en-il/ shows jobs from all countries, not just Israel)
