@@ -348,6 +348,30 @@
   .hidden-panel-footer button { background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
   .hidden-panel-footer button:hover { opacity:0.9; }
 
+  /* In Progress chip & panel */
+  .in-progress-chip { position:relative; }
+  .in-progress-chip .ip-count { background:#f59e0b; color:white; font-size:10px; padding:1px 5px; border-radius:8px; margin-left:4px; }
+  .ip-panel { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); z-index:300; width:500px; max-width:90vw; max-height:70vh; overflow:hidden; }
+  .ip-panel.open { display:block; }
+  .ip-panel-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:299; }
+  .ip-panel-backdrop.open { display:block; }
+  .ip-panel-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:#fffbeb; }
+  .ip-panel-header h3 { font-size:16px; font-weight:700; color:#92400e; }
+  .ip-panel-body { padding:12px 20px; max-height:50vh; overflow-y:auto; }
+  .ip-job-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #F0F1F3; gap:10px; }
+  .ip-job-item:last-child { border-bottom:none; }
+  .ip-job-info { flex:1; min-width:0; }
+  .ip-job-title { font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ip-job-title a { color:var(--text); text-decoration:none; }
+  .ip-job-title a:hover { color:var(--primary); }
+  .ip-job-company { font-size:12px; color:var(--text-light); margin-top:2px; }
+  .ip-job-actions { display:flex; gap:6px; flex-shrink:0; }
+  .ip-view-btn { background:none; border:1px solid var(--border); color:var(--primary); padding:4px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; }
+  .ip-view-btn:hover { background:var(--primary-light); }
+  .ip-panel-footer { padding:12px 20px; border-top:1px solid var(--border); text-align:right; }
+  .ip-panel-footer button { background:#6b7280; color:white; border:none; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+  .ip-panel-footer button:hover { opacity:0.9; }
+
   /* Active column filter count badge */
   .active-filters-count { position:absolute; top:-4px; right:-4px; background:var(--primary); color:white; font-size:9px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
@@ -1375,6 +1399,7 @@
       <div class="source-dropdown-panel" id="sourceDropdownPanel"></div>
     </div>
     <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
+    <div class="filter-chip in-progress-chip" id="inProgressChip" style="display:none" onclick="openInProgressPanel()">In Progress <span class="ip-count" id="inProgressCount">0</span></div>
   </div>
 
   <div class="table-container">
@@ -2315,6 +2340,14 @@
   <div class="hidden-panel-header"><h3>Hidden Companies</h3><button class="sidebar-close" onclick="closeHiddenPanel()">&times;</button></div>
   <div class="hidden-panel-body" id="hiddenPanelBody"></div>
   <div class="hidden-panel-footer"><button onclick="unhideAll()">Unhide All</button></div>
+</div>
+
+<!-- In Progress Listings Panel -->
+<div class="ip-panel-backdrop" id="ipBackdrop" onclick="closeInProgressPanel()"></div>
+<div class="ip-panel" id="ipPanel">
+  <div class="ip-panel-header"><h3>In Progress Listings</h3><button class="sidebar-close" onclick="closeInProgressPanel()">&times;</button></div>
+  <div class="ip-panel-body" id="ipPanelBody"></div>
+  <div class="ip-panel-footer"><button onclick="closeInProgressPanel()">Close</button></div>
 </div>
 
 <script>
@@ -9554,6 +9587,53 @@ function closeHiddenPanel() {
   document.getElementById('hiddenBackdrop').classList.remove('open');
 }
 
+// ===== IN PROGRESS PANEL =====
+function getInProgressJobs() {
+  return ALL_JOBS.filter(function(j) {
+    if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
+    if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
+    if (_isCareerPage(j)) return false;
+    var ls = getEffectiveListingStatus(j);
+    return ls === 'in_progress';
+  });
+}
+function updateInProgressUI() {
+  var chip = document.getElementById('inProgressChip');
+  var count = document.getElementById('inProgressCount');
+  if (!chip || !count) return;
+  var jobs = getInProgressJobs();
+  if (jobs.length > 0) { chip.style.display = ''; count.textContent = jobs.length; }
+  else { chip.style.display = 'none'; }
+}
+function openInProgressPanel() {
+  var body = document.getElementById('ipPanelBody');
+  var jobs = getInProgressJobs();
+  if (jobs.length) {
+    body.innerHTML = jobs.map(function(j) {
+      var title = j.title || 'Untitled';
+      var company = j.company || 'Unknown';
+      var url = j.sourceUrl || '#';
+      return '<div class="ip-job-item">' +
+        '<div class="ip-job-info">' +
+          '<div class="ip-job-title"><a href="' + url + '" target="_blank">' + title.replace(/</g, '&lt;') + '</a></div>' +
+          '<div class="ip-job-company">' + company.replace(/</g, '&lt;') + '</div>' +
+        '</div>' +
+        '<div class="ip-job-actions">' +
+          '<a class="ip-view-btn" href="' + url + '" target="_blank">View</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  } else {
+    body.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:20px">No in-progress listings</p>';
+  }
+  document.getElementById('ipPanel').classList.add('open');
+  document.getElementById('ipBackdrop').classList.add('open');
+}
+function closeInProgressPanel() {
+  document.getElementById('ipPanel').classList.remove('open');
+  document.getElementById('ipBackdrop').classList.remove('open');
+}
+
 // ===== PER-LISTING STATUS =====
 let _listingStatusCache = null;
 function _loadListingStatuses() {
@@ -9764,6 +9844,7 @@ function initApp() {
     j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);
   });
   updateHiddenUI();
+  updateInProgressUI();
   _cleanupListingStatuses();
   buildSourceDropdown();
   buildCategoryFilters();
@@ -10030,7 +10111,7 @@ function getFilteredJobs() {
   });
 }
 
-function applyAllFilters() { updateStats(); renderJobs(); }
+function applyAllFilters() { updateStats(); renderJobs(); updateInProgressUI(); }
 
 function renderJobs() {
   // Pre-merge CRM+Apollo stakeholders for all jobs (ensures WhatsApp buttons show)
@@ -10476,7 +10557,7 @@ document.addEventListener('click', e => {
   }
   if (e.key==='Escape') closeSidebar();
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSidebar();closeInProgressPanel();}if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}});
 
 // ===== MOBILE BACK BUTTON (Android / PWA) =================================
 // Pushes history state when panels open so the browser back button (or Android
