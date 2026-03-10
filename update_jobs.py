@@ -1652,7 +1652,7 @@ def scrape_job_page(url: str) -> dict:
         if not result["closed"]:
             if "linkedin.com" in url:
                 stale_match = re.search(
-                    r'(?:posted|listed|published)\s+(\d+)\s+(month|year)s?\s+ago',
+                    r'(?:posted|listed|published|reposted)\s+(\d+)\s+(month|year)s?\s+ago',
                     text_lower_check
                 )
             else:
@@ -2620,6 +2620,12 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
 
+        # Clean Hebrew localization artifacts from LinkedIn titles
+        # "Navina גיוס עובדים Machine Learning Engineer" → "Navina Machine Learning Engineer"
+        # "גיוס עובדים" = "recruiting employees" in Hebrew, appears in il.linkedin.com results
+        title = re.sub(r'\s*גיוס\s*עובדים\s*', ' ', title).strip()
+        title = re.sub(r'\s{2,}', ' ', title)  # collapse double spaces
+
         # Use _source_override from LinkedIn FTS results, otherwise detect from URL
         source = r.get("_source_override") or detect_source(url)
         category = detect_category(title, snippet)
@@ -2697,8 +2703,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # ── 2. Extract date from Google snippet (relative dates) ──
         snippet_date = ""
         from datetime import timedelta
-        # Patterns like "3 days ago", "1 year ago", "2 weeks ago" in snippet
-        rel_match = re.search(r'(\d+)\s+(hour|day|week|month|year)s?\s+ago', snippet_lower)
+        # Patterns like "3 days ago", "1 year ago", "2 weeks ago", "Reposted 1 month ago" in snippet
+        rel_match = re.search(r'(?:reposted\s+)?(\d+)\s+(hour|day|week|month|year)s?\s+ago', snippet_lower)
         if rel_match:
             n = int(rel_match.group(1))
             unit = rel_match.group(2)
@@ -2851,10 +2857,21 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             # Only skip if the page returned a non-200 HTTP status (truly gone).
             if "linkedin.com" in url and not snippet_date and not page_data.get("date"):
                 http_status = page_data.get("_http_status", 200)
-                # 429 = rate limited (not gone), 200 = reachable but data blocked
-                # Only skip if page returned 404/410 (listing truly removed)
+                # 404/410 = listing truly removed
                 if http_status in (404, 410):
                     log.info(f"  Skipping LinkedIn listing (HTTP {http_status}, listing removed): {j['title'][:50]}")
+                    continue
+                # 429 = rate limited — can't verify if job is active or closed.
+                # Without any date evidence (no snippet date, no page date), this is
+                # very likely a stale listing that LinkedIn indexed long ago.
+                # Skip to avoid polluting dashboard with fake posted=today dates.
+                if http_status == 429:
+                    log.info(f"  Skipping LinkedIn listing (HTTP 429, no date evidence — likely stale): {j['title'][:50]}")
+                    continue
+                # 200 but no date: page loaded but LinkedIn blocked structured data.
+                # Check if the page had a JobPosting JSON-LD — if not, it's suspicious.
+                if http_status == 200 and not page_data.get("_has_job_ld"):
+                    log.info(f"  Skipping LinkedIn listing (200 but no JSON-LD, no date — likely stale): {j['title'][:50]}")
                     continue
                 log.info(f"  Keeping LinkedIn listing without date (HTTP {http_status}): {j['title'][:50]}")
 
@@ -3240,10 +3257,17 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         continue
                 except ValueError:
                     pass
-            # If scrape returned no date, trust the stored date instead of deleting.
-            # LinkedIn often blocks metadata from data-center IPs; missing date does
-            # NOT mean the listing is closed. Only explicit "closed" phrases (handled
-            # above) should cause removal.
+            # If scrape returned 429 and we have no real date evidence, this existing
+            # listing has never been verified. Remove it to avoid stale pollution.
+            http_status = page_data.get("_http_status", 200)
+            if http_status == 429 and not page_data.get("date"):
+                # Check if posted date was just a fallback (same as _first_seen)
+                posted_val = j.get("posted", "")
+                first_seen_val = j.get("_first_seen", "")
+                if posted_val and first_seen_val and posted_val == first_seen_val:
+                    log.info(f"  Removing unverified listing (429, posted==first_seen={posted_val}): {j.get('title', '')[:50]}")
+                    if url: removed_urls.add(url)
+                    continue
 
             # Check location country (only if scrape returned location data)
             loc_country = page_data.get("location_country", "").lower()
@@ -3272,8 +3296,16 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     existing = cleaned
 
     # Normalize company names (e.g. "Checkpoint" → "Check Point Software")
+    # Also clean Hebrew localization artifacts from LinkedIn titles
     for j in existing:
         j["company"] = _normalize_company(j.get("company", ""))
+        old_title = j.get("title", "")
+        if "גיוס" in old_title or "עובדים" in old_title:
+            cleaned_title = re.sub(r'\s*גיוס\s*עובדים\s*', ' ', old_title).strip()
+            cleaned_title = re.sub(r'\s{2,}', ' ', cleaned_title)
+            if cleaned_title != old_title:
+                j["title"] = cleaned_title
+                log.info(f"  Cleaned Hebrew from title: {old_title[:40]} → {cleaned_title[:40]}")
 
     # Consolidate duplicates within existing listings before processing new ones
     existing = _consolidate_duplicates(existing)
