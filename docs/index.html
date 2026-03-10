@@ -213,9 +213,9 @@
 
   /* Column filter dropdown */
   .col-filter-dropdown {
-    display:none; position:absolute; top:100%; left:0; min-width:220px; max-height:320px;
+    display:none; position:fixed; min-width:220px; max-height:320px;
     background:white; border:1px solid var(--border); border-radius:10px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:50; overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200; overflow:hidden;
   }
   .col-filter-dropdown.open { display:block; }
   .col-filter-search { padding:8px; border-bottom:1px solid var(--border); }
@@ -470,7 +470,7 @@
     td:nth-child(7) { display:inline-block; margin-left:8px; }
     td:nth-child(7) .date-cell { font-size:12px; }
     td:nth-child(8) { display:none; }
-    .col-filter-dropdown { left:auto; right:0; }
+    /* col-filter-dropdown is position:fixed, positioned via JS */
   }
 
   /* ── Queue View ── */
@@ -10421,6 +10421,15 @@ function toggleColFilter(col, iconEl) {
       <button class="apply-btn" onclick="applyColFilter('${col}')">Apply</button>
     </div>`;
   dropdown.classList.add('open');
+  // Position the fixed dropdown below the filter icon
+  var rect = iconEl.getBoundingClientRect();
+  dropdown.style.top = (rect.bottom + 4) + 'px';
+  dropdown.style.left = rect.left + 'px';
+  // Ensure it doesn't go off-screen to the right
+  var ddRect = dropdown.getBoundingClientRect();
+  if (ddRect.right > window.innerWidth - 8) {
+    dropdown.style.left = Math.max(8, window.innerWidth - ddRect.width - 8) + 'px';
+  }
 }
 
 function filterColOptions(col, query) {
