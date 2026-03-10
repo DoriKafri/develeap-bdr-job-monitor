@@ -431,40 +431,54 @@
     .sidebar-backdrop.open { display:block; }
     .top-bar { left:0; }
     .top-bar .hamburger { display:flex; }
-    .main-content { margin-left:0; margin-top:48px; padding:16px; }
+    .main-content { margin-left:0; margin-top:48px; padding:12px; }
     .stat-card { padding:8px 10px; }
     .stat-number { font-size:18px; }
     .stat-label { font-size:10px; }
     .filters-bar { padding:8px 0; gap:6px; }
-    .search-box { width:180px; flex:0 0 auto; }
+    .search-box { width:100%; flex:1 1 auto; }
     .search-box input { padding:8px 12px 8px 36px; font-size:13px; }
     .filter-chip { padding:6px 12px; font-size:12px; }
-    .table-container { border-radius:10px; }
+    .table-container { border-radius:12px; box-shadow:none; border:1px solid var(--border); }
     .table-header { padding:12px 14px; }
     .table-header h2 { font-size:14px; }
     /* Card layout for mobile */
     table, thead, tbody, th, tr, td { display:block; }
     thead { display:none; }
-    tr { margin-bottom:8px; border-bottom:2px solid var(--border); padding:12px 14px; position:relative; cursor:pointer; }
+    tr { margin:0; border-bottom:1px solid var(--border); padding:14px 16px; position:relative; cursor:pointer; border-radius:0; }
+    tr:last-child { border-bottom:none; }
     tr:hover td { background:transparent; }
     tr.develeap-customer { background:#FFFAF0; border-left:3px solid var(--accent); }
     tr.past-customer { background:#F5F5FF; border-left:3px solid #B39DDB; }
     td { padding:2px 0; border:none; font-size:13px; }
-    td:nth-child(1) { position:absolute; top:12px; right:14px; }
-    td:nth-child(2) { padding-right:60px; }
-    td:nth-child(2) .job-title { font-size:14px; }
-    td:nth-child(2) .job-title a { color:var(--primary); text-decoration:underline; text-underline-offset:2px; }
+    /* Checkbox top-right */
+    td:nth-child(1) { position:absolute; top:14px; right:14px; }
+    /* Job title */
+    td:nth-child(2) { padding-right:44px; }
+    td:nth-child(2) .job-title { font-size:15px; font-weight:600; line-height:1.3; }
+    td:nth-child(2) .job-title a { color:var(--text); text-decoration:none; }
     td:nth-child(2) .job-subtitle { display:none; }
-    td:nth-child(3) { padding-top:4px; }
-    td:nth-child(3) .company-logo { width:24px; height:24px; font-size:11px; border-radius:6px; }
-    td:nth-child(3) .company-name { font-size:13px; }
-    td:nth-child(4) { display:inline-block; }
-    td:nth-child(4) .location-cell { font-size:12px; }
-    td:nth-child(5) { display:inline-block; margin-left:8px; }
-    td:nth-child(6) { display:inline-block; margin-left:8px; }
-    td:nth-child(7) { display:inline-block; margin-left:8px; }
-    td:nth-child(7) .date-cell { font-size:12px; }
-    td:nth-child(8) { display:none; }
+    /* Company */
+    td:nth-child(3) { padding-top:6px; }
+    td:nth-child(3) .company-logo { width:22px; height:22px; font-size:10px; border-radius:6px; }
+    td:nth-child(3) .company-name { font-size:13px; font-weight:500; }
+    /* Meta row: location, source, category, date — inline */
+    td:nth-child(4) { display:inline; }
+    td:nth-child(4) .location-cell { font-size:12px; color:#6b7280; }
+    td:nth-child(4) .location-cell::after { content:'\00b7'; margin:0 6px; color:#d1d5db; }
+    td:nth-child(5) { display:inline; font-size:12px; color:#6b7280; }
+    td:nth-child(5)::after { content:'\00b7'; margin:0 6px; color:#d1d5db; }
+    td:nth-child(6) { display:inline; font-size:12px; color:#6b7280; }
+    td:nth-child(7) { display:inline; }
+    td:nth-child(7) .date-cell { font-size:12px; color:#6b7280; }
+    /* STATUS BADGE — show on mobile! */
+    td:nth-child(8) { display:block; padding-top:10px; }
+    td:nth-child(8) .status-dropdown { display:inline-block; }
+    td:nth-child(8) .status-badge { font-size:11px; padding:4px 10px; }
+    td:nth-child(8) .status-badge .status-dot { width:6px; height:6px; }
+    td:nth-child(8) .status-menu { left:0; right:auto; }
+    /* Hide columns 9+ (key, label, domain, actions) */
+    td:nth-child(n+9) { display:none; }
     .col-filter-dropdown { left:auto; right:0; }
   }
 
@@ -2371,7 +2385,7 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-10T11:49:41Z";
+let LAST_UPDATED = "2026-03-10T13:07:32Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2476,13 +2490,64 @@ let ALL_JOBS = [
     "sourceUrl": "https://boards.greenhouse.io/teads1/jobs/4769798101",
     "category": "devops",
     "posted": "2026-03-10",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Senior DevOps Engineer, Fleet Management Team (Cloud Governance & FinOps). Netanya. Apply. About Teads. Teads is the omn",
     "skills": [],
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=teads1.com&sz=128"
+  },
+  {
+    "id": "ae81233e",
+    "title": "Tech Lead - ML Platform, Jerusalem • R&D",
+    "subtitle": "As the ML Platform Tech Lead, you'll be responsible for the ",
+    "company": "Lightricks",
+    "companyIndustry": "",
+    "location": "Jerusalem",
+    "locationSlug": "jerusalem",
+    "source": "greenhouse",
+    "sourceUrl": "https://boards.greenhouse.io/lightricks/jobs/8405652002",
+    "category": "devops",
+    "posted": "2026-03-10",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "As the ML Platform Tech Lead, you'll be responsible for the development of Lightricks' AI infrastructure, taking an acti",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Yaron Inger",
+        "title": "Co-Founder & CTO",
+        "linkedin": "https://www.linkedin.com/in/yaroninger/",
+        "source": "Crunchbase",
+        "email": "yaron@lightricks.com",
+        "photo": "https://media.licdn.com/dms/image/v2/C5603AQF2N5680s94Zg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1576677135412?e=2147483647&v=beta&t=OwZYbe45jc_mVInR5SaAXgcPon8O4tUAOPhWnWpovvs",
+        "connectMsg": "Hi Yaron, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Yaron! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Alon Roth",
+        "title": "Engineering Manager",
+        "linkedin": "https://www.linkedin.com/in/alonroth/",
+        "source": "LinkedIn",
+        "email": "alon@lightricks.com",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGsNS0jkymsMw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1684729548063?e=2147483647&v=beta&t=3ZICm0WONWv06jvJfo7VyiAAcEDFeXLIo_8jzSMiuE8",
+        "connectMsg": "Hi Alon, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Alon! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Noa Lichtenstein",
+        "title": "Engineering Manager, AI Photo Tools",
+        "linkedin": "https://www.linkedin.com/in/noa-licht/",
+        "source": "LinkedIn",
+        "email": "noa@lightricks.com",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQF384YxIA0Fzw/profile-displayphoto-scale_200_200/B4DZoF31qMGgAY-/0/1761035116069?e=2147483647&v=beta&t=NsnF1WzuLfDop4uDf0BDUPj2-HlOBgxCfY8yaOKPALE",
+        "connectMsg": "Hi Noa, I noticed Lightricks is hiring a Large Scale Training Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Noa! I wanted to share how Develeap helps companies like Lightricks accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=lightricks.com&sz=128"
   },
   {
     "id": "0814d173",
@@ -3361,6 +3426,11 @@ let ALL_JOBS = [
       {
         "source": "other",
         "sourceUrl": "https://kpmg.co.il/technologyconsulting/he/vacancies/technology-consulting/generative-ai-engineer",
+        "title": "Generative AI Engineer"
+      },
+      {
+        "source": "other",
+        "sourceUrl": "https://kpmg.co.il/technologyconsulting/careers/jobs/generative-ai-engineer",
         "title": "Generative AI Engineer"
       }
     ]
@@ -4246,26 +4316,6 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=getport.io&sz=128"
-  },
-  {
-    "id": "1f5e31f1",
-    "title": "Conifers.ai גיוס עובדים Senior Software Engineer - Agentic AI",
-    "subtitle": "By leveraging agentic AI, Conifers helps security teams inve",
-    "company": "Conifers.ai",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/senior-software-engineer-agentic-ai-tlv-at-conifers-ai-4371837754",
-    "category": "agentic",
-    "posted": "2026-03-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "By leveraging agentic AI, Conifers helps security teams investigate complex, multi-tier incidents with speed, accuracy, ",
-    "skills": [],
-    "stakeholders": [],
-    "logo": ""
   },
   {
     "id": "b7346747",
@@ -5169,7 +5219,14 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=mastercard.com&sz=128",
-    "isPastCustomer": false
+    "isPastCustomer": false,
+    "altSources": [
+      {
+        "source": "workday",
+        "sourceUrl": "https://mastercard.wd1.myworkdayjobs.com/en-US/CorporateCareers/job/Ramat-Gan-Israel/Senior-DevOps-Engineer_R-272349/apply/useMyLastApplication",
+        "title": "Senior DevOps Engineer - Myworkdayjobs.com"
+      }
+    ]
   },
   {
     "id": "368831d7",
@@ -6453,6 +6510,45 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=getport.io&sz=128"
   },
   {
+    "id": "96e84783",
+    "title": "DataOps \\ MLOps Engineer - Elbit Systems Israel",
+    "subtitle": "We are looking for. A DataOps Engineer to lead the establish",
+    "company": "Elbit Systems Israel",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/dataops-mlops-engineer-at-elbit-systems-israel-4376665631",
+    "category": "ai",
+    "posted": "2026-03-02",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We are looking for. A DataOps Engineer to lead the establishment of the DataOps domain, including MLOps, end-to-end with",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Yehoshua Yehuda",
+        "title": "EVP Strategy & CTO",
+        "linkedin": "https://il.linkedin.com/in/yehoshua-shuki-yehuda-0245701",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Yehoshua, I noticed Elbit Systems Israel is hiring a DataOps \\ MLOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Yehoshua! I wanted to share how Develeap helps companies like Elbit Systems Israel accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Cindy James",
+        "title": "Sr Director Talent Acquisition",
+        "linkedin": "https://www.linkedin.com/in/cindy-james-3115a68/",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Cindy, I noticed Elbit Systems Israel is hiring a DataOps \\ MLOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Cindy! I wanted to share how Develeap helps companies like Elbit Systems Israel accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=elbitsystems.com&sz=128"
+  },
+  {
     "id": "2e87c60c",
     "title": "Senior DevOps Engineer - Careers - Myworkdayjobs.com",
     "subtitle": "We are seeking an experienced DevOps engineer to build and m",
@@ -6519,6 +6615,47 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=adaptive6.com&sz=128"
+  },
+  {
+    "id": "355033d6",
+    "title": "Applied Materials - Israel גיוס עובדים Senior DevOps Engineer",
+    "subtitle": "This role is critical to ensure reliability, scalability, an",
+    "company": "Applied Materials - Israel",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/senior-devops-engineer-at-applied-materials-israel-4376637982",
+    "category": "devops",
+    "posted": "2026-03-01",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "This role is critical to ensure reliability, scalability, and security across our systems. You will own and optimize pla",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nir Yogev",
+        "title": "VP Engineering",
+        "linkedin": "https://www.linkedin.com/in/nir-yogev-0a2a2618/",
+        "source": "LinkedIn",
+        "email": "nir.yogev@amat.com",
+        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQG7Z3Ze0FMoIg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1659897415284?e=2147483647&v=beta&t=Sbbc5WOoFiNzpR6cVaaAiHaCHkIsU5lV9A0gUc7r-H0",
+        "connectMsg": "Hi Nir, I noticed Applied Materials is hiring a Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Nir! I wanted to share how Develeap helps companies like Applied Materials accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Anat Tzur",
+        "title": "Director of DevOps",
+        "linkedin": "https://www.linkedin.com/in/anat-tzur/",
+        "source": "LinkedIn",
+        "email": "anat.tzur@amat.com",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGTfjOLXnMJtw/profile-displayphoto-shrink_200_200/B4DZSJDtd.HcAY-/0/1737466239589?e=2147483647&v=beta&t=oUak7glGWtbSCF4qanFYbDg57NSOwbSH8zFxjoeQEbQ",
+        "connectMsg": "Hi Anat, I noticed Applied Materials is hiring a Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Anat! I wanted to share how Develeap helps companies like Applied Materials accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=appliedmaterials.com&sz=128"
   },
   {
     "id": "41ea6b5c",
@@ -6880,6 +7017,26 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=pentera.io&sz=128"
+  },
+  {
+    "id": "ac72e438",
+    "title": "Senior Software Engineer - Data Acquistion (Field Team)",
+    "subtitle": "Hands-on experience with AWS and cloud infrastructure in pro",
+    "company": "Exodigo",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "comeet",
+    "sourceUrl": "https://www.comeet.com/jobs/exodigo/89.005/senior-software-engineer---data-acquistion-field-team/13.260?coref=1.10.r24_C13&t=1769505204817&fbclid=IwdGRjcAPryLhleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAo2NjI4NTY4Mzc5AAEeYQJWawZipnD3Xc-etspGrGDZeG22L1bgGYfq5doa3QMxviH_s6SUR8W5iAo_aem_ot6vSyL8r3Atz5fcM5Biyg%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%D7%A7%D7%95%D7%91%D7%A5:%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%D7%9E%D7%97%D7%99%D7%A7%D7%AA%20%D7%A8%D7%A9%D7%95%D7%9E%D7%94:%20%20%20%20%20%20%20%D7%9E%D7%97%D7%A7%20%D7%A8%D7%A9%D7%95%D7%9E%D7%94",
+    "category": "cloud",
+    "posted": "2026-02-25",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Hands-on experience with AWS and cloud infrastructure in production environments, including deployment, monitoring, and ",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=exodigo.com&sz=128"
   },
   {
     "id": "cb09b74e",
