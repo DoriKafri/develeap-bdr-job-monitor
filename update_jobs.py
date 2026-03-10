@@ -729,6 +729,56 @@ def _load_category_keywords() -> dict:
 
 CATEGORY_KEYWORDS = _load_category_keywords()
 
+# ── LinkedIn FTS (Free Text Search) ─────────────────────────────────────────
+# Search LinkedIn posts for hiring announcements (e.g. "Hiring DevOps Israel")
+# Uses search engines as proxy — never scrapes LinkedIn directly.
+# Only 2-3 categories are searched per run (rotation) to stay under radar.
+LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
+    "devops":   [
+        'site:linkedin.com/posts "hiring" "devops" "Israel"',
+        'site:linkedin.com/posts "hiring" "DevOps Engineer" "Israel"',
+    ],
+    "ai":       [
+        'site:linkedin.com/posts "hiring" "AI Engineer" "Israel"',
+        'site:linkedin.com/posts "hiring" "Machine Learning" "Israel"',
+        'site:linkedin.com/posts "hiring" "MLOps" "Israel"',
+    ],
+    "cloud":    [
+        'site:linkedin.com/posts "hiring" "Cloud Engineer" "Israel"',
+        'site:linkedin.com/posts "hiring" "Cloud Architect" "Israel"',
+    ],
+    "platform": [
+        'site:linkedin.com/posts "hiring" "Platform Engineer" "Israel"',
+        'site:linkedin.com/posts "hiring" "Developer Platform" "Israel"',
+    ],
+    "sre":      [
+        'site:linkedin.com/posts "hiring" "SRE" "Israel"',
+        'site:linkedin.com/posts "hiring" "Site Reliability" "Israel"',
+    ],
+    "security": [
+        'site:linkedin.com/posts "hiring" "Security Engineer" "Israel"',
+        'site:linkedin.com/posts "hiring" "DevSecOps" "Israel"',
+    ],
+    "data":     [
+        'site:linkedin.com/posts "hiring" "Data Engineer" "Israel"',
+        'site:linkedin.com/posts "hiring" "Data Platform" "Israel"',
+    ],
+    "finops":   [
+        'site:linkedin.com/posts "hiring" "FinOps" "Israel"',
+        'site:linkedin.com/posts "hiring" "Cloud Cost" "Israel"',
+    ],
+    "agentic":  [
+        'site:linkedin.com/posts "hiring" "Agentic" "Israel"',
+        'site:linkedin.com/posts "hiring" "AI Agent" "Israel"',
+    ],
+}
+# How many categories to search per run (rotation)
+LINKEDIN_FTS_CATS_PER_RUN = 3
+# Max queries per category per run
+LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 1
+# File to track which categories were searched last, for round-robin rotation
+LINKEDIN_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "linkedin_fts_state.json")
+
 SOURCE_MAP = {
     "linkedin.com": "linkedin",
     "glassdoor.com": "glassdoor",
@@ -943,6 +993,194 @@ def search_jobs(query: str) -> list[dict]:
         time.sleep(random.uniform(1.5, 3.0))  # Rate limiting
         results = search_serpapi(query)
     return results
+
+
+def _load_linkedin_fts_state() -> dict:
+    """Load LinkedIn FTS rotation state (which categories were searched last)."""
+    if os.path.exists(LINKEDIN_FTS_STATE_PATH):
+        try:
+            with open(LINKEDIN_FTS_STATE_PATH, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"last_cats": [], "seen_urls": []}
+
+
+def _save_linkedin_fts_state(state: dict):
+    """Save LinkedIn FTS rotation state."""
+    try:
+        with open(LINKEDIN_FTS_STATE_PATH, "w") as f:
+            json.dump(state, f)
+    except Exception as e:
+        log.warning(f"Could not save LinkedIn FTS state: {e}")
+
+
+def _pick_fts_categories() -> list[str]:
+    """Pick categories for this run using round-robin rotation."""
+    all_cats = list(LINKEDIN_FTS_QUERIES_PER_CATEGORY.keys())
+    state = _load_linkedin_fts_state()
+    last_cats = set(state.get("last_cats", []))
+
+    # Prefer categories NOT searched last time
+    unsearched = [c for c in all_cats if c not in last_cats]
+    if len(unsearched) < LINKEDIN_FTS_CATS_PER_RUN:
+        # All categories were searched recently; reset and pick fresh
+        unsearched = all_cats
+
+    random.shuffle(unsearched)
+    picked = unsearched[:LINKEDIN_FTS_CATS_PER_RUN]
+    return picked
+
+
+def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
+    """Extract job info from a LinkedIn post search result.
+
+    LinkedIn posts are hiring announcements, not job listings. The title/snippet
+    typically looks like:
+      "John Smith on LinkedIn: We're hiring a DevOps Engineer in Tel Aviv!"
+      "Acme Corp posted on LinkedIn: Join our team as a Cloud Engineer..."
+
+    Returns a dict with title, company, snippet, url or None if not extractable.
+    """
+    title_lower = title.lower()
+    snippet_lower = snippet.lower()
+    combined = f"{title} {snippet}".lower()
+
+    # Must be a LinkedIn post URL
+    if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
+        return None
+
+    # Must contain hiring-related signals
+    hiring_signals = ["hiring", "we're hiring", "we are hiring", "join our team",
+                      "looking for", "open position", "open role", "new role",
+                      "come join", "join us", "growing our team", "expanding our team",
+                      "new opening", "hot job", "dream team", "seeking a"]
+    if not any(sig in combined for sig in hiring_signals):
+        return None
+
+    # Extract company name from LinkedIn post title patterns
+    # Pattern: "Name at Company: ..." or "Name | Company: ..."
+    company = ""
+    # "FirstName LastName on LinkedIn: ..." — company from snippet
+    # "Company posted on LinkedIn: ..."
+    company_match = re.search(r'^(.+?)\s+posted\s+on\s+LinkedIn', title)
+    if company_match:
+        company = company_match.group(1).strip()
+    else:
+        # Try "Name at Company" or "Name | Company" in title
+        at_match = re.search(r'(?:at|@|\|)\s+([A-Z][^:|\-]+?)(?:\s*[-:|]|\s+on\s+LinkedIn)', title)
+        if at_match:
+            company = at_match.group(1).strip()
+        else:
+            # Try snippet: "Company is hiring..." or "At Company, we..."
+            snip_match = re.search(r'^(?:at\s+)?([A-Z][A-Za-z0-9\s&.]+?)(?:\s*,\s*we|\s+is\s+(?:hiring|looking|growing))', snippet)
+            if snip_match:
+                company = snip_match.group(1).strip()
+
+    # Clean company name
+    if company:
+        company = re.sub(r'\s+on\s+LinkedIn.*', '', company).strip()
+        company = re.sub(r'\s*\|.*', '', company).strip()
+        # Remove if it looks like a person's name (two words, both capitalized)
+        if re.match(r'^[A-Z][a-z]+\s+[A-Z][a-z]+$', company):
+            company = ""  # Likely a person name, not company
+
+    # Extract job title from the post content
+    job_title = ""
+    # Look for common patterns: "hiring a DevOps Engineer", "looking for a Cloud Architect"
+    role_match = re.search(
+        r'(?:hiring\s+(?:a\s+)?|looking\s+for\s+(?:a\s+)?|open\s+(?:role|position)\s*[-:]\s*|'
+        r'seeking\s+(?:a\s+)?|new\s+role\s*[-:]\s*)'
+        r'([A-Z][A-Za-z/\s&]+?)(?:\s+in\s+|\s+at\s+|\s*[!.,\-]|\s+to\s+|\s+who\s+|$)',
+        f"{title} {snippet}"
+    )
+    if role_match:
+        job_title = role_match.group(1).strip()
+        # Trim common trailing words
+        job_title = re.sub(r'\s+(?:to|in|at|for|who|that|with)$', '', job_title, flags=re.IGNORECASE)
+
+    if not job_title:
+        # Fall back: check if any category keyword appears in the text
+        for cat, keywords in CATEGORY_KEYWORDS.items():
+            for kw in keywords:
+                if kw.lower() in combined:
+                    job_title = kw.title()
+                    break
+            if job_title:
+                break
+
+    if not job_title:
+        return None  # Can't determine what role this is about
+
+    # Build the display title
+    display_title = job_title
+    if company:
+        display_title = f"{job_title} at {company}"
+
+    # Use first 120 chars of snippet as description
+    desc = snippet[:120] if snippet else title[:120]
+
+    return {
+        "title": display_title[:80],
+        "snippet": desc,
+        "url": url,
+        "company": company or "Unknown",
+        "_source_override": "linkedin_fts",
+    }
+
+
+def search_linkedin_fts() -> list[dict]:
+    """Search LinkedIn posts for hiring announcements via DuckDuckGo/SerpAPI.
+
+    Uses round-robin category rotation: only LINKEDIN_FTS_CATS_PER_RUN categories
+    are searched each run. Results are LinkedIn post URLs with extracted job info.
+    No LinkedIn pages are scraped directly.
+    """
+    state = _load_linkedin_fts_state()
+    seen_urls = set(state.get("seen_urls", [])[-500:])  # Keep last 500 URLs for dedup
+    picked_cats = _pick_fts_categories()
+    log.info(f"LinkedIn FTS: searching categories {picked_cats}")
+
+    all_results = []
+
+    for cat in picked_cats:
+        queries = LINKEDIN_FTS_QUERIES_PER_CATEGORY.get(cat, [])
+        # Pick random subset of queries for this category
+        random.shuffle(queries)
+        selected_queries = queries[:LINKEDIN_FTS_MAX_QUERIES_PER_CAT]
+
+        for query in selected_queries:
+            log.info(f"  LinkedIn FTS query: {query}")
+            results = search_duckduckgo(query)
+            if not results:
+                time.sleep(random.uniform(2.0, 4.0))
+                results = search_serpapi(query)
+
+            for r in results:
+                url = r.get("url", "")
+                if url in seen_urls:
+                    continue
+                seen_urls.add(url)
+
+                job_info = _extract_fts_job_info(
+                    r.get("title", ""),
+                    r.get("snippet", ""),
+                    url
+                )
+                if job_info:
+                    all_results.append(job_info)
+                    log.info(f"    Found: {job_info['title'][:60]}")
+
+            # Random delay between queries (3-8 seconds)
+            time.sleep(random.uniform(3.0, 8.0))
+
+    # Save state for next run
+    state["last_cats"] = picked_cats
+    state["seen_urls"] = list(seen_urls)[-500:]
+    _save_linkedin_fts_state(state)
+
+    log.info(f"LinkedIn FTS: found {len(all_results)} hiring posts")
+    return all_results
 
 
 # ── Date Extraction ───────────────────────────────────────────────────────
@@ -2068,8 +2306,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if any(p in url for p in skip_url_patterns):
             continue
 
-        # LinkedIn: only accept /jobs/view/ (individual listings)
+        # LinkedIn: only accept /jobs/view/ (individual listings) or /posts/ (FTS)
         if "linkedin.com/jobs" in url_lower and "/jobs/view/" not in url_lower:
+            continue
+        # LinkedIn posts: only accept if they came from FTS (have _source_override)
+        if "linkedin.com/posts/" in url_lower and not r.get("_source_override"):
             continue
 
         # Skip generic job board index/search pages
@@ -2098,9 +2339,14 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
 
-        source = detect_source(url)
+        # Use _source_override from LinkedIn FTS results, otherwise detect from URL
+        source = r.get("_source_override") or detect_source(url)
         category = detect_category(title, snippet)
-        company = extract_company(title, snippet, url)
+        # For LinkedIn FTS results, prefer the pre-extracted company name
+        if r.get("_source_override") == "linkedin_fts" and r.get("company"):
+            company = r["company"]
+        else:
+            company = extract_company(title, snippet, url)
         location = extract_location(title, snippet)
 
         # Generate stable ID from URL
@@ -2203,6 +2449,19 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 pass
 
         # ── 4. Scrape page for additional data ──
+        # LinkedIn FTS posts: skip page scraping (they're social posts, not job pages)
+        is_fts = j.get("source") == "linkedin_fts"
+        if is_fts:
+            # FTS listings: use today's date, skip all page-level checks
+            j["posted"] = snippet_date if snippet_date else today
+            j.pop("_snippet", None)
+            # Skip Develeap's own listings
+            if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
+                log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
+                continue
+            active_jobs.append(j)
+            continue
+
         if url:
             page_data = scrape_job_page(url)
 
@@ -2715,7 +2974,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         # Update logo
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
         # Re-classify source from URL (picks up newly added SOURCE_MAP entries)
-        j["source"] = detect_source(j.get("sourceUrl", ""))
+        # Preserve linkedin_fts source (don't overwrite with generic "linkedin")
+        if j.get("source") != "linkedin_fts":
+            j["source"] = detect_source(j.get("sourceUrl", ""))
         # Re-classify category (picks up newly added categories like security, sre, etc.)
         j["category"] = detect_category(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
         # Re-classify customer status
@@ -3179,6 +3440,12 @@ def main():
     # 1c. Add seed jobs (manually curated listings for categories search engines miss)
     all_raw.extend(SEED_JOBS)
     log.info(f"Added {len(SEED_JOBS)} seed jobs")
+
+    # 1d. LinkedIn FTS: search LinkedIn posts for hiring announcements
+    log.info("Searching LinkedIn posts (FTS)...")
+    fts_results = search_linkedin_fts()
+    all_raw.extend(fts_results)
+    log.info(f"LinkedIn FTS: {len(fts_results)} hiring posts found")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
