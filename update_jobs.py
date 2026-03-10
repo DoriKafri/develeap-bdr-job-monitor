@@ -1058,15 +1058,18 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
         return None
 
-    # Reject old posts — LinkedIn search results often contain age like "2yr", "1yr", "6mo"
-    age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month)s?\b', f"{title} {snippet}", re.IGNORECASE)
+    # Reject old posts — search results may contain age like "2yr", "1yr", "5mo", "3w"
+    combined_text = f"{title} {snippet}"
+    age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month|w|wk|week)s?\b', combined_text, re.IGNORECASE)
     if age_match:
         num = int(age_match.group(1))
         unit = age_match.group(2).lower()
         if unit in ("yr", "year"):
             return None  # Any post >= 1 year old is too stale
-        if unit in ("mo", "month") and num > 3:
-            return None  # Posts older than 3 months are stale
+        if unit in ("mo", "month") and num >= 2:
+            return None  # Posts 2+ months old are stale
+        if unit in ("w", "wk", "week") and num > 8:
+            return None  # Posts older than 8 weeks are stale
 
     # Must contain hiring-related signals
     hiring_signals = ["hiring", "we're hiring", "we are hiring", "join our team",
@@ -1178,10 +1181,10 @@ def search_linkedin_fts() -> list[dict]:
 
         for query in selected_queries:
             log.info(f"  LinkedIn FTS query: {query}")
-            results = search_duckduckgo(query, timelimit="m-3")
+            results = search_duckduckgo(query, timelimit="m-1")
             if not results:
                 time.sleep(random.uniform(2.0, 4.0))
-                results = search_serpapi(query, tbs="qdr:m3")
+                results = search_serpapi(query, tbs="qdr:m")
 
             for r in results:
                 url = r.get("url", "")
