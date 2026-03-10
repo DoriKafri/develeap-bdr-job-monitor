@@ -735,47 +735,58 @@ CATEGORY_KEYWORDS = _load_category_keywords()
 # Only 2-3 categories are searched per run (rotation) to stay under radar.
 LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
     "devops":   [
-        'site:linkedin.com/posts "hiring" "devops" "Israel"',
-        'site:linkedin.com/posts "hiring" "DevOps Engineer" "Israel"',
+        'site:linkedin.com/posts hiring devops Israel',
+        'site:linkedin.com/posts "DevOps Engineer" Israel',
+        'site:linkedin.com/posts "DevOps" "join" Israel',
+        'site:linkedin.com/posts "DevOps" "we are looking" Israel',
     ],
     "ai":       [
-        'site:linkedin.com/posts "hiring" "AI Engineer" "Israel"',
-        'site:linkedin.com/posts "hiring" "Machine Learning" "Israel"',
-        'site:linkedin.com/posts "hiring" "MLOps" "Israel"',
+        'site:linkedin.com/posts hiring "AI Engineer" Israel',
+        'site:linkedin.com/posts hiring "Machine Learning" Israel',
+        'site:linkedin.com/posts hiring MLOps Israel',
+        'site:linkedin.com/posts "AI Engineer" "join" Israel',
     ],
     "cloud":    [
-        'site:linkedin.com/posts "hiring" "Cloud Engineer" "Israel"',
-        'site:linkedin.com/posts "hiring" "Cloud Architect" "Israel"',
+        'site:linkedin.com/posts hiring "Cloud Engineer" Israel',
+        'site:linkedin.com/posts hiring "Cloud Architect" Israel',
+        'site:linkedin.com/posts "Cloud Engineer" "join" Israel',
+        'site:linkedin.com/posts "Cloud" "hiring" "Israel" "team"',
     ],
     "platform": [
-        'site:linkedin.com/posts "hiring" "Platform Engineer" "Israel"',
-        'site:linkedin.com/posts "hiring" "Developer Platform" "Israel"',
+        'site:linkedin.com/posts hiring "Platform Engineer" Israel',
+        'site:linkedin.com/posts "Platform Engineer" Israel "join"',
+        'site:linkedin.com/posts "Developer Platform" hiring Israel',
     ],
     "sre":      [
-        'site:linkedin.com/posts "hiring" "SRE" "Israel"',
-        'site:linkedin.com/posts "hiring" "Site Reliability" "Israel"',
+        'site:linkedin.com/posts hiring SRE Israel',
+        'site:linkedin.com/posts "Site Reliability" Israel hiring',
+        'site:linkedin.com/posts SRE Israel "join" OR "looking for"',
     ],
     "security": [
-        'site:linkedin.com/posts "hiring" "Security Engineer" "Israel"',
-        'site:linkedin.com/posts "hiring" "DevSecOps" "Israel"',
+        'site:linkedin.com/posts hiring "Security Engineer" Israel',
+        'site:linkedin.com/posts "DevSecOps" Israel hiring',
+        'site:linkedin.com/posts "Security Engineer" Israel "join"',
     ],
     "data":     [
-        'site:linkedin.com/posts "hiring" "Data Engineer" "Israel"',
-        'site:linkedin.com/posts "hiring" "Data Platform" "Israel"',
+        'site:linkedin.com/posts hiring "Data Engineer" Israel',
+        'site:linkedin.com/posts "Data Platform" Israel hiring',
+        'site:linkedin.com/posts "Data Engineer" Israel "join"',
     ],
     "finops":   [
-        'site:linkedin.com/posts "hiring" "FinOps" "Israel"',
-        'site:linkedin.com/posts "hiring" "Cloud Cost" "Israel"',
+        'site:linkedin.com/posts hiring FinOps Israel',
+        'site:linkedin.com/posts "Cloud Cost" Israel hiring',
+        'site:linkedin.com/posts FinOps Israel "join" OR "looking"',
     ],
     "agentic":  [
-        'site:linkedin.com/posts "hiring" "Agentic" "Israel"',
-        'site:linkedin.com/posts "hiring" "AI Agent" "Israel"',
+        'site:linkedin.com/posts hiring "Agentic" Israel',
+        'site:linkedin.com/posts "AI Agent" Israel hiring',
+        'site:linkedin.com/posts "Agentic" Israel "join" OR "looking"',
     ],
 }
 # How many categories to search per run (rotation)
-LINKEDIN_FTS_CATS_PER_RUN = 3
+LINKEDIN_FTS_CATS_PER_RUN = 5
 # Max queries per category per run
-LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 1
+LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 2
 # File to track which categories were searched last, for round-robin rotation
 LINKEDIN_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "linkedin_fts_state.json")
 
@@ -1072,10 +1083,14 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
             return None  # Posts older than 8 weeks are stale
 
     # Must contain hiring-related signals
-    hiring_signals = ["hiring", "we're hiring", "we are hiring", "join our team",
+    hiring_signals = ["hiring", "is hiring", "we're hiring", "we are hiring", "join our team",
                       "looking for", "open position", "open role", "new role",
                       "come join", "join us", "growing our team", "expanding our team",
-                      "new opening", "hot job", "dream team", "seeking a"]
+                      "new opening", "hot job", "dream team", "seeking a",
+                      "come work with", "work with me", "work with us",
+                      "apply now", "apply here", "we need", "searching for",
+                      "position available", "role available", "opportunity",
+                      "talent acquisition", "recruiting", "want to join"]
     if not any(sig in combined for sig in hiring_signals):
         return None
 
@@ -1181,10 +1196,10 @@ def search_linkedin_fts() -> list[dict]:
 
         for query in selected_queries:
             log.info(f"  LinkedIn FTS query: {query}")
-            results = search_duckduckgo(query, timelimit="m-1")
+            results = search_duckduckgo(query, timelimit="m-3")
             if not results:
                 time.sleep(random.uniform(2.0, 4.0))
-                results = search_serpapi(query, tbs="qdr:m")
+                results = search_serpapi(query, tbs="qdr:m3")
 
             for r in results:
                 url = r.get("url", "")
