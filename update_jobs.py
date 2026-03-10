@@ -1131,14 +1131,22 @@ def scrape_job_page(url: str) -> dict:
                 break
 
         # ── Check for stale time-ago indicators (e.g. "3 months ago") ──
+        # For LinkedIn: only check "posted X ago" context, not any "X ago" on the page,
+        # because LinkedIn sidebars/recommendations contain unrelated relative dates.
         if not result["closed"]:
-            stale_match = re.search(
-                r'(\d+)\s+(month|year)s?\s+ago',
-                text_lower_check
-            )
+            if "linkedin.com" in url:
+                stale_match = re.search(
+                    r'(?:posted|listed|published)\s+(\d+)\s+(month|year)s?\s+ago',
+                    text_lower_check
+                )
+            else:
+                stale_match = re.search(
+                    r'(\d+)\s+(month|year)s?\s+ago',
+                    text_lower_check
+                )
             if stale_match:
-                num = int(stale_match.group(1))
-                unit = stale_match.group(2)
+                num = int(stale_match.group(1) if "linkedin.com" not in url else stale_match.group(1))
+                unit = stale_match.group(2) if "linkedin.com" not in url else stale_match.group(2)
                 if unit == "year" or (unit == "month" and num >= 1):
                     result["closed"] = True
                     log.info(f"  CLOSED (stale): {url[:60]} — '{stale_match.group(0)}'")
@@ -2267,12 +2275,21 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 except ValueError:
                     pass
 
-            # ── 7. LinkedIn with no date = likely stale, skip ──
-            # If neither snippet nor page scrape found a date for a LinkedIn listing,
-            # it's very likely old/closed (LinkedIn strips metadata from old listings)
+            # ── 7. LinkedIn with no date: keep if page looks active ──
+            # LinkedIn blocks listedAt/JSON-LD from data center IPs, so most LinkedIn
+            # listings won't have a date. Instead of dropping ALL dateless LinkedIn
+            # listings, keep them if the page wasn't explicitly closed.
+            # The closed-phrase check (step 4) and stale-indicator check already
+            # filtered genuinely old listings. Remaining dateless listings are likely
+            # active jobs where LinkedIn simply hid the date from our scraper.
             if "linkedin.com" in url and not snippet_date and not page_data.get("date"):
-                log.info(f"  Skipping LinkedIn listing with no date (likely stale): {j['title'][:50]}")
-                continue
+                # Only skip if page showed NO job content at all (completely blocked)
+                has_job_content = page_data.get("_has_job_ld") or page_data.get("company")
+                if not has_job_content:
+                    log.info(f"  Skipping LinkedIn listing with no date and no job content: {j['title'][:50]}")
+                    continue
+                else:
+                    log.info(f"  Keeping LinkedIn listing without date (page has job content): {j['title'][:50]}")
 
             time.sleep(random.uniform(0.5, 1.5))  # Rate limit
 
