@@ -867,6 +867,73 @@ SEED_JOBS = [
 
 # ── Search Functions ───────────────────────────────────────────────────────
 
+
+def check_source_health() -> list[dict]:
+    """Run a lightweight health check on every search source.
+
+    Returns a list of dicts, one per source:
+        {"name": str, "status": "ok"|"error"|"no_key",
+         "results": int, "latency_ms": int, "error": str}
+    """
+    test_query = "devops engineer israel"
+    checks = []
+
+    def _check(name, fn, *args, **kwargs):
+        t0 = time.time()
+        try:
+            results = fn(*args, **kwargs)
+            ms = int((time.time() - t0) * 1000)
+            checks.append({
+                "name": name, "status": "ok",
+                "results": len(results), "latency_ms": ms, "error": "",
+            })
+            log.info(f"  ✅ {name}: {len(results)} results ({ms}ms)")
+        except Exception as e:
+            ms = int((time.time() - t0) * 1000)
+            checks.append({
+                "name": name, "status": "error",
+                "results": 0, "latency_ms": ms, "error": str(e)[:120],
+            })
+            log.warning(f"  ❌ {name}: {e}")
+
+    log.info("── Source Health Check ──")
+
+    # DuckDuckGo (always available, no key)
+    _check("DuckDuckGo", search_duckduckgo, test_query)
+
+    # SerpAPI
+    if SERPAPI_KEY:
+        _check("SerpAPI", search_serpapi, test_query)
+    else:
+        checks.append({"name": "SerpAPI", "status": "no_key", "results": 0, "latency_ms": 0, "error": "SERPAPI_KEY not set"})
+        log.info("  ⬜ SerpAPI: no key configured")
+
+    # Google CSE
+    if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
+        _check("Google CSE", search_google_cse, test_query)
+    else:
+        checks.append({"name": "Google CSE", "status": "no_key", "results": 0, "latency_ms": 0, "error": "GOOGLE_CSE_KEY/CX not set"})
+        log.info("  ⬜ Google CSE: no key configured")
+
+    # Bing
+    if BING_SEARCH_KEY:
+        _check("Bing", search_bing, test_query)
+    else:
+        checks.append({"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"})
+        log.info("  ⬜ Bing: no key configured")
+
+    # Google Jobs (via SerpAPI)
+    if SERPAPI_KEY:
+        _check("Google Jobs", search_google_jobs)
+    else:
+        checks.append({"name": "Google Jobs", "status": "no_key", "results": 0, "latency_ms": 0, "error": "SERPAPI_KEY not set"})
+        log.info("  ⬜ Google Jobs: no key configured (SerpAPI)")
+
+    ok = sum(1 for c in checks if c["status"] == "ok")
+    log.info(f"── Health Check: {ok}/{len(checks)} sources operational ──")
+    return checks
+
+
 def search_serpapi(query: str, tbs: str = "") -> list[dict]:
     """Search using SerpAPI (free tier: 100/month).
     tbs: optional time-based search filter, e.g. 'qdr:m3' for last 3 months.
@@ -1130,18 +1197,16 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
         return None
 
-    # Reject old posts — search results may contain age like "2yr", "1yr", "5mo", "3w"
+    # Reject very old posts — search snippets may contain age like "2yr", "5mo"
+    # NOTE: We're lenient here because FTS posts stay relevant longer than
+    # regular job listings. The "1yr" age shown in search results is often
+    # approximate and the position may still be open. Only reject posts >= 2yr.
     combined_text = f"{title} {snippet}"
-    age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month|w|wk|week)s?\b', combined_text, re.IGNORECASE)
+    age_match = re.search(r'\b(\d+)\s*(yr|year)s?\b', combined_text, re.IGNORECASE)
     if age_match:
         num = int(age_match.group(1))
-        unit = age_match.group(2).lower()
-        if unit in ("yr", "year"):
-            return None  # Any post >= 1 year old is too stale
-        if unit in ("mo", "month") and num >= 2:
-            return None  # Posts 2+ months old are stale
-        if unit in ("w", "wk", "week") and num > 8:
-            return None  # Posts older than 8 weeks are stale
+        if num >= 2:
+            return None  # Posts >= 2 years old are too stale
 
     # Must contain hiring-related signals
     hiring_signals = ["hiring", "is hiring", "we're hiring", "we are hiring", "join our team",
@@ -2672,8 +2737,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 snippet_date = dt.strftime("%Y-%m-%d")
                 log.info(f"  Date from Hebrew snippet: {snippet_date} for {j['title'][:40]}")
 
-        # ── 3. Skip listings older than 14 days ──
-        if snippet_date:
+        # ── 3. Skip listings older than 14 days (except FTS posts) ──
+        if snippet_date and j.get("source") != "linkedin_fts":
             from datetime import datetime as dt_cls
             try:
                 post_dt = dt_cls.strptime(snippet_date, "%Y-%m-%d")
@@ -3115,17 +3180,20 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         url = j.get("sourceUrl", "")
 
         # ── Age-check existing jobs by their stored date ──
-        posted = j.get("posted", "")
-        if posted:
-            try:
-                from datetime import datetime as dt_cls3
-                post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
-                age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
-                if age_days3 > 14:
-                    log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
-                    continue
-            except ValueError:
-                pass
+        # FTS jobs (linkedin posts) are kept regardless of age — they're hiring
+        # announcements that stay relevant longer than regular job listings.
+        if j.get("source") != "linkedin_fts":
+            posted = j.get("posted", "")
+            if posted:
+                try:
+                    from datetime import datetime as dt_cls3
+                    post_dt3 = dt_cls3.strptime(posted, "%Y-%m-%d")
+                    age_days3 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt3).days
+                    if age_days3 > 14:
+                        log.info(f"  Removing stale existing listing ({age_days3} days): {j.get('title', '')[:50]}")
+                        continue
+                except ValueError:
+                    pass
 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
@@ -3303,8 +3371,8 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     return merged, truly_new
 
 
-def update_dashboard_html(html: str, jobs: list[dict]) -> str:
-    """Replace ALL_JOBS array and timestamp in dashboard HTML."""
+def update_dashboard_html(html: str, jobs: list[dict], health: list[dict] | None = None) -> str:
+    """Replace ALL_JOBS array, timestamp, and source health in dashboard HTML."""
     # Format jobs as JS array
     jobs_json = json.dumps(jobs, ensure_ascii=False, indent=2)
     # Replace ALL_JOBS — use lambda to avoid re.sub interpreting backslashes in replacement
@@ -3322,6 +3390,22 @@ def update_dashboard_html(html: str, jobs: list[dict]) -> str:
         lambda _: f'let LAST_UPDATED = "{now_iso}"',
         html
     )
+    # Update SOURCE_HEALTH data
+    if health is not None:
+        health_json = json.dumps(health, ensure_ascii=False)
+        if re.search(r'(?:const|let|var)\s+SOURCE_HEALTH\s*=', html):
+            html = re.sub(
+                r'(?:const|let|var)\s+SOURCE_HEALTH\s*=\s*\[.*?\];',
+                lambda _: f'let SOURCE_HEALTH = {health_json};',
+                html,
+                flags=re.DOTALL
+            )
+        else:
+            # Insert SOURCE_HEALTH right after LAST_UPDATED
+            html = html.replace(
+                f'let LAST_UPDATED = "{now_iso}"',
+                f'let LAST_UPDATED = "{now_iso}";\nlet SOURCE_HEALTH = {health_json}',
+            )
     return html
 
 
@@ -3662,6 +3746,9 @@ def main():
             log.info("Job Discovery node is DISABLED in workflow config — skipping run")
             return
 
+    # 0. Source health check
+    source_health = check_source_health()
+
     # 1. Search for jobs
     log.info(f"Searching with {len(SEARCH_QUERIES)} queries...")
     all_raw = []
@@ -3804,7 +3891,7 @@ def main():
     log.info(f"  Generated messages for {msg_count} stakeholder contacts")
 
     # 5. Update dashboard HTML
-    updated_html = update_dashboard_html(html, merged)
+    updated_html = update_dashboard_html(html, merged, health=source_health)
     with open(DASHBOARD_PATH, "w", encoding="utf-8") as f:
         f.write(updated_html)
     # Also write to docs/ for GitHub Pages
