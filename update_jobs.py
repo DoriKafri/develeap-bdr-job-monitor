@@ -3132,7 +3132,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             if page_data.get("closed"):
                 log.info(f"  Removing closed listing: {j.get('title', '')[:50]}")
                 continue
-            # If we now got a real date, update it
+            # If we now got a real date from the page, update stored date
             if page_data.get("date"):
                 if j.get("posted") != page_data["date"]:
                     log.info(f"  Updated date: {j.get('title', '')[:40]} → {page_data['date']}")
@@ -3147,13 +3147,12 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         continue
                 except ValueError:
                     pass
-            # If page has no date, the listing is likely stale — LinkedIn strips
-            # metadata from old/closed listings. Remove regardless of stored date.
-            if not page_data.get("date"):
-                log.info(f"  Removing existing LinkedIn listing with no verifiable date: {j.get('title', '')[:50]}")
-                continue
+            # If scrape returned no date, trust the stored date instead of deleting.
+            # LinkedIn often blocks metadata from data-center IPs; missing date does
+            # NOT mean the listing is closed. Only explicit "closed" phrases (handled
+            # above) should cause removal.
 
-            # Check location country
+            # Check location country (only if scrape returned location data)
             loc_country = page_data.get("location_country", "").lower()
             if loc_country:
                 israel_indicators = ["israel", "il", "tel aviv", "herzliya", "haifa",
