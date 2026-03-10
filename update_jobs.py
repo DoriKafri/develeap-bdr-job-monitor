@@ -2267,8 +2267,6 @@ def extract_location(title: str, snippet: str) -> str:
 
 def parse_search_results(raw_results: list[dict]) -> list[dict]:
     """Parse raw search results into structured job listings."""
-    fts_input = sum(1 for r in raw_results if r.get("_source_override") == "linkedin_fts")
-    log.info(f"  parse_search_results: {len(raw_results)} raw, {fts_input} are linkedin_fts")
     jobs = []
     seen_urls = set()
 
@@ -2352,8 +2350,6 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # Use _source_override from LinkedIn FTS results, otherwise detect from URL
         source = r.get("_source_override") or detect_source(url)
-        if source == "linkedin_fts":
-            log.info(f"  FTS result passed filters: {title[:50]} | {url[:60]}")
         category = detect_category(title, snippet)
         # For LinkedIn FTS results, prefer the pre-extracted company name
         if r.get("_source_override") == "linkedin_fts" and r.get("company"):
@@ -2581,7 +2577,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
     fts_count = sum(1 for j in active_jobs if j.get("source") == "linkedin_fts")
     log.info(f"  Filtered: {len(jobs)} → {len(active_jobs)} (removed {len(jobs) - len(active_jobs)} closed/Develeap)")
-    log.info(f"  Of which {fts_count} are linkedin_fts source")
+    if fts_count:
+        log.info(f"  Includes {fts_count} linkedin_fts listings")
     return active_jobs
 
 
