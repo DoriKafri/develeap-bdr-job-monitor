@@ -3127,7 +3127,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             except ValueError:
                 pass
 
-        if "linkedin.com" in url:
+        if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
             if page_data.get("closed"):
                 log.info(f"  Removing closed listing: {j.get('title', '')[:50]}")
