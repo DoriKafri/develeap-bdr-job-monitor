@@ -269,6 +269,12 @@
   .badge-other { background:#F5F5F5; color:#616161; }
   .source-badge { display:inline-flex; align-items:center; gap:4px; }
   .source-badge img { width:14px; height:14px; border-radius:2px; }
+  .listing-status-select { font-size:12px; padding:3px 6px; border-radius:6px; border:1px solid var(--border); cursor:pointer; font-weight:600; outline:none; appearance:auto; max-width:120px; }
+  .listing-status-select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(0,128,128,0.15); }
+  .listing-status-select.ls-new { background:#E5F9EE; color:#00854D; border-color:#B7E4C7; }
+  .listing-status-select.ls-active { background:#fff; color:var(--text); border-color:var(--border); }
+  .listing-status-select.ls-in_progress { background:#E3F2FD; color:#1565C0; border-color:#90CAF9; }
+  .listing-status-select.ls-not_relevant { background:#FFEBEE; color:#C62828; border-color:#EF9A9A; }
 
   .job-title-cell { display:flex; flex-direction:column; gap:2px; }
   .job-title { font-weight:600; color:var(--text); }
@@ -1349,7 +1355,7 @@
           <th style="width:100px" data-col="source"><div class="th-wrap"><div class="th-inner" onclick="sortBy('source')"><span>Source</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('source',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-source"></div></th>
           <th style="width:100px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-category"></div></th>
           <th style="width:100px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
-          <th style="width:100px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('isDeveleapCustomer')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-status"></div></th>
+          <th style="width:130px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div><div class="col-filter-dropdown" id="filter-status"></div></th>
         </tr></thead>
         <tbody id="jobsTable"></tbody>
       </table>
@@ -6955,6 +6961,7 @@ let currentFilter = 'all', currentView = 'all';
 let sortCol = 'posted', sortDir = 'desc';
 let columnFilters = {}; // { colName: Set of selected values }
 let openFilterCol = null;
+let _showAllListingStatuses = false;
 let _activeTemplateIdx = 0;
 let _activeJobForOutreach = null;
 let _activeStakeholderIdx = 0;
@@ -9003,6 +9010,7 @@ function _buildStatusPayload() {
     statuses: _loadOutreachStatuses(),
     connected: [..._connectedContacts],
     hiddenCompanies: [...hiddenCompanies],
+    listingStatuses: _loadListingStatuses(),
   };
 }
 
@@ -9101,6 +9109,14 @@ async function _initGitHubSync() {
     remote.hiddenCompanies.forEach(c => hiddenCompanies.add(c));
     saveHidden();
     updateHiddenUI();
+  }
+  if (remote.listingStatuses && typeof remote.listingStatuses === 'object') {
+    const local = _loadListingStatuses();
+    let changed = false;
+    for (const [id, st] of Object.entries(remote.listingStatuses)) {
+      if (!local[id]) { local[id] = st; changed = true; }
+    }
+    if (changed) _saveListingStatuses(local);
   }
   _updateSyncIndicator('saved');
   // Re-render if sidebar is open
@@ -9325,6 +9341,48 @@ function closeHiddenPanel() {
   document.getElementById('hiddenBackdrop').classList.remove('open');
 }
 
+// ===== PER-LISTING STATUS =====
+let _listingStatusCache = null;
+function _loadListingStatuses() {
+  if (!_listingStatusCache) _listingStatusCache = JSON.parse(localStorage.getItem('bdr_listing_statuses') || '{}');
+  return _listingStatusCache;
+}
+function _saveListingStatuses(obj) {
+  _listingStatusCache = obj;
+  localStorage.setItem('bdr_listing_statuses', JSON.stringify(obj));
+  _scheduleSyncToGitHub();
+}
+function getEffectiveListingStatus(job) {
+  const stored = _loadListingStatuses()[job.id];
+  if (stored) return stored;
+  return job.isNew ? 'new' : 'active';
+}
+function setListingStatus(jobId, status, companyName) {
+  if (status === 'filter_out_company') {
+    // Add company to hidden list and mark this listing as not_relevant
+    if (companyName) hideCompany(companyName);
+    const obj = _loadListingStatuses();
+    obj[jobId] = 'not_relevant';
+    _saveListingStatuses(obj);
+    applyAllFilters();
+    return;
+  }
+  const obj = _loadListingStatuses();
+  // Find the job to check its default
+  const job = ALL_JOBS.find(j => j.id === jobId);
+  const defaultStatus = job ? (job.isNew ? 'new' : 'active') : 'active';
+  if (status === defaultStatus) { delete obj[jobId]; } else { obj[jobId] = status; }
+  _saveListingStatuses(obj);
+  applyAllFilters();
+}
+function _cleanupListingStatuses() {
+  const obj = _loadListingStatuses();
+  const validIds = new Set(ALL_JOBS.map(j => j.id));
+  let changed = false;
+  for (const id of Object.keys(obj)) { if (!validIds.has(id)) { delete obj[id]; changed = true; } }
+  if (changed) _saveListingStatuses(obj);
+}
+
 let SOURCE_LABELS = {linkedin:'LinkedIn',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',other:'Other'};
 let SOURCE_DOMAINS = {linkedin:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org'};
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
@@ -9459,6 +9517,7 @@ function initApp() {
     j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);
   });
   updateHiddenUI();
+  _cleanupListingStatuses();
   buildSourceDropdown();
   buildCategoryFilters();
   updateStats(); renderJobs();
@@ -9572,6 +9631,7 @@ function updateStats() {
     if (!j.sourceUrl || !j.sourceUrl.startsWith('http')) return false;
     if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
     if (_isCareerPage(j)) return false;
+    if (!_showAllListingStatuses) { const ls = getEffectiveListingStatus(j); if (ls === 'not_relevant' || ls === 'in_progress') return false; }
     return true;
   });
   document.getElementById('statTotal').textContent = visible.length;
@@ -9608,7 +9668,7 @@ function getUniqueValues(col) {
     else if (col==='location') vals.add(j.location);
     else if (col==='source') vals.add(SOURCE_LABELS[j.source]||j.source);
     else if (col==='category') vals.add(CAT_LABELS[j.category]||j.category);
-    else if (col==='status') { vals.add('Develeap Customer'); vals.add('Other'); }
+    else if (col==='status') { vals.add('New'); vals.add('Active'); vals.add('In Progress'); vals.add('Not Relevant'); }
   });
   return [...vals].sort();
 }
@@ -9673,14 +9733,14 @@ function getColValue(job, col) {
   if (col==='location') return job.location;
   if (col==='source') return SOURCE_LABELS[job.source]||job.source;
   if (col==='category') return CAT_LABELS[job.category]||job.category;
-  if (col==='status') return job.isDeveleapCustomer ? 'Develeap Customer' : 'Other';
+  if (col==='status') { const ls=getEffectiveListingStatus(job); return ls==='new'?'New':ls==='active'?'Active':ls==='in_progress'?'In Progress':'Not Relevant'; }
   return '';
 }
 
 // ===== SORTING =====
 function sortBy(col) {
   if (sortCol === col) { sortDir = sortDir==='asc'?'desc':'asc'; }
-  else { sortCol = col; sortDir = (col==='posted'||col==='isDeveleapCustomer') ? 'desc' : 'asc'; }
+  else { sortCol = col; sortDir = (col==='posted'||col==='status') ? 'desc' : 'asc'; }
   // Update UI indicators
   document.querySelectorAll('.th-inner').forEach(th => th.classList.remove('sort-asc','sort-desc'));
   const activeHeader = document.querySelector(`th[data-col="${col}"] .th-inner`);
@@ -9699,6 +9759,11 @@ function getFilteredJobs() {
     if (_isCareerPage(j)) return false;
     // Hidden companies filter
     if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) return false;
+    // Listing status filter: hide non-actionable unless showing all
+    if (!_showAllListingStatuses) {
+      const ls = getEffectiveListingStatus(j);
+      if (ls === 'not_relevant' || ls === 'in_progress') return false;
+    }
     if (currentView==='develeap'&&!j.isDeveleapCustomer) return false;
     if (currentView==='new'&&!j.isNew) return false;
     if (currentFilter!=='all') {
@@ -9737,7 +9802,7 @@ function renderJobs() {
     // Then normal sort
     let va, vb;
     if (sortCol==='posted') { va=a.posted; vb=b.posted; }
-    else if (sortCol==='isDeveleapCustomer') { va=a.isDeveleapCustomer?1:0; vb=b.isDeveleapCustomer?1:0; }
+    else if (sortCol==='status') { const ord={new:0,active:1,in_progress:2,not_relevant:3}; va=ord[getEffectiveListingStatus(a)]??1; vb=ord[getEffectiveListingStatus(b)]??1; }
     else { va=(getColValue(a,sortCol)||'').toLowerCase(); vb=(getColValue(b,sortCol)||'').toLowerCase(); }
     if (va<vb) return sortDir==='asc'?-1:1;
     if (va>vb) return sortDir==='asc'?1:-1;
@@ -9753,7 +9818,7 @@ function renderJobs() {
       <td>${(j.altSources&&j.altSources.length)?'<div class="alt-sources-wrap" onclick="event.stopPropagation()"><span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span><span class="alt-sources-indicator" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div></div>':'<span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span>'}</td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
       <td>${formatDate(j.posted)}</td>
-      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">Customer</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':'<span style="color:var(--text-lighter);font-size:12px">\u2014</span>')}</td>
+      <td>${(()=>{const ls=getEffectiveListingStatus(j);return '<select class="listing-status-select ls-'+ls+'" onclick="event.stopPropagation()" onchange="setListingStatus(\''+j.id+'\',this.value,\''+j.company.replace(/'/g,"\\'")+'\')">'+'<option value="new"'+(ls==='new'?' selected':'')+'>New</option>'+'<option value="active"'+(ls==='active'?' selected':'')+'>Active</option>'+'<option value="in_progress"'+(ls==='in_progress'?' selected':'')+'>In Progress</option>'+'<option value="not_relevant"'+(ls==='not_relevant'?' selected':'')+'>Not Relevant</option>'+'<option value="filter_out_company">Filter out Company</option>'+'</select>';})()}</td>
     </tr>`).join('');
 }
 

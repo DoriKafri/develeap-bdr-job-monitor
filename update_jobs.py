@@ -2421,6 +2421,15 @@ def _consolidate_duplicates(jobs: list[dict]) -> list[dict]:
     return consolidated
 
 
+def _load_hidden_companies() -> set:
+    """Load hidden companies from outreach_status.json (synced from dashboard)."""
+    try:
+        with open("outreach_status.json", "r") as f:
+            data = json.load(f)
+        return {c.lower() for c in data.get("hiddenCompanies", [])}
+    except (FileNotFoundError, json.JSONDecodeError):
+        return set()
+
 def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     """Merge new jobs with existing, return (merged, only_new)."""
     # Filter out Develeap's own listings (but keep Unknown company jobs to prevent
@@ -2602,6 +2611,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         j["isPastCustomer"] = is_develeap_past_customer(company)
 
     truly_new = []
+    _hidden = _load_hidden_companies()
     for j in new_jobs:
         # Normalize company name on incoming jobs
         j["company"] = _normalize_company(j.get("company", ""))
@@ -2614,6 +2624,11 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         # Skip company-page listings from new jobs too
         if _is_company_page(j):
             log.info(f"  Skipping company-page listing: \"{j.get('title', '')}\" ({j.get('company', '')})")
+            continue
+
+        # Skip new listings from hidden companies (user marked as not relevant)
+        if j.get("company", "").lower() in _hidden:
+            log.info(f"  Skipping hidden company listing: \"{j.get('title', '')}\" ({j.get('company', '')})")
             continue
 
         url = j.get("sourceUrl", "")
