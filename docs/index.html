@@ -2424,7 +2424,7 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-10T15:22:44Z";
+let LAST_UPDATED = "2026-03-10T15:35:30Z";
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -6682,6 +6682,45 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=adaptive6.com&sz=128"
   },
   {
+    "id": "41ea6b5c",
+    "title": "Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ...",
+    "subtitle": "We're looking for a proactive and analytical Cloud FinOps En",
+    "company": "Torq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/cloud-finops-engineer-at-torq-4317936405",
+    "category": "finops",
+    "posted": "2026-03-01",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We're looking for a proactive and analytical Cloud FinOps Engineer to join our team and take ownership of our cloud fina",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Leonid Belkind",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/leonidbelkind/",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Leonid, I noticed Torq is hiring a Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Leonid! I wanted to share how Develeap helps companies like Torq accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Ofer Smadari",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/ofersmadari/",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Ofer, I noticed Torq is hiring a Torq גיוס עובדים Cloud FinOps Engineer | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Ofer! I wanted to share how Develeap helps companies like Torq accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=torq.com&sz=128"
+  },
+  {
     "id": "f31f801e",
     "title": "Senior AI Ops / MLOps Engineer | Tel Aviv Yaffo IL",
     "subtitle": "Experience: 5+ years in SRE, Platform Engineering, or MLOps,",
@@ -9988,6 +10027,11 @@ function reloadNewListings() {
 function _isCareerPage(j) {
   // Filter out multi-job career pages like "Jobs at Company"
   if (/^jobs\s+at\s+/i.test(j.title)) return true;
+  // Filter generic career page titles: "Open Positions at X", "Careers at X", "Join X", etc.
+  if (/^open\s+positions\s+(at|@)\s+/i.test(j.title)) return true;
+  if (/^(careers|career\s+opportunities)\s+(at|@)\s+/i.test(j.title)) return true;
+  if (/^(all|current|available)\s+(open\s+)?(positions|jobs|roles|openings)\s/i.test(j.title)) return true;
+  if (/^(see\s+our|view\s+(all|our))\s+(open\s+)?(positions|jobs|roles)/i.test(j.title)) return true;
   // Also filter URLs that point to career page indexes (not individual listings)
   const u = (j.sourceUrl || '').toLowerCase();
   if (/greenhouse\.io\/[^/]+\/?(\?|$)/.test(u) && !/\/jobs\/\d+/.test(u)) return true;
