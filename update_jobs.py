@@ -787,9 +787,9 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
     ],
 }
 # How many categories to search per run (rotation)
-LINKEDIN_FTS_CATS_PER_RUN = 5
+LINKEDIN_FTS_CATS_PER_RUN = 3
 # Max queries per category per run
-LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 2
+LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 1
 # File to track which categories were searched last, for round-robin rotation
 LINKEDIN_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "linkedin_fts_state.json")
 
@@ -1446,8 +1446,8 @@ def search_linkedin_fts() -> list[dict]:
                     all_results.append(job_info)
                     log.info(f"    Found: {job_info['title'][:60]}")
 
-            # Random delay between queries (3-8 seconds)
-            time.sleep(random.uniform(3.0, 8.0))
+            # Random delay between queries (1-3 seconds)
+            time.sleep(random.uniform(1.0, 3.0))
 
     # Save state for next run
     state["last_cats"] = picked_cats
