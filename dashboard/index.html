@@ -1463,6 +1463,10 @@
           <span>🐺</span>
           <span>Wolf Pack</span>
         </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('health')">
+          <span>🩺</span>
+          <span>Source Health</span>
+        </div>
       </div>
 
       <div class="settings-content-area">
@@ -2158,6 +2162,15 @@
           <!-- Rendered dynamically by renderWolfPackSettingsSection() -->
         </div>
 
+        <!-- Source Health Section -->
+        <div id="healthSection" class="settings-section" style="display:none">
+          <h3 class="settings-section-title">🩺 Source Health Check</h3>
+          <p style="color:var(--text-light);font-size:13px;margin-bottom:16px">Status of all search sources from the last pipeline run</p>
+          <div id="healthCheckGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
         <!-- Templates Section -->
         <div id="templatesSection" class="settings-section" style="display:none">
           <h3 class="settings-section-title">📝 Message Templates</h3>
@@ -2380,6 +2393,7 @@ document.addEventListener('click',function(){var d=document.getElementById('user
 
 // ===== DATA =====
 let LAST_UPDATED = "2026-03-10T11:01:12Z";
+let SOURCE_HEALTH = [];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -7607,6 +7621,7 @@ function switchSettingsSection(section) {
     else if (section === 'profile') renderProfileSection();
     else if (section === 'delegation') renderDelegationSection();
     else if (section === 'wolfpack') renderWolfPackSettingsSection();
+    else if (section === 'health') renderHealthSection();
   }
   updateUrlHash();
 }
@@ -8227,6 +8242,40 @@ function _wpRemoveSettingsTeam(ct, email) {
   renderWolfPackSettingsSection();
 }
 
+function renderHealthSection() {
+  var grid = document.getElementById('healthCheckGrid');
+  if (!grid) return;
+  var data = window.SOURCE_HEALTH || [];
+  if (!data.length) {
+    grid.innerHTML = '<p style="color:var(--text-light);font-size:13px">No health data yet. Data will appear after the next pipeline run.</p>';
+    return;
+  }
+  grid.innerHTML = data.map(function(s) {
+    var icon = s.status === 'ok' ? '✅' : s.status === 'error' ? '❌' : '⬜';
+    var bg = s.status === 'ok' ? 'rgba(16,185,129,0.08)' : s.status === 'error' ? 'rgba(239,68,68,0.08)' : 'rgba(156,163,175,0.08)';
+    var border = s.status === 'ok' ? 'rgba(16,185,129,0.3)' : s.status === 'error' ? 'rgba(239,68,68,0.3)' : 'rgba(156,163,175,0.3)';
+    var statusLabel = s.status === 'ok' ? 'Operational' : s.status === 'error' ? 'Error' : 'Not Configured';
+    var statusColor = s.status === 'ok' ? '#10b981' : s.status === 'error' ? '#ef4444' : '#9ca3af';
+    var details = '';
+    if (s.status === 'ok') {
+      details = '<div style="margin-top:8px;font-size:12px;color:var(--text-light)">' +
+        '<span>' + s.results + ' results</span>' +
+        '<span style="margin-left:12px">' + s.latency_ms + 'ms</span>' +
+        '</div>';
+    } else if (s.error) {
+      details = '<div style="margin-top:8px;font-size:11px;color:#ef4444;word-break:break-word">' + s.error + '</div>';
+    }
+    return '<div style="background:' + bg + ';border:1px solid ' + border + ';border-radius:10px;padding:16px">' +
+      '<div style="display:flex;align-items:center;gap:8px">' +
+        '<span style="font-size:20px">' + icon + '</span>' +
+        '<span style="font-weight:600;font-size:14px">' + s.name + '</span>' +
+      '</div>' +
+      '<div style="margin-top:6px;font-size:12px;font-weight:500;color:' + statusColor + '">' + statusLabel + '</div>' +
+      details +
+    '</div>';
+  }).join('');
+}
+
 function renderSettingsView() {
   // On mobile: always start at the menu (sidebar visible, content hidden)
   if (window.innerWidth <= 768) {
@@ -8252,6 +8301,7 @@ function renderSettingsView() {
     else if (txt.includes('profile')) sectionName = 'profile';
     else if (txt.includes('wolf pack')) sectionName = 'wolfpack';
     else if (txt.includes('delegation')) sectionName = 'delegation';
+    else if (txt.includes('health')) sectionName = 'health';
   }
   switchSettingsSection(sectionName);
 }
