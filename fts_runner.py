@@ -400,9 +400,13 @@ def extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
 
     display_title = f"{job_title} at {company}" if company else job_title
 
-    # Extract author
+    # Extract author name and LinkedIn profile
     fts_author = ""
-    author_match = re.search(r'^(.+?)\s+(?:posted\s+)?on\s+LinkedIn', title)
+    fts_author_linkedin = ""
+    fts_author_title = ""
+
+    # Strategy 1: From search result title
+    author_match = re.search(r'^(?:\(\d+\)\s*)?(.+?)\s+(?:posted\s+)?on\s+LinkedIn', title)
     if author_match:
         raw_author = author_match.group(1).strip()
         raw_author = re.sub(r'\s+(?:at|@|\|)\s+.*$', '', raw_author).strip()
@@ -410,12 +414,31 @@ def extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         if 2 <= len(name_parts) <= 4 and all(p[0].isupper() for p in name_parts if p):
             fts_author = raw_author
 
-    # Author LinkedIn URL
-    fts_author_linkedin = ""
-    if fts_author:
-        post_url_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9\-]+?)[-_](?:activity|ugcPost)', url)
-        if post_url_match:
-            fts_author_linkedin = f"https://www.linkedin.com/in/{post_url_match.group(1)}/"
+    # Strategy 2: Always extract LinkedIn profile from post URL
+    # URL format: linkedin.com/posts/{username-slug}_{hashtag-stuff}-activity-{id}
+    post_url_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])_', url)
+    if post_url_match:
+        username_slug = post_url_match.group(1)
+        fts_author_linkedin = f"https://www.linkedin.com/in/{username_slug}/"
+
+        # If no name from title, derive from URL slug
+        if not fts_author:
+            clean_slug = re.sub(r'-[a-z0-9]{6,}$', '', username_slug)
+            slug_parts = clean_slug.split('-')
+            alpha_parts = [p for p in slug_parts if p.isalpha() and len(p) > 1]
+            if len(alpha_parts) >= 2:
+                fts_author = ' '.join(p.capitalize() for p in alpha_parts[:3])
+
+    # Strategy 3: Extract professional title from snippet
+    if fts_author and snippet:
+        title_match = re.search(
+            re.escape(fts_author) + r'\s*[·\-|]\s*(.+?)(?:\s*[·\-|]|$)',
+            snippet, re.IGNORECASE
+        )
+        if title_match:
+            candidate_title = title_match.group(1).strip()
+            if 3 < len(candidate_title) < 60 and not candidate_title.endswith('.'):
+                fts_author_title = candidate_title
 
     # External job URL from snippet
     fts_job_url = ""
@@ -444,6 +467,7 @@ def extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         "_source_override": "linkedin_fts",
         "_fts_author": fts_author,
         "_fts_author_linkedin": fts_author_linkedin,
+        "_fts_author_title": fts_author_title,
         "_fts_job_url": fts_job_url,
         "_discovered_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }

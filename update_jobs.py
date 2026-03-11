@@ -1590,10 +1590,13 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if company:
         display_title = f"{job_title} at {company}"
 
-    # ── Extract post author name ──
-    # Patterns: "John Smith on LinkedIn: ..." or "John Smith posted on LinkedIn: ..."
+    # ── Extract post author name and LinkedIn profile ──
+    # Strategy 1: From search result title ("Name on LinkedIn: ..." or "Name posted on LinkedIn: ...")
     fts_author = ""
-    author_match = re.search(r'^(.+?)\s+(?:posted\s+)?on\s+LinkedIn', title)
+    fts_author_linkedin = ""
+    fts_author_title = ""  # Author's professional title if available
+
+    author_match = re.search(r'^(?:\(\d+\)\s*)?(.+?)\s+(?:posted\s+)?on\s+LinkedIn', title)
     if author_match:
         raw_author = author_match.group(1).strip()
         # Remove company suffix patterns: "Name at Company", "Name | Company"
@@ -1603,14 +1606,39 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         if 2 <= len(name_parts) <= 4 and all(p[0].isupper() for p in name_parts if p):
             fts_author = raw_author
 
-    # ── Extract author LinkedIn profile URL from post URL ──
-    fts_author_linkedin = ""
-    if fts_author:
-        # LinkedIn post URLs: linkedin.com/posts/firstname-lastname-XXX_activity-...
-        post_url_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9\-]+?)[-_](?:activity|ugcPost)', url)
-        if post_url_match:
-            username_slug = post_url_match.group(1)
-            fts_author_linkedin = f"https://www.linkedin.com/in/{username_slug}/"
+    # Strategy 2: Always extract author LinkedIn profile URL from post URL
+    # LinkedIn post URLs: linkedin.com/posts/{username-slug}_{hashtag-stuff}-activity-{id}
+    # The slug before the first underscore IS the author's LinkedIn username
+    post_url_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])_', url)
+    if post_url_match:
+        username_slug = post_url_match.group(1)
+        fts_author_linkedin = f"https://www.linkedin.com/in/{username_slug}/"
+
+        # If we didn't get author name from title, derive it from the URL slug
+        if not fts_author:
+            # Slug format: "firstname-lastname" or "firstname-lastname-123abc"
+            # Remove trailing alphanumeric ID suffix (e.g. "-64734391", "-123abc")
+            clean_slug = re.sub(r'-[a-z0-9]{6,}$', '', username_slug)
+            # Convert slug to name: "shay-ruvio" → "Shay Ruvio"
+            slug_parts = clean_slug.split('-')
+            # Filter: must be 2+ parts, each part should be alphabetic
+            alpha_parts = [p for p in slug_parts if p.isalpha() and len(p) > 1]
+            if len(alpha_parts) >= 2:
+                fts_author = ' '.join(p.capitalize() for p in alpha_parts[:3])
+
+    # Strategy 3: Try to extract author's professional title from snippet
+    # Snippets often contain "Name · Title at Company" or "Name - Title"
+    if fts_author and snippet:
+        # Look for "Author Name · Professional Title" pattern
+        title_match = re.search(
+            re.escape(fts_author) + r'\s*[·\-|]\s*(.+?)(?:\s*[·\-|]|$)',
+            snippet, re.IGNORECASE
+        )
+        if title_match:
+            candidate_title = title_match.group(1).strip()
+            # Must look like a job title (not too long, not a sentence)
+            if 3 < len(candidate_title) < 60 and not candidate_title.endswith('.'):
+                fts_author_title = candidate_title
 
     # ── Extract external job listing URL from snippet/title ──
     fts_job_url = ""
@@ -1641,6 +1669,7 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         "_source_override": "linkedin_fts",
         "_fts_author": fts_author,
         "_fts_author_linkedin": fts_author_linkedin,
+        "_fts_author_title": fts_author_title,
         "_fts_job_url": fts_job_url,
     }
 
@@ -2217,7 +2246,7 @@ def _extract_linkedin_hiring_team(html_text: str) -> list:
 def scrape_job_page(url: str) -> dict:
     """Scrape a job listing page for date, company name, closed status, location, and hiring team.
     Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool, "hiring_team": [...]}."""
-    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": []}
+    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": [], "post_author": "", "post_author_title": ""}
     if not url:
         return result
     try:
@@ -2235,6 +2264,38 @@ def scrape_job_page(url: str) -> dict:
         final_url = resp.url  # URL after redirects
         result["_http_status"] = 200
         log.info(f"  Scrape {url[:60]}: status={resp.status_code}, size={len(resp.text)}, truncated={len(text)}")
+
+        # ── Extract LinkedIn post author from page title/meta ──
+        # LinkedIn page titles: "Name on LinkedIn: post content..." or "Name - Title | LinkedIn"
+        if "linkedin.com/posts/" in url:
+            og_title_match = re.search(r'<meta[^>]*property=["\']og:title["\'][^>]*content=["\']([^"\']+)', text, re.IGNORECASE)
+            page_title_for_author = og_title_match.group(1) if og_title_match else ""
+            if not page_title_for_author:
+                pt_match = re.search(r'<title[^>]*>([^<]+)</title>', text, re.IGNORECASE)
+                if pt_match:
+                    page_title_for_author = pt_match.group(1).strip()
+            if page_title_for_author:
+                author_from_page = re.search(r'^(?:\(\d+\)\s*)?(.+?)\s+(?:posted\s+)?on\s+LinkedIn', page_title_for_author)
+                if author_from_page:
+                    raw_name = author_from_page.group(1).strip()
+                    raw_name = re.sub(r'\s+(?:at|@|\|)\s+.*$', '', raw_name).strip()
+                    name_parts = raw_name.split()
+                    if 2 <= len(name_parts) <= 4 and all(p[0].isupper() for p in name_parts if p):
+                        result["post_author"] = raw_name
+                        log.info(f"  LinkedIn post author from page: {raw_name} for {url[:50]}")
+            # Also try to get author's professional title from meta description
+            meta_desc = re.search(r'<meta[^>]*name=["\']description["\'][^>]*content=["\']([^"\']+)', text, re.IGNORECASE)
+            if meta_desc and result["post_author"]:
+                desc_text = meta_desc.group(1)
+                # Pattern: "Author Name · Title at Company · ..."
+                title_from_desc = re.search(
+                    re.escape(result["post_author"]) + r'\s*[·\-|]\s*(.+?)(?:\s*[·\-|]|$)',
+                    desc_text, re.IGNORECASE
+                )
+                if title_from_desc:
+                    candidate = title_from_desc.group(1).strip()
+                    if 3 < len(candidate) < 60:
+                        result["post_author_title"] = candidate
 
         # ── Detect career/multi-listing pages (e.g. expired Greenhouse job IDs redirect to careers page) ──
         # 1. Check <title> for career page patterns
@@ -3597,11 +3658,16 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         stakeholders = _get_stakeholders(company)
 
         # For LinkedIn FTS results, add the post author as a "Post Publisher" contact
-        if r.get("_source_override") == "linkedin_fts" and r.get("_fts_author"):
+        # The author is the person who posted the hiring announcement — always valuable
+        if r.get("_source_override") == "linkedin_fts" and (r.get("_fts_author") or r.get("_fts_author_linkedin")):
+            author_name = r.get("_fts_author", "")
+            author_title = r.get("_fts_author_title", "") or "Post Publisher"
+            author_li = r.get("_fts_author_linkedin", "")
+
             publisher_contact = {
-                "name": r["_fts_author"],
-                "title": "Post Publisher",
-                "linkedin": r.get("_fts_author_linkedin", ""),
+                "name": author_name,
+                "title": author_title,
+                "linkedin": author_li,
                 "source": "Post Publisher",
                 "email": "",
                 "photo": "",
@@ -3941,6 +4007,56 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                         continue
                     j.setdefault("stakeholders", []).insert(0, ac)
                     log.info(f"  Added ATS contact: {ac['name']} ({ac.get('title', '')}) for {j['title'][:40]}")
+
+        # ── Backfill FTS post author from page scrape ──
+        # If the initial FTS extraction missed the author (common when search result titles
+        # don't have "Name on LinkedIn:" format), use the author extracted from the page HTML
+        if j.get("source") == "linkedin_fts" and page_data.get("post_author"):
+            # Check if we already have a Post Publisher contact
+            has_publisher = any(s.get("source") == "Post Publisher" for s in j.get("stakeholders", []))
+            if not has_publisher:
+                author_li = ""
+                # Extract LinkedIn profile URL from the post URL
+                pm = re.search(r'linkedin\.com/posts/([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])_', url)
+                if pm:
+                    author_li = f"https://www.linkedin.com/in/{pm.group(1)}/"
+                existing_names = {s.get("name", "").lower() for s in j.get("stakeholders", []) if s.get("name")}
+                if page_data["post_author"].lower() not in existing_names:
+                    publisher = {
+                        "name": page_data["post_author"],
+                        "title": page_data.get("post_author_title", "") or "Post Publisher",
+                        "linkedin": author_li,
+                        "source": "Post Publisher",
+                        "email": "",
+                    }
+                    j.setdefault("stakeholders", []).insert(0, publisher)
+                    log.info(f"  Backfilled post author: {page_data['post_author']} for {j['title'][:40]}")
+
+        # ── Ensure ALL FTS listings have at least LinkedIn profile as contact ──
+        # Even if we can't get the author's name, the LinkedIn profile URL is valuable
+        if j.get("source") == "linkedin_fts":
+            has_publisher = any(s.get("source") == "Post Publisher" for s in j.get("stakeholders", []))
+            if not has_publisher:
+                pm = re.search(r'linkedin\.com/posts/([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])_', url)
+                if pm:
+                    slug = pm.group(1)
+                    li_url = f"https://www.linkedin.com/in/{slug}/"
+                    # Derive best-effort name from slug
+                    clean_slug = re.sub(r'-[a-z0-9]{6,}$', '', slug)
+                    slug_parts = clean_slug.split('-')
+                    alpha_parts = [p for p in slug_parts if p.isalpha() and len(p) > 1]
+                    slug_name = ' '.join(p.capitalize() for p in alpha_parts[:3]) if len(alpha_parts) >= 2 else slug
+                    existing_li = {s.get("linkedin", "").rstrip("/").lower() for s in j.get("stakeholders", []) if s.get("linkedin")}
+                    if li_url.rstrip("/").lower() not in existing_li:
+                        publisher = {
+                            "name": slug_name,
+                            "title": "Post Publisher",
+                            "linkedin": li_url,
+                            "source": "Post Publisher",
+                            "email": "",
+                        }
+                        j.setdefault("stakeholders", []).insert(0, publisher)
+                        log.info(f"  Added post author from URL: {slug_name} ({li_url}) for {j['title'][:40]}")
 
         # Skip Develeap's own listings
         if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
