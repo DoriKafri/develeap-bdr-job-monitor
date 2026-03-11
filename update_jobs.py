@@ -233,10 +233,13 @@ def _get_company_logo(company: str, source_url: str = "") -> str:
             r"jobs?\.lever\.co/([a-z0-9\-]+)",
             r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
             r"([a-z0-9\-]+)\.wd\d+\.myworkdayjobs\.com",
+            r"jobs\.jobvite\.com/([a-z0-9\-]+)",
         ]:
             m = re.search(ats_pat, source_url)
             if m:
                 slug = m.group(1)
+                # Strip common ATS slug suffixes
+                slug = re.sub(r'-(internal|careers|jobs|external|global|corp)$', '', slug)
                 domain = slug + ".com"  # Default to .com for ATS slugs
                 break
 
