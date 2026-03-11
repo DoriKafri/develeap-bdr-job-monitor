@@ -177,6 +177,8 @@ COMPANY_DOMAINS = {
     "mobileye": "mobileye.com",
     "ness technologies": "ness-tech.com",
     "ness technologies israel": "ness-tech.com",
+    "nextta": "nextta.net",
+    "nexta": "nextta.net",
     "nvidia": "nvidia.com",
     "next insurance": "nextinsurance.com",
     "nextta": "nextta.com",
@@ -205,6 +207,7 @@ COMPANY_DOMAINS = {
     "terasky": "terasky.com",
     "tikal": "tikalk.com",
     "tikalk": "tikalk.com",
+    "transmit security": "transmitsecurity.com",
     "unframe": "unframe.com",
     "varonis": "varonis.com",
     "unity": "unity.com",
@@ -2726,6 +2729,9 @@ def is_develeap_past_customer(company: str) -> bool:
 def _is_job_title(text: str) -> bool:
     """Return True if text looks like a job title rather than a company name."""
     t = text.lower().strip().rstrip(".")
+    # If it matches a known company name, it's definitely NOT a job title
+    if t in COMPANY_DOMAINS or t in COMPANY_ALIASES:
+        return False
     # Common job-title words / prefixes
     title_words = {
         "sr", "jr", "senior", "junior", "lead", "staff", "principal", "head",
@@ -2778,6 +2784,28 @@ def _is_job_title(text: str) -> bool:
                     "lead", "officer", "evangelist"}
     last_word = t.split()[-1] if t.split() else ""
     if last_word in role_endings:
+        return True
+    return False
+
+
+def _is_location_fragment(text: str) -> bool:
+    """Return True if text looks like a location rather than a company name.
+
+    Catches patterns like 'Tel Aviv-Yafo ...', 'New York, NY', 'Israel', etc.
+    """
+    t = text.lower().strip().rstrip(". ")
+    _LOCATION_STARTS = (
+        "tel aviv", "jerusalem", "haifa", "ramat gan", "herzliya", "beer sheva",
+        "netanya", "petah tikva", "hod hasharon", "ra'anana", "rishon lezion",
+        "new york", "san francisco", "london", "berlin", "tokyo", "paris",
+        "mumbai", "bangalore", "singapore", "boston", "chicago", "seattle",
+        "austin", "remote", "hybrid", "worldwide",
+    )
+    for loc in _LOCATION_STARTS:
+        if t.startswith(loc):
+            return True
+    # Ends with country/region
+    if re.search(r'(?:israel|usa|uk|india|germany|france|japan)\s*\.{0,3}\s*$', t, re.IGNORECASE):
         return True
     return False
 
@@ -2918,8 +2946,11 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         # Otherwise try right side for "Role - Company" pattern
         # Take the last segment after the last dash/pipe
         parts = re.split(r"\s*[-–|]\s*", title)
-        if len(parts) >= 2 and not _is_job_title(parts[-1].strip()):
-            return parts[-1].strip()
+        if len(parts) >= 2:
+            candidate = parts[-1].strip()
+            # Reject candidates that look like locations (e.g. "Tel Aviv-Yafo ...")
+            if not _is_job_title(candidate) and not _is_location_fragment(candidate):
+                return candidate
 
     # 4. "Company is hiring" pattern
     m = re.search(r"([A-Z][A-Za-z0-9\.\-&]{1,25})\s+(?:is hiring|careers|jobs)", title + " " + snippet)
@@ -3447,12 +3478,45 @@ COMPANY_ALIASES = {
     "somekhchaikin":        "KPMG Israel",
     "kpmg":                 "KPMG Israel",
     "kpmg israel":          "KPMG Israel",
+    "intuit israel":        "Intuit",
+    "intuit":               "Intuit",
+    "transmit security":    "Transmit Security",
+    "dell technologies":    "Dell Technologies",
+    "ness technologies israel": "Ness Technologies",
+    "ness technologies":    "Ness Technologies",
+    "qualitest israel":     "Qualitest",
+    "qualitest":            "Qualitest",
 }
+
+# Companies where the geo-suffix should be KEPT (e.g., "KPMG Israel" is the actual entity name)
+_KEEP_GEO_SUFFIX = {"kpmg israel", "elbit systems israel", "applied materials israel"}
 
 
 def _normalize_company(name: str) -> str:
-    """Return the canonical company name, or the original if no alias."""
-    return COMPANY_ALIASES.get(name.lower().strip(), name)
+    """Return the canonical company name, or the original if no alias.
+
+    Also strips geographic suffixes like 'Israel', 'USA', etc. from company
+    names unless the full name is in _KEEP_GEO_SUFFIX or COMPANY_ALIASES maps
+    to a name that includes the suffix.
+    """
+    key = name.lower().strip()
+    # Direct alias lookup first
+    if key in COMPANY_ALIASES:
+        return COMPANY_ALIASES[key]
+    # Strip geo suffix if not in the keep list
+    if key not in _KEEP_GEO_SUFFIX:
+        import re as _re
+        stripped = _re.sub(
+            r'\s+(?:israel|usa|uk|india|germany|france|japan|china|europe|americas?|asia|emea|apac|global|worldwide)\s*$',
+            '', name.strip(), flags=_re.IGNORECASE
+        ).strip()
+        if stripped and stripped != name.strip():
+            # Check if the stripped version has an alias
+            stripped_key = stripped.lower().strip()
+            if stripped_key in COMPANY_ALIASES:
+                return COMPANY_ALIASES[stripped_key]
+            return stripped
+    return name
 
 
 def _normalize_title(title: str) -> str:
