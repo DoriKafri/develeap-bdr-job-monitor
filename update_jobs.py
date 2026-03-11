@@ -4343,7 +4343,7 @@ def main():
     #     and fix entries where company looks like a job title
     ats_url_patterns = [
         r"greenhouse\.io/", r"lever\.co/", r"ashbyhq\.com/", r"comeet\.com/jobs/",
-        r"\.myworkdayjobs\.com",
+        r"\.myworkdayjobs\.com", r"jobvite\.com/",
     ]
     for j in existing:
         url = j.get("sourceUrl", "")
