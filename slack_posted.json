@@ -166,6 +166,8 @@
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown|||finops engineer",
+    "unknown|||devops engineer",
+    "unknown|||data engineer",
     "unknown|||ai/agentic engineer",
     "unknown|||ai engineer",
     "unknown|devops|\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
@@ -702,6 +704,7 @@
     "jit|||ai engineer",
     "iscar israel|||iscar israel artificial intelligence engineer",
     "ironalgo|||mlops engineer",
+    "intuit israel|||staff data engineer at intuit israel",
     "intel corporation||||ai/ml engineer @ intel corporation | lhh job board",
     "intel corporation||||ai/ml engineer",
     "intel corporation|||ai/ml engineer @ intel corporation | lhh job board|2026-02-23",
@@ -1953,7 +1956,10 @@
     "doit international|||staff cloud architect (delivery) - emea": "2026-03-11T13:31:38.377981+00:00",
     "conifers.ai|||conifers.ai senior software engineer - agentic ai": "2026-03-11T15:08:58.695974+00:00",
     "amazon web services aws|||software development engineer, aws agentic ai": "2026-03-11T15:08:58.695974+00:00",
-    "google|||search jobs \u2014 google careers": "2026-03-11T15:08:58.695974+00:00"
+    "google|||search jobs \u2014 google careers": "2026-03-11T15:08:58.695974+00:00",
+    "unknown|||devops engineer": "2026-03-11T15:36:34.706571+00:00",
+    "intuit israel|||staff data engineer at intuit israel": "2026-03-11T15:36:34.706571+00:00",
+    "unknown|||data engineer": "2026-03-11T15:36:34.706571+00:00"
   },
-  "updated": "2026-03-11T15:08:58.708628+00:00"
+  "updated": "2026-03-11T15:36:34.717776+00:00"
 }
