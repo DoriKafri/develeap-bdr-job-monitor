@@ -1263,6 +1263,22 @@
   }
   .share-detail-btn:hover { background:var(--primary-light); color:var(--primary); border-color:var(--primary); }
   .share-detail-btn svg { width:16px; height:16px; }
+  /* Share Menu */
+  .share-menu-overlay { position:fixed; top:0; left:0; right:0; bottom:0; z-index:9998; }
+  .share-menu {
+    position:fixed; z-index:9999; background:white; border-radius:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18); padding:6px; min-width:210px;
+    animation:shareMenuIn 0.15s ease-out;
+  }
+  @keyframes shareMenuIn { from { opacity:0; transform:scale(0.95) translateY(-4px); } to { opacity:1; transform:scale(1) translateY(0); } }
+  .share-menu-item {
+    display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px;
+    border:none; background:none; width:100%; font-size:13px; color:var(--text);
+    cursor:pointer; transition:background 0.12s;
+  }
+  .share-menu-item:hover { background:#f3f4f6; }
+  .share-menu-item svg { width:20px; height:20px; flex-shrink:0; }
+  .share-menu-sep { height:1px; background:#e5e7eb; margin:4px 8px; }
 </style>
 </head>
 <body>
@@ -10830,45 +10846,77 @@ function applyAllFilters() { updateStats(); renderJobs(); }
 
 
 // ── Share Listing ───────────────────────────────────────────────────────
-function shareListing(id) {
+function _buildShareData(id) {
   const j = ALL_JOBS.find(x => x.id === id);
-  if (!j) return;
-  
+  if (!j) return null;
   const baseUrl = window.location.origin + window.location.pathname;
   const shareUrl = baseUrl + '#view=all&job=' + j.id;
-  
-  // Build a rich text for sharing
   const cat = (CAT_LABELS[j.category] || j.category || '').trim();
   const loc = j.location || 'Israel';
+  const line = j.title + ' | ' + j.company + ' | ' + loc + ' \u00B7 ' + cat;
+  return { j, shareUrl, cat, loc, line, text: line + '\n\n' + shareUrl };
+}
 
-  
-  const shareTitle = j.title + ' at ' + j.company;
-  const shareText = j.title + ' | ' + j.company + '\n' + loc + ' \u00B7 ' + cat + '\n\n' + shareUrl;
-  
-  // Try Web Share API (works great on mobile / WhatsApp)
-  if (navigator.share) {
-    navigator.share({
-      title: shareTitle,
-      text: j.title + ' | ' + j.company + ' | ' + loc + ' \u00B7 ' + cat,
-      url: shareUrl,
-    }).catch(() => {});
-    return;
+function shareListing(id, evt) {
+  closeShareMenu();
+  const d = _buildShareData(id);
+  if (!d) return;
+
+  const waText = encodeURIComponent(d.line + '\n' + d.shareUrl);
+  const tgUrl  = 'https://t.me/share/url?url=' + encodeURIComponent(d.shareUrl) + '&text=' + encodeURIComponent(d.line);
+
+  // Build menu
+  const overlay = document.createElement('div');
+  overlay.className = 'share-menu-overlay';
+  overlay.onclick = closeShareMenu;
+
+  const menu = document.createElement('div');
+  menu.className = 'share-menu';
+  menu.id = 'activeShareMenu';
+  menu.innerHTML =
+    '<button class="share-menu-item" onclick="window.open(\'https://wa.me/?text=' + waText + '\',\'_blank\');closeShareMenu();">' +
+      '<svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>' +
+      'WhatsApp</button>' +
+    '<button class="share-menu-item" onclick="window.open(\'' + tgUrl + '\',\'_blank\');closeShareMenu();">' +
+      '<svg viewBox="0 0 24 24" fill="#0088cc"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>' +
+      'Telegram</button>' +
+    '<div class="share-menu-sep"></div>' +
+    '<button class="share-menu-item" onclick="copyShareLink(\'' + id + '\');closeShareMenu();">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
+      'Copy Link</button>';
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(menu);
+
+  // Position near the button
+  const e = evt || window.event;
+  if (e && e.target) {
+    const btn = e.target.closest('button');
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      menu.style.top = Math.min(rect.bottom + 4, window.innerHeight - menu.offsetHeight - 8) + 'px';
+      menu.style.left = Math.min(rect.left, window.innerWidth - menu.offsetWidth - 8) + 'px';
+    }
   }
-  
-  // Fallback: copy to clipboard
-  navigator.clipboard.writeText(shareText).then(() => {
-    showShareToast('\u2705 Link copied! Paste it in WhatsApp or anywhere.');
+  if (!menu.style.top) { menu.style.top = '50%'; menu.style.left = '50%'; menu.style.transform = 'translate(-50%,-50%)'; }
+}
+
+function closeShareMenu() {
+  const m = document.getElementById('activeShareMenu');
+  if (m) m.remove();
+  document.querySelectorAll('.share-menu-overlay').forEach(o => o.remove());
+}
+
+function copyShareLink(id) {
+  const d = _buildShareData(id);
+  if (!d) return;
+  navigator.clipboard.writeText(d.text).then(() => {
+    showShareToast('Link copied!');
   }).catch(() => {
-    // Double fallback: textarea trick
     const ta = document.createElement('textarea');
-    ta.value = shareText;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    showShareToast('\u2705 Link copied!');
+    ta.value = d.text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showShareToast('Link copied!');
   });
 }
 
@@ -10907,7 +10955,7 @@ function renderJobs() {
   tbody.innerHTML = jobs.map(j=>`
     <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':''))}</td>
-      <td><div class="job-title-cell"><div style="display:flex;align-items:start;gap:6px"><div style="flex:1;min-width:0"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div><button class="share-btn share-btn-row" onclick="event.stopPropagation();shareListing('${j.id}')" title="Share this listing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div></td>
+      <td><div class="job-title-cell"><div style="display:flex;align-items:start;gap:6px"><div style="flex:1;min-width:0"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div><button class="share-btn share-btn-row" onclick="event.stopPropagation();shareListing('${j.id}',event)" title="Share this listing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div></td>
       <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td>${(j.altSources&&j.altSources.length)?'<div class="alt-sources-wrap" onclick="event.stopPropagation()"><span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span><span class="alt-sources-indicator" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div></div>':'<span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span>'}${j.ftsJobUrl?'<a href="'+j.ftsJobUrl+'" target="_blank" onclick="event.stopPropagation()" class="fts-job-link" style="margin-left:4px" title="Direct job application link">📋 Apply</a>':''}</td>
@@ -11096,7 +11144,7 @@ function openDetail(id){
     ${_buildCrmDetailHtml(j.company)}
     ${_buildApolloDetailHtml(j.company)}
     <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
-    <button class="share-detail-btn" onclick="shareListing('${j.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share Listing</button>
+    <button class="share-detail-btn" onclick="shareListing('${j.id}',event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share Listing</button>
     ${j.ftsJobUrl?'<div style="margin-top:8px"><a href="'+j.ftsJobUrl+'" target="_blank" class="fts-job-link" style="display:flex;width:100%;justify-content:center;padding:8px;border-radius:8px;font-size:12px">📋 View Job Application Page</a></div>':''}
     ${(j.altSources&&j.altSources.length)?'<div style="margin-top:10px;padding:10px 14px;background:#F0F7FF;border-radius:10px;border:1px solid #BBDEFB"><div style="font-size:11px;font-weight:600;color:#1565C0;margin-bottom:6px">Also found on '+j.altSources.length+' other source'+(j.altSources.length>1?'s':'')+':</div>'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;padding:4px 0;color:var(--text)">'+sourceIcon(a.source)+'<span style="font-size:12px;font-weight:500">'+(SOURCE_LABELS[a.source]||a.source)+'</span><span style="font-size:11px;color:var(--text-lighter);flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">'+a.title+'</span></a>').join('')+'</div>':''}
     <div style="margin-top:12px;text-align:center"><button onclick="hideCompany('${j.company.replace(/'/g,"\\\\'")}',event);closeSidebar()" style="background:none;border:none;color:var(--text-lighter);font-size:12px;cursor:pointer;padding:4px 8px">&#10005; Hide all ${j.company} listings</button></div>
