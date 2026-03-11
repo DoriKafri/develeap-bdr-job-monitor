@@ -1955,6 +1955,129 @@ def scan_greenhouse_boards() -> list[dict]:
     return all_results
 
 
+# ── ATS Contact Extraction ────────────────────────────────────────────────
+
+def _extract_greenhouse_contacts(url: str) -> list:
+    """Extract hiring manager and recruiter from Greenhouse job API.
+    Greenhouse metadata often contains 'Hiring Manager' and 'Recruiter' fields
+    with name and email — these are high-quality contacts."""
+    contacts = []
+    if not url:
+        return contacts
+
+    # Extract board slug and job ID from URL patterns:
+    # boards.greenhouse.io/{slug}/jobs/{id}
+    # boards.eu.greenhouse.io/{slug}/jobs/{id}
+    # job-boards.greenhouse.io/...
+    m = re.search(r'(?:boards(?:\.eu)?\.greenhouse\.io|job-boards\.(?:eu\.)?greenhouse\.io)/([^/]+)/jobs/(\d+)', url)
+    if not m:
+        return contacts
+
+    slug = m.group(1)
+    job_id = m.group(2)
+
+    # Try the public boards API
+    api_url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs/{job_id}"
+    try:
+        resp = requests.get(api_url, timeout=10)
+        if resp.status_code != 200:
+            return contacts
+
+        data = resp.json()
+        metadata = data.get("metadata", [])
+
+        for meta in metadata:
+            name_field = meta.get("name", "").lower()
+            value = meta.get("value", {})
+
+            if isinstance(value, dict) and value.get("name"):
+                person_name = value["name"]
+                person_email = value.get("email", "")
+
+                if name_field in ("hiring manager", "recruiter", "talent acquisition",
+                                  "hiring_manager", "recruiting lead"):
+                    # Determine title based on metadata field name
+                    if "recruiter" in name_field or "talent" in name_field:
+                        title = "Recruiter"
+                        source = "Greenhouse Recruiter"
+                    else:
+                        title = "Hiring Manager"
+                        source = "Greenhouse Hiring Manager"
+
+                    contacts.append({
+                        "name": person_name,
+                        "title": title,
+                        "linkedin": "",
+                        "source": source,
+                        "email": person_email,
+                    })
+
+        if contacts:
+            log.info(f"  Greenhouse contacts for {slug}/{job_id}: "
+                     f"{', '.join(c['name'] + ' (' + c['title'] + ')' for c in contacts)}")
+
+    except Exception as e:
+        log.debug(f"  Greenhouse API contact extraction failed for {url}: {e}")
+
+    return contacts
+
+
+def _extract_lever_contacts(url: str) -> list:
+    """Extract contacts from Lever job pages.
+    Lever job pages sometimes include team/recruiter info in the HTML."""
+    contacts = []
+    if not url or "lever.co" not in url:
+        return contacts
+
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            return contacts
+
+        text = resp.text[:50000]
+
+        # Look for hiring manager / team lead mentions
+        # Lever pages sometimes have "Questions? Contact <name>" or
+        # embed recruiter info in JSON-LD or meta tags
+        contact_patterns = [
+            r'contact[^"]*"[^>]*>\s*([A-Z][a-z]+ [A-Z][a-z]+)',
+            r'"hiringManager"\s*:\s*\{\s*"name"\s*:\s*"([^"]+)"',
+        ]
+        for pat in contact_patterns:
+            matches = re.findall(pat, text)
+            for name in matches:
+                if len(name) > 3 and " " in name:
+                    contacts.append({
+                        "name": name,
+                        "title": "Hiring Manager",
+                        "linkedin": "",
+                        "source": "Lever Job Page",
+                        "email": "",
+                    })
+                    break
+            if contacts:
+                break
+
+    except Exception as e:
+        log.debug(f"  Lever contact extraction failed for {url}: {e}")
+
+    return contacts
+
+
+def _extract_ats_contacts(url: str) -> list:
+    """Extract contacts from ATS (Applicant Tracking System) job pages.
+    Supports Greenhouse and Lever."""
+    if "greenhouse.io" in (url or ""):
+        return _extract_greenhouse_contacts(url)
+    elif "lever.co" in (url or ""):
+        return _extract_lever_contacts(url)
+    return []
+
+
 # ── Date Extraction ───────────────────────────────────────────────────────
 
 def extract_posting_date(url: str) -> str:
@@ -2777,8 +2900,8 @@ def _get_stakeholders(company: str) -> list:
 
 # ── Auto-stakeholder discovery cache ──────────────────────────────────────
 _stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
-_auto_discover_count = 0                    # Track SerpAPI usage per run
-AUTO_DISCOVER_MAX = 5                       # Max auto-lookups per pipeline run (conserve SerpAPI quota)
+_auto_discover_count = 0                    # Track search engine usage per run
+AUTO_DISCOVER_MAX = 40                      # Max auto-lookups per pipeline run
 
 # Leadership title patterns for auto-discovery
 _LEADERSHIP_RE = re.compile(
@@ -2872,23 +2995,80 @@ def _parse_linkedin_search_result(result: dict, company_lower: str,
     }
 
 
+def _search_for_stakeholders(query: str) -> list[dict]:
+    """Search for stakeholder LinkedIn profiles using available search engines.
+    Returns raw search results (list of {title, snippet, url}).
+    Uses Google CSE first (best for site: queries), then Bing, then SerpAPI, then DuckDuckGo."""
+
+    # Strategy 1: Google CSE (100 free/day) — best for site:linkedin queries
+    results = search_google_cse(query)
+    if results:
+        return results
+
+    time.sleep(random.uniform(0.5, 1.0))
+
+    # Strategy 2: Bing (1000 free/month) — good site: operator support
+    results = search_bing(query)
+    if results:
+        return results
+
+    time.sleep(random.uniform(0.5, 1.0))
+
+    # Strategy 3: SerpAPI (paid, limited but reliable)
+    if SERPAPI_KEY:
+        try:
+            resp = requests.get("https://serpapi.com/search", params={
+                "q": query, "api_key": SERPAPI_KEY, "gl": "il", "hl": "en", "num": 5,
+            }, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+            return [{"title": r.get("title", ""), "snippet": r.get("snippet", ""),
+                     "url": r.get("link", "")}
+                    for r in data.get("organic_results", [])]
+        except Exception:
+            pass
+
+    time.sleep(random.uniform(0.5, 1.0))
+
+    # Strategy 4: DuckDuckGo (free, no key) — use modified query without site:
+    # DuckDuckGo's HTML search doesn't support site: well, so we adjust
+    ddg_query = query.replace("site:linkedin.com/in", "linkedin").replace("site:linkedin.com", "linkedin")
+    results = search_duckduckgo(ddg_query)
+    if results:
+        # Filter to only linkedin.com/in results
+        return [r for r in results if "linkedin.com/in/" in r.get("url", "")]
+
+    return []
+
+
+# Companies that are actually job board names or junk — skip stakeholder lookup
+_SKIP_COMPANIES_FOR_STAKEHOLDERS = {
+    "unknown", "remoterockethub", "efinancialcareers", "jobgether",
+    "techaviv", "play", "automatit", "efinancialcareers norway",
+    "factored", "attil", "mksinst", "adaptive6", "crawljobs",
+    "vertexventures", "my team", "tel aviv ...", "tel aviv,",
+    "$84k", "secure agentic ai", "shi", "campbellsoup",
+}
+
+
 def _auto_discover_stakeholders(company: str) -> list:
-    """Use SerpAPI to find CTO / VP R&D / VP Engineering for a company.
+    """Find CTO / VP R&D / VP Engineering for a company using available search engines.
+    Uses DuckDuckGo → Google CSE → Bing → SerpAPI fallback chain.
     Tries multiple search strategies and parses LinkedIn profiles from results."""
     global _auto_discover_count
 
-    if not SERPAPI_KEY or not company:
+    if not company:
         return []
 
     company_lower = company.lower().strip()
 
     # Skip companies that are actually job board names, not real employers
-    skip_companies = {
-        "unknown", "remoterockethub", "efinancialcareers", "jobgether",
-        "techaviv", "play", "automatit", "efinancialcareers norway",
-        "factored", "attil", "mksinst", "adaptive6",
-    }
-    if company_lower in skip_companies:
+    if company_lower in _SKIP_COMPANIES_FOR_STAKEHOLDERS:
+        _stakeholder_cache[company_lower] = []
+        return []
+
+    # Skip very short or numeric company names (likely parsing errors)
+    if len(company_lower) < 3 or company_lower.replace("$", "").replace(",", "").replace(".", "").isdigit():
         _stakeholder_cache[company_lower] = []
         return []
 
@@ -2913,20 +3093,19 @@ def _auto_discover_stakeholders(company: str) -> list:
         for query in queries:
             if len(contacts) >= 2:
                 break
-            resp = requests.get("https://serpapi.com/search", params={
-                "q": query,
-                "api_key": SERPAPI_KEY,
-                "gl": "il",
-                "hl": "en",
-                "num": 5,
-            }, timeout=15)
-            resp.raise_for_status()
-            data = resp.json()
 
-            for r in data.get("organic_results", []):
+            results = _search_for_stakeholders(query)
+
+            for r in results:
                 if len(contacts) >= 2:
                     break
-                parsed = _parse_linkedin_search_result(r, company_lower, seen_urls)
+                # Normalize result format (DuckDuckGo/CSE/Bing use 'url', SerpAPI uses 'link')
+                r_normalized = {
+                    "title": r.get("title", ""),
+                    "snippet": r.get("snippet", ""),
+                    "link": r.get("url", "") or r.get("link", ""),
+                }
+                parsed = _parse_linkedin_search_result(r_normalized, company_lower, seen_urls)
                 if parsed:
                     contacts.append(parsed)
 
@@ -3746,6 +3925,23 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 j.setdefault("stakeholders", []).insert(0, ht)
                 log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j['title'][:40]}")
 
+        # ── Extract contacts from ATS (Greenhouse/Lever) job pages ──
+        job_url_for_ats = j.get("ftsJobUrl", "") or url
+        if job_url_for_ats and ("greenhouse.io" in job_url_for_ats or "lever.co" in job_url_for_ats):
+            ats_contacts = _extract_ats_contacts(job_url_for_ats)
+            if ats_contacts:
+                existing_names = {s.get("name", "").lower()
+                                  for s in j.get("stakeholders", []) if s.get("name")}
+                existing_emails = {s.get("email", "").lower()
+                                   for s in j.get("stakeholders", []) if s.get("email")}
+                for ac in ats_contacts:
+                    ac_name = ac.get("name", "").lower()
+                    ac_email = ac.get("email", "").lower()
+                    if (ac_name and ac_name in existing_names) or (ac_email and ac_email in existing_emails):
+                        continue
+                    j.setdefault("stakeholders", []).insert(0, ac)
+                    log.info(f"  Added ATS contact: {ac['name']} ({ac.get('title', '')}) for {j['title'][:40]}")
+
         # Skip Develeap's own listings
         if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
             log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
@@ -4210,7 +4406,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     from datetime import datetime as dt_cls4
                     post_dt4 = dt_cls4.strptime(page_data["date"], "%Y-%m-%d")
                     age_days4 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt4).days
-                    if age_days4 > 14:
+                    if age_days4 > 45:
                         log.info(f"  Removing stale listing after date update ({age_days4} days): {j.get('title', '')[:50]}")
                         if url: removed_urls.add(url)
                         continue
@@ -4238,6 +4434,19 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         continue
                     j.setdefault("stakeholders", []).insert(0, ht)
                     log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j.get('title', '')[:40]}")
+
+            # ── Extract ATS contacts for existing jobs too ──
+            job_url_for_ats = j.get("ftsJobUrl", "") or url
+            if job_url_for_ats and ("greenhouse.io" in job_url_for_ats or "lever.co" in job_url_for_ats):
+                if not any(s.get("source", "").startswith("Greenhouse") or s.get("source", "").startswith("Lever")
+                           for s in j.get("stakeholders", [])):
+                    ats_contacts = _extract_ats_contacts(job_url_for_ats)
+                    existing_names_ats = {s.get("name", "").lower()
+                                          for s in j.get("stakeholders", []) if s.get("name")}
+                    for ac in ats_contacts:
+                        if ac.get("name", "").lower() not in existing_names_ats:
+                            j.setdefault("stakeholders", []).insert(0, ac)
+                            log.info(f"  Added ATS contact (existing): {ac['name']} for {j.get('title', '')[:40]}")
 
         # ── Playwright validation for existing FTS LinkedIn posts ──
         if "linkedin.com" in url and j.get("source") == "linkedin_fts":
