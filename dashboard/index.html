@@ -477,8 +477,8 @@
   }
 
   /* ── Queue View ── */
-  #queueView { display:none; margin:0; }
-  #queueView.active { display:block; }
+  #queueView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; padding-bottom:24px; }
+  #queueView.active { display:flex; flex-direction:column; }
   .queue-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
   .queue-header h2 { font-size:20px; font-weight:700; display:flex; align-items:center; gap:10px; }
   .queue-global-controls { display:flex; gap:8px; align-items:center; }
