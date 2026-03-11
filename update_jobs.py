@@ -221,6 +221,8 @@ COMPANY_DOMAINS = {
     "tikalk": "tikalk.com",
     "transmit security": "transmitsecurity.com",
     "unframe": "unframe.com",
+    "upstream security": "upstream.auto",
+    "upstream": "upstream.auto",
     "varonis": "varonis.com",
     "unity": "unity.com",
     "vastdata": "vastdata.com",
@@ -266,13 +268,15 @@ def _get_company_logo(company: str, source_url: str = "", title: str = "") -> st
         "breezy.hr", "recruitee.com", "bamboohr.com", "icims.com",
         "indeed.com", "glassdoor.com", "linkedin.com", "monster.com",
         "ziprecruiter.com", "dice.com", "wellfound.com", "angel.co",
-        "lhh.com", "efinancialcareers.com", "drushim.co.il", "alljobs.co.il",
+        "lhh.com", "efinancialcareers.com", "efinancialcareers-norway.com",
+        "drushim.co.il", "alljobs.co.il",
         "jobgether.com", "crawljobs.com", "goozali.com", "secrettelaviv.com",
         "builtin.com", "stackoverflow.com", "hired.com", "remoterocketship.com",
     }
     # Company names that are platforms — skip company-name-based strategies for them
     _PLATFORM_COMPANIES = {
         "jobgether", "crawljobs", "goozali", "lhh", "efinancialcareers",
+        "efinancialcareers norway", "secrettelaviv", "alljobs", "drushim",
     }
 
     def _is_platform_domain(d: str) -> bool:
@@ -318,7 +322,9 @@ def _get_company_logo(company: str, source_url: str = "", title: str = "") -> st
     # ── Strategy 3: Company name → domain derivation ──
     # When we have a non-platform company name, derive domain from it
     # BEFORE trying URL-based strategies (URLs can mislead when company is correct)
-    _is_platform_company = company_lower in _PLATFORM_COMPANIES
+    _is_platform_company = company_lower in _PLATFORM_COMPANIES or any(
+        company_lower.startswith(p) for p in _PLATFORM_COMPANIES
+    )
     if not is_unknown and not _is_platform_company and not _is_platform_domain(company_lower + ".com"):
         base = stripped_company or company_lower
         clean = re.sub(r'[^a-z0-9]', '', base)
