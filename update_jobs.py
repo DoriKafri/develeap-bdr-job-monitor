@@ -119,6 +119,10 @@ DEVELEAP_PAST_CUSTOMERS = [
 # Maps company name (lowercase) → domain for Clearbit Logo API
 COMPANY_DOMAINS = {
     "allcloud": "allcloud.io",
+    "amazon": "amazon.com",
+    "amazon web services": "aws.amazon.com",
+    "amazon web services aws": "aws.amazon.com",
+    "aws": "aws.amazon.com",
     "appcharge": "appcharge.com",
     "applied materials": "appliedmaterials.com",
     "applied materials - israel": "appliedmaterials.com",
@@ -141,6 +145,8 @@ COMPANY_DOMAINS = {
     "cyberark": "cyberark.com",
     "cymulate": "cymulate.com",
     "datadog": "datadoghq.com",
+    "dell": "dell.com",
+    "dell technologies": "dell.com",
     "doit": "doit.com",
     "dualbird": "dualbird.com",
     "earnix": "earnix.com",
@@ -157,7 +163,8 @@ COMPANY_DOMAINS = {
     "hio": "hio.store",
     "hivestack": "hivestack.com",
     "imagen": "imagen-ai.com",
-    "jobgether": "jobgether.com",
+    "intuit": "intuit.com",
+    "intuit israel": "intuit.com",
     "kpmg": "kpmg.com",
     "leidos": "leidos.com",
     "lightricks": "lightricks.com",
@@ -168,6 +175,8 @@ COMPANY_DOMAINS = {
     "metalbear": "metalbear.co",
     "minimus": "minimumsec.com",
     "mobileye": "mobileye.com",
+    "ness technologies": "ness-tech.com",
+    "ness technologies israel": "ness-tech.com",
     "nvidia": "nvidia.com",
     "next insurance": "nextinsurance.com",
     "nextta": "nextta.com",
@@ -179,6 +188,7 @@ COMPANY_DOMAINS = {
     "phasev": "phasev.ai",
     "plainid": "plainid.com",
     "port": "getport.io",
+    "qualitest": "qualitest.com",
     "quanthealth": "quanthealth.com",
     "quantum machines": "quantum-machines.co",
     "remedio": "gytpol.com",
@@ -196,6 +206,7 @@ COMPANY_DOMAINS = {
     "tikal": "tikalk.com",
     "tikalk": "tikalk.com",
     "unframe": "unframe.com",
+    "varonis": "varonis.com",
     "unity": "unity.com",
     "vastdata": "vastdata.com",
     "voyantis": "voyantis.ai",
@@ -206,57 +217,173 @@ COMPANY_DOMAINS = {
     "zscaler": "zscaler.com",
 }
 
-def _get_company_logo(company: str, source_url: str = "") -> str:
+def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
     """Get company logo URL via Google Favicon API.
 
-    Uses COMPANY_DOMAINS mapping first, then tries to derive domain from ATS URL.
+    Multi-strategy logo resolution:
+      1. COMPANY_DOMAINS direct lookup (most reliable)
+      2. COMPANY_DOMAINS partial/fuzzy match
+      3. ATS URL slug extraction (Greenhouse, Lever, Jobvite, etc.)
+      4. Source URL domain extraction (careers.X.com, X.com/careers)
+      5. Title-based company extraction ("Role - Company Careers")
+      6. Company name → domain derivation (with geo-suffix stripping)
+
     Returns a Google Favicon URL or empty string.
     """
-    if not company or company == "Unknown":
+    if not company:
         return ""
     company_lower = company.lower().strip()
+    is_unknown = company_lower in ("unknown", "")
 
-    # 1. Direct lookup
-    domain = COMPANY_DOMAINS.get(company_lower, "")
+    # Reject company names that are clearly locations, not companies
+    if re.match(r'^(tel\s*aviv|jerusalem|haifa|new\s*york|london|berlin|tokyo)', company_lower):
+        return ""
 
-    # 2. Try partial match
-    if not domain:
-        for key, d in COMPANY_DOMAINS.items():
-            if key in company_lower or company_lower in key:
-                domain = d
-                break
+    # Domains that are ATS/job-board platforms — never valid as company logos
+    _PLATFORM_DOMAINS = {
+        "greenhouse.io", "greenhouse.com", "lever.co", "lever.com",
+        "ashbyhq.com", "jobvite.com", "comeet.com",
+        "workday.com", "myworkdayjobs.com", "smartrecruiters.com",
+        "breezy.hr", "recruitee.com", "bamboohr.com", "icims.com",
+        "indeed.com", "glassdoor.com", "linkedin.com", "monster.com",
+        "ziprecruiter.com", "dice.com", "wellfound.com", "angel.co",
+        "lhh.com", "efinancialcareers.com", "drushim.co.il", "alljobs.co.il",
+        "jobgether.com", "crawljobs.com", "goozali.com", "secrettelaviv.com",
+        "builtin.com", "stackoverflow.com", "hired.com", "remoterocketship.com",
+    }
+    # Company names that are platforms — skip company-name-based strategies for them
+    _PLATFORM_COMPANIES = {
+        "jobgether", "crawljobs", "goozali", "lhh", "efinancialcareers",
+    }
 
-    # 3. Try deriving from ATS URL slug
-    if not domain and source_url:
+    def _is_platform_domain(d: str) -> bool:
+        """Check if domain belongs to a job board / ATS platform."""
+        d = d.lower()
+        return any(d == p or d.endswith("." + p) for p in _PLATFORM_DOMAINS)
+
+    def _favicon(d: str) -> str:
+        return f"https://www.google.com/s2/favicons?domain={d}&sz=128"
+
+    # ── Preprocessing: strip geo suffixes and trailing numbers ──
+    geo_suffixes = r'\b(?:israel|usa|uk|india|germany|france|japan|china|europe|' \
+                   r'americas|apac|emea|global|international|worldwide|' \
+                   r'tel\s*aviv|new\s*york|london|berlin|tokyo|' \
+                   r'il|us|eu|asia|pacific|latam)\b'
+    stripped_company = re.sub(geo_suffixes, '', company_lower, flags=re.IGNORECASE).strip()
+    stripped_company = re.sub(r'\s*\d{3,}\s*$', '', stripped_company).strip()  # trailing job IDs
+    stripped_company = re.sub(r'\s+', ' ', stripped_company).strip()
+
+    if not is_unknown:
+        # ── Strategy 1: Direct lookup in COMPANY_DOMAINS ──
+        domain = COMPANY_DOMAINS.get(company_lower, "")
+        if domain:
+            return _favicon(domain)
+
+        # ── Strategy 2: Partial / fuzzy match in COMPANY_DOMAINS ──
+        # Try geo-stripped version first, then original
+        for variant in [stripped_company, company_lower]:
+            if not variant:
+                continue
+            # Exact match on stripped version
+            domain = COMPANY_DOMAINS.get(variant, "")
+            if domain:
+                return _favicon(domain)
+            # Partial match: company contains key or key contains company
+            for key, d in COMPANY_DOMAINS.items():
+                if key in variant or variant in key:
+                    domain = d
+                    break
+            if domain:
+                return _favicon(domain)
+
+    # ── Strategy 3: Company name → domain derivation ──
+    # When we have a non-platform company name, derive domain from it
+    # BEFORE trying URL-based strategies (URLs can mislead when company is correct)
+    _is_platform_company = company_lower in _PLATFORM_COMPANIES
+    if not is_unknown and not _is_platform_company and not _is_platform_domain(company_lower + ".com"):
+        base = stripped_company or company_lower
+        clean = re.sub(r'[^a-z0-9]', '', base)
+        words = base.split()
+        first_clean = re.sub(r'[^a-z0-9]', '', words[0]) if words else ""
+
+        # Common suffixes that are rarely part of the domain
+        _generic_words = {"technologies", "technology", "solutions", "software",
+                          "systems", "services", "group", "labs", "inc", "ltd",
+                          "corp", "co", "international", "consulting", "digital"}
+        # Try without generic suffixes first (e.g. "Dell Technologies" → "dell")
+        core_words = [w for w in words if w.lower() not in _generic_words]
+        core_clean = re.sub(r'[^a-z0-9]', '', " ".join(core_words)) if core_words else ""
+
+        # Order: core words only → first word → full concatenation
+        for candidate in [core_clean, first_clean, clean]:
+            if candidate and len(candidate) > 2:
+                d = candidate + ".com"
+                if not _is_platform_domain(d):
+                    return _favicon(d)
+
+    # ── Strategy 4: ATS URL slug extraction ──
+    # Only used when company name strategies above didn't produce a result
+    # (i.e., company is "Unknown" or a platform name like "Jobvite")
+    if source_url:
+        url_lower = source_url.lower()
         for ats_pat in [
             r"(?:boards?\.)?(?:job-boards?\.)?(?:eu\.)?greenhouse\.io/([a-z0-9\-]+)",
             r"jobs?\.lever\.co/([a-z0-9\-]+)",
             r"jobs\.ashbyhq\.com/([a-z0-9\-]+)",
             r"([a-z0-9\-]+)\.wd\d+\.myworkdayjobs\.com",
             r"jobs\.jobvite\.com/([a-z0-9\-]+)",
+            r"comeet\.com/jobs/([a-z0-9\-]+)",
+            r"jobs\.smartrecruiters\.com/([a-z0-9\-]+)",
         ]:
-            m = re.search(ats_pat, source_url)
+            m = re.search(ats_pat, url_lower)
             if m:
                 slug = m.group(1)
                 # Strip common ATS slug suffixes
                 slug = re.sub(r'-(internal|careers|jobs|external|global|corp)$', '', slug)
-                domain = slug + ".com"  # Default to .com for ATS slugs
-                break
+                # Check if slug maps to a known domain
+                slug_clean = slug.replace("-", " ").strip()
+                domain = COMPANY_DOMAINS.get(slug_clean, "")
+                if not domain:
+                    domain = slug.replace("-", "") + ".com"
+                if not _is_platform_domain(domain):
+                    return _favicon(domain)
 
-    # 4. Try company name as domain (common pattern)
-    if not domain:
-        # Strip geographic suffixes (e.g. "Intuit Israel" → "Intuit")
-        geo_suffixes = r'\b(?:israel|usa|uk|india|germany|france|japan|china|europe|' \
-                       r'americas|apac|emea|global|international|worldwide|' \
-                       r'tel\s*aviv|new\s*york|london|berlin|tokyo|' \
-                       r'il|us|eu|asia|pacific|latam)\b'
-        stripped = re.sub(geo_suffixes, '', company_lower, flags=re.IGNORECASE).strip()
-        clean = re.sub(r'[^a-z0-9]', '', stripped or company_lower)
-        if clean:
-            domain = clean + ".com"
+    # ── Strategy 5: Source URL domain extraction ──
+    if source_url:
+        url_lower = source_url.lower()
+        # Pattern: careers.COMPANY.com or jobs.COMPANY.com
+        m = re.search(r'https?://(?:careers|jobs)\.([a-z0-9\-]+)\.', url_lower)
+        if m:
+            d = m.group(1) + ".com"
+            if not _is_platform_domain(d) and len(m.group(1)) > 2:
+                return _favicon(d)
 
-    if domain:
-        return f"https://www.google.com/s2/favicons?domain={domain}&sz=128"
+        # Pattern: COMPANY.com/careers or /jobs (non-ATS)
+        m = re.search(r'https?://(?:www\.)?([a-z0-9\-]+)\.(?:com|io|co\.il|ai|co|org)/', url_lower)
+        if m:
+            d = m.group(1) + ".com"
+            if not _is_platform_domain(d) and len(m.group(1)) > 2:
+                # Only use if URL has career/job path indicators
+                if re.search(r'/(careers|jobs|position|openings|join|hiring|vacancy|job/)', url_lower):
+                    return _favicon(d)
+
+    # ── Strategy 6: Title-based extraction (last resort) ──
+    if title:
+        # Pattern: "Role - Company Careers" or "Role | Company"
+        t_match = re.search(r'[-\|\u2013\u2014]\s*([A-Za-z][A-Za-z0-9\s&.\-]+?)\s*(?:careers?|jobs?)?\s*$', title, re.IGNORECASE)
+        if t_match:
+            t_company = t_match.group(1).strip()
+            t_lower = t_company.lower()
+            domain = COMPANY_DOMAINS.get(t_lower, "")
+            if domain:
+                return _favicon(domain)
+            # Derive from title company name
+            t_clean = re.sub(r'[^a-z0-9]', '', t_lower)
+            if t_clean and len(t_clean) > 2:
+                d = t_clean + ".com"
+                if not _is_platform_domain(d):
+                    return _favicon(d)
+
     return ""
 
 
@@ -2979,7 +3106,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "description": snippet[:120] if snippet else title,
             "skills": [],
             "stakeholders": stakeholders,
-            "logo": _get_company_logo(company, url),
+            "logo": _get_company_logo(company, url, title),
             "ftsJobUrl": fts_job_url if fts_job_url else "",
         })
 
@@ -3810,7 +3937,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 new_stakeholders.insert(0, old_s)
         j["stakeholders"] = new_stakeholders
         # Update logo
-        j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
+        j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""), j.get("title", ""))
         # Re-classify source from URL (picks up newly added SOURCE_MAP entries)
         # Preserve linkedin_fts source (don't overwrite with generic "linkedin")
         if j.get("source") != "linkedin_fts":
@@ -4373,7 +4500,7 @@ def main():
             j["isDeveleapCustomer"] = is_develeap_customer(fixed)
             j["isPastCustomer"] = is_develeap_past_customer(fixed)
             j["stakeholders"] = _get_stakeholders(fixed)
-            j["logo"] = _get_company_logo(fixed, url)
+            j["logo"] = _get_company_logo(fixed, url, j.get("title", ""))
 
     # 4. Merge and identify new listings
     merged, truly_new = merge_jobs(existing, new_jobs)
