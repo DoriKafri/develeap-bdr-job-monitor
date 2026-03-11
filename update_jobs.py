@@ -1216,6 +1216,34 @@ def _pick_fts_categories() -> list[str]:
     return picked
 
 
+def _extract_linkedin_activity_date(url: str) -> str | None:
+    """Extract post date from a LinkedIn activity ID embedded in the URL.
+
+    LinkedIn post/activity URLs contain a Snowflake-like ID where the top bits
+    encode the timestamp in milliseconds since Unix epoch:
+        timestamp_ms = activity_id >> 22
+
+    This is the most reliable way to determine a LinkedIn post's real age,
+    independent of search engine snippets or page scraping.
+
+    Returns ISO date string (YYYY-MM-DD) or None if no activity ID found.
+    """
+    m = re.search(r'activity-(\d{15,25})', url)
+    if not m:
+        return None
+    try:
+        activity_id = int(m.group(1))
+        ts_ms = activity_id >> 22
+        dt = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc)
+        # Sanity check: date should be between 2020 and now+1day
+        now = datetime.now(timezone.utc)
+        if dt.year < 2020 or dt > now + timedelta(days=1):
+            return None
+        return dt.strftime("%Y-%m-%d")
+    except (ValueError, OSError, OverflowError):
+        return None
+
+
 def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     """Extract job info from a LinkedIn post search result.
 
@@ -1234,7 +1262,21 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     if "linkedin.com/posts/" not in url.lower() and "linkedin.com/feed/" not in url.lower():
         return None
 
-    # Reject posts older than ~1 week based on age indicators in search snippets
+    # ── Primary age gate: extract real post date from LinkedIn activity ID ──
+    # This is the most reliable method — doesn't depend on snippet text.
+    activity_date = _extract_linkedin_activity_date(url)
+    if activity_date:
+        try:
+            from datetime import datetime as dt_cls
+            post_dt = dt_cls.strptime(activity_date, "%Y-%m-%d")
+            age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
+            if age_days > 7:
+                log.info(f"  FTS: Rejecting stale post ({age_days} days old, posted {activity_date}): {title[:60]}")
+                return None
+        except ValueError:
+            pass
+
+    # Fallback: Reject posts older than ~1 week based on age indicators in search snippets
     combined_text = f"{title} {snippet}"
     age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month|w|wk|week)s?\b', combined_text, re.IGNORECASE)
     if age_match:
@@ -2949,17 +2991,28 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 snippet_date = dt.strftime("%Y-%m-%d")
                 log.info(f"  Date from Hebrew snippet: {snippet_date} for {j['title'][:40]}")
 
+        # ── 2b. For LinkedIn posts, extract real date from activity ID ──
+        # This is the most reliable date source for LinkedIn posts.
+        activity_date = ""
+        url_lower = url.lower()
+        if "linkedin.com/posts/" in url_lower or "linkedin.com/feed/" in url_lower:
+            activity_date = _extract_linkedin_activity_date(url) or ""
+            if activity_date:
+                log.info(f"  Date from activity ID: {activity_date} for {j['title'][:40]}")
+
         # ── 3. Skip listings older than threshold ──
         # FTS posts: 7 days (we want only fresh hiring announcements)
         # Regular listings: 14 days
-        if snippet_date:
+        # Use best available date: snippet_date, activity_date, or none
+        best_date = snippet_date or activity_date
+        if best_date:
             from datetime import datetime as dt_cls
             try:
-                post_dt = dt_cls.strptime(snippet_date, "%Y-%m-%d")
+                post_dt = dt_cls.strptime(best_date, "%Y-%m-%d")
                 age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
                 max_age = 7 if j.get("source") == "linkedin_fts" else 14
                 if age_days > max_age:
-                    log.info(f"  Skipping old listing ({age_days} days): {j['title'][:50]}")
+                    log.info(f"  Skipping old listing ({age_days} days, date={best_date}): {j['title'][:50]}")
                     continue
             except ValueError:
                 pass
@@ -2967,7 +3020,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # ── 4. Scrape page for additional data ──
         is_fts = j.get("source") == "linkedin_fts"
         if is_fts:
-            j["posted"] = snippet_date if snippet_date else today
+            j["posted"] = snippet_date or activity_date or today
             j.pop("_snippet", None)
             # Skip Develeap's own listings
             if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
