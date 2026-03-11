@@ -1,18 +1,18 @@
 {
   "cat_index": 0,
-  "query_index": 6,
+  "query_index": 7,
   "cycle_count": 0,
   "seen_urls": [
-    "https://www.linkedin.com/posts/chorne1_5-lessons-on-scaling-a-professional-services-activity-7429585149769646081-CAbO",
+    "https://www.linkedin.com/posts/infros_a-hole-in-the-cloud-read-what-adiram-activity-7428775385246572544-TYi9",
+    "https://www.linkedin.com/posts/tamir-kafri-djerassi_aws-cloud-activity-7431383561120911360-AjWx",
+    "https://www.linkedin.com/posts/irfan-hamid-050379m_softwaredelivery-aidevelopment-technologyconsulting-activity-7430178648713973760-ZU6j",
     "https://www.linkedin.com/posts/shahar-barak-69387123_teads-merger-cloudcomputing-activity-7429552497750511616-bbok",
-    "https://www.linkedin.com/posts/coltechglobal_coltech-cloud-kubernetes-activity-7429195472650551296-WgfR",
     "https://www.linkedin.com/posts/heather-straw-23207331_redapt-at-30-a-legacy-of-innovation-activity-7430655260613902336-C2in",
     "https://www.linkedin.com/posts/munendragangwar_devops-aws-cloudcomputing-activity-7427913159778136065-G70h",
-    "https://www.linkedin.com/posts/irfan-hamid-050379m_softwaredelivery-aidevelopment-technologyconsulting-activity-7430178648713973760-ZU6j",
-    "https://www.linkedin.com/posts/infros_a-hole-in-the-cloud-read-what-adiram-activity-7428775385246572544-TYi9",
-    "https://www.linkedin.com/posts/benmlang_companies-that-just-raised-10-50m-now-hiring-activity-7434272516006920192-LqaC",
+    "https://www.linkedin.com/posts/coltechglobal_coltech-cloud-kubernetes-activity-7429195472650551296-WgfR",
     "https://www.linkedin.com/posts/albertocottica_made-in-eu-it-was-harder-than-i-thought-activity-7430580271978217472-ZmR9",
-    "https://www.linkedin.com/posts/tamir-kafri-djerassi_aws-cloud-activity-7431383561120911360-AjWx"
+    "https://www.linkedin.com/posts/benmlang_companies-that-just-raised-10-50m-now-hiring-activity-7434272516006920192-LqaC",
+    "https://www.linkedin.com/posts/chorne1_5-lessons-on-scaling-a-professional-services-activity-7429585149769646081-CAbO"
   ],
-  "last_run": "2026-03-11T21:53:25Z"
+  "last_run": "2026-03-11T22:19:38Z"
 }
