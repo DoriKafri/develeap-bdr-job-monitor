@@ -13939,7 +13939,7 @@ var setView = function(v) {
 
   if (v === 'queue') {
     if (tableContainer) tableContainer.style.display = 'none';
-    if (queueView) queueView.classList.add('active');
+    if (queueView) { queueView.classList.add('active'); queueView.style.overflowY = 'auto'; queueView.style.flex = '1'; queueView.style.minHeight = '0'; }
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     // Load Wolf Pack campaigns for inline context on queue items
