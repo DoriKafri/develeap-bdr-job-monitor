@@ -2246,7 +2246,7 @@ def _extract_linkedin_hiring_team(html_text: str) -> list:
 def scrape_job_page(url: str) -> dict:
     """Scrape a job listing page for date, company name, closed status, location, and hiring team.
     Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool, "hiring_team": [...]}."""
-    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": [], "post_author": "", "post_author_title": ""}
+    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": [], "post_author": "", "post_author_title": "", "post_author_photo": ""}
     if not url:
         return result
     try:
@@ -2296,6 +2296,38 @@ def scrape_job_page(url: str) -> dict:
                     candidate = title_from_desc.group(1).strip()
                     if 3 < len(candidate) < 60:
                         result["post_author_title"] = candidate
+            # Extract author profile photo from data-delayed-url attributes
+            # LinkedIn post pages embed profile photos as media.licdn.com/.../profile-displayphoto-...
+            photo_urls = re.findall(r'data-delayed-url="(https://media\.licdn\.com[^"]*profile-displayphoto[^"]*)"', text)
+            if not photo_urls:
+                # Also try regular src/content attributes with profile photo URLs
+                photo_urls = re.findall(r'(?:src|content)="(https://media\.licdn\.com[^"]*profile-displayphoto[^"]*)"', text)
+            if photo_urls:
+                # Prefer the larger scale (400x400 over 100x100/200x200)
+                best_photo = photo_urls[0]
+                for pu in photo_urls:
+                    if "scale_400_400" in pu or "shrink_400_400" in pu:
+                        best_photo = pu
+                        break
+                result["post_author_photo"] = best_photo.replace("&amp;", "&")
+                log.info(f"  LinkedIn post author photo found for {url[:50]}")
+            # Fallback: if no photo from post page, try the author's profile page og:image
+            if not result["post_author_photo"]:
+                slug_match = re.search(r'linkedin\.com/posts/([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])_', url)
+                if slug_match:
+                    profile_url = f"https://www.linkedin.com/in/{slug_match.group(1)}/"
+                    try:
+                        prof_resp = requests.get(profile_url, headers=headers, timeout=8, allow_redirects=True)
+                        if prof_resp.status_code == 200:
+                            prof_text = prof_resp.text[:50000]
+                            og_img = re.search(r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\']([^"\']+)', prof_text, re.IGNORECASE)
+                            if og_img:
+                                img_url = og_img.group(1).replace("&amp;", "&")
+                                if "profile-displayphoto" in img_url or ("media.licdn.com" in img_url and "logo" not in img_url.lower()):
+                                    result["post_author_photo"] = img_url
+                                    log.info(f"  LinkedIn post author photo from profile page for {url[:50]}")
+                    except Exception:
+                        pass
 
         # ── Detect career/multi-listing pages (e.g. expired Greenhouse job IDs redirect to careers page) ──
         # 1. Check <title> for career page patterns
@@ -4028,9 +4060,18 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                         "linkedin": author_li,
                         "source": "Post Publisher",
                         "email": "",
+                        "photo": page_data.get("post_author_photo", ""),
                     }
                     j.setdefault("stakeholders", []).insert(0, publisher)
                     log.info(f"  Backfilled post author: {page_data['post_author']} for {j['title'][:40]}")
+            else:
+                # Publisher already exists — update photo if we scraped one and it's missing
+                if page_data.get("post_author_photo"):
+                    for s in j.get("stakeholders", []):
+                        if s.get("source") == "Post Publisher" and not s.get("photo"):
+                            s["photo"] = page_data["post_author_photo"]
+                            log.info(f"  Updated Post Publisher photo for {j['title'][:40]}")
+                            break
 
         # ── Ensure ALL FTS listings have at least LinkedIn profile as contact ──
         # Even if we can't get the author's name, the LinkedIn profile URL is valuable
@@ -4054,6 +4095,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                             "linkedin": li_url,
                             "source": "Post Publisher",
                             "email": "",
+                            "photo": page_data.get("post_author_photo", ""),
                         }
                         j.setdefault("stakeholders", []).insert(0, publisher)
                         log.info(f"  Added post author from URL: {slug_name} ({li_url}) for {j['title'][:40]}")
@@ -4563,6 +4605,14 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         if ac.get("name", "").lower() not in existing_names_ats:
                             j.setdefault("stakeholders", []).insert(0, ac)
                             log.info(f"  Added ATS contact (existing): {ac['name']} for {j.get('title', '')[:40]}")
+
+            # ── Backfill Post Publisher photo for existing FTS listings ──
+            if j.get("source") == "linkedin_fts" and page_data.get("post_author_photo"):
+                for s in j.get("stakeholders", []):
+                    if s.get("source") == "Post Publisher" and not s.get("photo"):
+                        s["photo"] = page_data["post_author_photo"]
+                        log.info(f"  Updated Post Publisher photo (existing): {s.get('name', '')} for {j.get('title', '')[:40]}")
+                        break
 
         # ── Playwright validation for existing FTS LinkedIn posts ──
         if "linkedin.com" in url and j.get("source") == "linkedin_fts":
