@@ -2044,7 +2044,18 @@ def _normalize_date(raw: str) -> str:
     # Already ISO format: 2026-03-01 or 2026-03-01T...
     m = re.match(r'(\d{4}-\d{2}-\d{2})', raw)
     if m:
-        return m.group(1)
+        date_str = m.group(1)
+        parts = date_str.split("-")
+        year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
+        if 1 <= month <= 12 and 1 <= day <= 31:
+            return date_str
+        # Day/month swap: e.g. 2026-28-01 → 2026-01-28
+        if 1 <= day <= 12 and 1 <= month <= 31:
+            swapped = f"{year:04d}-{day:02d}-{month:02d}"
+            log.info(f"  Date day/month swap fix: {date_str} → {swapped}")
+            return swapped
+        log.warning(f"  Invalid date components: {date_str}")
+        return ""
     # Formats like "March 1, 2026" or "1 March 2026"
     try:
         from datetime import datetime as dt_cls
