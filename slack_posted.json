@@ -1,5 +1,6 @@
 {
   "posted_keys": [
+    "\u05de\u05e8\u05d8\u05e0\u05e1 | mertens \u2013 \u05de\u05e7\u05d1\u05d5\u05e6\u05ea \u05de\u05dc\u05dd \u05ea\u05d9\u05dd|||cloud engineer - mertens \u2013 \u05de\u05e7\u05d1\u05d5\u05e6\u05ea \u05de\u05dc\u05dd \u05ea\u05d9\u05dd",
     "zesty|||cloud engineering group leader",
     "zenity||||jobs at zenity - comeet",
     "zenity||||jobs",
@@ -230,6 +231,7 @@
     "tastewise|||ai engineer",
     "taboola||||senior mlops engineer",
     "taboola||||security devops engineer",
+    "taboola|||staff mlops engineer",
     "taboola|||senior mlops engineer|2026-03-05",
     "taboola|||senior mlops engineer",
     "taboola|||security devops engineer|2026-03-04",
@@ -692,6 +694,7 @@
     "intel corporation|ai|ai/ml engineer @ intel corporation | lhh job board",
     "ingima|||ai developer - agentic ai solutions 5305",
     "incredibuild|||devops sales engineer",
+    "in 2026|||site reliability engineer at in 2026",
     "imagen|||backend engineer | center district",
     "ibm|||devops sales engineer",
     "ibm|||agentic ai - student position-research lab",
@@ -720,6 +723,7 @@
     "globallogic|sre|sre engineer irc282026 | globallogic israel|2026-03-04",
     "globallogic|sre|sre engineer irc282026 | globallogic israel",
     "global payments inc.|||cloud engineer",
+    "gett|||staff devops engineer",
     "freightos||||jobs at freightos - comeet",
     "freightos||||jobs",
     "freightos|||jobs|2026-03-04",
@@ -834,6 +838,7 @@
     "deloitte|||jobs at deloitte - comeet|2026-03-06",
     "deloitte|||jobs at deloitte - comeet",
     "deloitte|||jobs",
+    "deloitte|||deloitte senior cloud finops engineer",
     "deloitte|||cloud architect & devops team lead",
     "deloitte|||ai engineer",
     "deloitte|finops|senior cloud finops engineer|2026-03-04",
@@ -952,6 +957,7 @@
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior finops engineer",
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior devops engineer|2026-02-22",
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior devops engineer",
+    "check point software|||check point software senior finops engineer",
     "check point software|finops|senior finops engineer|2026-28-01",
     "check point software|finops|senior finops engineer|2026-03-01",
     "check point software|finops|senior finops engineer",
@@ -1889,7 +1895,13 @@
     "nextta|||senior full\u2011stack & cloud/sre engineer (java/go + aws + devops": "2026-03-11T07:16:08.861909+00:00",
     "nextta|||lead and senior wireless core engineer /devops at nextta": "2026-03-11T07:16:08.861909+00:00",
     "nextta|||senior wireless core engineer (3gpp / cnf / telecom core) at": "2026-03-11T07:16:08.861909+00:00",
-    "secure agentic ai|||staff software engineer \u2013 secure agentic ai": "2026-03-11T07:16:08.861909+00:00"
+    "secure agentic ai|||staff software engineer \u2013 secure agentic ai": "2026-03-11T07:16:08.861909+00:00",
+    "check point software|||check point software senior finops engineer": "2026-03-11T08:32:50.586280+00:00",
+    "\u05de\u05e8\u05d8\u05e0\u05e1 | mertens \u2013 \u05de\u05e7\u05d1\u05d5\u05e6\u05ea \u05de\u05dc\u05dd \u05ea\u05d9\u05dd|||cloud engineer - mertens \u2013 \u05de\u05e7\u05d1\u05d5\u05e6\u05ea \u05de\u05dc\u05dd \u05ea\u05d9\u05dd": "2026-03-11T08:32:50.586280+00:00",
+    "deloitte|||deloitte senior cloud finops engineer": "2026-03-11T08:32:50.586280+00:00",
+    "gett|||staff devops engineer": "2026-03-11T08:32:50.586280+00:00",
+    "taboola|||staff mlops engineer": "2026-03-11T08:32:50.586280+00:00",
+    "in 2026|||site reliability engineer at in 2026": "2026-03-11T08:32:50.586280+00:00"
   },
-  "updated": "2026-03-11T07:16:08.875017+00:00"
+  "updated": "2026-03-11T08:32:50.598996+00:00"
 }
