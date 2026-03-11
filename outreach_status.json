@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T14:12:01.028Z",
+  "lastUpdated": "2026-03-11T14:18:31.686Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -304,6 +304,7 @@
     "gilad neiger"
   ],
   "hiddenCompanies": [
+    "unknown",
     "dialog",
     "in 2026",
     "newtonschool"
