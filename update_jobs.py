@@ -1596,10 +1596,45 @@ def extract_posting_date(url: str) -> str:
     return ""
 
 
+def _extract_linkedin_hiring_team(html_text: str) -> list:
+    """Extract 'People you can reach out to' / hiring team contacts from LinkedIn job page HTML.
+    Returns list of dicts: [{name, title, linkedin, photo}, ...]"""
+    contacts = []
+    idx = html_text.find("message-the-recruiter")
+    if idx < 0:
+        return contacts
+    section = html_text[idx:idx+5000]
+    links = re.findall(r'href="(https://[a-z]+\.linkedin\.com/in/[^"]+)"', section)
+    names = re.findall(
+        r'<h3[^>]*base-main-card__title[^>]*>\s*(.*?)\s*</h3>', section, re.DOTALL
+    )
+    names = [re.sub(r'<[^>]+>', '', n).strip() for n in names]
+    titles = re.findall(
+        r'<h4[^>]*base-main-card__subtitle[^>]*>\s*(.*?)\s*</h4>', section, re.DOTALL
+    )
+    titles = [re.sub(r'<[^>]+>', '', t).strip() for t in titles]
+    photos = re.findall(r'data-delayed-url="(https://media\.licdn\.com[^"]+)"', section)
+    for i in range(len(names)):
+        name = names[i]
+        if not name or len(name) < 2:
+            continue
+        contact = {
+            "name": name,
+            "title": titles[i] if i < len(titles) else "",
+            "linkedin": links[i] if i < len(links) else "",
+            "source": "LinkedIn Job Poster",
+            "email": "",
+        }
+        if i < len(photos):
+            contact["photo"] = photos[i].replace("&amp;", "&")
+        contacts.append(contact)
+    return contacts
+
+
 def scrape_job_page(url: str) -> dict:
-    """Scrape a job listing page for date, company name, closed status, and location.
-    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool}."""
-    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0}
+    """Scrape a job listing page for date, company name, closed status, location, and hiring team.
+    Returns {"date": "YYYY-MM-DD" or "", "company": "name" or "", "closed": bool, "location_country": "", "is_career_page": bool, "hiring_team": [...]}."""
+    result = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": []}
     if not url:
         return result
     try:
@@ -1916,6 +1951,13 @@ def scrape_job_page(url: str) -> dict:
                         dt = now - timedelta(days=n * 30)
                     result["date"] = dt.strftime("%Y-%m-%d")
                     break
+
+        # ── Extract LinkedIn hiring team ("People you can reach out to") ──
+        if "linkedin.com" in url:
+            hiring_team = _extract_linkedin_hiring_team(text)
+            if hiring_team:
+                result["hiring_team"] = hiring_team
+                log.info(f"  LinkedIn hiring team: {', '.join(c['name'] for c in hiring_team)} for {url[:50]}")
 
     except Exception as e:
         log.debug(f"Page scrape failed for {url[:60]}: {e}")
@@ -3091,6 +3133,21 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         j["_first_seen"] = today
         j.pop("_snippet", None)  # Remove internal field before dashboard
 
+        # ── Merge LinkedIn hiring team contacts into stakeholders ──
+        if url and "linkedin.com" in url and page_data.get("hiring_team"):
+            existing_li_urls = {s.get("linkedin", "").rstrip("/").lower()
+                                for s in j.get("stakeholders", []) if s.get("linkedin")}
+            existing_names = {s.get("name", "").lower()
+                              for s in j.get("stakeholders", []) if s.get("name")}
+            for ht in page_data["hiring_team"]:
+                ht_li = ht.get("linkedin", "").rstrip("/").lower()
+                ht_name = ht.get("name", "").lower()
+                # Skip if already present (by LinkedIn URL or name)
+                if (ht_li and ht_li in existing_li_urls) or (ht_name and ht_name in existing_names):
+                    continue
+                j.setdefault("stakeholders", []).insert(0, ht)
+                log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j['title'][:40]}")
+
         # Skip Develeap's own listings
         if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
             log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
@@ -3539,6 +3596,20 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     log.info(f"  Removing non-Israel existing listing ({loc_country}): {j.get('title', '')[:50]}")
                     if url: removed_urls.add(url)
                     continue
+            # ── Merge LinkedIn hiring team contacts into stakeholders (existing jobs) ──
+            if "linkedin.com" in url and page_data.get("hiring_team"):
+                existing_li_urls = {s.get("linkedin", "").rstrip("/").lower()
+                                    for s in j.get("stakeholders", []) if s.get("linkedin")}
+                existing_names = {s.get("name", "").lower()
+                                  for s in j.get("stakeholders", []) if s.get("name")}
+                for ht in page_data["hiring_team"]:
+                    ht_li = ht.get("linkedin", "").rstrip("/").lower()
+                    ht_name = ht.get("name", "").lower()
+                    if (ht_li and ht_li in existing_li_urls) or (ht_name and ht_name in existing_names):
+                        continue
+                    j.setdefault("stakeholders", []).insert(0, ht)
+                    log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j.get('title', '')[:40]}")
+
             time.sleep(random.uniform(0.3, 0.8))
         cleaned.append(j)
 
