@@ -3505,8 +3505,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     if url: removed_urls.add(url)
                     continue
 
-            # Check location country (only if scrape returned location data)
-            loc_country = page_data.get("location_country", "").lower()
+            # Check location country from Playwright data (FTS uses pw_data only)
+            _loc_data = (pw_data or {}) if j.get("source") == "linkedin_fts" else page_data
+            loc_country = _loc_data.get("location_country", "").lower()
             if loc_country:
                 israel_indicators = ["israel", "il", "tel aviv", "herzliya", "haifa",
                                      "jerusalem", "ramat gan", "ra'anana", "raanana",
