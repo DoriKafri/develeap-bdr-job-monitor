@@ -243,6 +243,7 @@
     "taboola|ai|senior mlops engineer",
     "surecomp||||devops team lead",
     "surecomp||||ai engineer (mid) - rivo ai product & platform at surecomp",
+    "surecomp|||senior ai engineer - rivo ai product & platform at surecomp",
     "surecomp|||devops team lead|2026-03-05",
     "surecomp|||devops team lead",
     "surecomp|||ai engineer (mid) - rivo ai product & platform at surecomp|2026-02-28",
@@ -425,8 +426,10 @@
     "pentera|devops|ctf infrastructure engineer at pentera - comeet",
     "pentera|devops|ctf infrastructure engineer",
     "paragon|||site reliability engineer (sre)",
+    "paragon|||paragon site reliability engineer (sre)",
     "pango|||senior devops engineer",
     "pango|||devex platform engineer",
+    "orchid|||senior ai engineer",
     "oligo security||||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
     "oligo security|||senior fullstack engineer \u2013 tel aviv, israel | oligo careers|2026-02-26",
     "oligo security|||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
@@ -492,6 +495,7 @@
     "ness technologies israel|finops|finops engineer @ ness technologies israel | lhh job board",
     "nebius|||it infrastructure engineer",
     "navina|||machine learning engineer",
+    "myops by yael group|||senior cloud solutions architect",
     "my team|||security researcher at my team",
     "my team|||cloud engineer at my team",
     "motorolasolutions||||cloud finops analyst - myworkdayjobs.com",
@@ -582,6 +586,7 @@
     "linearb|||site reliability engineer (sre) at linearb - expertini.work|2026-03-04",
     "linearb|||site reliability engineer (sre) at linearb - expertini.work",
     "linearb|||site reliability engineer (sre)",
+    "linearb|||linearb site reliability engineer (sre)",
     "linearb|sre|site reliability engineer (sre) at linearb - expertini.work|2026-03-04",
     "linearb|sre|site reliability engineer (sre) at linearb - expertini.work",
     "lightricks||||tech lead - ml platform, jerusalem \u2022 r&d",
@@ -684,6 +689,7 @@
     "jobgether|ai|jobgether - senior ai engineer (remote from israel)|2026-03-04",
     "jobgether|ai|jobgether - senior ai engineer (remote from israel)",
     "jit|||ai engineer",
+    "iscar israel|||iscar israel artificial intelligence engineer",
     "ironalgo|||mlops engineer",
     "intel corporation||||ai/ml engineer @ intel corporation | lhh job board",
     "intel corporation||||ai/ml engineer",
@@ -1901,7 +1907,13 @@
     "deloitte|||deloitte senior cloud finops engineer": "2026-03-11T08:32:50.586280+00:00",
     "gett|||staff devops engineer": "2026-03-11T08:32:50.586280+00:00",
     "taboola|||staff mlops engineer": "2026-03-11T08:32:50.586280+00:00",
-    "in 2026|||site reliability engineer at in 2026": "2026-03-11T08:32:50.586280+00:00"
+    "in 2026|||site reliability engineer at in 2026": "2026-03-11T08:32:50.586280+00:00",
+    "iscar israel|||iscar israel artificial intelligence engineer": "2026-03-11T10:28:52.468806+00:00",
+    "paragon|||paragon site reliability engineer (sre)": "2026-03-11T10:28:52.468806+00:00",
+    "linearb|||linearb site reliability engineer (sre)": "2026-03-11T10:28:52.468806+00:00",
+    "surecomp|||senior ai engineer - rivo ai product & platform at surecomp": "2026-03-11T10:28:52.468806+00:00",
+    "orchid|||senior ai engineer": "2026-03-11T10:28:52.468806+00:00",
+    "myops by yael group|||senior cloud solutions architect": "2026-03-11T10:28:52.468806+00:00"
   },
-  "updated": "2026-03-11T08:32:50.598996+00:00"
+  "updated": "2026-03-11T10:28:52.480953+00:00"
 }
