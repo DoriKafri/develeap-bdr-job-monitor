@@ -2973,6 +2973,16 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
                 log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
                 continue
+            # Skip FTS posts from hidden companies
+            _hidden_fts = _load_hidden_companies()
+            if j["company"].lower() in _hidden_fts:
+                log.info(f"  Skipping hidden company FTS listing: {j['title'][:50]}")
+                continue
+            # Skip FTS with garbage company names (too short, just a year, generic)
+            fts_company = j.get("company", "").strip()
+            if len(fts_company) < 3 or re.match(r'^(in\s+)?\d{4}$', fts_company, re.IGNORECASE):
+                log.info(f"  Skipping FTS with invalid company name '{fts_company}': {j['title'][:50]}")
+                continue
             # ── Playwright validation for FTS LinkedIn posts ──
             if url and "linkedin.com" in url:
                 pw_data = _scrape_linkedin_playwright(url)
