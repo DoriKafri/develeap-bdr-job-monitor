@@ -245,7 +245,13 @@ def _get_company_logo(company: str, source_url: str = "") -> str:
 
     # 4. Try company name as domain (common pattern)
     if not domain:
-        clean = re.sub(r'[^a-z0-9]', '', company_lower)
+        # Strip geographic suffixes (e.g. "Intuit Israel" → "Intuit")
+        geo_suffixes = r'\b(?:israel|usa|uk|india|germany|france|japan|china|europe|' \
+                       r'americas|apac|emea|global|international|worldwide|' \
+                       r'tel\s*aviv|new\s*york|london|berlin|tokyo|' \
+                       r'il|us|eu|asia|pacific|latam)\b'
+        stripped = re.sub(geo_suffixes, '', company_lower, flags=re.IGNORECASE).strip()
+        clean = re.sub(r'[^a-z0-9]', '', stripped or company_lower)
         if clean:
             domain = clean + ".com"
 
