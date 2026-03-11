@@ -109,18 +109,20 @@
   /* ── Run Progress Bar ── */
   .run-progress { position:fixed; top:0; left:240px; right:0; z-index:999; transition:opacity 0.4s ease, transform 0.4s ease; }
   .run-progress.hidden { opacity:0; pointer-events:none; transform:translateY(-100%); }
-  /* Push main content down when progress bar is visible */
-  body.run-active .main-content { margin-top:40px; height:calc(100vh - 40px); }
-  .run-progress-inner { display:flex; align-items:center; height:40px; padding:0 24px; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+  body.run-active .main-content { margin-top:72px; height:calc(100vh - 72px); }
+  .run-progress-inner { display:flex; flex-direction:column; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-bottom:1px solid rgba(255,176,0,0.2); }
+  .run-progress-top { display:flex; align-items:center; height:40px; padding:0 20px; gap:12px; }
+  .run-progress-bottom { display:flex; align-items:center; height:32px; padding:0 20px; background:rgba(0,0,0,0.15); gap:12px; }
   .run-progress-steps { display:flex; align-items:center; flex:1; gap:0; }
-  .run-step { display:flex; align-items:center; gap:6px; position:relative; }
-  .run-step-icon { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:rgba(255,255,255,0.35); border:2px solid rgba(255,255,255,0.15); background:transparent; transition:all 0.3s ease; flex-shrink:0; }
-  .run-step-label { font-size:11px; color:rgba(255,255,255,0.4); font-weight:500; letter-spacing:0.02em; transition:all 0.3s ease; white-space:nowrap; }
-  .run-step-connector { flex:1; height:2px; background:rgba(255,255,255,0.1); margin:0 8px; min-width:16px; position:relative; overflow:hidden; border-radius:1px; }
+  .run-step { display:flex; align-items:center; gap:5px; position:relative; }
+  .run-step-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:rgba(255,255,255,0.35); border:2px solid rgba(255,255,255,0.15); background:transparent; transition:all 0.3s ease; flex-shrink:0; }
+  .run-step-label { font-size:10px; color:rgba(255,255,255,0.4); font-weight:500; letter-spacing:0.02em; transition:all 0.3s ease; white-space:nowrap; }
+  .run-step-time { font-size:9px; color:rgba(255,255,255,0.3); font-variant-numeric:tabular-nums; }
+  .run-step-connector { flex:1; height:2px; background:rgba(255,255,255,0.1); margin:0 6px; min-width:12px; position:relative; overflow:hidden; border-radius:1px; }
   .run-step-connector-fill { position:absolute; left:0; top:0; height:100%; width:0; background:var(--accent); transition:width 0.5s ease; border-radius:1px; }
   .run-step.done .run-step-icon { background:var(--accent); border-color:var(--accent); color:white; }
   .run-step.done .run-step-label { color:rgba(255,255,255,0.85); }
-  /* connector fill is set via inline style in JS */
+  .run-step.done .run-step-time { color:rgba(255,255,255,0.5); }
   .run-step.active .run-step-icon { border-color:var(--accent); color:white; background:rgba(255,176,0,0.25); animation:pulse-ring 1.5s ease infinite; }
   .run-step.active .run-step-label { color:white; font-weight:600; }
   .run-step.fail .run-step-icon { background:#e53935; border-color:#e53935; color:white; }
@@ -129,7 +131,20 @@
   .run-progress-result span { font-size:11px; font-weight:600; letter-spacing:0.02em; }
   .run-progress-result.success span { color:#69f0ae; }
   .run-progress-result.failure span { color:#ff8a80; }
+  .run-elapsed { font-size:11px; color:rgba(255,255,255,0.7); font-variant-numeric:tabular-nums; font-weight:600; margin-left:auto; display:flex; align-items:center; gap:5px; }
+  .run-elapsed-icon { width:14px; height:14px; opacity:0.6; }
+  .run-info-text { font-size:11px; color:rgba(255,255,255,0.6); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .run-info-text .highlight { color:var(--accent); font-weight:600; }
+  .run-info-status { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; }
+  .run-info-status.running { color:var(--accent); }
+  .run-info-status.success { color:#69f0ae; }
+  .run-info-status.failed { color:#ff8a80; }
+  .btn-run.is-running { opacity:0.5; cursor:not-allowed; pointer-events:none; position:relative; }
+  .btn-run.is-running::after { content:''; position:absolute; bottom:0; left:0; height:2px; background:var(--accent); animation:run-btn-pulse 2s ease-in-out infinite; width:100%; border-radius:0 0 6px 6px; }
+  @keyframes run-btn-pulse { 0%,100%{ opacity:0.3; } 50%{ opacity:1; } }
   @keyframes pulse-ring { 0%,100%{ box-shadow:0 0 0 0 rgba(255,176,0,0.4); } 50%{ box-shadow:0 0 0 5px rgba(255,176,0,0); } }
+  @keyframes spin-loader { 0%{ transform:rotate(0deg); } 100%{ transform:rotate(360deg); } }
+  .run-spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.2); border-top-color:var(--accent); border-radius:50%; animation:spin-loader 0.8s linear infinite; flex-shrink:0; } 50%{ box-shadow:0 0 0 5px rgba(255,176,0,0); } }
 
   /* ── MAIN CONTENT ── */
   .main-content { margin-left:240px; margin-top:0; padding:0 20px; display:flex; flex-direction:column; height:100vh; overflow:hidden; }
@@ -1392,7 +1407,14 @@
 
   <!-- Run Progress -->
   <div class="run-progress hidden" id="runProgress">
-    <div class="run-progress-inner" id="runProgressInner"></div>
+    <div class="run-progress-inner" id="runProgressInner">
+      <div class="run-progress-top" id="runProgressTop"></div>
+      <div class="run-progress-bottom" id="runProgressBottom">
+        <div class="run-spinner"></div>
+        <span class="run-info-text" id="runInfoText">Waiting for runner...</span>
+        <span class="run-info-status running" id="runInfoStatus">STARTING</span>
+      </div>
+    </div>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -2454,8 +2476,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-11T22:36:47Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 159, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 69, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 73, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 71, "error": ""}];
+let LAST_UPDATED = "2026-03-11T23:09:25Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 277, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 1821, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 109, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 4130, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2857,15 +2879,42 @@ let ALL_JOBS = [
       },
       {
         "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/trtworld_intel-google-microsoft-cisco-paypal-activity-7435992057552437248-OJQU",
+        "sourceUrl": "https://www.linkedin.com/posts/ronenshetelboim_cycode-cycodeai-productsecurity-activity-7434999368031707136-q5-C",
         "title": "Security Engineer"
       },
       {
         "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/owasp-israel_appsecil-owasp-activity-7432458122281021440-W1pa",
+        "sourceUrl": "https://www.linkedin.com/posts/taly-gliksman_%D7%90%D7%99%D7%9F-%D7%A0%D7%A9%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%A1%D7%A4%D7%A8-%D7%9C%D7%94%D7%99%D7%99%D7%98%D7%A7-%D7%95%D7%A1%D7%99%D7%99%D7%91%D7%A8-eran-shaham-activity-7437118508460744704-83mf",
+        "title": "Security Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/jasonthornesap_cybersecurity-leadership-hiring-activity-7434154811392016384-eo1V",
         "title": "Security Engineer"
       }
     ],
+    "_first_seen": "2026-03-11"
+  },
+  {
+    "id": "888d7ea3",
+    "title": "Palantir Technologies - Administrative Business Partner",
+    "subtitle": "Administrative Business Partner - Security. Washington, D.C.",
+    "company": "Palantir",
+    "companyIndustry": "",
+    "location": "Hybrid",
+    "locationSlug": "hybrid",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/palantir/a63092fa-64c0-4c09-b827-bb23a98cb207/apply?lever-source=Job%20postings%20feed&utm_source=therundown",
+    "category": "devops",
+    "posted": "2026-03-11",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Administrative Business Partner - Security. Washington, D.C.. Administrative /. Full-time /. Hybrid. Submit your applica",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=palantir.com&sz=128",
+    "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
   },
   {
@@ -3027,6 +3076,59 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-10"
   },
   {
+    "id": "940d965b",
+    "title": "Yael Group DevSecOps (24610) | Bnei Brak ...",
+    "subtitle": "The role includes providing information security guidance to",
+    "company": "Yael Group",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/devsecops-24610-at-yael-group-4382029889",
+    "category": "security",
+    "posted": "2026-03-10",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "The role includes providing information security guidance to development and DevOps teams. • Providing guidance and perf",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Shir Naaman",
+        "title": "Technical Talent Sourcer | Driven by People, Purpose &amp; Meaningful Matches | Coffee Lover ✨☕",
+        "linkedin": "https://il.linkedin.com/in/shir-naaman",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D5603AQGGDsPIWacBug/profile-displayphoto-shrink_400_400/B56ZWqVKyCGsAg-/0/1742319432291?e=2147483647&v=beta&t=qozwB6j-5rekU7Z3U6lNN5vE9OiUqhka6WabxVYTX0s",
+        "connectMsg": "Hi Shir, I noticed Myops By Yael Group is hiring a Senior Cloud Solutions Architect — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shir! I wanted to share how Develeap helps companies like Myops By Yael Group accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Doron Gigi",
+        "title": "CEO",
+        "linkedin": "https://www.linkedin.com/in/doron-gigi-93123823/",
+        "source": "LinkedIn",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/C5616AQGssC97QPWMrg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1592234319262?e=2147483647&v=beta&t=isbhgiDbBN6fPqn1zzpLz2LsrF2CDlmB2dypAM2IIDY",
+        "connectMsg": "Hi Doron, I noticed Myops By Yael Group is hiring a Senior Cloud Solutions Architect — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Doron! I wanted to share how Develeap helps companies like Myops By Yael Group accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Amit Dover",
+        "title": "Deputy CEO & CTO",
+        "linkedin": "https://www.linkedin.com/in/amitdover/",
+        "source": "Company Website",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQE3tHxmjdZJLg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1690212656619?e=2147483647&v=beta&t=OD5N3iSPcfnRoTp38_23kNNM79C7nwr6U9UHOAFvUHo",
+        "connectMsg": "Hi Amit, I noticed Myops By Yael Group is hiring a Senior Cloud Solutions Architect — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Amit! I wanted to share how Develeap helps companies like Myops By Yael Group accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=yaelgroup.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-10"
+  },
+  {
     "id": "db5c1ab9",
     "title": "AI Agent Engineer - Jobgether",
     "subtitle": "We are currently looking for an AI Agent Engineer in Israel.",
@@ -3166,59 +3268,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=intuit.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "977d056a",
-    "title": "Job Application for Product Engineer - DoiT Labs",
-    "subtitle": "Engage directly with customers and internal domain experts t",
-    "company": "DoiT International",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/doitintl/jobs/7659959003",
-    "category": "finops",
-    "posted": "2026-03-10",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Engage directly with customers and internal domain experts to build deep empathy for the workflows and challenges of clo",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Idan Peleg",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/idanpeleg/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHgZIFwzk8QeA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1675784927315?e=2147483647&v=beta&t=M7q7gELjxlFb_mMp8XAm6pr3Qebv0dpW39-sRiXsx8I",
-        "connectMsg": "Hi Idan, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Idan! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Vadim Solovey",
-        "title": "CTO & Managing Director",
-        "linkedin": "https://www.linkedin.com/in/vadimska/",
-        "source": "LinkedIn",
-        "email": "vadim@doit.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFPoV5ZQ7Me5A/profile-displayphoto-shrink_400_400/B4EZYg.M3iHkAs-/0/1744309899319?e=2147483647&v=beta&t=jMCQ4alC-xlz-1CeW__YKp9NK049thY6Mw774gJuPkU",
-        "connectMsg": "Hi Vadim, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Vadim! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Yoav Toussia-Cohen",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/yoavtc/",
-        "source": "LinkedIn",
-        "email": "yoav@doit.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQGhQRDSN2jeEw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1714095852738?e=2147483647&v=beta&t=AdlS6drQdP9Qo9paPN9KMrUoEOuvSZy_ZfSXvY1ecn0",
-        "connectMsg": "Hi Yoav, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yoav! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=doit.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
   },
   {
     "id": "55f80f1a",
@@ -3866,7 +3915,7 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Kobi! I wanted to share how Develeap helps companies like Develeap accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
-        "name": "Dori Kafri‏",
+        "name": "Dori Kafri, CEO at Develeap",
         "title": "CEO, I lead our employee-owned, people-first professional se",
         "linkedin": "https://il.linkedin.com/in/dori-kafri",
         "source": "Auto-discovered",
@@ -4522,28 +4571,6 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-11"
   },
   {
-    "id": "3cbac1fc",
-    "title": "Mobile Software Engineer in test @ DevSavant Inc.",
-    "subtitle": "At DevSavant, we are a trusted technology partner. We delive",
-    "company": "Devsavant",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "ashby",
-    "sourceUrl": "https://jobs.ashbyhq.com/devsavant/bd4a5a28-2c7d-4394-a41c-547b269aa33e",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "At DevSavant, we are a trusted technology partner. We deliver innovative, high-quality solutions with a focus on excelle",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=devsavant.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
     "id": "b9d529d7",
     "title": "Senior Full-stack Engineer (Beacon Project)",
     "subtitle": "Senior Full-stack Engineer (Beacon Project) - Digital Market",
@@ -4562,6 +4589,28 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=truelogic.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-11"
+  },
+  {
+    "id": "3cbac1fc",
+    "title": "Mobile Software Engineer in test @ DevSavant Inc.",
+    "subtitle": "At DevSavant, we are a trusted technology partner. We delive",
+    "company": "Devsavant",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "ashby",
+    "sourceUrl": "https://jobs.ashbyhq.com/devsavant/bd4a5a28-2c7d-4394-a41c-547b269aa33e",
+    "category": "devops",
+    "posted": "2026-03-06",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "At DevSavant, we are a trusted technology partner. We deliver innovative, high-quality solutions with a focus on excelle",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=devsavant.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
   },
@@ -4892,7 +4941,7 @@ let ALL_JOBS = [
         "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/",
         "source": "LinkedIn",
         "email": "benny.savinik@surecomp.com",
-        "connectMsg": "Hi Benny, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Benny, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Benny! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
@@ -4902,7 +4951,7 @@ let ALL_JOBS = [
         "source": "LinkedIn",
         "email": "tsafrir.atar@surecomp.com",
         "photo": "https://media.licdn.com/dms/image/v2/C4E16AQHIy2KEpVie6g/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1516202154239?e=2147483647&v=beta&t=ImfNW88e4AOHG5RF0jleYkSpUZ5ZZjuOPGm9mn23YRM",
-        "connectMsg": "Hi Tsafrir, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Tsafrir, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Tsafrir! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
@@ -4911,7 +4960,7 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "eyal.hareuveny@surecomp.com",
-        "connectMsg": "Hi Eyal, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Eyal, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Eyal! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
@@ -5035,11 +5084,6 @@ let ALL_JOBS = [
       {
         "source": "greenhouse",
         "sourceUrl": "https://boards.greenhouse.io/doitintl/jobs/7653780003",
-        "title": "Senior Full Stack Engineer - House ChannelOps"
-      },
-      {
-        "source": "greenhouse",
-        "sourceUrl": "https://boards.greenhouse.io/doitintl/jobs/7653776003",
         "title": "Senior Full Stack Engineer - House ChannelOps"
       }
     ],
@@ -5244,6 +5288,46 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-05"
   },
   {
+    "id": "e24a70b8",
+    "title": "Millennium Machine Learning Engineer",
+    "subtitle": "Bachelor's with 4+ years, Master's with 2+ years, or PhD in ",
+    "company": "Millennium",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/machine-learning-engineer-at-millennium-4329605755",
+    "category": "ai",
+    "posted": "2026-03-05",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Bachelor's with 4+ years, Master's with 2+ years, or PhD in Computer Science, Data Science, Machine Learning, or related",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Israel Englander",
+        "title": "Chairman and Chief Executive Officer at ...",
+        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Ben Clark",
+        "title": "Chief Technology Officer at Millennium ...",
+        "linkedin": "https://www.linkedin.com/in/ben-clark-6441168",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Ben, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Ben! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=mlp.com&sz=128",
+    "_first_seen": "2026-03-05"
+  },
+  {
     "id": "e9699f29",
     "title": "abra Data Engineer | Center District, Israel ...",
     "subtitle": "3+ years of experience in BI / Data Engineering, with strong",
@@ -5421,14 +5505,7 @@ let ALL_JOBS = [
     ],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-03-05",
-    "altSources": [
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/itay-zohar-a5ba822a8_%D7%A4%D7%95%D7%A1%D7%98-%D7%97%D7%99%D7%A4%D7%95%D7%A9-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%94%D7%99%D7%99-%D7%9C%D7%99%D7%A0%D7%A7%D7%93%D7%90%D7%99%D7%9F-%D7%91%D7%A9%D7%A0%D7%99%D7%9D-activity-7433853940691025920-XBET",
-        "title": "DevOps Engineer"
-      }
-    ]
+    "_first_seen": "2026-03-05"
   },
   {
     "id": "50ede26d",
@@ -6010,7 +6087,7 @@ let ALL_JOBS = [
       },
       {
         "source": "workday",
-        "sourceUrl": "https://mastercard.wd1.myworkdayjobs.com/en-US/corporatecareers/job/Ramat-Gan-Israel/Senior-DevOps-Engineer_R-272349/apply/useMyLastApplication",
+        "sourceUrl": "https://mastercard.wd1.myworkdayjobs.com/en-us/corporatecareers/job/Ramat-Gan-Israel/Senior-DevOps-Engineer_R-272349/apply",
         "title": "Senior DevOps Engineer - Myworkdayjobs.com"
       }
     ],
@@ -7228,7 +7305,14 @@ let ALL_JOBS = [
     ],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-03-03"
+    "_first_seen": "2026-03-03",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/kobi-jacob-katz_%D7%90%D7%A0%D7%99-%D7%90%D7%92%D7%9C%D7%94-%D7%9C%D7%9B%D7%9D-%D7%A1%D7%95%D7%93-%D7%90%D7%A0%D7%97%D7%A0%D7%95-%D7%9C%D7%90-%D7%A7%D7%9E%D7%99%D7%9D-%D7%91%D7%91%D7%95%D7%A7%D7%A8-%D7%9B%D7%93%D7%99-activity-7432842347589074944-eaT8",
+        "title": "FinOps Engineer"
+      }
+    ]
   },
   {
     "id": "7328882f",
@@ -7759,7 +7843,7 @@ let ALL_JOBS = [
         "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/",
         "source": "LinkedIn",
         "email": "benny.savinik@surecomp.com",
-        "connectMsg": "Hi Benny, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Benny, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Benny! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
@@ -7769,7 +7853,7 @@ let ALL_JOBS = [
         "source": "LinkedIn",
         "email": "tsafrir.atar@surecomp.com",
         "photo": "https://media.licdn.com/dms/image/v2/C4E16AQHIy2KEpVie6g/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1516202154239?e=2147483647&v=beta&t=ImfNW88e4AOHG5RF0jleYkSpUZ5ZZjuOPGm9mn23YRM",
-        "connectMsg": "Hi Tsafrir, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Tsafrir, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Tsafrir! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
@@ -7778,103 +7862,11 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "eyal.hareuveny@surecomp.com",
-        "connectMsg": "Hi Eyal, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "connectMsg": "Hi Eyal, I noticed Surecomp is hiring a AI Engineer (Mid) — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Eyal! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=surecomp.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "235ecd3c",
-    "title": "Senior AI Engineer - RIVO AI Product & Platform at Surecomp",
-    "subtitle": "We're hiring a Senior AI Engineer to join a newly formed AI ",
-    "company": "Surecomp",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/Surecomp/24.00E/senior-ai-engineer---rivo-ai-product--platform/6A.264",
-    "category": "ai",
-    "posted": "2026-02-28",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We're hiring a Senior AI Engineer to join a newly formed AI Engineering group ... Location: Kfar Saba, Israel. Reporting",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Benny Savinik",
-        "title": "VP Technology",
-        "linkedin": "https://www.linkedin.com/in/benny-savinik-0299364/",
-        "source": "LinkedIn",
-        "email": "benny.savinik@surecomp.com",
-        "connectMsg": "Hi Benny, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Benny! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Tsafrir Atar",
-        "title": "VP Digitization",
-        "linkedin": "https://il.linkedin.com/in/tsafriratar",
-        "source": "LinkedIn",
-        "email": "tsafrir.atar@surecomp.com",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E16AQHIy2KEpVie6g/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1516202154239?e=2147483647&v=beta&t=ImfNW88e4AOHG5RF0jleYkSpUZ5ZZjuOPGm9mn23YRM",
-        "connectMsg": "Hi Tsafrir, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Tsafrir! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Eyal Hareuveny",
-        "title": "President",
-        "linkedin": "",
-        "source": "Company Website",
-        "email": "eyal.hareuveny@surecomp.com",
-        "connectMsg": "Hi Eyal, I noticed Surecomp is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Eyal! I wanted to share how Develeap helps companies like Surecomp accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=surecomp.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "18e7da64",
-    "title": "Dream Senior DevOps Engineer | Tel Aviv ...",
-    "subtitle": "אימות אבטחה · 5-6 years experience with DevOps technologies.",
-    "company": "Dream",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/senior-devops-engineer-at-dream-4335498627",
-    "category": "devops",
-    "posted": "2026-02-27",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "אימות אבטחה · 5-6 years experience with DevOps technologies. · Experience with design, build, development and maintenanc",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Gil D.‏",
-        "title": "‏Co-Founder & CTO @ Dream",
-        "linkedin": "https://il.linkedin.com/in/gildolev",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Gil, I noticed Dream is hiring a Dream Senior DevOps Engineer | Tel Aviv ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Gil! I wanted to share how Develeap helps companies like Dream accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Dreams Technologies, UK & India",
-        "title": "Co-Founder & CEO at Dreams Technologies, UK & India",
-        "linkedin": "https://in.linkedin.com/in/dreamstechnologies",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Dreams, I noticed Dream is hiring a Dream Senior DevOps Engineer | Tel Aviv ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Dreams! I wanted to share how Develeap helps companies like Dream accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=dream.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
   },
@@ -11565,12 +11557,17 @@ const RUN_COOLDOWN_MS = 15 * 60 * 1000; // 15 minutes
 let _runCooldownTimer = null;
 
 function triggerWorkflowRun() {
-  const btn = document.getElementById('runBtn');
-  const label = document.getElementById('runBtnLabel');
+  var btn = document.getElementById('runBtn');
+  var label = document.getElementById('runBtnLabel');
   if (btn.disabled) return;
 
+  // Immediately disable all run buttons
+  var allBtns = document.querySelectorAll('.btn-run');
+  allBtns.forEach(function(b) { b.disabled = true; b.classList.add('is-running'); });
+  label.textContent = 'Triggered!';
+
   // Trigger GitHub Actions workflow_dispatch
-  const _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
+  var _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
   fetch('https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/actions/workflows/job-monitor.yml/dispatches', {
     method: 'POST',
     headers: {
@@ -11579,21 +11576,20 @@ function triggerWorkflowRun() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ref: 'main' }),
-  }).then(resp => {
+  }).then(function(resp) {
     if (resp.ok || resp.status === 204) {
       startRunCooldown();
       startRunTracking();
     } else {
       label.textContent = 'Error!';
-      setTimeout(() => { label.textContent = 'Run Now'; }, 3000);
+      allBtns.forEach(function(b) { b.classList.remove('is-running'); });
+      setTimeout(function() { label.textContent = 'Run Now'; }, 3000);
     }
-  }).catch(() => {
+  }).catch(function() {
     label.textContent = 'Failed';
-    setTimeout(() => { label.textContent = 'Run Now'; }, 3000);
+    allBtns.forEach(function(b) { b.classList.remove('is-running'); });
+    setTimeout(function() { label.textContent = 'Run Now'; }, 3000);
   });
-
-  label.textContent = 'Triggered!';
-  btn.disabled = true;
 }
 
 function startRunCooldown() {
@@ -11653,45 +11649,96 @@ restoreRunCooldown();
 
 // ── Run Progress Tracker ─────────────────────────────────────────────
 const _RUN_STEPS = [
-  { key:'Checkout repository', label:'Checkout' },
-  { key:'Install dependencies', label:'Install' },
-  { key:'Run job monitor update', label:'Scraping' },
-  { key:'Commit updated dashboard', label:'Commit' }
+  { key:'Checkout repository', label:'Checkout', desc:'Cloning repository from GitHub...' },
+  { key:'Set up Python', label:'Python', desc:'Setting up Python 3.12 runtime...' },
+  { key:'Install dependencies', label:'Deps', desc:'Installing pip packages (requests, playwright, etc.)...' },
+  { key:'Install Playwright browsers', label:'Browser', desc:'Downloading Chromium for web scraping...' },
+  { key:'Run job monitor update', label:'Scraping', desc:'Scraping job boards and enriching listings with AI...' },
+  { key:'Commit updated dashboard', label:'Deploy', desc:'Committing new data and deploying to GitHub Pages...' }
 ];
 let _runPollTimer = null;
 let _runTrackId = null;
+let _runStartTime = null;
+let _runElapsedTimer = null;
+
+function _fmtDuration(ms) {
+  var s = Math.floor(ms / 1000);
+  var m = Math.floor(s / 60); s = s % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+function _fmtStepTime(started, completed) {
+  if (!started) return '';
+  var a = new Date(started).getTime();
+  var b = completed ? new Date(completed).getTime() : Date.now();
+  return _fmtDuration(b - a);
+}
 
 function _showRunProgress() {
-  const el = document.getElementById('runProgress');
+  var el = document.getElementById('runProgress');
   if (el) el.classList.remove('hidden');
   document.body.classList.add('run-active');
+  // Disable both run buttons
+  var btns = document.querySelectorAll('.btn-run');
+  btns.forEach(function(b) { b.disabled = true; b.classList.add('is-running'); });
 }
 function _hideRunProgress() {
-  const el = document.getElementById('runProgress');
+  var el = document.getElementById('runProgress');
   if (el) el.classList.add('hidden');
   document.body.classList.remove('run-active');
+  // Re-enable run buttons (cooldown will re-disable if needed)
+  var btns = document.querySelectorAll('.btn-run');
+  btns.forEach(function(b) { b.classList.remove('is-running'); });
+  if (_runElapsedTimer) { clearInterval(_runElapsedTimer); _runElapsedTimer = null; }
 }
-function _renderRunSteps(steps, conclusion) {
-  var el = document.getElementById('runProgressInner');
-  if (!el) return;
 
-  var icons = ['📥','📦','🔍','💾'];
+function _startElapsedTimer() {
+  _runStartTime = Date.now();
+  localStorage.setItem('runStartTime', _runStartTime);
+  function updateEl() {
+    var el = document.getElementById('runElapsed');
+    if (el) el.textContent = _fmtDuration(Date.now() - _runStartTime);
+  }
+  updateEl();
+  _runElapsedTimer = setInterval(updateEl, 1000);
+}
+function _restoreElapsedTimer() {
+  var saved = localStorage.getItem('runStartTime');
+  if (saved) {
+    _runStartTime = parseInt(saved);
+    function updateEl() {
+      var el = document.getElementById('runElapsed');
+      if (el) el.textContent = _fmtDuration(Date.now() - _runStartTime);
+    }
+    updateEl();
+    _runElapsedTimer = setInterval(updateEl, 1000);
+  }
+}
+
+function _renderRunSteps(steps, conclusion, jobStarted) {
+  var topEl = document.getElementById('runProgressTop');
+  var infoText = document.getElementById('runInfoText');
+  var infoStatus = document.getElementById('runInfoStatus');
+  var bottomEl = document.getElementById('runProgressBottom');
+  if (!topEl) return;
+
   var html = '<div class="run-progress-steps">';
   var prevDone = false;
+  var activeDesc = 'Waiting for GitHub runner to pick up the job...';
+  var activeLabel = '';
+  var completedCount = 0;
 
   _RUN_STEPS.forEach(function(s, i) {
     var match = steps.find(function(st) { return st.name === s.key; });
     var cls = '';
     var done = false;
+    var stepTime = '';
     if (match) {
-      if (match.conclusion === 'success') { cls = 'done'; done = true; }
-      else if (match.conclusion === 'failure') { cls = 'fail'; }
-      else if (match.status === 'in_progress') { cls = 'active'; }
+      if (match.conclusion === 'success') { cls = 'done'; done = true; stepTime = _fmtStepTime(match.started_at, match.completed_at); completedCount++; }
+      else if (match.conclusion === 'failure') { cls = 'fail'; stepTime = _fmtStepTime(match.started_at, match.completed_at); activeDesc = 'Step failed: ' + s.label; activeLabel = s.label; }
+      else if (match.status === 'in_progress') { cls = 'active'; stepTime = _fmtStepTime(match.started_at, null); activeDesc = s.desc; activeLabel = s.label; }
     }
-    // Mark all steps done if conclusion is success
-    if (conclusion === 'success') { cls = 'done'; done = true; }
+    if (conclusion === 'success') { cls = 'done'; done = true; completedCount = _RUN_STEPS.length; }
 
-    // Connector before each step (except first)
     if (i > 0) {
       html += '<div class="run-step-connector"><div class="run-step-connector-fill" style="width:' + (prevDone ? '100' : '0') + '%"></div></div>';
     }
@@ -11700,89 +11747,145 @@ function _renderRunSteps(steps, conclusion) {
     html += '<div class="run-step ' + cls + '">';
     html += '<div class="run-step-icon">' + iconContent + '</div>';
     html += '<span class="run-step-label">' + s.label + '</span>';
+    if (stepTime && (cls === 'done' || cls === 'active')) {
+      html += '<span class="run-step-time">' + stepTime + '</span>';
+    }
     html += '</div>';
     prevDone = done;
   });
 
   html += '</div>';
 
+  // Elapsed time on the right
+  html += '<div class="run-elapsed"><svg class="run-elapsed-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="runElapsed">0:00</span></div>';
+
   // Result badge
   if (conclusion === 'success') {
-    html += '<div class="run-progress-result success"><span>✓ Complete</span></div>';
-  } else if (conclusion === 'failure') {
-    html += '<div class="run-progress-result failure"><span>✕ Failed</span></div>';
+    html += '<div class="run-progress-result success"><span>✓ Complete — reloading...</span></div>';
+  } else if (conclusion === 'failure' || conclusion === 'timed_out' || conclusion === 'cancelled') {
+    var failMsg = conclusion === 'timed_out' ? '✕ Timed Out' : conclusion === 'cancelled' ? '✕ Cancelled' : '✕ Failed';
+    html += '<div class="run-progress-result failure"><span>' + failMsg + '</span></div>';
   }
 
-  el.innerHTML = html;
+  topEl.innerHTML = html;
+
+  // Restore elapsed timer display
+  if (_runStartTime && _runElapsedTimer) {
+    var elEl = document.getElementById('runElapsed');
+    if (elEl) elEl.textContent = _fmtDuration(Date.now() - _runStartTime);
+  }
+
+  // Update bottom info bar
+  if (infoText) {
+    if (conclusion === 'success') {
+      infoText.innerHTML = '<span class="highlight">All steps completed successfully.</span> Dashboard will reload with fresh data.';
+    } else if (conclusion === 'failure' || conclusion === 'timed_out' || conclusion === 'cancelled') {
+      var reason = conclusion === 'timed_out' ? 'Job exceeded timeout limit.' : conclusion === 'cancelled' ? 'Run was cancelled.' : 'Step "' + activeLabel + '" failed.';
+      infoText.innerHTML = reason + ' Check <a href="https://github.com/DoriKafri/develeap-bdr-job-monitor/actions" target="_blank" style="color:var(--accent);text-decoration:underline">Actions log</a> for details.';
+    } else {
+      infoText.innerHTML = '<span class="highlight">' + completedCount + '/' + _RUN_STEPS.length + '</span> — ' + activeDesc;
+    }
+  }
+  if (infoStatus) {
+    infoStatus.className = 'run-info-status';
+    if (conclusion === 'success') { infoStatus.textContent = 'DONE'; infoStatus.classList.add('success'); }
+    else if (conclusion === 'failure' || conclusion === 'timed_out' || conclusion === 'cancelled') { infoStatus.textContent = conclusion.toUpperCase().replace('_',' '); infoStatus.classList.add('failed'); }
+    else { infoStatus.textContent = 'RUNNING'; infoStatus.classList.add('running'); }
+  }
+  // Swap spinner for result icon when done
+  var spinnerEl = bottomEl ? bottomEl.querySelector('.run-spinner') : null;
+  if (spinnerEl) {
+    if (conclusion === 'success') { spinnerEl.style.display = 'none'; }
+    else if (conclusion === 'failure' || conclusion === 'timed_out' || conclusion === 'cancelled') { spinnerEl.style.borderTopColor = '#ff8a80'; }
+  }
 }
 
 function startRunTracking() {
   _showRunProgress();
-  _renderRunSteps([], null);
-  const _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
+  _startElapsedTimer();
+  _renderRunSteps([], null, null);
+  var _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
+  localStorage.setItem('runTrackingActive', '1');
 
   // Wait 10s then start polling for the new run
   setTimeout(function findRun() {
     fetch('https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/actions/workflows/241136588/runs?per_page=1&status=in_progress', {
       headers: { 'Authorization': 'token ' + _t, 'Accept': 'application/vnd.github.v3+json' }
-    }).then(r => r.json()).then(data => {
-      const runs = data.workflow_runs || [];
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      var runs = data.workflow_runs || [];
       if (runs.length > 0) {
         _runTrackId = runs[0].id;
+        localStorage.setItem('runTrackId', _runTrackId);
         pollRunStatus();
       } else {
-        // Maybe already completed or queued, check latest run
         fetch('https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/actions/workflows/241136588/runs?per_page=1', {
           headers: { 'Authorization': 'token ' + _t, 'Accept': 'application/vnd.github.v3+json' }
-        }).then(r => r.json()).then(d2 => {
-          const r2 = (d2.workflow_runs || [])[0];
+        }).then(function(r) { return r.json(); }).then(function(d2) {
+          var r2 = (d2.workflow_runs || [])[0];
           if (r2) {
             _runTrackId = r2.id;
+            localStorage.setItem('runTrackId', _runTrackId);
             if (r2.status === 'completed') {
-              _renderRunSteps([], r2.conclusion);
-              setTimeout(function() {
-                _hideRunProgress();
-                if (r2.conclusion === 'success') {
-                  setTimeout(function() { location.reload(); }, 500);
-                }
-              }, 2500);
+              _onRunComplete(r2.conclusion);
             } else {
               pollRunStatus();
             }
           }
         });
       }
-    }).catch(() => { setTimeout(findRun, 10000); });
+    }).catch(function() { setTimeout(findRun, 10000); });
   }, 10000);
+}
+
+function _onRunComplete(conclusion) {
+  _renderRunSteps([], conclusion, null);
+  localStorage.removeItem('runTrackingActive');
+  localStorage.removeItem('runTrackId');
+  localStorage.removeItem('runStartTime');
+  _runTrackId = null;
+  setTimeout(function() {
+    _hideRunProgress();
+    if (conclusion === 'success') {
+      setTimeout(function() { location.reload(); }, 500);
+    }
+  }, 3000);
 }
 
 function pollRunStatus() {
   if (!_runTrackId) return;
-  const _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
+  var _t = ['ghp','_3qtJhIVtih6Z2qk','Kl6YtgLe7CrHYNW','020viP'].join('');
   fetch('https://api.github.com/repos/DoriKafri/develeap-bdr-job-monitor/actions/runs/' + _runTrackId + '/jobs', {
     headers: { 'Authorization': 'token ' + _t, 'Accept': 'application/vnd.github.v3+json' }
-  }).then(r => r.json()).then(data => {
-    const jobs = data.jobs || [];
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    var jobs = data.jobs || [];
     if (jobs.length === 0) { _runPollTimer = setTimeout(pollRunStatus, 8000); return; }
-    const job = jobs[0];
-    const steps = job.steps || [];
-    _renderRunSteps(steps, job.conclusion);
+    var job = jobs[0];
+    var steps = job.steps || [];
+    _renderRunSteps(steps, job.conclusion, job.started_at);
 
     if (job.status === 'completed') {
-      _runTrackId = null;
-      // Show completion state briefly, then hide bar and reload
-      setTimeout(function() {
-        _hideRunProgress();
-        if (job.conclusion === 'success') {
-          // Wait for hide transition (0.4s) then reload
-          setTimeout(function() { location.reload(); }, 500);
-        }
-      }, 2500);
+      _onRunComplete(job.conclusion);
     } else {
       _runPollTimer = setTimeout(pollRunStatus, 8000);
     }
-  }).catch(() => { _runPollTimer = setTimeout(pollRunStatus, 15000); });
+  }).catch(function() { _runPollTimer = setTimeout(pollRunStatus, 15000); });
 }
+
+// Restore run tracking on page load (if user refreshes mid-run)
+(function restoreRunTracking() {
+  if (localStorage.getItem('runTrackingActive') === '1') {
+    var savedId = localStorage.getItem('runTrackId');
+    if (savedId) {
+      _runTrackId = parseInt(savedId);
+      _showRunProgress();
+      _restoreElapsedTimer();
+      _renderRunSteps([], null, null);
+      pollRunStatus();
+    } else {
+      startRunTracking();
+    }
+  }
+})();
 
 // Close dropdowns on outside click
 document.addEventListener('click', e => {
