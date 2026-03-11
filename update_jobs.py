@@ -144,6 +144,8 @@ COMPANY_DOMAINS = {
     "biocatch": "biocatch.com",
     "blink ops": "blinkops.com",
     "bmc": "bmc.com",
+    "booking.com": "booking.com",
+    "booking": "booking.com",
     "cato networks": "catonetworks.com",
     "chaos labs": "chaoslabs.xyz",
     "check point software": "checkpoint.com",
@@ -189,13 +191,14 @@ COMPANY_DOMAINS = {
     "nexta": "nextta.net",
     "nvidia": "nvidia.com",
     "next insurance": "nextinsurance.com",
-    "nextta": "nextta.com",
+    "nextta": "nextta.net",
     "oligo security": "oligo.security",
     "pagaya": "pagaya.com",
     "pango": "pango.co.il",
     "paragon": "useparagon.com",
     "pentera": "pentera.io",
     "phasev": "phasev.ai",
+    "pixellot": "pixellot.tv",
     "plainid": "plainid.com",
     "port": "getport.io",
     "qualitest": "qualitest.com",
@@ -209,6 +212,7 @@ COMPANY_DOMAINS = {
     "similarweb": "similarweb.com",
     "surecomp": "surecomp.com",
     "taboola": "taboola.com",
+    "tastewise": "tastewise.io",
     "tavily": "tavily.com",
     "team8": "team8.vc",
     "techaviv": "techaviv.com",
@@ -3104,6 +3108,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # For LinkedIn FTS results, prefer the pre-extracted company name
         if r.get("_source_override") == "linkedin_fts" and r.get("company"):
             company = r["company"]
+            # Fix poster name as company (e.g. "Lerner's Post" → extract real company)
+            if re.search(r"'s\s+Post$", company, re.IGNORECASE):
+                real = extract_company(title, snippet, url)
+                if real and real != "Unknown":
+                    company = real
         else:
             company = extract_company(title, snippet, url)
         location = extract_location(title, snippet)
@@ -3260,6 +3269,14 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if len(fts_company) < 3 or re.match(r'^(in\s+)?\d{4}$', fts_company, re.IGNORECASE):
                 log.info(f"  Skipping FTS with invalid company name '{fts_company}': {j['title'][:50]}")
                 continue
+            # Fix FTS company names that are actually poster names (e.g. "Lerner's Post")
+            if re.search(r"'s\s+Post$", fts_company, re.IGNORECASE):
+                # Try to extract real company from title/description/URL
+                real_company = extract_company(j.get("title", ""), j.get("snippet", ""), url)
+                if real_company and real_company != "Unknown":
+                    log.info(f"  FTS poster name '{fts_company}' → real company '{real_company}'")
+                    j["company"] = real_company
+                    fts_company = real_company
             # ── Playwright validation for FTS LinkedIn posts ──
             if url and "linkedin.com" in url:
                 pw_data = _scrape_linkedin_playwright(url)
