@@ -152,6 +152,8 @@ COMPANY_DOMAINS = {
     "classiq": "classiq.io",
     "cloudinary": "cloudinary.com",
     "codevalue": "codevalue.net",
+    "commit": "comm-it.com",
+    "comm-it": "comm-it.com",
     "cyberark": "cyberark.com",
     "cymulate": "cymulate.com",
     "datadog": "datadoghq.com",
@@ -161,6 +163,8 @@ COMPANY_DOMAINS = {
     "dualbird": "dualbird.com",
     "earnix": "earnix.com",
     "elbit systems israel": "elbitsystems.com",
+    "elbit systems": "elbitsystems.com",
+    "elbit": "elbitsystems.com",
     "factored": "factored.ai",
     "fetcherr": "fetcherr.io",
     "fireblocks": "fireblocks.com",
@@ -177,6 +181,10 @@ COMPANY_DOMAINS = {
     "intuit israel": "intuit.com",
     "kpmg": "kpmg.com",
     "leidos": "leidos.com",
+    "levi strauss": "levistrauss.com",
+    "levi strauss & co.": "levistrauss.com",
+    "levi strauss & co": "levistrauss.com",
+    "levistraussandco": "levistrauss.com",
     "lightricks": "lightricks.com",
     "majestic labs": "majesticlabs.io",
     "marvin": "marvin.com",
@@ -184,9 +192,11 @@ COMPANY_DOMAINS = {
     "matia": "matia.io",
     "metalbear": "metalbear.co",
     "minimus": "minimumsec.com",
+    "millennium": "mlp.com",
     "mobileye": "mobileye.com",
-    "ness technologies": "ness-tech.com",
-    "ness technologies israel": "ness-tech.com",
+    "ness technologies": "ness-tech.co.il",
+    "ness technologies israel": "ness-tech.co.il",
+    "ness": "ness-tech.co.il",
     "nextta": "nextta.net",
     "nexta": "nextta.net",
     "nvidia": "nvidia.com",
@@ -3521,10 +3531,20 @@ COMPANY_ALIASES = {
     "ness technologies":    "Ness Technologies",
     "qualitest israel":     "Qualitest",
     "qualitest":            "Qualitest",
+    "levistraussandco":     "Levi Strauss & Co.",
+    "levi strauss & co.":   "Levi Strauss & Co.",
+    "levi strauss & co":    "Levi Strauss & Co.",
+    "levi strauss":         "Levi Strauss & Co.",
+    "commit":               "Commit",
+    "comm-it":              "Commit",
+    "millennium":           "Millennium",
+    "elbit systems israel": "Elbit Systems",
+    "elbit systems":        "Elbit Systems",
+    "elbit":                "Elbit Systems",
 }
 
 # Companies where the geo-suffix should be KEPT (e.g., "KPMG Israel" is the actual entity name)
-_KEEP_GEO_SUFFIX = {"kpmg israel", "elbit systems israel", "applied materials israel"}
+_KEEP_GEO_SUFFIX = {"kpmg israel", "applied materials israel"}
 
 
 def _normalize_company(name: str) -> str:
