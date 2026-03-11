@@ -1950,6 +1950,12 @@ def scrape_job_page(url: str) -> dict:
             return result
 
         # ── Check if listing is closed ──
+        # 1. Language-independent CSS class check (works in raw HTML, no JS needed)
+        if "closed-job" in text:
+            result["closed"] = True
+            log.info(f"  CLOSED (CSS class 'closed-job'): {url[:60]}")
+
+        # 2. English closed phrases
         closed_phrases = [
             "no longer accepting applications",
             "this job is no longer available",
@@ -1960,11 +1966,24 @@ def scrape_job_page(url: str) -> dict:
             "application closed",
         ]
         text_lower_check = text.lower()
-        for phrase in closed_phrases:
-            if phrase in text_lower_check:
-                result["closed"] = True
-                log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
-                break
+        if not result["closed"]:
+            for phrase in closed_phrases:
+                if phrase in text_lower_check:
+                    result["closed"] = True
+                    log.info(f"  CLOSED: {url[:60]} — '{phrase}'")
+                    break
+
+        # 3. Hebrew closed phrases (LinkedIn raw HTML may contain these)
+        if not result["closed"]:
+            hebrew_closed_phrases = [
+                "\u05db\u05d1\u05e8 \u05dc\u05d0 \u05de\u05e7\u05d1\u05dc\u05d9\u05dd \u05d1\u05e7\u05e9\u05d5\u05ea",  # כבר לא מקבלים בקשות
+                "\u05de\u05e9\u05e8\u05d4 \u05d6\u05d5 \u05db\u05d1\u05e8 \u05dc\u05d0 \u05d6\u05de\u05d9\u05e0\u05d4",  # משרה זו כבר לא זמינה
+            ]
+            for phrase in hebrew_closed_phrases:
+                if phrase in text:
+                    result["closed"] = True
+                    log.info(f"  CLOSED (Hebrew): {url[:60]}")
+                    break
 
         # ── Check for stale time-ago indicators (e.g. "3 months ago") ──
         # For LinkedIn: only check "posted X ago" context, not any "X ago" on the page,
@@ -2243,29 +2262,51 @@ def _scrape_linkedin_playwright(url: str) -> dict:
         log.info(f"  Playwright scrape {url[:60]}: text_len={len(text)}")
 
         # ── Check if listing is closed ──
-        closed_phrases = [
-            "no longer accepting applications",
-            "this job is no longer available",
-            "this position has been filled",
-            "this job has expired",
-            "job closed",
-            "application closed",
-            "role has been filled",
-            "position has been filled",
-            "we've filled this",
-            "this role is closed",
-            "hiring is complete",
-            "this page doesn't exist",
-            "this content isn't available",
-        ]
-        for phrase in closed_phrases:
-            if phrase in text_lower:
-                result["closed"] = True
-                log.info(f"  CLOSED (playwright): {url[:60]} — '{phrase}'")
-                break
+        # 1. Check raw HTML for the language-independent CSS class "closed-job"
+        raw_html = page.content()
+        if "closed-job" in raw_html:
+            result["closed"] = True
+            log.info(f"  CLOSED (playwright CSS class 'closed-job'): {url[:60]}")
+
+        # 2. Check rendered text for English closed phrases
+        if not result["closed"]:
+            closed_phrases = [
+                "no longer accepting applications",
+                "this job is no longer available",
+                "this position has been filled",
+                "this job has expired",
+                "job closed",
+                "application closed",
+                "role has been filled",
+                "position has been filled",
+                "we've filled this",
+                "this role is closed",
+                "hiring is complete",
+                "this page doesn't exist",
+                "this content isn't available",
+            ]
+            for phrase in closed_phrases:
+                if phrase in text_lower:
+                    result["closed"] = True
+                    log.info(f"  CLOSED (playwright): {url[:60]} — '{phrase}'")
+                    break
+
+        # 3. Check rendered text for Hebrew closed phrases (LinkedIn returns Hebrew for IL IPs)
+        if not result["closed"]:
+            hebrew_closed_phrases = [
+                "\u05db\u05d1\u05e8 \u05dc\u05d0 \u05de\u05e7\u05d1\u05dc\u05d9\u05dd \u05d1\u05e7\u05e9\u05d5\u05ea",  # כבר לא מקבלים בקשות
+                "\u05de\u05e9\u05e8\u05d4 \u05d6\u05d5 \u05db\u05d1\u05e8 \u05dc\u05d0 \u05d6\u05de\u05d9\u05e0\u05d4",  # משרה זו כבר לא זמינה
+                "\u05de\u05e9\u05e8\u05d4 \u05d6\u05d5 \u05d0\u05d9\u05e0\u05d4 \u05d6\u05de\u05d9\u05e0\u05d4",  # משרה זו אינה זמינה
+            ]
+            for phrase in hebrew_closed_phrases:
+                if phrase in text:
+                    result["closed"] = True
+                    log.info(f"  CLOSED (playwright Hebrew): {url[:60]}")
+                    break
 
         # ── Check for stale time-ago indicators ──
         if not result["closed"]:
+            # English stale indicators
             stale_match = re.search(
                 r'(?:posted|listed|published|reposted)\s+(\d+)\s+(month|year)s?\s+ago',
                 text_lower
@@ -2276,6 +2317,20 @@ def _scrape_linkedin_playwright(url: str) -> dict:
                 if unit == "year" or (unit == "month" and num >= 1):
                     result["closed"] = True
                     log.info(f"  CLOSED (playwright stale): {url[:60]} — '{stale_match.group(0)}'")
+
+        # Hebrew stale indicators: "לפני X חודשים/שנים" (X months/years ago)
+        if not result["closed"]:
+            hebrew_stale = re.search(
+                r'\u05dc\u05e4\u05e0\u05d9\s+\u200f?(\d+)\u200f?\s+\u200f?(\u05d7\u05d5\u05d3\u05e9|\u05d7\u05d5\u05d3\u05e9\u05d9\u05dd|\u05e9\u05e0\u05d4|\u05e9\u05e0\u05d9\u05dd)',
+                text
+            )
+            if hebrew_stale:
+                num = int(hebrew_stale.group(1))
+                unit_heb = hebrew_stale.group(2)
+                # חודש/חודשים = month(s), שנה/שנים = year(s)
+                if "\u05e9\u05e0" in unit_heb or num >= 1:  # year or 1+ months
+                    result["closed"] = True
+                    log.info(f"  CLOSED (playwright Hebrew stale): {url[:60]} — '{hebrew_stale.group(0)}'")
 
         # ── Extract date from relative time indicators ──
         if not result["date"]:
@@ -3901,11 +3956,13 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
             http_status = page_data.get("_http_status", 200)
-            # Playwright for LinkedIn: always for /posts/ URLs, 429-fallback for /jobs/
-            # LinkedIn job pages return auth wall (413 chars) from GH Actions IPs,
-            # so Playwright only adds value for /posts/ URLs (which return real content).
+            # Playwright for LinkedIn: use for ALL LinkedIn URLs (/jobs/view/, /posts/, etc.)
+            # Raw HTTP scrape misses JS-rendered content (closed indicators, Hebrew locale text).
+            # The CSS class "closed-job" IS in raw HTML, but Playwright also catches rendered
+            # Hebrew text like "כבר לא מקבלים בקשות" and stale time-ago indicators.
             is_post_url = "/posts/" in url
-            if is_post_url or http_status == 429:
+            is_job_url = "/jobs/view/" in url
+            if is_post_url or is_job_url or http_status == 429:
                 log.info(f"  LinkedIn Playwright {'validation' if is_post_url else 'fallback'}: {j.get('title', '')[:50]} (HTTP {http_status})")
                 pw_data = _scrape_linkedin_playwright(url)
                 if pw_data and pw_data.get("_http_status") == 200:
