@@ -168,6 +168,8 @@ COMPANY_DOMAINS = {
     "elbit systems israel": "elbitsystems.com",
     "elbit systems": "elbitsystems.com",
     "elbit": "elbitsystems.com",
+    "mantis tech": "mantis-technology.com",
+    "mantis technology": "mantis-technology.com",
     "factored": "factored.ai",
     "fetcherr": "fetcherr.io",
     "fireblocks": "fireblocks.com",
@@ -2842,6 +2844,9 @@ def _is_location_fragment(text: str) -> bool:
     # Ends with country/region
     if re.search(r'(?:israel|usa|uk|india|germany|france|japan)\s*\.{0,3}\s*$', t, re.IGNORECASE):
         return True
+    # Ends with "district" (e.g. "Tel Aviv District ...")
+    if re.search(r'\bdistrict\b', t, re.IGNORECASE):
+        return True
     return False
 
 
@@ -3544,6 +3549,10 @@ COMPANY_ALIASES = {
     "elbit systems israel": "Elbit Systems",
     "elbit systems":        "Elbit Systems",
     "elbit":                "Elbit Systems",
+    "mantis tech":          "Mantis Tech",
+    "mantis technology":    "Mantis Tech",
+    "tel aviv district ...": "Unknown",
+    "tel aviv district":    "Unknown",
 }
 
 # Companies where the geo-suffix should be KEPT (e.g., "KPMG Israel" is the actual entity name)
