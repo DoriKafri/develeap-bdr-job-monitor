@@ -4614,6 +4614,22 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                         log.info(f"  Updated Post Publisher photo (existing): {s.get('name', '')} for {j.get('title', '')[:40]}")
                         break
 
+        # ── Activity-date age check for existing FTS LinkedIn posts ──
+        # Remove posts that are too old based on their LinkedIn activity ID timestamp
+        if j.get("source") == "linkedin_fts" and "/posts/" in url:
+            activity_date = _extract_linkedin_activity_date(url)
+            if activity_date:
+                try:
+                    from datetime import datetime as dt_cls
+                    post_dt = dt_cls.strptime(activity_date, "%Y-%m-%d")
+                    age_days_act = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
+                    if age_days_act > 45:
+                        log.info(f"  Removing stale FTS post ({age_days_act} days old, posted {activity_date}): {j.get('title', '')[:50]}")
+                        if url: removed_urls.add(url)
+                        continue
+                except ValueError:
+                    pass
+
         # ── Playwright validation for existing FTS LinkedIn posts ──
         if "linkedin.com" in url and j.get("source") == "linkedin_fts":
             pw_data = _scrape_linkedin_playwright(url)
