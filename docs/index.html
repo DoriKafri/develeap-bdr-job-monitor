@@ -9653,7 +9653,8 @@ async function _initGitHubSync() {
   oldConnected.forEach(k => _connectedContacts.add(_migrateKey(k)));
   _saveConnected();
   if (remote.hiddenCompanies && remote.hiddenCompanies.length > 0) {
-    remote.hiddenCompanies.forEach(c => hiddenCompanies.add(c));
+    const _placeholders = new Set(['unknown', '']);
+    remote.hiddenCompanies.forEach(c => { if (!_placeholders.has(c.toLowerCase())) hiddenCompanies.add(c); });
     saveHidden();
     updateHiddenUI();
   }
@@ -9853,11 +9854,13 @@ function copyTemplate() {
 }
 
 // ===== HIDDEN COMPANIES =====
-let hiddenCompanies = new Set(JSON.parse(localStorage.getItem('hiddenCompanies') || '[]'));
+let hiddenCompanies = new Set(JSON.parse(localStorage.getItem('hiddenCompanies') || '[]').filter(c => c && c.toLowerCase() !== 'unknown'));
 function saveHidden() { localStorage.setItem('hiddenCompanies', JSON.stringify([...hiddenCompanies])); _scheduleSyncToGitHub(); }
 function hideCompany(name, e) {
   if (e) { e.stopPropagation(); e.preventDefault(); }
-  hiddenCompanies.add(name.toLowerCase());
+  const n = name.toLowerCase().trim();
+  if (!n || n === 'unknown') return;
+  hiddenCompanies.add(n);
   saveHidden(); updateHiddenUI(); applyAllFilters();
 }
 function unhideCompany(name) {

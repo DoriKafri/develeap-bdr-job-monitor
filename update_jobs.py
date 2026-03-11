@@ -775,58 +775,61 @@ CATEGORY_KEYWORDS = _load_category_keywords()
 # Only 2-3 categories are searched per run (rotation) to stay under radar.
 LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
     "devops":   [
-        'site:linkedin.com/posts hiring devops Israel',
+        'site:linkedin.com/posts "DevOps" hiring Israel',
         'site:linkedin.com/posts "DevOps Engineer" Israel',
-        'site:linkedin.com/posts "DevOps" "join" Israel',
-        'site:linkedin.com/posts "DevOps" "we are looking" Israel',
+        'site:linkedin.com/posts DevOps Israel "open role" OR "open position" OR "come work"',
+        'site:linkedin.com/posts DevOps Israel "job alert" OR "is hiring" OR "we need"',
     ],
     "ai":       [
-        'site:linkedin.com/posts hiring "AI Engineer" Israel',
-        'site:linkedin.com/posts hiring "Machine Learning" Israel',
-        'site:linkedin.com/posts hiring MLOps Israel',
-        'site:linkedin.com/posts "AI Engineer" "join" Israel',
+        'site:linkedin.com/posts "AI Engineer" hiring Israel',
+        'site:linkedin.com/posts "Machine Learning" hiring Israel',
+        'site:linkedin.com/posts MLOps hiring Israel',
+        'site:linkedin.com/posts "AI" Israel "hiring" OR "open role" OR "come work"',
     ],
     "cloud":    [
-        'site:linkedin.com/posts hiring "Cloud Engineer" Israel',
-        'site:linkedin.com/posts hiring "Cloud Architect" Israel',
-        'site:linkedin.com/posts "Cloud Engineer" "join" Israel',
-        'site:linkedin.com/posts "Cloud" "hiring" "Israel" "team"',
+        'site:linkedin.com/posts "Cloud Engineer" hiring Israel',
+        'site:linkedin.com/posts "Cloud Architect" hiring Israel',
+        'site:linkedin.com/posts cloud Israel "hiring" OR "open role" OR "job alert"',
+        'site:linkedin.com/posts "Cloud" Israel "is hiring" OR "come work" OR "we need"',
     ],
     "platform": [
-        'site:linkedin.com/posts hiring "Platform Engineer" Israel',
-        'site:linkedin.com/posts "Platform Engineer" Israel "join"',
+        'site:linkedin.com/posts "Platform Engineer" hiring Israel',
+        'site:linkedin.com/posts "Platform Engineer" Israel',
         'site:linkedin.com/posts "Developer Platform" hiring Israel',
+        'site:linkedin.com/posts platform engineer Israel "open role" OR "job alert" OR "come work"',
     ],
     "sre":      [
-        'site:linkedin.com/posts hiring SRE Israel',
+        'site:linkedin.com/posts SRE hiring Israel',
         'site:linkedin.com/posts "Site Reliability" Israel hiring',
-        'site:linkedin.com/posts SRE Israel "join" OR "looking for"',
+        'site:linkedin.com/posts SRE Israel "open role" OR "is hiring" OR "come work"',
     ],
     "security": [
-        'site:linkedin.com/posts hiring "Security Engineer" Israel',
+        'site:linkedin.com/posts "Security Engineer" hiring Israel',
         'site:linkedin.com/posts "DevSecOps" Israel hiring',
-        'site:linkedin.com/posts "Security Engineer" Israel "join"',
+        'site:linkedin.com/posts "Security Engineer" Israel "open role" OR "job alert" OR "come work"',
     ],
     "data":     [
-        'site:linkedin.com/posts hiring "Data Engineer" Israel',
+        'site:linkedin.com/posts "Data Engineer" hiring Israel',
         'site:linkedin.com/posts "Data Platform" Israel hiring',
-        'site:linkedin.com/posts "Data Engineer" Israel "join"',
+        'site:linkedin.com/posts "Data Engineer" Israel "open role" OR "job alert" OR "come work"',
     ],
     "finops":   [
-        'site:linkedin.com/posts hiring FinOps Israel',
+        'site:linkedin.com/posts FinOps hiring Israel',
         'site:linkedin.com/posts "Cloud Cost" Israel hiring',
-        'site:linkedin.com/posts FinOps Israel "join" OR "looking"',
+        'site:linkedin.com/posts FinOps Israel "open role" OR "is hiring" OR "come work"',
     ],
     "agentic":  [
-        'site:linkedin.com/posts hiring "Agentic" Israel',
+        'site:linkedin.com/posts "Agentic" hiring Israel',
         'site:linkedin.com/posts "AI Agent" Israel hiring',
-        'site:linkedin.com/posts "Agentic" Israel "join" OR "looking"',
+        'site:linkedin.com/posts "Agentic" Israel "open role" OR "is hiring" OR "come work"',
     ],
 }
 # How many categories to search per run (rotation)
-LINKEDIN_FTS_CATS_PER_RUN = 4
-# Max queries per category per run
-LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 1
+# Increased from 4 to 5 to ensure each category is searched more frequently
+# with 9 categories: ceil(9/5)=2 runs to cover all categories
+LINKEDIN_FTS_CATS_PER_RUN = 5
+# Max queries per category per run — increased to 2 for better coverage
+LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 2
 # File to track which categories were searched last, for round-robin rotation
 LINKEDIN_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "linkedin_fts_state.json")
 
@@ -1295,7 +1298,9 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
                       "come work with", "work with me", "work with us",
                       "apply now", "apply here", "we need", "searching for",
                       "position available", "role available", "opportunity",
-                      "talent acquisition", "recruiting", "want to join"]
+                      "talent acquisition", "recruiting", "want to join",
+                      "job alert", "great company", "amazing team",
+                      "remote position", "need a", "needs a"]
     if not any(sig in combined for sig in hiring_signals):
         return None
 
@@ -3411,11 +3416,30 @@ def _consolidate_duplicates(jobs: list[dict]) -> list[dict]:
 
 
 def _load_hidden_companies() -> set:
-    """Load hidden companies from outreach_status.json (synced from dashboard)."""
+    """Load hidden companies from outreach_status.json (synced from dashboard).
+
+    Always strips placeholder names like 'unknown' which can be re-added
+    by the dashboard's localStorage sync. These aren't real hidden companies —
+    they're just listings where company extraction failed.
+    """
+    _placeholder_names = {"unknown", ""}
     try:
         with open("outreach_status.json", "r") as f:
             data = json.load(f)
-        return {c.lower() for c in data.get("hiddenCompanies", [])}
+        hidden = {c.lower() for c in data.get("hiddenCompanies", [])}
+        # Strip placeholders — these should never be hidden
+        stripped = hidden - _placeholder_names
+        if hidden != stripped:
+            log.info(f"  Stripped placeholder names from hidden companies: {hidden - stripped}")
+            # Also clean the file to prevent recurring sync issues
+            data["hiddenCompanies"] = [c for c in data.get("hiddenCompanies", [])
+                                       if c.lower() not in _placeholder_names]
+            try:
+                with open("outreach_status.json", "w") as f:
+                    json.dump(data, f, indent=2)
+            except Exception:
+                pass
+        return stripped
     except (FileNotFoundError, json.JSONDecodeError):
         return set()
 
