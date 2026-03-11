@@ -165,6 +165,9 @@
     "unknown|||mlops engineer",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
+    "unknown|||finops engineer",
+    "unknown|||ai/agentic engineer",
+    "unknown|||ai engineer",
     "unknown|devops|\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|devops|\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown|devops|soc test automation and infrastructure engineer, platforms|2026-03-06",
@@ -777,6 +780,7 @@
     "ey|||finops analyst \u05dc\u05de\u05d7\u05dc\u05e7\u05ea \u05d4\u05de\u05d2\u05d6\u05e8 \u05d4\u05e6\u05d9\u05d1\u05d5\u05e8\u05d9 - ey",
     "exodigo|||senior software engineer - data acquistion (field team)",
     "essence group|||cloud engineer",
+    "elbit systems israel|||elbit systems israel devsecops engineer",
     "elbit systems israel|||devsecops engineer",
     "elbit systems israel|||dataops \\ mlops engineer - elbit systems israel",
     "elad software systems|||\u05d0\u05e8\u05db\u05d9\u05d8\u05e7\u05d8/\u05d9\u05ea agentic ai - elad software systems",
@@ -893,6 +897,7 @@
     "commit|||finops engineer",
     "commit|||commit \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd finops engineer - petah tikva|2026-03-05",
     "commit|||commit \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd finops engineer - petah tikva",
+    "commit|||commit finops engineer",
     "commit|finops|finops engineer - petah tikva|2026-03-05",
     "commit|finops|finops engineer - petah tikva",
     "commit|finops|commit \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd finops engineer - petah tikva|2026-03-05",
@@ -1147,6 +1152,7 @@
     "abra|||data engineer | center district, israel",
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...|2026-03-05",
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...",
+    "abra|||abra data engineer | center district, israel",
     "abra|data|abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...|2026-03-05",
     "abra|data|abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...",
     "a flexera company|||cloud cost management",
@@ -1927,7 +1933,13 @@
     "medulla|||senior software engineer \u2013 mlops & aws - yokneam ilit": "2026-03-11T11:05:47.177092+00:00",
     "tel aviv district ...|||mantis tech senior devsecops": "2026-03-11T11:05:47.177092+00:00",
     "team8|||team8- stealth cybersecurity startup- senior devops engineer": "2026-03-11T11:05:47.177092+00:00",
-    "tel aviv ...|||beacon security sales engineer": "2026-03-11T11:05:47.177092+00:00"
+    "tel aviv ...|||beacon security sales engineer": "2026-03-11T11:05:47.177092+00:00",
+    "elbit systems israel|||elbit systems israel devsecops engineer": "2026-03-11T12:00:33.332941+00:00",
+    "abra|||abra data engineer | center district, israel": "2026-03-11T12:00:33.332941+00:00",
+    "commit|||commit finops engineer": "2026-03-11T12:00:33.332941+00:00",
+    "unknown|||ai/agentic engineer": "2026-03-11T12:00:33.332941+00:00",
+    "unknown|||ai engineer": "2026-03-11T12:00:33.332941+00:00",
+    "unknown|||finops engineer": "2026-03-11T12:00:33.332941+00:00"
   },
-  "updated": "2026-03-11T11:05:47.190507+00:00"
+  "updated": "2026-03-11T12:00:33.346441+00:00"
 }
