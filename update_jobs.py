@@ -1733,9 +1733,12 @@ def scrape_job_page(url: str) -> dict:
                 r'^(careers|career\s+opportunities)\s+(at|@)\s+',
                 r'^(all|current|available)\s+(open\s+)?(positions|jobs|roles|openings)\s',
                 r'^jobs?\s+(at|@)\s+',
+                r'^search\s+jobs?\b',  # "Search Jobs — Google Careers"
                 r'^(join\s+us|join\s+our\s+team|we\'?re\s+hiring)',
-                r'^[\w\s]+\s*[-\|]\s*careers?\s*$',
+                r'^[\w\s]{2,30}\s*[-\|\u2013\u2014]\s*careers?\s*$',  # "Company — Careers" (short prefix only)
                 r'\bcareer\s*(?:page|portal|site|hub)\b',
+                r'\bcareers?\s*(?:at|@)\s+\w',  # "Careers at Google" anywhere
+                r'^find\s+(?:your\s+)?(?:next\s+)?jobs?\s',  # "Find your next job at..."
             ]
             for pat in career_title_patterns:
                 if re.search(pat, page_title):
@@ -2703,12 +2706,15 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         r"jobs\.lever\.co/([a-z0-9\-]+)",
         r"comeet\.com/jobs/([a-z0-9\-]+)",
         r"([a-z0-9\-]+)\.wd\d+\.myworkdayjobs\.com",
+        r"jobs\.jobvite\.com/([a-z0-9\-]+)",
     ]:
         m = re.search(ats_pat, url, re.IGNORECASE)
         if m:
             slug = m.group(1).lower()
             if slug in ATS_SLUG_MAP:
                 return ATS_SLUG_MAP[slug]
+            # Strip common ATS slug suffixes like "-internal", "-careers", "-jobs"
+            slug = re.sub(r'-(internal|careers|jobs|external|global|corp)$', '', slug)
             clean = slug.replace("-", " ").title()
             if len(clean) > 1:
                 return _fix_casing(clean)
@@ -2734,6 +2740,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         domain_company = _fix_casing(m.group(1).replace("-", " ").title())
         if len(domain_company) > 2 and domain_company.lower() not in {
             "secret", "lhh", "secrettelaviv", "efinancial",
+            "jobvite", "lever", "ashbyhq", "greenhouse",
         }:
             return _fix_casing(domain_company)
 
@@ -2748,7 +2755,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             "linkedin", "secrettelaviv", "aijobs", "efinancialcareers",
             "monster", "ziprecruiter", "dice", "stackoverflow", "hired",
             "angel", "wellfound", "lever", "greenhouse", "workday",
-            "jobify360", "goozali", "lhh",
+            "jobify360", "goozali", "lhh", "jobvite", "ashbyhq",
         }
         if len(domain_company) > 2 and domain_company.lower() not in job_boards:
             # Verify the URL looks like a career/job page, not a random page
@@ -2871,6 +2878,17 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # Skip generic job board index/search pages
         if re.search(r"(alljobs\.co\.il/SearchResults|drushim\.co\.il/.*\?)", url):
+            continue
+
+        # Skip URL shorteners (e.g. goo.gle) — these are never individual job listings
+        if re.search(r'^https?://goo\.gle/', url):
+            continue
+
+        # Skip career page titles before Playwright check
+        if re.search(r'^search\s+jobs?\b|^find\s+(your\s+)?(next\s+)?jobs?\s', title_lower):
+            continue
+        # "Company — Careers" but NOT "Job Title - Company Careers" (which is a valid listing)
+        if re.match(r'^[\w\s]{2,30}\s*[-\|\u2013\u2014]\s*careers?\s*$', title_lower):
             continue
 
         # Skip SPA career sites where location can't be verified server-side
