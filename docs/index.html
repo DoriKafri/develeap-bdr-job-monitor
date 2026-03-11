@@ -1309,14 +1309,17 @@
       <div class="nav-item active" data-view="all" onclick="setView('all')">
         <span>📋</span>
         <span>All Listings</span>
+        <span class="nav-item-badge" id="sidebarAllBadge">0</span>
       </div>
       <div class="nav-item" data-view="develeap" onclick="setView('develeap')">
         <span>⭐</span>
         <span>Develeap Customers</span>
+        <span class="nav-item-badge" id="sidebarDeveleapBadge" style="display:none">0</span>
       </div>
       <div class="nav-item" data-view="new" onclick="setView('new')">
         <span>🆕</span>
         <span>New Today</span>
+        <span class="nav-item-badge" id="sidebarNewBadge" style="display:none">0</span>
       </div>
 
       <div class="nav-section">Outreach</div>
@@ -10657,6 +10660,14 @@ function updateStats() {
   document.getElementById('statTotal').textContent = visible.length;
   const newCount = visible.filter(j=>j.isNew).length;
   const develeapCount = visible.filter(j=>j.isDeveleapCustomer).length;
+
+  // Update sidebar nav badges
+  const _sbAll = document.getElementById('sidebarAllBadge');
+  if (_sbAll) { _sbAll.textContent = visible.length; _sbAll.style.display = visible.length > 0 ? '' : 'none'; }
+  const _sbDev = document.getElementById('sidebarDeveleapBadge');
+  if (_sbDev) { _sbDev.textContent = develeapCount; _sbDev.style.display = develeapCount > 0 ? '' : 'none'; }
+  const _sbNew = document.getElementById('sidebarNewBadge');
+  if (_sbNew) { _sbNew.textContent = newCount; _sbNew.style.display = newCount > 0 ? '' : 'none'; }
 
   // Update In Progress filter chip count
   const inProgressCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'in_progress').length;
