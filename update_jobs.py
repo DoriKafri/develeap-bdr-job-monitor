@@ -3528,23 +3528,27 @@ def _normalize_company(name: str) -> str:
     names unless the full name is in _KEEP_GEO_SUFFIX or COMPANY_ALIASES maps
     to a name that includes the suffix.
     """
+    import re as _re
     key = name.lower().strip()
     # Direct alias lookup first
     if key in COMPANY_ALIASES:
         return COMPANY_ALIASES[key]
+    # Strip trailing job IDs (e.g. "Qualitest Israel 20257" → "Qualitest Israel")
+    cleaned = _re.sub(r'\s+\d{3,}\s*$', '', name.strip()).strip()
     # Strip geo suffix if not in the keep list
-    if key not in _KEEP_GEO_SUFFIX:
-        import re as _re
+    if cleaned.lower() not in _KEEP_GEO_SUFFIX:
         stripped = _re.sub(
             r'\s+(?:israel|usa|uk|india|germany|france|japan|china|europe|americas?|asia|emea|apac|global|worldwide)\s*$',
-            '', name.strip(), flags=_re.IGNORECASE
+            '', cleaned, flags=_re.IGNORECASE
         ).strip()
-        if stripped and stripped != name.strip():
-            # Check if the stripped version has an alias
-            stripped_key = stripped.lower().strip()
-            if stripped_key in COMPANY_ALIASES:
-                return COMPANY_ALIASES[stripped_key]
-            return stripped
+        if stripped and stripped != cleaned:
+            cleaned = stripped
+    # Check if the cleaned version has an alias
+    cleaned_key = cleaned.lower().strip()
+    if cleaned_key in COMPANY_ALIASES:
+        return COMPANY_ALIASES[cleaned_key]
+    if cleaned != name.strip():
+        return cleaned
     return name
 
 
