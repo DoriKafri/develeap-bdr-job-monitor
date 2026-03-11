@@ -316,6 +316,7 @@
     "sentra|||senior platform engineer",
     "sela|||data engineer | center district, israel",
     "seekret|||senior devops engineer",
+    "secure agentic ai|||staff software engineer \u2013 secure agentic ai",
     "scylladb||||job opportunity: controller",
     "scylladb|||job opportunity: controller|2026-02-20",
     "scylladb|||job opportunity: controller",
@@ -471,6 +472,9 @@
     "noname|||machine learning engineer",
     "nogamy|||cloud engineer",
     "nice|||cloud engineer",
+    "nextta|||senior wireless core engineer (3gpp / cnf / telecom core) at",
+    "nextta|||senior full\u2011stack & cloud/sre engineer (java/go + aws + devops",
+    "nextta|||lead and senior wireless core engineer /devops at nextta",
     "next insurance||||infrastructure & devops engineer",
     "next insurance|||infrastructure & devops engineer|2026-03-03",
     "next insurance|||infrastructure & devops engineer",
@@ -504,6 +508,7 @@
     "mobileye|||mobileye|2026-03-04",
     "mobileye|||mobileye - lever|2026-03-04",
     "mobileye|||mobileye - lever",
+    "mobileye|||mobileye - ai algorithm engineer - localization team",
     "mobileye|||mobileye",
     "mobileye|||mlops engineer",
     "mobileye|||experienced software & mlops developer for modeling",
@@ -1091,6 +1096,7 @@
     "apple|||ai engineer at apple",
     "applai|||automation & agentic ai student",
     "appcharge|||senior backend engineer",
+    "apiiro|||job application for senior devops engineer at apiiro",
     "amazon web services aws|||applied scientist, aws agentic ai",
     "akkodis|||infrastructure and security engineer",
     "aigency|||head of ai",
@@ -1877,7 +1883,13 @@
     "microsoft|||senior ai product manager - agentic edge ai": "2026-03-10T22:57:24.327677+00:00",
     "check point software|||network infrastructure engineer": "2026-03-10T22:57:24.327677+00:00",
     "yael group|||enterprise infrastructure engineer - yael group": "2026-03-10T22:57:24.327677+00:00",
-    "scaleops|||sales engineer - il": "2026-03-10T22:57:24.327677+00:00"
+    "scaleops|||sales engineer - il": "2026-03-10T22:57:24.327677+00:00",
+    "apiiro|||job application for senior devops engineer at apiiro": "2026-03-11T07:16:08.861909+00:00",
+    "mobileye|||mobileye - ai algorithm engineer - localization team": "2026-03-11T07:16:08.861909+00:00",
+    "nextta|||senior full\u2011stack & cloud/sre engineer (java/go + aws + devops": "2026-03-11T07:16:08.861909+00:00",
+    "nextta|||lead and senior wireless core engineer /devops at nextta": "2026-03-11T07:16:08.861909+00:00",
+    "nextta|||senior wireless core engineer (3gpp / cnf / telecom core) at": "2026-03-11T07:16:08.861909+00:00",
+    "secure agentic ai|||staff software engineer \u2013 secure agentic ai": "2026-03-11T07:16:08.861909+00:00"
   },
-  "updated": "2026-03-10T22:57:24.338167+00:00"
+  "updated": "2026-03-11T07:16:08.875017+00:00"
 }
