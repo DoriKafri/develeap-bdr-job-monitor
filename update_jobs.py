@@ -3565,6 +3565,19 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     log.info(f"  Removing unverified listing (429, posted==first_seen={posted_val}): {j.get('title', '')[:50]}")
                     if url: removed_urls.add(url)
                     continue
+            # ── Merge LinkedIn hiring team contacts into stakeholders (existing jobs) ──
+            if page_data.get("hiring_team"):
+                existing_li_urls = {s.get("linkedin", "").rstrip("/").lower()
+                                    for s in j.get("stakeholders", []) if s.get("linkedin")}
+                existing_names = {s.get("name", "").lower()
+                                  for s in j.get("stakeholders", []) if s.get("name")}
+                for ht in page_data["hiring_team"]:
+                    ht_li = ht.get("linkedin", "").rstrip("/").lower()
+                    ht_name = ht.get("name", "").lower()
+                    if (ht_li and ht_li in existing_li_urls) or (ht_name and ht_name in existing_names):
+                        continue
+                    j.setdefault("stakeholders", []).insert(0, ht)
+                    log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j.get('title', '')[:40]}")
 
         # ── Playwright validation for existing FTS LinkedIn posts ──
         if "linkedin.com" in url and j.get("source") == "linkedin_fts":
@@ -3606,20 +3619,6 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                     log.info(f"  Removing non-Israel existing listing ({loc_country}): {j.get('title', '')[:50]}")
                     if url: removed_urls.add(url)
                     continue
-            # ── Merge LinkedIn hiring team contacts into stakeholders (existing jobs) ──
-            if "linkedin.com" in url and page_data.get("hiring_team"):
-                existing_li_urls = {s.get("linkedin", "").rstrip("/").lower()
-                                    for s in j.get("stakeholders", []) if s.get("linkedin")}
-                existing_names = {s.get("name", "").lower()
-                                  for s in j.get("stakeholders", []) if s.get("name")}
-                for ht in page_data["hiring_team"]:
-                    ht_li = ht.get("linkedin", "").rstrip("/").lower()
-                    ht_name = ht.get("name", "").lower()
-                    if (ht_li and ht_li in existing_li_urls) or (ht_name and ht_name in existing_names):
-                        continue
-                    j.setdefault("stakeholders", []).insert(0, ht)
-                    log.info(f"  Added hiring team contact: {ht['name']} ({ht.get('title', '')[:40]}) for {j.get('title', '')[:40]}")
-
             time.sleep(random.uniform(0.3, 0.8))
         cleaned.append(j)
 
