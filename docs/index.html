@@ -10670,38 +10670,49 @@ function updateStats() {
   document.getElementById('statTotal').textContent = visible.length;
   const newCount = visible.filter(j=>j.isNew).length;
   const develeapCount = visible.filter(j=>j.isDeveleapCustomer).length;
-  document.getElementById('statNew').textContent = newCount;
-  document.getElementById('statDeveleap').textContent = develeapCount;
-  // Hide "New Today" and "Develeap Customers" cards when count is 0
-  document.getElementById('statNew').closest('.stat-card').style.display = newCount === 0 ? 'none' : '';
-  document.getElementById('statDeveleap').closest('.stat-card').style.display = develeapCount === 0 ? 'none' : '';
 
   // Update In Progress filter chip count
   const inProgressCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'in_progress').length;
   const ipChip = document.getElementById('inProgressChip');
   if (ipChip) { document.getElementById('inProgressCount').textContent = inProgressCount; }
 
-  // Dynamically render category stats — sorted descending, hide zeros
+  // Build ALL stat cards (except Total Active) sorted descending, hide zeros
+  const allStatCards = [];
+  // Add "New Today" card
+  if (newCount > 0) {
+    allStatCards.push({ key: 'new', label: 'New Today', count: newCount, color: 'var(--success)', className: 'stat-card new' });
+  }
+  // Add "Develeap Customers" card
+  if (develeapCount > 0) {
+    allStatCards.push({ key: 'develeap', label: 'Develeap Customers', count: develeapCount, color: 'var(--develeap-flag)', className: 'stat-card develeap' });
+  }
+  // Add category cards
+  for (const [key, label] of Object.entries(CAT_LABELS)) {
+    const count = visible.filter(j => j.category === key).length;
+    if (count === 0) continue;
+    const color = CAT_COLORS[key] || '#999';
+    allStatCards.push({ key, label: label + ' Listings', count, color, className: 'stat-card ' + key });
+  }
+  // Sort ALL cards descending by count
+  allStatCards.sort((a, b) => b.count - a.count);
+
+  // Hide the static "New Today" and "Develeap Customers" HTML cards (we render them dynamically now)
+  document.getElementById('statNew').closest('.stat-card').style.display = 'none';
+  document.getElementById('statDeveleap').closest('.stat-card').style.display = 'none';
+
+  // Render all sorted cards into categoryStatsContainer
   const catStatsContainer = document.getElementById('categoryStatsContainer');
   catStatsContainer.style.display = 'contents';
-  const catEntries = Object.entries(CAT_LABELS).map(([key, label]) => {
-    return { key, label, count: visible.filter(j => j.category === key).length };
-  });
-  catEntries.sort((a, b) => b.count - a.count);
-  const catStatsDivs = [];
-  for (const { key, label, count } of catEntries) {
-    if (count === 0) continue; // Hide categories with 0 listings
-    const color = CAT_COLORS[key] || '#999';
+  catStatsContainer.innerHTML = '';
+  for (const { key, label, count, color, className } of allStatCards) {
     const statDiv = document.createElement('div');
-    statDiv.className = 'stat-card ' + key;
+    statDiv.className = className;
     statDiv.setAttribute('data-stat', key);
     statDiv.setAttribute('onclick', 'filterByStat(this)');
     statDiv.style.borderLeftColor = color;
-    statDiv.innerHTML = `<div class="stat-number" style="color:${color}">${count}</div><div class="stat-label">${label} Listings</div>`;
-    catStatsDivs.push(statDiv);
+    statDiv.innerHTML = `<div class="stat-number" style="color:${color}">${count}</div><div class="stat-label">${label}</div>`;
+    catStatsContainer.appendChild(statDiv);
   }
-  catStatsContainer.innerHTML = '';
-  catStatsDivs.forEach(div => catStatsContainer.appendChild(div));
   // Update scroll arrows after stat cards change
   setTimeout(_updateStatsBarArrows, 50);
 }
