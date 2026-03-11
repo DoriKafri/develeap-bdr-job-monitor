@@ -1267,19 +1267,20 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
 
     # ── Primary age gate: extract real post date from LinkedIn activity ID ──
     # This is the most reliable method — doesn't depend on snippet text.
+    # Allow posts up to 14 days old — hiring posts stay relevant for ~2 weeks.
     activity_date = _extract_linkedin_activity_date(url)
     if activity_date:
         try:
             from datetime import datetime as dt_cls
             post_dt = dt_cls.strptime(activity_date, "%Y-%m-%d")
             age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
-            if age_days > 7:
+            if age_days > 14:
                 log.info(f"  FTS: Rejecting stale post ({age_days} days old, posted {activity_date}): {title[:60]}")
                 return None
         except ValueError:
             pass
 
-    # Fallback: Reject posts older than ~1 week based on age indicators in search snippets
+    # Fallback: Reject posts older than ~2 weeks based on age indicators in search snippets
     combined_text = f"{title} {snippet}"
     age_match = re.search(r'\b(\d+)\s*(yr|year|mo|month|w|wk|week)s?\b', combined_text, re.IGNORECASE)
     if age_match:
@@ -1287,8 +1288,8 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         unit = age_match.group(2).lower()
         if unit in ("yr", "year", "mo", "month"):
             return None  # Any post months/years old is too stale
-        if unit in ("w", "wk", "week") and num > 1:
-            return None  # Posts older than 1 week are stale
+        if unit in ("w", "wk", "week") and num > 2:
+            return None  # Posts older than 2 weeks are stale
 
     # Must contain hiring-related signals
     hiring_signals = ["hiring", "is hiring", "we're hiring", "we are hiring", "join our team",
@@ -1307,6 +1308,7 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     # Extract company name from LinkedIn post title patterns
     # Pattern: "Name at Company: ..." or "Name | Company: ..."
     company = ""
+    _from_hiring_context = False  # Track if found via "is hiring" — skip person-name check
     # "FirstName LastName on LinkedIn: ..." — company from snippet
     # "Company posted on LinkedIn: ..."
     company_match = re.search(r'^(.+?)\s+posted\s+on\s+LinkedIn', title)
@@ -1319,16 +1321,36 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
             company = at_match.group(1).strip()
         else:
             # Try snippet: "Company is hiring..." or "At Company, we..."
-            snip_match = re.search(r'^(?:at\s+)?([A-Z][A-Za-z0-9\s&.]+?)(?:\s*,\s*we|\s+is\s+(?:hiring|looking|growing))', snippet)
+            # Case-insensitive to handle "At Nym, we..." / "Dell Technologies is Hiring..."
+            # Also handles parenthetical descriptions: "Helen Doron (EdTech) is hiring..."
+            snip_match = re.search(
+                r'^(?:at\s+)?([A-Z][A-Za-z0-9\s&.\-]+?)(?:\s*\([^)]*\)\s*)?'
+                r'(?:\s*,\s*we|\s+is\s+(?:hiring|looking|growing|expanding))',
+                snippet, re.IGNORECASE)
             if snip_match:
                 company = snip_match.group(1).strip()
+                # Remove leading "At " if present (case-insensitive)
+                company = re.sub(r'^(?:at)\s+', '', company, flags=re.IGNORECASE).strip()
+                _from_hiring_context = True
+        # Also try: "COMPANY is hiring" or "COMPANY needs a" anywhere in combined text
+        # (e.g. "Dell Technologies is Hiring for..." or "Redis needs a Platform Engineer")
+        if not company:
+            body_match = re.search(
+                r'([A-Z][A-Za-z0-9&.\-]+(?:\s+[A-Z][A-Za-z0-9&.\-]+)*)\s+(?:is\s+hiring|needs\s+a)',
+                f"{title} {snippet}", re.IGNORECASE)
+            if body_match:
+                company = body_match.group(1).strip()
+                _from_hiring_context = True
 
     # Clean company name
     if company:
         company = re.sub(r'\s+on\s+LinkedIn.*', '', company).strip()
         company = re.sub(r'\s*\|.*', '', company).strip()
         # Remove if it looks like a person's name (two words, both capitalized)
-        if re.match(r'^[A-Z][a-z]+\s+[A-Z][a-z]+$', company):
+        # Skip this check for "is hiring" / "needs a" contexts — if something
+        # "is hiring", it's a company even if the name looks like a person
+        # (e.g. "Helen Doron", "Dell Technologies")
+        if not _from_hiring_context and re.match(r'^[A-Z][a-z]+\s+[A-Z][a-z]+$', company):
             company = ""  # Likely a person name, not company
 
     # Extract job title from the post content
@@ -1446,26 +1468,26 @@ def _fts_search_all_engines(query: str) -> list[dict]:
                 seen.add(u)
                 all_results.append(r)
 
-    # 1. Google CSE (best for freshness) — last 2 weeks (wider net, age filter trims)
+    # 1. Google CSE — last month (activity ID gate handles freshness precisely)
     if GOOGLE_CSE_KEY and GOOGLE_CSE_CX:
         try:
-            _add(search_google_cse(query, date_restrict="w2"))
+            _add(search_google_cse(query, date_restrict="m1"))
         except Exception as e:
             log.warning(f"Google CSE failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 2. Bing (good for LinkedIn — Microsoft owns it) — last month (wider net)
+    # 2. Bing (good for LinkedIn — Microsoft owns it) — last month
     if BING_SEARCH_KEY:
         try:
-            _add(search_bing(query, freshness="Week"))
+            _add(search_bing(query, freshness="Month"))
         except Exception as e:
             log.warning(f"Bing failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 3. SerpAPI (Google via API) — last 2 weeks
+    # 3. SerpAPI (Google via API) — last month
     if SERPAPI_KEY:
         try:
-            _add(search_serpapi(query, tbs="qdr:w2"))
+            _add(search_serpapi(query, tbs="qdr:m1"))
         except Exception as e:
             log.warning(f"SerpAPI failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
@@ -3015,7 +3037,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             try:
                 post_dt = dt_cls.strptime(best_date, "%Y-%m-%d")
                 age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
-                max_age = 7 if j.get("source") == "linkedin_fts" else 14
+                max_age = 14
                 if age_days > max_age:
                     log.info(f"  Skipping old listing ({age_days} days, date={best_date}): {j['title'][:50]}")
                     continue
@@ -3566,7 +3588,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             try:
                 from datetime import datetime as dt_cls3
                 now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
-                max_age = 7 if j.get("source") == "linkedin_fts" else 14
+                max_age = 14
 
                 # Use the OLDEST known date (posted vs _first_seen) for age check.
                 # This prevents the stale-refresh cycle where LinkedIn 429 → posted=today
