@@ -4634,10 +4634,28 @@ def main():
     log.info(f"Added {len(SEED_JOBS)} seed jobs")
 
     # 1d. LinkedIn FTS: search LinkedIn posts for hiring announcements
+    # First, pick up results from the standalone FTS runner (fts_results.json)
+    fts_runner_results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fts_results.json")
+    fts_runner_count = 0
+    if os.path.exists(fts_runner_results_path):
+        try:
+            with open(fts_runner_results_path, "r") as f:
+                fts_runner_data = json.load(f)
+            if isinstance(fts_runner_data, list) and fts_runner_data:
+                all_raw.extend(fts_runner_data)
+                fts_runner_count = len(fts_runner_data)
+                log.info(f"LinkedIn FTS runner: loaded {fts_runner_count} results from fts_results.json")
+                # Clear the staging file after consuming
+                with open(fts_runner_results_path, "w") as f:
+                    json.dump([], f)
+        except Exception as e:
+            log.warning(f"Failed to load fts_results.json: {e}")
+
+    # Also run the built-in FTS search (complements the runner)
     log.info("Searching LinkedIn posts (FTS)...")
     fts_results = search_linkedin_fts()
     all_raw.extend(fts_results)
-    log.info(f"LinkedIn FTS: {len(fts_results)} hiring posts found")
+    log.info(f"LinkedIn FTS: {len(fts_results)} hiring posts found (+ {fts_runner_count} from runner)")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
