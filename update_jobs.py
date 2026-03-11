@@ -2950,23 +2950,27 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         if url:
             page_data = scrape_job_page(url)
 
-            # Always use Playwright for LinkedIn listings to validate dates
+            # Playwright for LinkedIn: always for /posts/ (FTS-style), 429-fallback for /jobs/
+            # LinkedIn job pages return auth wall (413 chars) from GH Actions, so Playwright
+            # only helps for /posts/ URLs which return real content.
             if "linkedin.com" in url:
-                log.info(f"  LinkedIn Playwright validation (new): {j['title'][:50]} (HTTP {page_data.get('_http_status', '?')})")
-                pw_data = _scrape_linkedin_playwright(url)
-                if pw_data and pw_data.get("_http_status") == 200:
-                    if pw_data.get("closed"):
+                is_post_url = "/posts/" in url
+                if is_post_url or page_data.get("_http_status") == 429:
+                    log.info(f"  LinkedIn Playwright {'validation' if is_post_url else 'fallback'} (new): {j['title'][:50]}")
+                    pw_data = _scrape_linkedin_playwright(url)
+                    if pw_data and pw_data.get("_http_status") == 200:
+                        if pw_data.get("closed"):
+                            page_data["closed"] = True
+                        pw_text_len = pw_data.get("_text_len", 0)
+                        if pw_text_len > 500:
+                            if pw_data.get("date") and not page_data.get("date"):
+                                page_data["date"] = pw_data["date"]
+                                log.info(f"  Date from Playwright: {pw_data['date']}")
+                            if pw_data.get("company") and not page_data.get("company"):
+                                page_data["company"] = pw_data["company"]
+                    elif pw_data and pw_data.get("_http_status") in (404, 410):
                         page_data["closed"] = True
-                    pw_text_len = pw_data.get("_text_len", 0)
-                    if pw_text_len > 500:
-                        if pw_data.get("date") and not page_data.get("date"):
-                            page_data["date"] = pw_data["date"]
-                            log.info(f"  Date from Playwright: {pw_data['date']}")
-                        if pw_data.get("company") and not page_data.get("company"):
-                            page_data["company"] = pw_data["company"]
-                elif pw_data and pw_data.get("_http_status") in (404, 410):
-                    page_data["closed"] = True
-                    log.info(f"  Deleted listing (Playwright HTTP {pw_data['_http_status']}): {j['title'][:50]}")
+                        log.info(f"  Deleted listing (Playwright HTTP {pw_data['_http_status']}): {j['title'][:50]}")
 
             # Skip career/multi-listing pages (e.g. expired Greenhouse job IDs)
             if page_data.get("is_career_page"):
@@ -3431,29 +3435,29 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
             http_status = page_data.get("_http_status", 200)
-            # Always try Playwright for ALL LinkedIn listings to validate dates
-            # (not just 429 — LinkedIn serves auth walls via HTTP even on 200)
-            log.info(f"  LinkedIn Playwright validation: {j.get('title', '')[:50]} (HTTP {http_status})")
-            pw_data = _scrape_linkedin_playwright(url)
-            if pw_data and pw_data.get("_http_status") == 200:
-                # If Playwright got real content (not auth wall), prefer it
-                if pw_data.get("closed"):
-                    log.info(f"  Removing closed listing (Playwright): {j.get('title', '')[:50]}")
+            # Playwright for LinkedIn: always for /posts/ URLs, 429-fallback for /jobs/
+            # LinkedIn job pages return auth wall (413 chars) from GH Actions IPs,
+            # so Playwright only adds value for /posts/ URLs (which return real content).
+            is_post_url = "/posts/" in url
+            if is_post_url or http_status == 429:
+                log.info(f"  LinkedIn Playwright {'validation' if is_post_url else 'fallback'}: {j.get('title', '')[:50]} (HTTP {http_status})")
+                pw_data = _scrape_linkedin_playwright(url)
+                if pw_data and pw_data.get("_http_status") == 200:
+                    if pw_data.get("closed"):
+                        log.info(f"  Removing closed listing (Playwright): {j.get('title', '')[:50]}")
+                        if url: removed_urls.add(url)
+                        continue
+                    pw_text_len = pw_data.get("_text_len", 0)
+                    if pw_text_len > 500:
+                        if pw_data.get("date") and not page_data.get("date"):
+                            page_data["date"] = pw_data["date"]
+                            log.info(f"  Date from Playwright: {pw_data['date']} for {j.get('title', '')[:40]}")
+                        if pw_data.get("company") and not page_data.get("company"):
+                            page_data["company"] = pw_data["company"]
+                elif pw_data and pw_data.get("_http_status") in (404, 410):
+                    log.info(f"  Removing deleted listing (HTTP {pw_data['_http_status']}): {j.get('title', '')[:50]}")
                     if url: removed_urls.add(url)
                     continue
-                # Merge: prefer Playwright data for date/company if it got real content
-                pw_text_len = pw_data.get("_text_len", 0)
-                if pw_text_len > 500:
-                    if pw_data.get("date") and not page_data.get("date"):
-                        page_data["date"] = pw_data["date"]
-                        log.info(f"  Date from Playwright: {pw_data['date']} for {j.get('title', '')[:40]}")
-                    if pw_data.get("company") and not page_data.get("company"):
-                        page_data["company"] = pw_data["company"]
-            elif pw_data and pw_data.get("_http_status") in (404, 410):
-                log.info(f"  Removing deleted listing (HTTP {pw_data['_http_status']}): {j.get('title', '')[:50]}")
-                if url: removed_urls.add(url)
-                continue
-            # Also check HTTP scrape results for closed status
             if page_data.get("closed"):
                 log.info(f"  Removing closed listing (HTTP): {j.get('title', '')[:50]}")
                 if url: removed_urls.add(url)
