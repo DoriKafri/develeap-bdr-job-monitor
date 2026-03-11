@@ -1959,6 +1959,13 @@ def _scrape_linkedin_playwright(url: str) -> dict:
             "this job has expired",
             "job closed",
             "application closed",
+            "role has been filled",
+            "position has been filled",
+            "we've filled this",
+            "this role is closed",
+            "hiring is complete",
+            "this page doesn't exist",
+            "this content isn't available",
         ]
         for phrase in closed_phrases:
             if phrase in text_lower:
@@ -2904,16 +2911,38 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 pass
 
         # ── 4. Scrape page for additional data ──
-        # LinkedIn FTS posts: skip page scraping (they're social posts, not job pages)
         is_fts = j.get("source") == "linkedin_fts"
         if is_fts:
-            # FTS listings: use today's date, skip all page-level checks
             j["posted"] = snippet_date if snippet_date else today
             j.pop("_snippet", None)
             # Skip Develeap's own listings
             if j["company"].lower() in ("develeap", "develeap ltd", "develeap ltd."):
                 log.info(f"  Skipping Develeap's own listing: {j['title'][:50]}")
                 continue
+            # ── Playwright validation for FTS LinkedIn posts ──
+            if url and "linkedin.com" in url:
+                pw_data = _scrape_linkedin_playwright(url)
+                if pw_data and pw_data.get("_http_status") == 200:
+                    # Check if the post indicates the role is closed/filled
+                    if pw_data.get("closed"):
+                        log.info(f"  Skipping closed FTS listing (Playwright): {j['title'][:50]}")
+                        continue
+                    # Use any date extracted from the post page
+                    if pw_data.get("date") and not snippet_date:
+                        j["posted"] = pw_data["date"]
+                    # Enrich company if missing
+                    if j.get("company", "").strip() in ("Unknown", "") and pw_data.get("company"):
+                        j["company"] = pw_data["company"]
+                elif pw_data and pw_data.get("_http_status") in (404, 410):
+                    log.info(f"  Skipping removed FTS post (HTTP {pw_data['_http_status']}): {j['title'][:50]}")
+                    continue
+            # Also validate the external job URL if one was found
+            fts_job_url = j.get("_fts_job_url", "")
+            if fts_job_url:
+                ext_data = scrape_job_page(fts_job_url)
+                if ext_data.get("closed"):
+                    log.info(f"  Skipping FTS listing — linked job closed: {j['title'][:50]}")
+                    continue
             active_jobs.append(j)
             continue
 
@@ -3424,6 +3453,27 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 first_seen_val = j.get("_first_seen", "")
                 if posted_val and first_seen_val and posted_val == first_seen_val:
                     log.info(f"  Removing unverified listing (429, posted==first_seen={posted_val}): {j.get('title', '')[:50]}")
+                    if url: removed_urls.add(url)
+                    continue
+
+        # ── Playwright validation for existing FTS LinkedIn posts ──
+        if "linkedin.com" in url and j.get("source") == "linkedin_fts":
+            pw_data = _scrape_linkedin_playwright(url)
+            if pw_data and pw_data.get("_http_status") == 200:
+                if pw_data.get("closed"):
+                    log.info(f"  Removing closed FTS listing (Playwright): {j.get('title', '')[:50]}")
+                    if url: removed_urls.add(url)
+                    continue
+            elif pw_data and pw_data.get("_http_status") in (404, 410):
+                log.info(f"  Removing deleted FTS post (HTTP {pw_data['_http_status']}): {j.get('title', '')[:50]}")
+                if url: removed_urls.add(url)
+                continue
+            # Also re-check the external job URL if available
+            fts_job_url = j.get("_fts_job_url", "")
+            if fts_job_url:
+                ext_data = scrape_job_page(fts_job_url)
+                if ext_data.get("closed"):
+                    log.info(f"  Removing FTS listing — linked job closed: {j.get('title', '')[:50]}")
                     if url: removed_urls.add(url)
                     continue
 
