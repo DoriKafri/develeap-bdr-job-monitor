@@ -197,6 +197,7 @@
     "torq||||cloud finops engineer",
     "torq|||torq \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd cloud finops engineer | tel aviv district ...|2026-03-01",
     "torq|||torq \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd cloud finops engineer | tel aviv district ...",
+    "torq|||torq cloud finops engineer",
     "torq|||cloud finops engineer | tel aviv district|2026-03-01",
     "torq|||cloud finops engineer | tel aviv district ...|2026-03-01",
     "torq|||cloud finops engineer | tel aviv district ...",
@@ -502,6 +503,7 @@
     "ness technologies israel|finops|finops engineer @ ness technologies israel | lhh job board|2026-03-04",
     "ness technologies israel|finops|finops engineer @ ness technologies israel | lhh job board",
     "nebius|||it infrastructure engineer",
+    "nayax|||senior devops engineer",
     "navina|||machine learning engineer",
     "myops by yael group|||senior cloud solutions architect",
     "my team|||security researcher at my team",
@@ -821,6 +823,7 @@
     "doitintl|devops|job application for full stack engineer,israel at doit",
     "doit international||||senior full stack engineer - house channelops",
     "doit international||||job application for full stack engineer,israel at doit",
+    "doit international|||staff cloud architect (delivery) - emea",
     "doit international|||senior full stack engineer - house channelops|2026-03-05",
     "doit international|||senior full stack engineer - house channelops",
     "doit international|||job application for full stack engineer,israel at doit|2026-03-04",
@@ -1116,6 +1119,7 @@
     "applied materials|devops|senior devops engineer - careers - myworkdayjobs.com",
     "applied materials|devops|senior devops engineer - careers",
     "applied materials israel|||software infrastructure engineer",
+    "applied materials israel|||applied materials",
     "applied materials - israel|||senior devops engineer",
     "apple|||ai engineer at apple",
     "applai|||automation & agentic ai student",
@@ -1939,7 +1943,11 @@
     "commit|||commit finops engineer": "2026-03-11T12:00:33.332941+00:00",
     "unknown|||ai/agentic engineer": "2026-03-11T12:00:33.332941+00:00",
     "unknown|||ai engineer": "2026-03-11T12:00:33.332941+00:00",
-    "unknown|||finops engineer": "2026-03-11T12:00:33.332941+00:00"
+    "unknown|||finops engineer": "2026-03-11T12:00:33.332941+00:00",
+    "applied materials israel|||applied materials": "2026-03-11T13:31:38.377981+00:00",
+    "nayax|||senior devops engineer": "2026-03-11T13:31:38.377981+00:00",
+    "torq|||torq cloud finops engineer": "2026-03-11T13:31:38.377981+00:00",
+    "doit international|||staff cloud architect (delivery) - emea": "2026-03-11T13:31:38.377981+00:00"
   },
-  "updated": "2026-03-11T12:00:33.346441+00:00"
+  "updated": "2026-03-11T13:31:38.391481+00:00"
 }
