@@ -115,6 +115,14 @@ DEVELEAP_PAST_CUSTOMERS = [
     "Rapyd","Revelator","Sentrycs","Verbit","WalkMe",
 ]
 
+# ── Direct Logo URL Overrides ─────────────────────────────────────────────
+# For companies whose website favicon doesn't work (expired SSL, no favicon, etc.)
+# Maps company name (lowercase) → full logo URL
+COMPANY_LOGO_OVERRIDES = {
+    "nextta": "https://www.comeet.co/pub/nextta/5A.006/logo?size=medium&last-modified=1745606333",
+    "nexta": "https://www.comeet.co/pub/nextta/5A.006/logo?size=medium&last-modified=1745606333",
+}
+
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
 # Maps company name (lowercase) → domain for Clearbit Logo API
 COMPANY_DOMAINS = {
@@ -237,6 +245,10 @@ def _get_company_logo(company: str, source_url: str = "", title: str = "") -> st
         return ""
     company_lower = company.lower().strip()
     is_unknown = company_lower in ("unknown", "")
+
+    # Strategy 0: Direct logo URL override (for companies with broken favicons)
+    if company_lower in COMPANY_LOGO_OVERRIDES:
+        return COMPANY_LOGO_OVERRIDES[company_lower]
 
     # Reject company names that are clearly locations, not companies
     if re.match(r'^(tel\s*aviv|jerusalem|haifa|new\s*york|london|berlin|tokyo)', company_lower):
