@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Develeap BDR - Job Listings Monitor</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Develeap BDR">
+<meta property="og:title" content="Develeap BDR - Job Listings Monitor">
+<meta property="og:description" content="Real-time job listings monitor for DevOps, Cloud, AI & Security roles in Israel. Track hiring trends and opportunities.">
+<meta property="og:image" content="https://dorikafri.github.io/develeap-bdr-job-monitor/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://dorikafri.github.io/develeap-bdr-job-monitor/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Develeap BDR - Job Listings Monitor">
+<meta name="twitter:description" content="Real-time job listings monitor for DevOps, Cloud, AI & Security roles in Israel.">
+<meta name="twitter:image" content="https://dorikafri.github.io/develeap-bdr-job-monitor/og-card.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='white'/%3E%3Ccircle cx='20' cy='18' r='10' fill='%23F5A623'/%3E%3Crect x='10' y='34' width='20' height='20' fill='%23222222'/%3E%3Cpath d='M34 10 L34 54 C48 54 58 44 58 32 C58 20 48 10 34 10Z' fill='%23222222'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="128x128" href="https://www.google.com/s2/favicons?domain=develeap.com&sz=128">
 <link rel="shortcut icon" href="https://www.google.com/s2/favicons?domain=develeap.com&sz=64">
@@ -1225,6 +1237,32 @@
   .toggle-slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; transition:.3s; border-radius:50%; }
   .toggle-switch input:checked + .toggle-slider { background:var(--primary, #00897B); }
   .toggle-switch input:checked + .toggle-slider:before { transform:translateX(20px); }
+
+  /* Share Button */
+  .share-btn {
+    display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:6px;
+    border:1px solid var(--border); background:white; color:var(--text-light); font-size:12px;
+    cursor:pointer; transition:all 0.15s; white-space:nowrap;
+  }
+  .share-btn:hover { background:var(--primary-light); color:var(--primary); border-color:var(--primary); }
+  .share-btn svg { width:14px; height:14px; }
+  .share-btn-row { opacity:0; transition:opacity 0.15s; }
+  tr:hover .share-btn-row { opacity:1; }
+  .share-toast {
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--primary); color:white; padding:10px 20px; border-radius:10px;
+    font-size:13px; font-weight:500; box-shadow:0 8px 32px rgba(0,0,0,0.2);
+    opacity:0; transition:all 0.3s; z-index:10000; pointer-events:none;
+  }
+  .share-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .share-detail-btn {
+    display:flex; align-items:center; justify-content:center; gap:6px; width:100%;
+    padding:10px; border-radius:10px; border:1px solid var(--border); background:white;
+    color:var(--text); font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s;
+    margin-top:8px;
+  }
+  .share-detail-btn:hover { background:var(--primary-light); color:var(--primary); border-color:var(--primary); }
+  .share-detail-btn svg { width:16px; height:16px; }
 </style>
 </head>
 <body>
@@ -10790,6 +10828,58 @@ function getFilteredJobs() {
 
 function applyAllFilters() { updateStats(); renderJobs(); }
 
+
+// ── Share Listing ───────────────────────────────────────────────────────
+function shareListing(id) {
+  const j = ALL_JOBS.find(x => x.id === id);
+  if (!j) return;
+  
+  const baseUrl = window.location.origin + window.location.pathname;
+  const shareUrl = baseUrl + '#view=all&job=' + j.id;
+  
+  // Build a rich text for sharing
+  const cat = (CAT_LABELS[j.category] || j.category || '').trim();
+  const loc = j.location || 'Israel';
+
+  
+  const shareTitle = j.title + ' at ' + j.company;
+  const shareText = j.title + ' | ' + j.company + '\n' + loc + ' \u00B7 ' + cat + '\n\n' + shareUrl;
+  
+  // Try Web Share API (works great on mobile / WhatsApp)
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: j.title + ' | ' + j.company + ' | ' + loc + ' \u00B7 ' + cat,
+      url: shareUrl,
+    }).catch(() => {});
+    return;
+  }
+  
+  // Fallback: copy to clipboard
+  navigator.clipboard.writeText(shareText).then(() => {
+    showShareToast('\u2705 Link copied! Paste it in WhatsApp or anywhere.');
+  }).catch(() => {
+    // Double fallback: textarea trick
+    const ta = document.createElement('textarea');
+    ta.value = shareText;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showShareToast('\u2705 Link copied!');
+  });
+}
+
+function showShareToast(msg) {
+  const toast = document.getElementById('shareToast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
 function renderJobs() {
   // Pre-merge CRM+Apollo stakeholders for all jobs (ensures WhatsApp buttons show)
   _preloadAllStakeholders();
@@ -10817,7 +10907,7 @@ function renderJobs() {
   tbody.innerHTML = jobs.map(j=>`
     <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':''))}</td>
-      <td><div class="job-title-cell"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div></td>
+      <td><div class="job-title-cell"><div style="display:flex;align-items:start;gap:6px"><div style="flex:1;min-width:0"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div><button class="share-btn share-btn-row" onclick="event.stopPropagation();shareListing('${j.id}')" title="Share this listing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div></td>
       <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td>${(j.altSources&&j.altSources.length)?'<div class="alt-sources-wrap" onclick="event.stopPropagation()"><span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span><span class="alt-sources-indicator" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div></div>':'<span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span>'}${j.ftsJobUrl?'<a href="'+j.ftsJobUrl+'" target="_blank" onclick="event.stopPropagation()" class="fts-job-link" style="margin-left:4px" title="Direct job application link">📋 Apply</a>':''}</td>
@@ -11006,6 +11096,7 @@ function openDetail(id){
     ${_buildCrmDetailHtml(j.company)}
     ${_buildApolloDetailHtml(j.company)}
     <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
+    <button class="share-detail-btn" onclick="shareListing('${j.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share Listing</button>
     ${j.ftsJobUrl?'<div style="margin-top:8px"><a href="'+j.ftsJobUrl+'" target="_blank" class="fts-job-link" style="display:flex;width:100%;justify-content:center;padding:8px;border-radius:8px;font-size:12px">📋 View Job Application Page</a></div>':''}
     ${(j.altSources&&j.altSources.length)?'<div style="margin-top:10px;padding:10px 14px;background:#F0F7FF;border-radius:10px;border:1px solid #BBDEFB"><div style="font-size:11px;font-weight:600;color:#1565C0;margin-bottom:6px">Also found on '+j.altSources.length+' other source'+(j.altSources.length>1?'s':'')+':</div>'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;padding:4px 0;color:var(--text)">'+sourceIcon(a.source)+'<span style="font-size:12px;font-weight:500">'+(SOURCE_LABELS[a.source]||a.source)+'</span><span style="font-size:11px;color:var(--text-lighter);flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">'+a.title+'</span></a>').join('')+'</div>':''}
     <div style="margin-top:12px;text-align:center"><button onclick="hideCompany('${j.company.replace(/'/g,"\\\\'")}',event);closeSidebar()" style="background:none;border:none;color:var(--text-lighter);font-size:12px;cursor:pointer;padding:4px 8px">&#10005; Hide all ${j.company} listings</button></div>
@@ -19109,6 +19200,8 @@ window._getHelpFor = function(query) {
 </script>
 <div id="col-filter-portal" class="col-filter-dropdown" style="position:fixed;z-index:9999;"></div>
 <div class="source-dropdown-panel" id="sourceDropdownPanel" style="position:fixed;z-index:9999;"></div>
+
+<div class="share-toast" id="shareToast"></div>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
