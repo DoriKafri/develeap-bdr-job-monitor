@@ -121,6 +121,9 @@ DEVELEAP_PAST_CUSTOMERS = [
 COMPANY_LOGO_OVERRIDES = {
     "nextta": "https://www.comeet.co/pub/nextta/5A.006/logo?size=medium&last-modified=1745606333",
     "nexta": "https://www.comeet.co/pub/nextta/5A.006/logo?size=medium&last-modified=1745606333",
+    "elbit systems": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
+    "elbit systems israel": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
+    "elbit": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
 }
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
