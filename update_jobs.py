@@ -4525,13 +4525,13 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if "linkedin.com" in url and j.get("source") != "linkedin_fts":
             page_data = scrape_job_page(url)
             http_status = page_data.get("_http_status", 200)
-            # Playwright for LinkedIn: use for ALL LinkedIn URLs (/jobs/view/, /posts/, etc.)
-            # Raw HTTP scrape misses JS-rendered content (closed indicators, Hebrew locale text).
-            # The CSS class "closed-job" IS in raw HTML, but Playwright also catches rendered
-            # Hebrew text like "כבר לא מקבלים בקשות" and stale time-ago indicators.
+            # Playwright for LinkedIn: only for /posts/ URLs (FTS-style) and 429 fallback.
+            # Running Playwright on ALL /jobs/view/ URLs was causing the pipeline to exceed
+            # the 20-minute GitHub Actions timeout (each PW launch takes ~5-8s × 40+ URLs).
+            # LinkedIn auth walls block /jobs/view/ content from GH Actions IPs anyway,
+            # so Playwright adds no value for those — the "closed-job" CSS class IS in raw HTML.
             is_post_url = "/posts/" in url
-            is_job_url = "/jobs/view/" in url
-            if is_post_url or is_job_url or http_status == 429:
+            if is_post_url or http_status == 429:
                 log.info(f"  LinkedIn Playwright {'validation' if is_post_url else 'fallback'}: {j.get('title', '')[:50]} (HTTP {http_status})")
                 pw_data = _scrape_linkedin_playwright(url)
                 if pw_data and pw_data.get("_http_status") == 200:
