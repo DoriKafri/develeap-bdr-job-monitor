@@ -1868,6 +1868,93 @@ def search_develeap_customer_fts() -> list[dict]:
     return all_results
 
 
+# ── Greenhouse Boards API Scanner ────────────────────────────────────────
+# Known company → Greenhouse board slug mapping.
+# These companies have public Greenhouse boards we can query directly via API.
+GREENHOUSE_BOARD_SLUGS = {
+    "nice": "nice",
+    "redis": "Redis",
+    "cyberark": "cyberark",
+    "monday.com": "mondaydotcom",
+    "mobileye": "mobileye",
+    "checkpoint": "checkpoint",
+    "cellebrite": "cellebrite",
+    "tufin": "tufin",
+    "zerto": "zerto",
+    "aqua": "aquasecurity",
+    "transmit security": "transmitsecurity",
+    "xmcyber": "xmcyber",
+    "zafran": "zafransecurity",
+    "armo": "armosec",
+    "plus500": "plus500",
+}
+
+# Israel location indicators for Greenhouse board filtering
+_GH_ISRAEL_LOCATIONS = [
+    "israel", "tel aviv", "raanana", "ra'anana", "herzliya", "haifa",
+    "petah tikva", "netanya", "beer sheva", "be'er sheva", "jerusalem",
+    "rishon lezion", "rehovot", "kfar saba", "hod hasharon", "yokneam",
+]
+
+# Relevant role keywords for Greenhouse board filtering
+_GH_ROLE_KEYWORDS = [
+    "devops", "platform engineer", "sre", "site reliability", "cloud engineer",
+    "cloud architect", "infrastructure", "mlops", "ai engineer", "machine learning",
+    "data engineer", "devsecops", "security engineer", "finops", "agentic",
+    "backend engineer", "solutions architect", "sales engineer",
+]
+
+
+def scan_greenhouse_boards() -> list[dict]:
+    """Scan known Greenhouse boards for Israel-based DevOps/Cloud/AI roles.
+
+    Uses the Greenhouse public boards API (no auth needed) to directly
+    find open positions, bypassing search engine indexing delays.
+    """
+    all_results = []
+
+    for company_name, slug in GREENHOUSE_BOARD_SLUGS.items():
+        api_url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs"
+        try:
+            resp = requests.get(api_url, timeout=15)
+            if resp.status_code != 200:
+                log.warning(f"  Greenhouse board {slug}: HTTP {resp.status_code}")
+                continue
+
+            data = resp.json()
+            jobs = data.get("jobs", [])
+
+            for j in jobs:
+                location = j.get("location", {}).get("name", "")
+                title = j.get("title", "")
+                job_url = j.get("absolute_url", "")
+
+                # Filter: must be in Israel
+                loc_lower = location.lower()
+                if not any(ind in loc_lower for ind in _GH_ISRAEL_LOCATIONS):
+                    continue
+
+                # Filter: must be a relevant role
+                title_lower = title.lower()
+                if not any(kw in title_lower for kw in _GH_ROLE_KEYWORDS):
+                    continue
+
+                all_results.append({
+                    "title": f"{title} @ {company_name.title()}",
+                    "snippet": f"{company_name.title()} - {location}. Open position found via Greenhouse boards API.",
+                    "url": job_url,
+                })
+                log.info(f"  Greenhouse board [{slug}]: {title} | {location}")
+
+        except Exception as e:
+            log.warning(f"  Greenhouse board {slug} failed: {e}")
+
+        time.sleep(random.uniform(0.5, 1.5))
+
+    log.info(f"Greenhouse boards scan: found {len(all_results)} Israel-based roles")
+    return all_results
+
+
 # ── Date Extraction ───────────────────────────────────────────────────────
 
 def extract_posting_date(url: str) -> str:
@@ -3550,12 +3637,12 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             if page_data.get("date") and not snippet_date:
                 snippet_date = page_data["date"]
                 log.info(f"  Date from page: {snippet_date} for {j['title'][:40]}")
-                # Check if page date is older than 14 days
+                # Check if page date is older than 45 days (listings typically stay open 30-60 days)
                 try:
                     from datetime import datetime as dt_cls_pg
                     post_dt_pg = dt_cls_pg.strptime(snippet_date, "%Y-%m-%d")
                     age_days_pg = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt_pg).days
-                    if age_days_pg > 14:
+                    if age_days_pg > 45:
                         log.info(f"  Skipping old listing from page date ({age_days_pg} days): {j['title'][:50]}")
                         continue
                 except ValueError:
@@ -3595,14 +3682,14 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                     log.info(f"  Skipping non-Israel listing ({loc_country}): {j['title'][:50]}")
                     continue
 
-            # ── 6. Skip very old listings from page date (>180 days) ──
+            # ── 6. Skip very old listings from page date (>45 days) ──
             page_date_for_age = page_data.get("date", "")
             if page_date_for_age and not snippet_date:
                 try:
                     from datetime import datetime as dt_cls2
                     post_dt2 = dt_cls2.strptime(page_date_for_age, "%Y-%m-%d")
                     age_days2 = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt2).days
-                    if age_days2 > 14:
+                    if age_days2 > 45:
                         log.info(f"  Skipping old listing from page date ({age_days2} days, {page_date_for_age}): {j['title'][:50]}")
                         continue
                 except ValueError:
@@ -4790,6 +4877,12 @@ def main():
     customer_fts_results = search_develeap_customer_fts()
     all_raw.extend(customer_fts_results)
     log.info(f"Develeap Customer FTS: {len(customer_fts_results)} results")
+
+    # 1f. Greenhouse boards API: scan known company boards for open roles
+    log.info("Scanning Greenhouse boards for open roles...")
+    greenhouse_results = scan_greenhouse_boards()
+    all_raw.extend(greenhouse_results)
+    log.info(f"Greenhouse boards scan: {len(greenhouse_results)} results")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
