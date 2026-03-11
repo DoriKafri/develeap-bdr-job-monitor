@@ -63,24 +63,29 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
         'site:linkedin.com/posts "DevOps Engineer" Israel',
         'site:linkedin.com/posts DevOps Israel "open role" OR "open position" OR "come work"',
         'site:linkedin.com/posts DevOps Israel "job alert" OR "is hiring" OR "we need"',
+        'site:linkedin.com/posts DevOps Israel "needs a" OR "great company" OR "work with me"',
+        'site:linkedin.com/posts "Lead DevOps" Israel',
     ],
     "ai": [
         'site:linkedin.com/posts "AI Engineer" hiring Israel',
         'site:linkedin.com/posts "Machine Learning" hiring Israel',
         'site:linkedin.com/posts MLOps hiring Israel',
         'site:linkedin.com/posts "AI" Israel "hiring" OR "open role" OR "come work"',
+        'site:linkedin.com/posts "AI" Israel "needs a" OR "great company" OR "job alert"',
     ],
     "cloud": [
         'site:linkedin.com/posts "Cloud Engineer" hiring Israel',
         'site:linkedin.com/posts "Cloud Architect" hiring Israel',
         'site:linkedin.com/posts cloud Israel "hiring" OR "open role" OR "job alert"',
         'site:linkedin.com/posts "Cloud" Israel "is hiring" OR "come work" OR "we need"',
+        'site:linkedin.com/posts "Cloud" Israel "needs a" OR "great company" OR "work with me"',
     ],
     "platform": [
         'site:linkedin.com/posts "Platform Engineer" hiring Israel',
         'site:linkedin.com/posts "Platform Engineer" Israel',
         'site:linkedin.com/posts "Developer Platform" hiring Israel',
         'site:linkedin.com/posts platform engineer Israel "open role" OR "job alert" OR "come work"',
+        'site:linkedin.com/posts "Platform Engineer" Israel "needs a" OR "great company" OR "work with me"',
     ],
     "sre": [
         'site:linkedin.com/posts SRE hiring Israel',
@@ -364,8 +369,8 @@ def extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     # Extract job title
     job_title = ""
     role_match = re.search(
-        r'(?:hiring\s+(?:a\s+)?|looking\s+for\s+(?:a\s+)?|open\s+(?:role|position)\s*[-:]\s*|'
-        r'seeking\s+(?:a\s+)?|new\s+role\s*[-:]\s*)'
+        r'(?:hiring\s*[:\-]?\s*(?:a\s+)?|looking\s+for\s+(?:a\s+)?|open\s+(?:role|position)\s*[-:]\s*|'
+        r'seeking\s+(?:a\s+)?|new\s+role\s*[-:]\s*|needs\s+(?:a\s+)?)'
         r'([A-Z][A-Za-z/\s&]+?)(?:\s+in\s+|\s+at\s+|\s*[!.,\-]|\s+to\s+|\s+who\s+|$)',
         f"{title} {snippet}"
     )
@@ -415,11 +420,13 @@ def extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     # External job URL from snippet
     fts_job_url = ""
     job_link_domains = [
-        "greenhouse.io", "lever.co", "ashbyhq.com", "comeet.com",
+        "greenhouse.io", "job-boards.eu.greenhouse.io",
+        "lever.co", "ashbyhq.com", "comeet.com",
         "myworkdayjobs.com", "jobs.lever.co", "boards.greenhouse.io",
         "apply.workable.com", "jobs.ashbyhq.com",
         "smartrecruiters.com", "breezy.hr", "recruitee.com",
         "bamboohr.com", "icims.com", "jobvite.com",
+        "remoteyeah.com",
     ]
     url_pattern = re.findall(r'https?://[^\s<>"\')\]]+', f"{title} {snippet}")
     for found_url in url_pattern:

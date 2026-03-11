@@ -882,6 +882,11 @@ SEARCH_QUERIES = [
     "FinOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "FinOps Israel site:comeet.com/jobs",
     "FinOps Israel site:workday.com OR site:myworkdayjobs.com",
+    # Greenhouse EU job boards (some companies use job-boards.eu.greenhouse.io)
+    "DevOps Engineer Israel site:job-boards.eu.greenhouse.io",
+    "Platform Engineer Israel site:job-boards.eu.greenhouse.io",
+    "Cloud Engineer Israel site:job-boards.eu.greenhouse.io",
+    "AI Engineer Israel site:job-boards.eu.greenhouse.io",
     # General web searches
     "DevOps Engineer Israel hiring 2026",
     "AI Engineer Israel job 2026",
@@ -955,24 +960,29 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
         'site:linkedin.com/posts "DevOps Engineer" Israel',
         'site:linkedin.com/posts DevOps Israel "open role" OR "open position" OR "come work"',
         'site:linkedin.com/posts DevOps Israel "job alert" OR "is hiring" OR "we need"',
+        'site:linkedin.com/posts DevOps Israel "needs a" OR "great company" OR "work with me"',
+        'site:linkedin.com/posts "Lead DevOps" Israel',
     ],
     "ai":       [
         'site:linkedin.com/posts "AI Engineer" hiring Israel',
         'site:linkedin.com/posts "Machine Learning" hiring Israel',
         'site:linkedin.com/posts MLOps hiring Israel',
         'site:linkedin.com/posts "AI" Israel "hiring" OR "open role" OR "come work"',
+        'site:linkedin.com/posts "AI" Israel "needs a" OR "great company" OR "job alert"',
     ],
     "cloud":    [
         'site:linkedin.com/posts "Cloud Engineer" hiring Israel',
         'site:linkedin.com/posts "Cloud Architect" hiring Israel',
         'site:linkedin.com/posts cloud Israel "hiring" OR "open role" OR "job alert"',
         'site:linkedin.com/posts "Cloud" Israel "is hiring" OR "come work" OR "we need"',
+        'site:linkedin.com/posts "Cloud" Israel "needs a" OR "great company" OR "work with me"',
     ],
     "platform": [
         'site:linkedin.com/posts "Platform Engineer" hiring Israel',
         'site:linkedin.com/posts "Platform Engineer" Israel',
         'site:linkedin.com/posts "Developer Platform" hiring Israel',
         'site:linkedin.com/posts platform engineer Israel "open role" OR "job alert" OR "come work"',
+        'site:linkedin.com/posts "Platform Engineer" Israel "needs a" OR "great company" OR "work with me"',
     ],
     "sre":      [
         'site:linkedin.com/posts SRE hiring Israel',
@@ -1000,6 +1010,13 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
         'site:linkedin.com/posts "Agentic" Israel "open role" OR "is hiring" OR "come work"',
     ],
 }
+
+# ── Develeap Customer FTS ────────────────────────────────────────────────
+# Targeted searches for LinkedIn posts mentioning Develeap customer companies.
+# Rotates through the customer list, searching a batch per run.
+DEVELEAP_CUSTOMER_FTS_BATCH_SIZE = 8  # Number of customers to search per run
+DEVELEAP_CUSTOMER_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "develeap_customer_fts_state.json")
+
 # How many categories to search per run (rotation)
 # Increased from 4 to 5 to ensure each category is searched more frequently
 # with 9 categories: ceil(9/5)=2 runs to cover all categories
@@ -1019,10 +1036,12 @@ SOURCE_MAP = {
     "t.me": "telegram",
     "goozali": "goozali",
     "greenhouse.io": "greenhouse",
+    "job-boards.eu.greenhouse.io": "greenhouse",
     "lever.co": "lever",
     "ashbyhq.com": "ashby",
     "comeet.com": "comeet",
     "myworkdayjobs.com": "workday",
+    "remoteyeah.com": "remoteyeah",
 }
 
 
@@ -1531,10 +1550,11 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
 
     # Extract job title from the post content
     job_title = ""
-    # Look for common patterns: "hiring a DevOps Engineer", "looking for a Cloud Architect"
+    # Look for common patterns: "hiring a DevOps Engineer", "hiring: Lead DevOps Engineer",
+    # "looking for a Cloud Architect", "needs a Platform Engineer"
     role_match = re.search(
-        r'(?:hiring\s+(?:a\s+)?|looking\s+for\s+(?:a\s+)?|open\s+(?:role|position)\s*[-:]\s*|'
-        r'seeking\s+(?:a\s+)?|new\s+role\s*[-:]\s*)'
+        r'(?:hiring\s*[:\-]?\s*(?:a\s+)?|looking\s+for\s+(?:a\s+)?|open\s+(?:role|position)\s*[-:]\s*|'
+        r'seeking\s+(?:a\s+)?|new\s+role\s*[-:]\s*|needs\s+(?:a\s+)?)'
         r'([A-Z][A-Za-z/\s&]+?)(?:\s+in\s+|\s+at\s+|\s*[!.,\-]|\s+to\s+|\s+who\s+|$)',
         f"{title} {snippet}"
     )
@@ -1595,11 +1615,13 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
     # ── Extract external job listing URL from snippet/title ──
     fts_job_url = ""
     job_link_domains = [
-        "greenhouse.io", "lever.co", "ashbyhq.com", "comeet.com",
+        "greenhouse.io", "job-boards.eu.greenhouse.io",
+        "lever.co", "ashbyhq.com", "comeet.com",
         "myworkdayjobs.com", "jobs.lever.co", "boards.greenhouse.io",
         "apply.workable.com", "jobs.ashbyhq.com",
         "smartrecruiters.com", "breezy.hr", "recruitee.com",
         "bamboohr.com", "icims.com", "jobvite.com",
+        "remoteyeah.com",
     ]
     # Look for URLs in the combined text
     url_pattern = re.findall(r'https?://[^\s<>"\')\]]+', f"{title} {snippet}")
@@ -1737,6 +1759,112 @@ def search_linkedin_fts() -> list[dict]:
     _save_linkedin_fts_state(state)
 
     log.info(f"LinkedIn FTS: found {len(all_results)} hiring posts")
+    return all_results
+
+
+def _load_customer_fts_state() -> dict:
+    """Load Develeap customer FTS rotation state."""
+    if os.path.exists(DEVELEAP_CUSTOMER_FTS_STATE_PATH):
+        try:
+            with open(DEVELEAP_CUSTOMER_FTS_STATE_PATH, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"last_index": 0, "seen_urls": []}
+
+
+def _save_customer_fts_state(state: dict):
+    """Save Develeap customer FTS rotation state."""
+    try:
+        with open(DEVELEAP_CUSTOMER_FTS_STATE_PATH, "w") as f:
+            json.dump(state, f)
+    except Exception as e:
+        log.warning(f"Could not save customer FTS state: {e}")
+
+
+def search_develeap_customer_fts() -> list[dict]:
+    """Search for LinkedIn posts and ATS listings mentioning Develeap customer companies.
+
+    Rotates through the DEVELEAP_CUSTOMERS list, searching a batch per run.
+    For each customer, searches:
+      1. LinkedIn posts mentioning the company + hiring signals
+      2. Direct ATS boards (Greenhouse, Lever, Ashby) for the company name
+    """
+    all_customers = DEVELEAP_CUSTOMERS + DEVELEAP_PAST_CUSTOMERS
+    state = _load_customer_fts_state()
+    seen_urls = set(state.get("seen_urls", [])[-300:])
+    start_idx = state.get("last_index", 0) % len(all_customers)
+
+    # Pick a batch of customers for this run
+    batch = []
+    for i in range(DEVELEAP_CUSTOMER_FTS_BATCH_SIZE):
+        idx = (start_idx + i) % len(all_customers)
+        batch.append(all_customers[idx])
+    next_idx = (start_idx + DEVELEAP_CUSTOMER_FTS_BATCH_SIZE) % len(all_customers)
+
+    log.info(f"Develeap Customer FTS: searching {len(batch)} customers: {', '.join(batch[:5])}{'...' if len(batch) > 5 else ''}")
+
+    all_results = []
+
+    for company in batch:
+        # 1. LinkedIn posts: search for posts mentioning the company + hiring
+        queries = [
+            f'site:linkedin.com/posts "{company}" hiring Israel',
+            f'site:linkedin.com/posts "{company}" Israel "open role" OR "is hiring" OR "needs a" OR "come work" OR "job alert"',
+        ]
+        # 2. Direct ATS searches: Greenhouse, Lever, Ashby
+        ats_queries = [
+            f'site:greenhouse.io "{company}" Israel',
+            f'site:lever.co "{company}" Israel',
+            f'site:jobs.ashbyhq.com "{company}"',
+        ]
+
+        # Run LinkedIn post queries (through FTS extraction)
+        for query in queries:
+            try:
+                results = _fts_search_all_engines(query)
+                for r in results:
+                    url = r.get("url", "")
+                    if url in seen_urls:
+                        continue
+                    seen_urls.add(url)
+                    job_info = _extract_fts_job_info(r.get("title", ""), r.get("snippet", ""), url)
+                    if job_info:
+                        # Override company name if we know it from the customer list
+                        if job_info.get("company", "").lower() in ("unknown", ""):
+                            job_info["company"] = company
+                        all_results.append(job_info)
+                        log.info(f"  Customer FTS [{company}]: {job_info['title'][:60]}")
+            except Exception as e:
+                log.warning(f"  Customer FTS query failed for {company}: {e}")
+            time.sleep(random.uniform(1.0, 2.5))
+
+        # Run ATS queries (these are direct job listings, not LinkedIn posts)
+        for query in ats_queries:
+            try:
+                results = _fts_search_all_engines(query)
+                for r in results:
+                    url = r.get("url", "")
+                    if url in seen_urls:
+                        continue
+                    seen_urls.add(url)
+                    # These are direct ATS listings, add them as regular search results
+                    all_results.append({
+                        "title": r.get("title", ""),
+                        "snippet": r.get("snippet", ""),
+                        "url": url,
+                    })
+                    log.info(f"  Customer ATS [{company}]: {r.get('title', '')[:60]}")
+            except Exception as e:
+                log.warning(f"  Customer ATS query failed for {company}: {e}")
+            time.sleep(random.uniform(1.0, 2.5))
+
+    # Save state
+    state["last_index"] = next_idx
+    state["seen_urls"] = list(seen_urls)[-300:]
+    _save_customer_fts_state(state)
+
+    log.info(f"Develeap Customer FTS: found {len(all_results)} results")
     return all_results
 
 
@@ -4656,6 +4784,12 @@ def main():
     fts_results = search_linkedin_fts()
     all_raw.extend(fts_results)
     log.info(f"LinkedIn FTS: {len(fts_results)} hiring posts found (+ {fts_runner_count} from runner)")
+
+    # 1e. Develeap Customer FTS: targeted search for customer companies
+    log.info("Searching for Develeap customer hiring posts...")
+    customer_fts_results = search_develeap_customer_fts()
+    all_raw.extend(customer_fts_results)
+    log.info(f"Develeap Customer FTS: {len(customer_fts_results)} results")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
