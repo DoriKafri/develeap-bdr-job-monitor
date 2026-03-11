@@ -3671,6 +3671,17 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
                 for k, v in old.items():
                     if k not in base_fields and k not in s:
                         s[k] = v
+        # Preserve hiring team contacts (source="LinkedIn Job Poster") and other
+        # non-auto-discovered contacts that were added during validation
+        new_li_urls = {s.get("linkedin", "").rstrip("/").lower() for s in new_stakeholders if s.get("linkedin")}
+        new_names = {s.get("name", "").lower() for s in new_stakeholders if s.get("name")}
+        for old_s in old_stakeholders:
+            if old_s.get("source") not in ("LinkedIn", ""):  # Keep non-standard sources like "LinkedIn Job Poster"
+                old_li = old_s.get("linkedin", "").rstrip("/").lower()
+                old_name = old_s.get("name", "").lower()
+                if (old_li and old_li in new_li_urls) or (old_name and old_name in new_names):
+                    continue  # Already in new_stakeholders
+                new_stakeholders.insert(0, old_s)
         j["stakeholders"] = new_stakeholders
         # Update logo
         j["logo"] = _get_company_logo(j.get("company", ""), j.get("sourceUrl", ""))
@@ -4195,6 +4206,15 @@ def main():
             html = f.read()
         existing = load_existing_jobs(html)
         log.info(f"Existing dashboard has {len(existing)} listings")
+
+        # Remove listings from hidden companies (user marked as not relevant)
+        _hidden = _load_hidden_companies()
+        if _hidden:
+            before_count = len(existing)
+            existing = [j for j in existing if j.get("company", "").lower() not in _hidden]
+            removed = before_count - len(existing)
+            if removed:
+                log.info(f"  Removed {removed} listing(s) from hidden companies")
     else:
         log.error(f"Dashboard not found at {DASHBOARD_PATH}")
         return
