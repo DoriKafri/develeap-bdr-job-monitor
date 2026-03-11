@@ -1,0 +1,82 @@
+name: LinkedIn FTS Runner
+
+on:
+  schedule:
+    # Run every 30 minutes — each run executes ONE query then exits.
+    # With ~32 total queries, a full cycle takes ~16 hours.
+    # This keeps us well under LinkedIn/search engine radar.
+    - cron: '*/30 * * * *'
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode: single-query (default) or full-cycle'
+        required: false
+        default: 'single-query'
+        type: choice
+        options:
+          - single-query
+          - full-cycle
+      reset:
+        description: 'Reset state and start fresh'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fts-runner
+  cancel-in-progress: false
+
+jobs:
+  fts-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Reset FTS state (if requested)
+        if: github.event.inputs.reset == 'true'
+        run: python fts_runner.py --reset
+
+      - name: Run FTS search
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
+          GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}
+          BING_SEARCH_KEY: ${{ secrets.BING_SEARCH_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "full-cycle" ]; then
+            python fts_runner.py --min-delay 60 --max-delay 120
+          else
+            python fts_runner.py --single-query
+          fi
+
+      - name: Commit FTS results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          cp fts_results.json /tmp/fts_results_gen.json 2>/dev/null || true
+          cp fts_runner_state.json /tmp/fts_state_gen.json 2>/dev/null || true
+          git checkout -- . 2>/dev/null || true
+          git pull origin main || true
+          cp /tmp/fts_results_gen.json fts_results.json 2>/dev/null || true
+          cp /tmp/fts_state_gen.json fts_runner_state.json 2>/dev/null || true
+          git add fts_results.json fts_runner_state.json
+          git diff --staged --quiet || git commit -m "chore: FTS runner update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
