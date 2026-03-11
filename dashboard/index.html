@@ -10668,20 +10668,29 @@ function updateStats() {
     return true;
   });
   document.getElementById('statTotal').textContent = visible.length;
-  document.getElementById('statNew').textContent = visible.filter(j=>j.isNew).length;
-  document.getElementById('statDeveleap').textContent = visible.filter(j=>j.isDeveleapCustomer).length;
+  const newCount = visible.filter(j=>j.isNew).length;
+  const develeapCount = visible.filter(j=>j.isDeveleapCustomer).length;
+  document.getElementById('statNew').textContent = newCount;
+  document.getElementById('statDeveleap').textContent = develeapCount;
+  // Hide "New Today" and "Develeap Customers" cards when count is 0
+  document.getElementById('statNew').closest('.stat-card').style.display = newCount === 0 ? 'none' : '';
+  document.getElementById('statDeveleap').closest('.stat-card').style.display = develeapCount === 0 ? 'none' : '';
 
   // Update In Progress filter chip count
   const inProgressCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'in_progress').length;
   const ipChip = document.getElementById('inProgressChip');
   if (ipChip) { document.getElementById('inProgressCount').textContent = inProgressCount; }
 
-  // Dynamically render category stats
+  // Dynamically render category stats — sorted descending, hide zeros
   const catStatsContainer = document.getElementById('categoryStatsContainer');
   catStatsContainer.style.display = 'contents';
+  const catEntries = Object.entries(CAT_LABELS).map(([key, label]) => {
+    return { key, label, count: visible.filter(j => j.category === key).length };
+  });
+  catEntries.sort((a, b) => b.count - a.count);
   const catStatsDivs = [];
-  for (const [key, label] of Object.entries(CAT_LABELS)) {
-    const count = visible.filter(j => j.category === key).length;
+  for (const { key, label, count } of catEntries) {
+    if (count === 0) continue; // Hide categories with 0 listings
     const color = CAT_COLORS[key] || '#999';
     const statDiv = document.createElement('div');
     statDiv.className = 'stat-card ' + key;
