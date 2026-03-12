@@ -130,5 +130,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-12T15:49:46Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "ISRAEL ADEYEYE. Visionary Tech Leader | Startup Founder | Blockchain ... Before adopting it, we need to understand which",
+    "url": "https://www.linkedin.com/posts/myarmah_is-ai-making-devops-teams-faster-or-are-activity-7434613603552530433-2kUn",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/myarmah/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-12T20:25:15Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "⚖️ We are in a very hard situation: We need to expose and regulate, but if we expose, the companies identify their flaws",
+    "url": "https://www.linkedin.com/posts/dennestorres_companies-are-training-ai-to-lie-to-you-activity-7434745873827385344-YORC",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/dennestorres/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-12T20:25:15Z"
   }
 ]
