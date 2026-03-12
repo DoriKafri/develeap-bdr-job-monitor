@@ -58,6 +58,13 @@
   .sidebar-nav .nav-item:hover { background:rgba(255,255,255,0.08); color:white; }
   .sidebar-nav .nav-item.active { background:rgba(255,255,255,0.12); color:white; border-left-color:var(--accent); font-weight:600; }
   .sidebar-nav .nav-item-badge { margin-left:auto; background:var(--accent); color:var(--primary); font-size:10px; padding:2px 6px; border-radius:8px; font-weight:700; }
+  
+  .sidebar-nav .nav-divider { height:1px; background:rgba(255,255,255,0.08); margin:8px 16px; }
+  .sidebar-nav .nav-item .nav-filter-count { margin-left:auto; font-size:10px; padding:2px 7px; border-radius:8px; font-weight:700; min-width:16px; text-align:center; line-height:1.3; }
+  .sidebar-nav .nav-item .nav-filter-count.count-hidden { background:#ef4444; color:white; }
+  .sidebar-nav .nav-item .nav-filter-count.count-inprogress { background:#f59e0b; color:white; }
+  .sidebar-nav .nav-item .nav-filter-count.count-existing { background:#a855f7; color:white; }
+  .sidebar-nav .nav-item.filter-active { background:rgba(255,255,255,0.15); color:white; border-left-color:#f59e0b; }
   .sidebar-nav .nav-bottom { margin-top:auto; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.1); }
   .sidebar-nav .nav-bottom-item { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
   .sidebar-nav .nav-bottom-item:last-child { margin-bottom:0; }
@@ -1337,6 +1344,23 @@
         <span class="nav-item-badge" id="sidebarNewBadge" style="display:none">0</span>
       </div>
 
+
+      <div class="nav-divider"></div>
+      <div class="nav-item" id="sidebarHiddenItem" style="display:none" onclick="openHiddenPanel()">
+        <span>🚫</span>
+        <span>Hidden</span>
+        <span class="nav-filter-count count-hidden" id="sidebarHiddenCount">0</span>
+      </div>
+      <div class="nav-item" id="sidebarInProgressItem" onclick="toggleInProgressFilter()">
+        <span>🔄</span>
+        <span>In Progress</span>
+        <span class="nav-filter-count count-inprogress" id="sidebarInProgressCount">0</span>
+      </div>
+      <div class="nav-item" id="sidebarExistingItem" onclick="toggleExistingCustomerFilter()">
+        <span>🏢</span>
+        <span>Existing Customer</span>
+        <span class="nav-filter-count count-existing" id="sidebarExistingCount">0</span>
+      </div>
       <div class="nav-section">Outreach</div>
       <div class="nav-item" data-view="wolfpack" onclick="setView('wolfpack')">
         <span>🐺</span>
@@ -1438,21 +1462,6 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" id="searchInput" placeholder="Search by company, title, skills, or location..." oninput="applyAllFilters();updateUrlHash()">
     </div>
-    <div class="source-dropdown-wrap" id="sourceDropdownWrap">
-      <button class="source-dropdown-btn" id="sourceDropdownBtn" onclick="toggleSourceDropdown(event)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        <span id="sourceDropdownLabel">Sources</span>
-        <span class="arrow">&#9660;</span>
-      </button>
-    </div>
-    <div class="filter-chip hidden-companies-chip" id="hiddenChip" style="display:none" onclick="openHiddenPanel()">Hidden <span class="hidden-count" id="hiddenCount">0</span></div>
-    <div class="filter-chip" id="inProgressChip" onclick="toggleInProgressFilter()">🔄 In Progress <span class="hidden-count" id="inProgressCount">0</span></div>
-    <div class="nav-actions">
-      <span class="last-update" id="lastUpdate"></span>
-      <button class="btn btn-run" id="runBtn" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="runBtnLabel">Run Now</span></button>
-      <button class="btn btn-outline" onclick="exportCSV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export CSV</button>
-    </div>
-  </div>
 
   <div class="table-container">
     <div class="table-header">
@@ -11154,10 +11163,12 @@ function unhideAll() {
   saveHidden(); updateHiddenUI(); closeHiddenPanel(); applyAllFilters();
 }
 function updateHiddenUI() {
-  const chip = document.getElementById('hiddenChip');
-  const count = document.getElementById('hiddenCount');
-  if (hiddenCompanies.size > 0) { chip.style.display = ''; count.textContent = hiddenCompanies.size; }
-  else { chip.style.display = 'none'; }
+  const sideItem = document.getElementById('sidebarHiddenItem');
+  const sideCount = document.getElementById('sidebarHiddenCount');
+  if (sideItem) {
+    if (hiddenCompanies.size > 0) { sideItem.style.display = ''; sideCount.textContent = hiddenCompanies.size; }
+    else { sideItem.style.display = 'none'; }
+  }
 }
 function openHiddenPanel() {
   const body = document.getElementById('hiddenPanelBody');
@@ -11177,8 +11188,16 @@ function closeHiddenPanel() {
 let _inProgressFilterActive = false;
 function toggleInProgressFilter() {
   _inProgressFilterActive = !_inProgressFilterActive;
-  const chip = document.getElementById('inProgressChip');
-  if (chip) chip.classList.toggle('active', _inProgressFilterActive);
+  const sideItem = document.getElementById('sidebarInProgressItem');
+  if (sideItem) sideItem.classList.toggle('filter-active', _inProgressFilterActive);
+  applyAllFilters();
+}
+
+let _existingCustomerFilterActive = false;
+function toggleExistingCustomerFilter() {
+  _existingCustomerFilterActive = !_existingCustomerFilterActive;
+  const sideItem = document.getElementById('sidebarExistingItem');
+  if (sideItem) sideItem.classList.toggle('filter-active', _existingCustomerFilterActive);
   applyAllFilters();
 }
 
@@ -11530,8 +11549,16 @@ function updateStats() {
 
   // Update In Progress filter chip count
   const inProgressCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'in_progress').length;
-  const ipChip = document.getElementById('inProgressChip');
-  if (ipChip) { document.getElementById('inProgressCount').textContent = inProgressCount; }
+  const ipSideCount = document.getElementById('sidebarInProgressCount');
+  if (ipSideCount) ipSideCount.textContent = inProgressCount;
+  const ipSideItem = document.getElementById('sidebarInProgressItem');
+  if (ipSideItem) ipSideItem.classList.toggle('filter-active', _inProgressFilterActive);
+
+  const existingCount = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && getEffectiveListingStatus(j) === 'existing_customer').length;
+  const exSideCount = document.getElementById('sidebarExistingCount');
+  if (exSideCount) exSideCount.textContent = existingCount;
+  const exSideItem = document.getElementById('sidebarExistingItem');
+  if (exSideItem) exSideItem.classList.toggle('filter-active', _existingCustomerFilterActive);
 
   // Build ALL stat cards (except Total Active) sorted descending, hide zeros
   const allStatCards = [];
@@ -11592,7 +11619,17 @@ function toggleColFilter(col, iconEl) {
   var selected = columnFilters[col] || new Set(values);
   dropdown.innerHTML = '<div class="col-filter-search"><input type="text" placeholder="Search..." oninput="filterColOptions(\''+col+'\',this.value)"></div>' +
     '<div class="col-filter-options" id="opts-'+col+'">' +
-    values.map(function(v){ return '<label class="col-filter-option" data-val="'+v+'"><input type="checkbox" '+(selected.has(v)?'checked':'')+' onchange="updateColFilterPreview(\''+col+'\')"> '+v+'</label>'; }).join('') +
+    values.map(function(v){
+      var prefix = '';
+      if (col === 'source') {
+        var srcKey = Object.entries(SOURCE_LABELS).find(function(e){ return e[1]===v; });
+        if (srcKey) {
+          var domain = SOURCE_DOMAINS[srcKey[0]] || '';
+          if (domain) prefix = '<img src="https://www.google.com/s2/favicons?domain='+domain+'&sz=32" alt="" style="width:16px;height:16px;border-radius:3px;vertical-align:middle;margin-right:6px">';
+        }
+      }
+      return '<label class="col-filter-option" data-val="'+v+'"><input type="checkbox" '+(selected.has(v)?'checked':'')+' onchange="updateColFilterPreview(\''+col+'\')"> '+prefix+v+'</label>';
+    }).join('') +
     '</div>' +
     '<div class="col-filter-actions">' +
     '<button onclick="clearColFilter(\''+col+'\')">Clear</button>' +
@@ -11682,8 +11719,13 @@ function getFilteredJobs() {
       const ls = getEffectiveListingStatus(j);
       if (ls !== 'in_progress') return false;
     }
+    // Existing customer filter: show only existing_customer
+    if (_existingCustomerFilterActive) {
+      const ls = getEffectiveListingStatus(j);
+      if (ls !== 'existing_customer') return false;
+    }
     // Listing status filter: hide non-actionable unless showing all
-    if (!_inProgressFilterActive && !_showAllListingStatuses && !columnFilters['status'] && currentView!=='in_progress') {
+    if (!_inProgressFilterActive && !_existingCustomerFilterActive && !_showAllListingStatuses && !columnFilters['status'] && currentView!=='in_progress') {
       const ls = getEffectiveListingStatus(j);
       if (ls === 'not_relevant' || ls === 'in_progress' || ls === 'existing_customer') return false;
     }
