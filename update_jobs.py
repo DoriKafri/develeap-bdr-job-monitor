@@ -125,6 +125,8 @@ COMPANY_LOGO_OVERRIDES = {
     "elbit systems": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
     "elbit systems israel": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
     "elbit": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
+    "palo alto networks": "https://cdn.brandfetch.io/idfPYio-v-/w/400/h/400/theme/dark/icon.jpeg",
+    "palo alto": "https://cdn.brandfetch.io/idfPYio-v-/w/400/h/400/theme/dark/icon.jpeg",
 }
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
