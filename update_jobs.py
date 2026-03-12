@@ -105,7 +105,12 @@ DEVELEAP_CUSTOMERS = [
     "Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft",
     "R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash",
     "Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood",
-    "Vorlon","XMCyber","Zafran","Zerto","Zimark",
+    "Vorlon","XMCyber","Zafran","Zenity","Zerto","Zimark",
+    # Added from HubSpot customer sync 2026-03-12
+    "AllCloud","CreditGuard","Danel Group","Datascope","Develeap","eToro",
+    "InterneTeams","Intezer","Kryon","MDClone","Metomotion","Minute Media",
+    "Motorola Solutions","Newstream","Payoneer","Perimeter81","ReadTheory",
+    "Sagenso","Scadafence","Sequent","Spinomenal",
 ]
 
 DEVELEAP_PAST_CUSTOMERS = [
