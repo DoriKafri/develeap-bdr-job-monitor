@@ -2857,7 +2857,7 @@ def detect_source(url: str) -> str:
     return "other"
 
 
-def detect_category(title: str, snippet: str) -> str:
+def detect_category(title: str, snippet: str) -> str | None:
     """Detect job category from title and snippet.
 
     Title keywords are checked first (stronger signal) before description.
@@ -2880,7 +2880,7 @@ def detect_category(title: str, snippet: str) -> str:
         for kw in CATEGORY_KEYWORDS.get(cat, []):
             if kw in text:
                 return cat
-    return "devops"  # Default
+    return None  # No matching category — job is not relevant
 
 
 def _fetch_linkedin_photo(name: str, company: str, linkedin_url: str) -> str:
@@ -3671,6 +3671,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # Use _source_override from LinkedIn FTS results, otherwise detect from URL
         source = r.get("_source_override") or detect_source(url)
         category = detect_category(title, snippet)
+
+        # Skip jobs that don't match any relevant technical category
+        if category is None:
+            log.debug(f"  Skipping irrelevant job (no category match): {title[:60]}")
+            continue
         # For LinkedIn FTS results, prefer the pre-extracted company name
         if r.get("_source_override") == "linkedin_fts" and r.get("company"):
             company = r["company"]
@@ -4741,7 +4746,9 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if j.get("source") != "linkedin_fts":
             j["source"] = detect_source(j.get("sourceUrl", ""))
         # Re-classify category (picks up newly added categories like security, sre, etc.)
-        j["category"] = detect_category(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
+        _new_cat = detect_category(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
+        if _new_cat is not None:
+            j["category"] = _new_cat
         # Re-classify customer status
         company = j.get("company", "")
         j["isDeveleapCustomer"] = is_develeap_customer(company)
