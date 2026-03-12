@@ -272,8 +272,6 @@
   tr.develeap-customer:hover td { background:#FFF3D6; }
 
   .badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; }
-  .badge-develeap { background:var(--accent-light); color:#B37A00; }
-  .badge-develeap::before { content:"\2605"; font-size:10px; }
   tr.past-customer td { background:#F5F5FF; }
   tr.past-customer:hover td { background:#EBEBFF; }
   .badge-past { background:#EDE7F6; color:#7B1FA2; font-size:11px; }
@@ -486,22 +484,21 @@
     tr.develeap-customer { background:#FFFAF0; border-left:3px solid var(--accent); }
     tr.past-customer { background:#F5F5FF; border-left:3px solid #B39DDB; }
     td { padding:2px 0; border:none; font-size:13px; }
-    td:nth-child(1) { position:absolute; top:12px; right:14px; }
-    td:nth-child(2) { padding-right:60px; }
-    td:nth-child(2) .job-title { font-size:14px; }
-    td:nth-child(2) .job-title a { color:var(--primary); text-decoration:underline; text-underline-offset:2px; }
-    td:nth-child(2) .job-subtitle { display:none; }
-    td:nth-child(3) { padding-top:4px; }
-    td:nth-child(3) .company-logo { width:24px; height:24px; font-size:11px; border-radius:6px; }
-    td:nth-child(3) .company-name { font-size:13px; }
-    td:nth-child(4) { display:inline-block; }
-    td:nth-child(4) .location-cell { font-size:12px; }
+    td:nth-child(1) { padding-right:60px; }
+    td:nth-child(1) .job-title { font-size:14px; }
+    td:nth-child(1) .job-title a { color:var(--primary); text-decoration:underline; text-underline-offset:2px; }
+    td:nth-child(1) .job-subtitle { display:none; }
+    td:nth-child(2) { padding-top:4px; }
+    td:nth-child(2) .company-logo { width:24px; height:24px; font-size:11px; border-radius:6px; }
+    td:nth-child(2) .company-name { font-size:13px; }
+    td:nth-child(3) { display:inline-block; }
+    td:nth-child(3) .location-cell { font-size:12px; }
+    td:nth-child(4) { display:inline-block; margin-left:8px; }
     td:nth-child(5) { display:inline-block; margin-left:8px; }
     td:nth-child(6) { display:inline-block; margin-left:8px; }
-    td:nth-child(7) { display:inline-block; margin-left:8px; }
-    td:nth-child(7) .date-cell { font-size:12px; }
-    td:nth-child(8) { display:inline-block; margin-left:8px; vertical-align:middle; }
-    td:nth-child(8) .status-select { font-size:11px; padding:2px 4px; }
+    td:nth-child(6) .date-cell { font-size:12px; }
+    td:nth-child(7) { display:inline-block; margin-left:8px; vertical-align:middle; }
+    td:nth-child(7) .status-select { font-size:11px; padding:2px 4px; }
     /* col-filter-dropdown is position:fixed, positioned via JS */
   }
 
@@ -1429,7 +1426,6 @@
       <div class="stats-bar" id="statsBar">
         <div class="stat-card stat-active" data-stat="all" onclick="filterByStat(this)"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Active Listings</div></div>
         <div class="stat-card new" data-stat="new" onclick="filterByStat(this)"><div class="stat-number" id="statNew" style="color:var(--success)">0</div><div class="stat-label">New Today</div></div>
-        <div class="stat-card develeap" data-stat="develeap" onclick="filterByStat(this)"><div class="stat-number" id="statDeveleap" style="color:var(--develeap-flag)">0</div><div class="stat-label">Develeap Customers</div></div>
         <div id="categoryStatsContainer"></div>
       </div>
     </div>
@@ -1463,7 +1459,6 @@
     <div class="table-scroll">
       <table>
         <thead><tr>
-          <th style="width:30px"><div class="th-wrap"><div class="th-inner" style="cursor:default"></div></div></th>
           <th style="min-width:150px" data-col="title"><div class="th-wrap"><div class="th-inner" onclick="sortBy('title')"><span>Position</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('title',this)">&#9776;</span></div></th>
           <th style="min-width:110px" data-col="company"><div class="th-wrap"><div class="th-inner" onclick="sortBy('company')"><span>Company</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('company',this)">&#9776;</span></div></th>
           <th style="min-width:80px" data-col="location"><div class="th-wrap"><div class="th-inner" onclick="sortBy('location')"><span>Location</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('location',this)">&#9776;</span></div></th>
@@ -11555,10 +11550,6 @@ function updateStats() {
   if (newCount > 0) {
     allStatCards.push({ key: 'new', label: 'New Today', count: newCount, color: 'var(--success)', className: 'stat-card new' });
   }
-  // Add "Develeap Customers" card
-  if (develeapCount > 0) {
-    allStatCards.push({ key: 'develeap', label: 'Develeap Customers', count: develeapCount, color: 'var(--develeap-flag)', className: 'stat-card develeap' });
-  }
   // Add category cards
   for (const [key, label] of Object.entries(CAT_LABELS)) {
     const count = visible.filter(j => j.category === key).length;
@@ -11569,9 +11560,8 @@ function updateStats() {
   // Sort ALL cards descending by count
   allStatCards.sort((a, b) => b.count - a.count);
 
-  // Hide the static "New Today" and "Develeap Customers" HTML cards (we render them dynamically now)
+  // Hide the static "New Today" HTML card (we render it dynamically now)
   document.getElementById('statNew').closest('.stat-card').style.display = 'none';
-  document.getElementById('statDeveleap').closest('.stat-card').style.display = 'none';
 
   // Render all sorted cards into categoryStatsContainer
   const catStatsContainer = document.getElementById('categoryStatsContainer');
@@ -11712,10 +11702,9 @@ function getFilteredJobs() {
     if (currentView==='new'&&!j.isNew) return false;
     if (currentView==='in_progress') { const ls=getEffectiveListingStatus(j); if (ls!=='in_progress') return false; }
     if (currentFilter!=='all') {
-      if (currentFilter==='develeap'&&!j.isDeveleapCustomer) return false;
-      else if (currentFilter==='new'&&!j.isNew) return false;
+      if (currentFilter==='new'&&!j.isNew) return false;
       else if (currentFilter==='ai_agentic'&&j.category!=='ai'&&j.category!=='agentic') return false;
-      else if (currentFilter!=='develeap'&&currentFilter!=='new'&&currentFilter!=='ai_agentic'&&currentFilter!==j.category) return false;
+      else if (currentFilter!=='new'&&currentFilter!=='ai_agentic'&&currentFilter!==j.category) return false;
     }
     // Column filters
     for (const [col, vals] of Object.entries(columnFilters)) {
@@ -11865,7 +11854,6 @@ function renderJobs() {
 
   tbody.innerHTML = jobs.map(j=>`
     <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
-      <td>${j.isDeveleapCustomer?'<span class="badge badge-develeap">\u2605</span>':(j.isPastCustomer?'<span class="badge badge-past">Past</span>':(j.isNew?'<span class="badge badge-new">NEW</span>':''))}</td>
       <td><div class="job-title-cell"><div style="display:flex;align-items:start;gap:6px"><div style="flex:1;min-width:0"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div><button class="share-btn share-btn-row" onclick="event.stopPropagation();shareListing('${j.id}',event)" title="Share this listing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div></td>
       <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
@@ -11889,7 +11877,6 @@ function filterByStat(el){
   // Any key that exists in CAT_LABELS is a valid category filter
   let filterVal='all';
   if(stat==='all')filterVal='all';
-  else if(stat==='develeap')filterVal='develeap';
   else if(stat==='new')filterVal='new';
   else if(stat==='ai_agentic')filterVal='ai_agentic';
   else if(CAT_LABELS[stat])filterVal=stat;
