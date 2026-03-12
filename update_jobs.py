@@ -1738,11 +1738,11 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
             fts_job_url = found_url
             break
 
-    # Use first 120 chars of snippet as description
-    desc = snippet[:120] if snippet else title[:120]
+    # Use snippet as description (keep full text for dashboard display)
+    desc = snippet or title
 
     return {
-        "title": display_title[:80],
+        "title": display_title,
         "snippet": desc,
         "url": url,
         "company": company or "Unknown",
@@ -3800,8 +3800,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         jobs.append({
             "id": job_id,
-            "title": title[:80],
-            "subtitle": snippet[:60] if snippet else "",
+            "title": title,
+            "subtitle": snippet if snippet else "",
             "company": company,
             "companyIndustry": "",
             "location": location,
@@ -3814,7 +3814,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             "isDeveleapCustomer": is_develeap_customer(company),
             "isPastCustomer": is_develeap_past_customer(company),
             "_snippet": snippet,  # Keep full snippet for closed/date detection
-            "description": snippet[:120] if snippet else title,
+            "description": snippet if snippet else title,
             "skills": [],
             "stakeholders": stakeholders,
             "logo": _get_company_logo(company, url, title),
