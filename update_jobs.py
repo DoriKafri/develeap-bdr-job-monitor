@@ -9,6 +9,7 @@ import os
 import re
 import json
 import time
+import copy
 import random
 import hashlib
 import zipfile
@@ -843,6 +844,85 @@ COMPANY_STAKEHOLDERS = {
     "cast.ai": [
         {"name": "Laurent Gil", "title": "Co-Founder & CPO", "linkedin": "https://www.linkedin.com/in/laurentgil/", "source": "LinkedIn", "email": ""},
         {"name": "Yuri Frayman", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yurifrayman/", "source": "LinkedIn", "email": ""},
+    ],
+    # ── New companies added for contact coverage (Mar 2026) ──
+    "apiiro": [
+        {"name": "Idan Plotnik", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/idanplotnik", "source": "LinkedIn", "email": ""},
+        {"name": "Yonatan Eldar", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/yonatan-eldar-a6a40621", "source": "LinkedIn", "email": ""},
+    ],
+    "coralogix": [
+        {"name": "Ariel Assaraf", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/ariel-assaraf-ab621896", "source": "LinkedIn", "email": ""},
+        {"name": "Yoni Farin", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yoni-farin-97806874/", "source": "LinkedIn", "email": ""},
+    ],
+    "transmit security": [
+        {"name": "Mickey Boodaei", "title": "Co-Founder & CEO", "linkedin": "https://il.linkedin.com/in/mickeyboodaei", "source": "LinkedIn", "email": ""},
+        {"name": "Shmulik Regev", "title": "CTO", "linkedin": "https://www.linkedin.com/in/shmulik-regev-9085622/", "source": "LinkedIn", "email": ""},
+    ],
+    "varonis": [
+        {"name": "Yaki Faitelson", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/yaki-faitelson", "source": "LinkedIn", "email": ""},
+        {"name": "David Bass", "title": "EVP Engineering & CTO", "linkedin": "https://www.linkedin.com/in/dave-bass-15017b4/", "source": "LinkedIn", "email": ""},
+    ],
+    "nayax": [
+        {"name": "Yair Nechmad", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/yair-nechmad-55b75413/", "source": "LinkedIn", "email": ""},
+    ],
+    "legitsecurity": [
+        {"name": "Roni Fuchs", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/ronifuchs/", "source": "LinkedIn", "email": ""},
+        {"name": "Liav Caspi", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/liav-caspi-67b10647/", "source": "LinkedIn", "email": ""},
+    ],
+    "legit security": [
+        {"name": "Roni Fuchs", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/ronifuchs/", "source": "LinkedIn", "email": ""},
+        {"name": "Liav Caspi", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/liav-caspi-67b10647/", "source": "LinkedIn", "email": ""},
+    ],
+    "nym health": [
+        {"name": "Or Peles", "title": "CEO", "linkedin": "https://www.linkedin.com/in/or-peles/", "source": "LinkedIn", "email": ""},
+    ],
+    "orchid": [
+        {"name": "Roy Katmor", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/roykatmor/", "source": "LinkedIn", "email": ""},
+    ],
+    "orchid security": [
+        {"name": "Roy Katmor", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/roykatmor/", "source": "LinkedIn", "email": ""},
+    ],
+    "tastewise": [
+        {"name": "Alon Chen", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/alonchen/", "source": "LinkedIn", "email": ""},
+        {"name": "Eyal Gaon", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/eyal-gaon-a8260540/", "source": "LinkedIn", "email": ""},
+    ],
+    "traild": [
+        {"name": "Brad Smorgon", "title": "Founder & CEO", "linkedin": "https://au.linkedin.com/in/bradsmorgon", "source": "LinkedIn", "email": ""},
+    ],
+    "pixellot": [
+        {"name": "Gal Oz", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/gal-oz-1307/", "source": "LinkedIn", "email": ""},
+    ],
+    "play perfect": [
+        {"name": "Idan Ayzen", "title": "CTO", "linkedin": "https://www.linkedin.com/in/idan-ayzen-31a226178/", "source": "LinkedIn", "email": ""},
+    ],
+    "adaptive6": [
+        {"name": "Aviv Revach", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/avivrevach/", "source": "LinkedIn", "email": ""},
+        {"name": "Omer Müller", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/omermuller/", "source": "LinkedIn", "email": ""},
+    ],
+    "qualitest": [
+        {"name": "Eli Margolin", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/eli-margolin-a1084273/", "source": "LinkedIn", "email": ""},
+    ],
+    "g2": [
+        {"name": "Godard Abel", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/godardabel/", "source": "LinkedIn", "email": ""},
+    ],
+    "bitsight": [
+        {"name": "Stephen Harvey", "title": "CEO", "linkedin": "https://www.linkedin.com/in/stephen-harvey-667a411b/", "source": "LinkedIn", "email": ""},
+        {"name": "Dave Casion", "title": "CTO", "linkedin": "https://www.linkedin.com/in/dave-casion/", "source": "LinkedIn", "email": ""},
+    ],
+    "hinge health": [
+        {"name": "Daniel Perez", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/danielperez1/", "source": "LinkedIn", "email": ""},
+    ],
+    "wraithwatch": [
+        {"name": "Nik Seetharaman", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/nikseetharaman/", "source": "LinkedIn", "email": ""},
+    ],
+    "microsoft": [
+        {"name": "Michal Braverman-Blumenstyk", "title": "CVP & MD, Microsoft Israel R&D", "linkedin": "https://www.linkedin.com/in/michal-braverman-blumenstyk/", "source": "LinkedIn", "email": ""},
+    ],
+    "amazon web services aws": [
+        {"name": "Harel Ifhar", "title": "General Manager, AWS Israel", "linkedin": "https://il.linkedin.com/in/harel-ifhar-593508/", "source": "LinkedIn", "email": ""},
+    ],
+    "aws": [
+        {"name": "Harel Ifhar", "title": "General Manager, AWS Israel", "linkedin": "https://il.linkedin.com/in/harel-ifhar-593508/", "source": "LinkedIn", "email": ""},
     ],
 }
 
@@ -2970,23 +3050,26 @@ def _validate_linkedin_urls(jobs: list) -> list:
 
 def _get_stakeholders(company: str) -> list:
     """Look up stakeholders for a company from the COMPANY_STAKEHOLDERS dict,
-    falling back to automatic SerpAPI-based discovery when no manual entry exists."""
+    falling back to automatic SerpAPI-based discovery when no manual entry exists.
+
+    IMPORTANT: Returns a deep copy so callers can safely mutate the list
+    without corrupting the global COMPANY_STAKEHOLDERS dictionary."""
     if not company:
         return []
     company_lower = company.lower().strip()
     # Direct match
     if company_lower in COMPANY_STAKEHOLDERS:
-        return COMPANY_STAKEHOLDERS[company_lower]
+        return copy.deepcopy(COMPANY_STAKEHOLDERS[company_lower])
     # Partial match (e.g. "Check Point Software" matches "check point")
     for key, contacts in COMPANY_STAKEHOLDERS.items():
         if key in company_lower or company_lower in key:
-            return contacts
+            return copy.deepcopy(contacts)
     # Fuzzy match: remove spaces/hyphens and compare (e.g. "blinkops" matches "Blink Ops")
     company_squished = company_lower.replace(" ", "").replace("-", "")
     for key, contacts in COMPANY_STAKEHOLDERS.items():
         key_squished = key.replace(" ", "").replace("-", "")
         if key_squished in company_squished or company_squished in key_squished:
-            return contacts
+            return copy.deepcopy(contacts)
     # No manual entry — try auto-discovery
     return _auto_discover_stakeholders(company)
 
