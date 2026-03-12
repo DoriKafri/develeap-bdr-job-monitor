@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12T13:23:02.920Z",
+  "lastUpdated": "2026-03-12T13:23:10.170Z",
   "statuses": {
     "nataly kremer": "connected",
     "lior golan": "connected",
@@ -307,7 +307,8 @@
     "unknown",
     "dialog",
     "in 2026",
-    "newtonschool"
+    "newtonschool",
+    "nextta"
   ],
   "listingStatuses": {
     "db9337a7": "in_progress",
@@ -315,6 +316,7 @@
     "db5c1ab9": "not_relevant",
     "0814d173": "not_relevant",
     "321822ff": "existing_customer",
-    "3c85bbbd": "not_relevant"
+    "3c85bbbd": "not_relevant",
+    "4db4304b": "not_relevant"
   }
 }
