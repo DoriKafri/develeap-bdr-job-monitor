@@ -187,6 +187,8 @@ COMPANY_DOMAINS = {
     "intuit israel": "intuit.com",
     "kpmg": "kpmg.com",
     "leidos": "leidos.com",
+    "legit security": "legitsecurity.com",
+    "legitsecurity": "legitsecurity.com",
     "levi strauss": "levistrauss.com",
     "levi strauss & co.": "levistrauss.com",
     "levi strauss & co": "levistrauss.com",
@@ -4263,6 +4265,8 @@ COMPANY_ALIASES = {
     "elbit":                "Elbit Systems",
     "mantis tech":          "Mantis Tech",
     "mantis technology":    "Mantis Tech",
+    "legitsecurity":        "Legit Security",
+    "legit security":       "Legit Security",
     "tel aviv district ...": "Unknown",
     "tel aviv district":    "Unknown",
 }
