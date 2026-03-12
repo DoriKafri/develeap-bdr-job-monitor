@@ -4597,6 +4597,26 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_spa != len(existing):
         log.info(f"  Removed {before_spa - len(existing)} unverifiable SPA career pages from existing jobs")
 
+    # Remove jobs with clearly non-Israel locations (US cities, states, etc.)
+    _NON_ISRAEL_LOCATIONS = [
+        "washington", "d.c.", "new york", "san francisco", "california", "texas",
+        "boston", "seattle", "denver", "chicago", "virginia", "colorado",
+        "palo alto", "austin", "los angeles", "atlanta", "florida", "ohio",
+        "michigan", "pennsylvania", "north carolina", "arizona", "portland",
+        "minneapolis", "london", "berlin", "paris", "mumbai", "bangalore",
+        "singapore", "tokyo", "sydney", "toronto", "vancouver",
+    ]
+    def _is_non_israel_location(j):
+        loc = j.get("location", "").lower()
+        title = j.get("title", "").lower()
+        combined = loc + " " + title
+        return any(place in combined for place in _NON_ISRAEL_LOCATIONS)
+
+    before_loc = len(existing)
+    existing = [j for j in existing if not _is_non_israel_location(j)]
+    if before_loc != len(existing):
+        log.info(f"  Removed {before_loc - len(existing)} non-Israel located jobs")
+
     # Re-check existing listings — remove closed, stale (>14d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
