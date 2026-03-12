@@ -154,5 +154,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-12T20:25:15Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... we need to look at what a #ScrumMaster is accountable for? Scrum Master is accountable for #Scrum and #TeamEffective",
+    "url": "https://www.linkedin.com/posts/piyushrahate_mondaymisconcept-scrummasters-aiworld-activity-7434114882956091392-HA1_",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/piyushrahate/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-12T23:48:04Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We are using AI at traffic signals. Cameras are everywhere. Do we need to relook security?",
+    "url": "https://www.linkedin.com/posts/niladrichoudhuri_israel-hacked-iran-traffic-cameras-for-years-activity-7434620705624772608-5lH7",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/niladrichoudhuri/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-12T23:48:04Z"
   }
 ]
