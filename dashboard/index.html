@@ -11864,7 +11864,40 @@ function renderJobs() {
   _preloadAllStakeholders();
   const jobs = getFilteredJobs();
   const tbody = document.getElementById('jobsTable');
-  document.getElementById('resultCount').textContent = jobs.length+' listings';
+  // Build filter breakdown
+  const _allValid = ALL_JOBS.filter(j => j.sourceUrl && j.sourceUrl.startsWith('http') && !_isCareerPage(j));
+  const _total = _allValid.length;
+  let _hiddenByCompany = 0, _hiddenByStatus = 0, _hiddenBySearch = 0, _hiddenByColFilter = 0, _hiddenBySource = 0, _hiddenByView = 0;
+  const _search = document.getElementById('searchInput').value.toLowerCase();
+  _allValid.forEach(j => {
+    if (hiddenCompanies.size > 0 && hiddenCompanies.has(j.company.toLowerCase())) { _hiddenByCompany++; return; }
+    const ls = getEffectiveListingStatus(j);
+    if (!_inProgressFilterActive && !_existingCustomerFilterActive && !_showAllListingStatuses && !columnFilters['status'] && currentView!=='in_progress') {
+      if (ls === 'not_relevant' || ls === 'in_progress' || ls === 'existing_customer') { _hiddenByStatus++; return; }
+    }
+    if (_inProgressFilterActive && ls !== 'in_progress') { _hiddenByView++; return; }
+    if (_existingCustomerFilterActive && ls !== 'existing_customer') { _hiddenByView++; return; }
+    if (currentView==='develeap' && !j.isDeveleapCustomer) { _hiddenByView++; return; }
+    if (currentView==='new' && !j.isNew) { _hiddenByView++; return; }
+    if (currentView==='in_progress' && ls !== 'in_progress') { _hiddenByView++; return; }
+    if (currentFilter!=='all') {
+      if (currentFilter==='new'&&!j.isNew) { _hiddenByView++; return; }
+      else if (currentFilter==='ai_agentic'&&j.category!=='ai'&&j.category!=='agentic') { _hiddenByView++; return; }
+      else if (currentFilter!=='new'&&currentFilter!=='ai_agentic'&&currentFilter!==j.category) { _hiddenByView++; return; }
+    }
+    for (const [col, vals] of Object.entries(columnFilters)) { if (!vals.has(getColValue(j, col))) { _hiddenByColFilter++; return; } }
+    if (activeSourceFilters.size > 0 && !activeSourceFilters.has(j.source)) { _hiddenBySource++; return; }
+    if (_search && ![j.title,j.company,j.subtitle,j.location,...(j.skills||[])].join(' ').toLowerCase().includes(_search)) { _hiddenBySearch++; return; }
+  });
+  const _parts = [];
+  if (_hiddenByCompany) _parts.push(_hiddenByCompany + ' by hidden companies');
+  if (_hiddenByStatus) _parts.push(_hiddenByStatus + ' by status');
+  if (_hiddenByView) _parts.push(_hiddenByView + ' by view filter');
+  if (_hiddenByColFilter) _parts.push(_hiddenByColFilter + ' by column filter');
+  if (_hiddenBySource) _parts.push(_hiddenBySource + ' by source filter');
+  if (_hiddenBySearch) _parts.push(_hiddenBySearch + ' by search');
+  const _filterInfo = _parts.length ? ' · filtered out: ' + _parts.join(', ') : '';
+  document.getElementById('resultCount').innerHTML = jobs.length + ' of ' + _total + ' listings' + (_filterInfo ? '<span style="color:var(--text-lighter);font-size:12px">' + _filterInfo + '</span>' : '');
   if (!jobs.length) { tbody.innerHTML='<tr><td colspan="8"><div class="empty-state"><h3>No listings match your filters</h3><p>Try adjusting your search or column filters</p></div></td></tr>'; return; }
 
   // Sort  -  "NEW" listings always pinned to the top
