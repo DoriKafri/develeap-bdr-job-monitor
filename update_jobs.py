@@ -4511,6 +4511,13 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_cp != len(existing):
         log.info(f"  Removed {before_cp - len(existing)} company-page listings (not specific jobs)")
 
+    # Remove broken FTS listings where company name is actually post text
+    # (e.g. company="If you need additional capacity the first thing...")
+    before_broken = len(existing)
+    existing = [j for j in existing if len(j.get("company", "")) <= 60]
+    if before_broken != len(existing):
+        log.info(f"  Removed {before_broken - len(existing)} broken FTS listings (company name too long)")
+
     # Remove aggregator/index pages from existing jobs
     def _is_aggregator(j):
         t = j.get("title", "").lower()
