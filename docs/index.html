@@ -2489,8 +2489,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-12T17:39:51Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 167, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 4007, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 63, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 761, "error": ""}];
+let LAST_UPDATED = "2026-03-13T07:39:01Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 116, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 2322, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 128, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2017, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2514,6 +2514,15 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -2522,15 +2531,6 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -2576,6 +2576,39 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
+  },
+  {
+    "id": "a4a6b130",
+    "title": "Senior Generative AI Engineer (LLMs & Agents) at KPMG",
+    "subtitle": "At KPMG Israel, our Generative AI delivery team leads the market in advanced AI solution delivery. We work across the full spectrum of generative AI ...",
+    "company": "KPMG Israel",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "comeet",
+    "sourceUrl": "https://www.comeet.com/jobs/somekhchaikin/F3.007/senior-generative-ai-engineer-llms--agents/1A.564",
+    "category": "agentic",
+    "posted": "2026-03-13",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "At KPMG Israel, our Generative AI delivery team leads the market in advanced AI solution delivery. We work across the full spectrum of generative AI ...",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Dina Pasca-Raz",
+        "title": "Partner, Head of Technology",
+        "linkedin": "",
+        "source": "Company Website",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHSvSZWr48B7A/profile-displayphoto-shrink_400_400/B4DZX7uaPbG4Ak-/0/1743685004015?e=2147483647&v=beta&t=j18QXfwIZw6BSrR9ldu2-Cj23Otellt6_05BhyLZlnc",
+        "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Senior Generative AI Engineer (LLMs & Agents) — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=somekhchaikin.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-13"
   },
   {
     "id": "6a36c10a",
@@ -2685,7 +2718,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://www.comeet.com/jobs/somekhchaikin/F3.007/data-engineer--gcp--bigquery-expert/0D.465",
     "category": "data",
     "posted": "2026-03-12",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "We are looking for an experienced and hands-on Data Engineer to lead the migration of enterprise data platforms to Google Cloud Platform (GCP). In this role, ...",
@@ -2697,13 +2730,165 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHSvSZWr48B7A/profile-displayphoto-shrink_400_400/B4DZX7uaPbG4Ak-/0/1743685004015?e=2147483647&v=beta&t=j18QXfwIZw6BSrR9ldu2-Cj23Otellt6_05BhyLZlnc",
         "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Data Engineer -GCP & BigQuery Expert — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=somekhchaikin.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-12"
+  },
+  {
+    "id": "b8c732b4",
+    "title": "Plurai AI Engineer | Tel Aviv District, Israel ...",
+    "subtitle": "Investigate, implement and share new AI technologies and ideas. ... 5+ years of experience in software engineering (Python, Node.js, Go, or similar). 2+ years of ...",
+    "company": "Plurai",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/ai-engineer-at-plurai-4383008758",
+    "category": "ai",
+    "posted": "2026-03-12",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Investigate, implement and share new AI technologies and ideas. ... 5+ years of experience in software engineering (Python, Node.js, Go, or similar). 2+ years of ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=plurai.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-13"
+  },
+  {
+    "id": "ed06bc94",
+    "title": "Riskified Site Reliability Engineering (SRE)",
+    "subtitle": "We are a fast-growing and dynamic tech company with 750+ team members globally. · Our Tel-Aviv team is currently working in a hybrid of remote and in-office work ...",
+    "company": "Riskified",
+    "companyIndustry": "",
+    "location": "Remote",
+    "locationSlug": "remote",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/site-reliability-engineering-sre-at-riskified-4375339656",
+    "category": "sre",
+    "posted": "2026-03-12",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We are a fast-growing and dynamic tech company with 750+ team members globally. · Our Tel-Aviv team is currently working in a hybrid of remote and in-office work ...",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "David Meredith",
+        "title": "ctor & CEO for global NASDAQ SaaS category-leader",
+        "linkedin": "https://www.linkedin.com/in/davidmeredith",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQFtPBDEdaAIBQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1570947518289?e=2147483647&v=beta&t=ELV9DmFLfpNbEV37chPK28kmOrvp2jM1Zvqrvncgkl4",
+        "connectMsg": "Hi David, I noticed Riskified is hiring a Riskified Site Reliability Engineering (SRE) — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Riskified accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=riskified.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-13"
+  },
+  {
+    "id": "234edca7",
+    "title": "DevOps Cloud Engineer Owning High-Scale ...",
+    "subtitle": "Check Point Harmony Email Security and Collaboration (Previously AVANAN) is a unique email solution that fully secures cloud email and cloud platforms using AI.",
+    "company": "Check Point Software",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/devops-cloud-engineer-owning-high-scale-cloud-infrastructure-at-check-point-software-4355693297",
+    "category": "cloud",
+    "posted": "2026-03-12",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Check Point Harmony Email Security and Collaboration (Previously AVANAN) is a unique email solution that fully secures cloud email and cloud platforms using AI.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nataly Kremer",
+        "title": "CPO & Head of R&D",
+        "linkedin": "https://www.linkedin.com/in/nataly-kremer-12744b29/",
+        "source": "Company Website",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D5603AQHsznULgNebxA/profile-displayphoto-shrink_400_400/B56ZaGPJzbHsAg-/0/1746008843907?e=2147483647&v=beta&t=26Jj9Gv3caqvXYtSKWrhWew50DTINaSu4Ct1scdEYyo",
+        "connectMsg": "Hi Nataly, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Nataly! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Tomer Lev",
+        "title": "Engineering Director",
+        "linkedin": "https://www.linkedin.com/in/tomerlev/",
+        "source": "LinkedIn",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHmppXzNWgYzw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517759061266?e=2147483647&v=beta&t=9a6Mw5wpx5JKLfy0vo-KcEQnRoJdaeHKsWDTrIsaAXA",
+        "connectMsg": "Hi Tomer, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Tomer! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Ofir Israel",
+        "title": "Engineering Director",
+        "linkedin": "https://www.linkedin.com/in/ofirisrael/",
+        "source": "LinkedIn",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHUHb3Ivwt3xw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1676502872116?e=2147483647&v=beta&t=avEqG9-8Cc6BSweIlOxOIWqamujjVmJNzDrDmEvim7c",
+        "connectMsg": "Hi Ofir, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Ofir! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Alex Spokoiny",
+        "title": "Chief Information Officer",
+        "linkedin": "",
+        "source": "Company Website",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEc0Wdgisc6iw/profile-displayphoto-scale_200_200/B4DZxYDZEWJwAY-/0/1771003810659?e=2147483647&v=beta&t=hp-1Dw_hcJlhNBllWlyOPGSLUGZRx7NQak1asmovkBU",
+        "connectMsg": "Hi Alex, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Alex! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-13"
+  },
+  {
+    "id": "b1530dd6",
+    "title": "comblack DevSecOps Engineer | Center District, ...",
+    "subtitle": "COMBLACK is recruiting a DevSecOps Engineer ! An opportunity to join a key role at the intersection of security and development, supporting development and ...",
+    "company": "Comblack",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin",
+    "sourceUrl": "https://il.linkedin.com/jobs/view/devsecops-engineer-at-comblack-4384834983",
+    "category": "security",
+    "posted": "2026-03-12",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "COMBLACK is recruiting a DevSecOps Engineer ! An opportunity to join a key role at the intersection of security and development, supporting development and ...",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nicol Dadov",
+        "title": "Human Resources Recruiter ב-שירות התעסוקה הישראלי - Israeli Employment Service",
+        "linkedin": "https://il.linkedin.com/in/nicol-dadov/iw",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D5603AQG0DjyXTo5hpg/profile-displayphoto-scale_400_400/B56ZflQbZCGQAk-/0/1751897979249?e=2147483647&v=beta&t=GfbF_zVRtpOAEt1tm4oyNsxko489kqwGgDutXW9zSSI",
+        "connectMsg": "Hi Nicol, I noticed Comblack is hiring a comblack DevSecOps Engineer | Center District, ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Nicol! I wanted to share how Develeap helps companies like Comblack accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=comblack.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-13"
   },
   {
     "id": "a6a6af39",
@@ -2996,14 +3181,14 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Meital Derhy",
-        "title": "Talent Acquisition Specialist",
-        "linkedin": "https://il.linkedin.com/in/meital-derhy",
-        "source": "LinkedIn Job Poster",
+        "name": "Greg Compton",
+        "title": "CEO+CTO at AbraWorks",
+        "linkedin": "https://uk.linkedin.com/in/greg-compton-402b414b",
+        "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGfBeNNQ3useQ/profile-displayphoto-shrink_400_400/B4DZQ9Rs3HHwAg-/0/1736194838860?e=2147483647&v=beta&t=13yqnKBEWrHNTJZAe3jtViHFS2QvaqbxIw0yQgpEGf0",
-        "connectMsg": "Hi Meital, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Meital! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Greg, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?",
+        "photo": "https://media.licdn.com/dms/image/v2/C5603AQFX72-oRM0VHQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1607616360174?e=2147483647&v=beta&t=Qbemlq_JmBUmzk1YzuI2mrmG78aU8kTWB6jDzh7wzUg"
       },
       {
         "name": "Matt Stewart",
@@ -3016,14 +3201,14 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D5603AQFfPjOM5ISRjA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1669948000085?e=2147483647&v=beta&t=C1oQQZjqN3wPTTQtIrXba2-g7egtE_spERlVNXByaaU"
       },
       {
-        "name": "Greg Compton",
-        "title": "CEO+CTO at AbraWorks",
-        "linkedin": "https://uk.linkedin.com/in/greg-compton-402b414b",
-        "source": "Auto-discovered",
+        "name": "Meital Derhy",
+        "title": "Talent Acquisition Specialist",
+        "linkedin": "https://il.linkedin.com/in/meital-derhy",
+        "source": "LinkedIn Job Poster",
         "email": "",
-        "connectMsg": "Hi Greg, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQFX72-oRM0VHQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1607616360174?e=2147483647&v=beta&t=Qbemlq_JmBUmzk1YzuI2mrmG78aU8kTWB6jDzh7wzUg"
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGfBeNNQ3useQ/profile-displayphoto-shrink_400_400/B4DZQ9Rs3HHwAg-/0/1736194838860?e=2147483647&v=beta&t=13yqnKBEWrHNTJZAe3jtViHFS2QvaqbxIw0yQgpEGf0",
+        "connectMsg": "Hi Meital, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Meital! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=abra.com&sz=128",
@@ -3396,6 +3581,11 @@ let ALL_JOBS = [
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/usu-the-man_google-x-leaders-in-tech-event-was-further-activity-7434513126638850048-FZHj",
         "title": "Cloud Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/dennestorres_companies-are-training-ai-to-lie-to-you-activity-7434745873827385344-YORC",
+        "title": "Cloud Engineer"
       }
     ]
   },
@@ -3757,6 +3947,16 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Israel Englander",
+        "title": "Chairman and Chief Executive Officer at ...",
+        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
+        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ben Clark",
         "title": "Chief Technology Officer at Millennium ...",
         "linkedin": "https://www.linkedin.com/in/ben-clark-6441168",
@@ -3767,14 +3967,13 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Ben! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
-        "name": "Israel Englander",
-        "title": "Chairman and Chief Executive Officer at ...",
-        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "name": "David West",
+        "title": "CEO at Millennium Technologies, Inc.",
+        "linkedin": "https://www.linkedin.com/in/david-west-9638481a",
         "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
-        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi David, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=mlp.com&sz=128",
@@ -4097,14 +4296,13 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Gilad Herman",
-        "title": "VP HR @ Moveo Group",
-        "linkedin": "https://il.linkedin.com/in/gilad-herman",
-        "source": "LinkedIn Job Poster",
+        "name": "Michael DeLay",
+        "title": "CTO at Mantis Composites Inc.",
+        "linkedin": "https://www.linkedin.com/in/michaeldelay1",
+        "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQGPNWbukyORsw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1629436439027?e=2147483647&v=beta&t=hbIoz1nOzMFuz0LWEnY8ia-0KbDK9AoOpxP5x5FqJMw",
-        "connectMsg": "Hi Gilad, I noticed Mantis Tech is hiring a Mantis Tech Senior DevSecOps | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Gilad! I wanted to share how Develeap helps companies like Mantis Tech accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Michael, I noticed Mantis Tech is hiring a Mantis Tech Senior DevSecOps | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Michael! I wanted to share how Develeap helps companies like Mantis Tech accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Gerry Vannuffelen",
@@ -4116,13 +4314,14 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Gerry! I wanted to share how Develeap helps companies like Mantis Tech accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
-        "name": "Michael DeLay",
-        "title": "CTO at Mantis Composites Inc.",
-        "linkedin": "https://www.linkedin.com/in/michaeldelay1",
-        "source": "Auto-discovered",
+        "name": "Gilad Herman",
+        "title": "VP HR @ Moveo Group",
+        "linkedin": "https://il.linkedin.com/in/gilad-herman",
+        "source": "LinkedIn Job Poster",
         "email": "",
-        "connectMsg": "Hi Michael, I noticed Mantis Tech is hiring a Mantis Tech Senior DevSecOps | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Michael! I wanted to share how Develeap helps companies like Mantis Tech accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQGPNWbukyORsw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1629436439027?e=2147483647&v=beta&t=hbIoz1nOzMFuz0LWEnY8ia-0KbDK9AoOpxP5x5FqJMw",
+        "connectMsg": "Hi Gilad, I noticed Mantis Tech is hiring a Mantis Tech Senior DevSecOps | Tel Aviv District ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Gilad! I wanted to share how Develeap helps companies like Mantis Tech accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=mantis-technology.com&sz=128",
@@ -4255,6 +4454,11 @@ let ALL_JOBS = [
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/yaakov-silva-1234a4243_%D7%A9%D7%9C%D7%95%D7%9D-%D7%9C%D7%9B%D7%95%D7%9C%D7%9D-%D7%9E%D7%97%D7%A4%D7%A9-%D7%94%D7%96%D7%93%D7%9E%D7%A0%D7%95%D7%AA-%D7%9C%D7%94%D7%A9%D7%AA%D7%9C%D7%91-%D7%91%D7%AA%D7%A4%D7%A7%D7%99%D7%93-backend-activity-7433863894219202560-sfrz",
         "title": "Platform Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/zoolatech_zoolatech-hiring-openpositions-activity-7437901431971405825-hlgx",
+        "title": "Platform Engineer"
       }
     ],
     "_first_seen": "2026-03-08"
@@ -4279,6 +4483,16 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Dori Kafri, CEO at Develeap",
+        "title": "CEO, I lead our employee-owned, people-first professional se",
+        "linkedin": "https://il.linkedin.com/in/dori-kafri",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
+        "connectMsg": "Hi Dori, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
+        "followUpMsg": "Thanks for connecting, Dori! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
+      },
+      {
         "name": "Kobi Avshalom‏",
         "title": "CTO at develeap. My passion comes from being a lifelong lear",
         "linkedin": "https://il.linkedin.com/in/jacob-avshalom",
@@ -4287,16 +4501,6 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHFJfTLSvcN6Q/profile-displayphoto-shrink_200_200/B4DZR9l8IUHUAY-/0/1737273885607?e=2147483647&v=beta&t=sIFkQqRsIlDYJ44Kwb2sbQB9dutPUXJ5JH8M83R_mgo",
         "connectMsg": "Hi Kobi, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
         "followUpMsg": "Thanks for connecting, Kobi! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Dori Kafri‏",
-        "title": "CEO, I lead our employee-owned, people-first professional se",
-        "linkedin": "https://il.linkedin.com/in/dori-kafri",
-        "source": "Auto-discovered",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
-        "connectMsg": "Hi Dori, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Dori! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
@@ -4702,6 +4906,7 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHSvSZWr48B7A/profile-displayphoto-shrink_400_400/B4DZX7uaPbG4Ak-/0/1743685004015?e=2147483647&v=beta&t=j18QXfwIZw6BSrR9ldu2-Cj23Otellt6_05BhyLZlnc",
         "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Generative AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
@@ -4716,6 +4921,11 @@ let ALL_JOBS = [
       {
         "source": "other",
         "sourceUrl": "https://kpmg.co.il/technologyconsulting/careers/jobs/generative-ai-engineer",
+        "title": "Generative AI Engineer"
+      },
+      {
+        "source": "comeet",
+        "sourceUrl": "https://www.comeet.com/jobs/somekhchaikin/F3.007/generative-ai-engineer/8C.A46",
         "title": "Generative AI Engineer"
       }
     ],
@@ -5614,6 +5824,7 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHSvSZWr48B7A/profile-displayphoto-shrink_400_400/B4DZX7uaPbG4Ak-/0/1743685004015?e=2147483647&v=beta&t=j18QXfwIZw6BSrR9ldu2-Cj23Otellt6_05BhyLZlnc",
         "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Associate Generative AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
@@ -5645,6 +5856,7 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHSvSZWr48B7A/profile-displayphoto-shrink_400_400/B4DZX7uaPbG4Ak-/0/1743685004015?e=2147483647&v=beta&t=j18QXfwIZw6BSrR9ldu2-Cj23Otellt6_05BhyLZlnc",
         "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Cloud Security Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
@@ -5713,14 +5925,14 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Meital Derhy",
-        "title": "Talent Acquisition Specialist",
-        "linkedin": "https://il.linkedin.com/in/meital-derhy",
-        "source": "LinkedIn Job Poster",
+        "name": "Greg Compton",
+        "title": "CEO+CTO at AbraWorks",
+        "linkedin": "https://uk.linkedin.com/in/greg-compton-402b414b",
+        "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGfBeNNQ3useQ/profile-displayphoto-shrink_400_400/B4DZQ9Rs3HHwAg-/0/1736194838860?e=2147483647&v=beta&t=13yqnKBEWrHNTJZAe3jtViHFS2QvaqbxIw0yQgpEGf0",
-        "connectMsg": "Hi Meital, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Meital! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Greg, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?",
+        "photo": "https://media.licdn.com/dms/image/v2/C5603AQFX72-oRM0VHQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1607616360174?e=2147483647&v=beta&t=Qbemlq_JmBUmzk1YzuI2mrmG78aU8kTWB6jDzh7wzUg"
       },
       {
         "name": "Matt Stewart",
@@ -5733,14 +5945,14 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D5603AQFfPjOM5ISRjA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1669948000085?e=2147483647&v=beta&t=C1oQQZjqN3wPTTQtIrXba2-g7egtE_spERlVNXByaaU"
       },
       {
-        "name": "Greg Compton",
-        "title": "CEO+CTO at AbraWorks",
-        "linkedin": "https://uk.linkedin.com/in/greg-compton-402b414b",
-        "source": "Auto-discovered",
+        "name": "Meital Derhy",
+        "title": "Talent Acquisition Specialist",
+        "linkedin": "https://il.linkedin.com/in/meital-derhy",
+        "source": "LinkedIn Job Poster",
         "email": "",
-        "connectMsg": "Hi Greg, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQFX72-oRM0VHQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1607616360174?e=2147483647&v=beta&t=Qbemlq_JmBUmzk1YzuI2mrmG78aU8kTWB6jDzh7wzUg"
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGfBeNNQ3useQ/profile-displayphoto-shrink_400_400/B4DZQ9Rs3HHwAg-/0/1736194838860?e=2147483647&v=beta&t=13yqnKBEWrHNTJZAe3jtViHFS2QvaqbxIw0yQgpEGf0",
+        "connectMsg": "Hi Meital, I noticed Abra is hiring a abra Data Engineer | Center District, Israel ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Meital! I wanted to share how Develeap helps companies like Abra accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=abra.com&sz=128",
@@ -5840,15 +6052,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Philip Belder‏",
-        "title": "CTO and VP R&D specializing in development of cutting edge W",
-        "linkedin": "https://il.linkedin.com/in/philip-belder",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Philip, I noticed Amazon Web Services AWS is hiring a Software Development Engineer, AWS Agentic AI — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Philip! I wanted to share how Develeap helps companies like Amazon Web Services AWS accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
         "name": "Adam Selipsky",
         "title": "Former CEO at Amazon Web Services ...",
         "linkedin": "https://www.linkedin.com/in/adamselipsky",
@@ -5856,6 +6059,15 @@ let ALL_JOBS = [
         "email": "",
         "connectMsg": "Hi Adam, I noticed Amazon Web Services AWS is hiring a Software Development Engineer, AWS Agentic AI — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Adam! I wanted to share how Develeap helps companies like Amazon Web Services AWS accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Philip Belder‏",
+        "title": "CTO and VP R&D specializing in development of cutting edge W",
+        "linkedin": "https://il.linkedin.com/in/philip-belder",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Philip, I noticed Amazon Web Services AWS is hiring a Software Development Engineer, AWS Agentic AI — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Philip! I wanted to share how Develeap helps companies like Amazon Web Services AWS accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Harel Ifhar",
@@ -6004,6 +6216,16 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Israel Englander",
+        "title": "Chairman and Chief Executive Officer at ...",
+        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
+        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ben Clark",
         "title": "Chief Technology Officer at Millennium ...",
         "linkedin": "https://www.linkedin.com/in/ben-clark-6441168",
@@ -6014,14 +6236,13 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Ben! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
-        "name": "Israel Englander",
-        "title": "Chairman and Chief Executive Officer at ...",
-        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "name": "David West",
+        "title": "CEO at Millennium Technologies, Inc.",
+        "linkedin": "https://www.linkedin.com/in/david-west-9638481a",
         "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
-        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi David, I noticed Millennium is hiring a Millennium Machine Learning Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=mlp.com&sz=128",
@@ -6485,6 +6706,11 @@ let ALL_JOBS = [
       {
         "source": "workday",
         "sourceUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Yokneam/Infrastructure-and-Lab-Engineer--DevOps_JR2013544",
+        "title": "Infrastructure and Lab Engineer, DevOps"
+      },
+      {
+        "source": "workday",
+        "sourceUrl": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Israel-Yokneam/Infrastructure-and-Lab-Engineer--DevOps_JR2013544/apply/applyManually",
         "title": "Infrastructure and Lab Engineer, DevOps"
       }
     ]
@@ -7663,6 +7889,21 @@ let ALL_JOBS = [
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/rotem-israel_sweetsecurity-sko2026-cloudsecurity-activity-7434619493668163584--B_t",
         "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/piyushrahate_mondaymisconcept-scrummasters-aiworld-activity-7434114882956091392-HA1_",
+        "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/niladrichoudhuri_israel-hacked-iran-traffic-cameras-for-years-activity-7434620705624772608-5lH7",
+        "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/moshe-israel-70915642_%D7%94%D7%97%D7%9C%D7%98%D7%AA%D7%99-%D7%9C%D7%A7%D7%97%D7%AA-%D7%A2%D7%9C-%D7%A2%D7%A6%D7%9E%D7%99-%D7%90%D7%AA%D7%92%D7%A8-%D7%9C%D7%94%D7%A4%D7%95%D7%9A-%D7%90%D7%AA-%D7%AA%D7%94%D7%9C%D7%99%D7%9A-activity-7437411000972111872-SAB-",
+        "title": "AI Engineer"
       }
     ]
   },
@@ -7810,15 +8051,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Tomer Zvirsh‏",
-        "title": "CEO. פבר׳ 2021. VP R&D Award of Excellence. Redis VP R&D. פב",
-        "linkedin": "https://il.linkedin.com/in/tomer-zvirsh",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Tomer, I'm Dori from Develeap. I noticed Redis is growing the team with a Manager, Cloud Operations @ Redis role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Tomer! Since Develeap already works with Redis, I wanted to reach out about the Manager, Cloud Operations @ Redis hiring. We often help teams ramp up faster with interim DevOps & cloud engineering expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
         "name": "Yiftach Shoolman‏",
         "title": "Co-Founder and CEO. LINE5. מרץ 2025 -להציג 1 חודש שנה 1. Red",
         "linkedin": "https://il.linkedin.com/in/yiftachshoolman",
@@ -7826,6 +8058,15 @@ let ALL_JOBS = [
         "email": "",
         "connectMsg": "Hi Yiftach, I'm Dori from Develeap. I noticed Redis is growing the team with a Manager, Cloud Operations @ Redis role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
         "followUpMsg": "Thanks for connecting, Yiftach! Since Develeap already works with Redis, I wanted to reach out about the Manager, Cloud Operations @ Redis hiring. We often help teams ramp up faster with interim DevOps & cloud engineering expertise while permanent hires onboard. Would a quick chat be useful?"
+      },
+      {
+        "name": "Tomer Zvirsh‏",
+        "title": "CEO. פבר׳ 2021. VP R&D Award of Excellence. Redis VP R&D. פב",
+        "linkedin": "https://il.linkedin.com/in/tomer-zvirsh",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Tomer, I'm Dori from Develeap. I noticed Redis is growing the team with a Manager, Cloud Operations @ Redis role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
+        "followUpMsg": "Thanks for connecting, Tomer! Since Develeap already works with Redis, I wanted to reach out about the Manager, Cloud Operations @ Redis hiring. We often help teams ramp up faster with interim DevOps & cloud engineering expertise while permanent hires onboard. Would a quick chat be useful?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=redis.com&sz=128",
@@ -7894,15 +8135,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Roy Zisapel‏",
-        "title": "‏CEO at Radware",
-        "linkedin": "https://il.linkedin.com/in/roy-zisapel-24b4204",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Roy, I noticed Radware is hiring a Architect Lead,Agentic AI Security – EMEA — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Roy! I wanted to share how Develeap helps companies like Radware accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
         "name": "Fima Lifshitc‏",
         "title": "CTO. Radware. מרץ 2020 -להציג 6 חודש שנים 1. Tel Aviv Area",
         "linkedin": "https://il.linkedin.com/in/fima-lifshitc-a011993",
@@ -7910,6 +8142,15 @@ let ALL_JOBS = [
         "email": "",
         "connectMsg": "Hi Fima, I noticed Radware is hiring a Architect Lead,Agentic AI Security – EMEA — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Fima! I wanted to share how Develeap helps companies like Radware accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Roy Zisapel‏",
+        "title": "‏CEO at Radware",
+        "linkedin": "https://il.linkedin.com/in/roy-zisapel-24b4204",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Roy, I noticed Radware is hiring a Architect Lead,Agentic AI Security – EMEA — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Roy! I wanted to share how Develeap helps companies like Radware accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=radware.com&sz=128",
@@ -8183,6 +8424,15 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Check Point Software Senior FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -8191,15 +8441,6 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Check Point Software Senior FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Check Point Software Senior FinOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -8546,7 +8787,7 @@ let ALL_JOBS = [
     ],
     "logo": "https://www.google.com/s2/favicons?domain=surecomp.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-03-12"
+    "_first_seen": "2026-03-13"
   },
   {
     "id": "c0b6a767",
@@ -8579,270 +8820,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=wraithwatch.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "4895c52c",
-    "title": "Senior Fullstack Engineer – Tel Aviv, Israel | Oligo Careers",
-    "subtitle": "6+ years of experience in backend development in cloud envir",
-    "company": "Oligo Security",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/oligosecurity/5A.00B/senior-fullstack-engineer/73.755",
-    "category": "devops",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "6+ years of experience in backend development in cloud environments, with a basic understanding of frontend technologies",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Gal Elbaz",
-        "title": "CTO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/gal-elbaz-2b70b214/",
-        "source": "LinkedIn",
-        "email": "gal@oligo.security",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQEnNqxIme0yCA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1602957727527?e=2147483647&v=beta&t=_rDyA1IUzhU-xre69iGZW-BSom3s1iKCnjSV9rDJTX4",
-        "connectMsg": "Hi Gal, I noticed Oligo Security is hiring a Senior Fullstack Engineer – Tel Aviv, Israel | Oligo Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Gal! I wanted to share how Develeap helps companies like Oligo Security accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Nadav Czerninski",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/nadavcz/",
-        "source": "CTech",
-        "email": "nadav@oligo.security",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFDnPJBLFXnXA/profile-displayphoto-scale_400_400/B4EZqnLNQCKYAg-/0/1763741326132?e=2147483647&v=beta&t=_vq5OcCzjnJiF9AUr4ZO-5ZnZrEO72WEMeKukcOJCq0",
-        "connectMsg": "Hi Nadav, I noticed Oligo Security is hiring a Senior Fullstack Engineer – Tel Aviv, Israel | Oligo Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Nadav! I wanted to share how Develeap helps companies like Oligo Security accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=oligo.security&sz=128",
-    "_first_seen": "2026-02-26"
-  },
-  {
-    "id": "d0749697",
-    "title": "Careers - Myworkdayjobs.com",
-    "subtitle": "Senior DevOps Engineer. locations: Rehovot,ISR. posted on: P",
-    "company": "Applied Materials",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "workday",
-    "sourceUrl": "https://amat.wd1.myworkdayjobs.com/he-IL/External?Country=084562884af243748dad7c84c304d89a",
-    "category": "devops",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Senior DevOps Engineer. locations: Rehovot,ISR. posted on: Posted 10 Days Ago. R2520444. Senior Computing DevOps Manager",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Nir Yogev",
-        "title": "VP Engineering",
-        "linkedin": "https://www.linkedin.com/in/nir-yogev-0a2a2618/",
-        "source": "LinkedIn",
-        "email": "nir.yogev@amat.com",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQG7Z3Ze0FMoIg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1659897415284?e=2147483647&v=beta&t=Sbbc5WOoFiNzpR6cVaaAiHaCHkIsU5lV9A0gUc7r-H0",
-        "connectMsg": "Hi Nir, I noticed Applied Materials is hiring a Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Nir! I wanted to share how Develeap helps companies like Applied Materials accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Anat Tzur",
-        "title": "Director of DevOps",
-        "linkedin": "https://www.linkedin.com/in/anat-tzur/",
-        "source": "LinkedIn",
-        "email": "anat.tzur@amat.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGTfjOLXnMJtw/profile-displayphoto-shrink_200_200/B4DZSJDtd.HcAY-/0/1737466239589?e=2147483647&v=beta&t=oUak7glGWtbSCF4qanFYbDg57NSOwbSH8zFxjoeQEbQ",
-        "connectMsg": "Hi Anat, I noticed Applied Materials is hiring a Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Anat! I wanted to share how Develeap helps companies like Applied Materials accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appliedmaterials.com&sz=128",
-    "_first_seen": "2026-02-26"
-  },
-  {
-    "id": "6284b99f",
-    "title": "Senior Data Infrastructure Engineer at Harmonya - Comeet",
-    "subtitle": "Senior Data Infrastructure Engineer. Engineering; Tel Aviv, ",
-    "company": "Harmonya",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/harmonya/89.004/senior-data-infrastructure-engineer/FA.445",
-    "category": "data",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Senior Data Infrastructure Engineer. Engineering; Tel Aviv, Israel; Senior; Full-time; ID: 0.11. Description. Retailers ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Eran Lupo",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/eranlupo/",
-        "source": "LinkedIn",
-        "email": "eran@harmonya.com",
-        "connectMsg": "Hi Eran, I noticed Harmonya is hiring a Senior Data Infrastructure Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Eran! I wanted to share how Develeap helps companies like Harmonya accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=harmonya.com&sz=128",
-    "_first_seen": "2026-02-26"
-  },
-  {
-    "id": "ea0b2b6b",
-    "title": "Sales Engineer",
-    "subtitle": "Provide insights back to product and engineering. ... 5+ yea",
-    "company": "Beacon Security",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/sales-engineer-at-beacon-security-4376971895",
-    "category": "devops",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": true,
-    "isPastCustomer": false,
-    "description": "Provide insights back to product and engineering. ... 5+ years in presales or technical customer-facing roles. Understan",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=beacon.security&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "38cb01fa",
-    "title": "Elbit Systems DevSecOps Engineer",
-    "subtitle": "לאתר החברה ביקנעם דרוש.ה מפתח.ת תוכנה תשתיות DevOps במסגרת ה",
-    "company": "Elbit Systems",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/devsecops-engineer-at-elbit-systems-israel-4375576123",
-    "category": "security",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "לאתר החברה ביקנעם דרוש.ה מפתח.ת תוכנה תשתיות DevOps במסגרת התפקיד: תכנון, פיתוח, קידוד ותחזוקה של תשתיות DevOps ומגוון ה",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yehoshua Yehuda",
-        "title": "EVP Strategy & CTO",
-        "linkedin": "https://il.linkedin.com/in/yehoshua-shuki-yehuda-0245701",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Yehoshua, I noticed Elbit Systems is hiring a Elbit Systems DevSecOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yehoshua! I wanted to share how Develeap helps companies like Elbit Systems accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Cindy James",
-        "title": "Sr Director Talent Acquisition",
-        "linkedin": "https://www.linkedin.com/in/cindy-james-3115a68/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Cindy, I noticed Elbit Systems is hiring a Elbit Systems DevSecOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Cindy! I wanted to share how Develeap helps companies like Elbit Systems accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "67419ff8",
-    "title": "CSMs at DoiT",
-    "subtitle": "TL;DR – DoiT is hiring CSMs in Israel (fully remote!) If you",
-    "company": "DoiT",
-    "companyIndustry": "",
-    "location": "Remote",
-    "locationSlug": "remote",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/idanpeleg_tldr-doit-is-hiring-csms-in-israel-activity-7432759565659607040-SDIM",
-    "category": "devops",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "TL;DR – DoiT is hiring CSMs in Israel (fully remote!) If you're into cloud, growth, and making real impact — this one's ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Idan Peleg",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/idanpeleg/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHgZIFwzk8QeA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1675784927315?e=2147483647&v=beta&t=M7q7gELjxlFb_mMp8XAm6pr3Qebv0dpW39-sRiXsx8I",
-        "connectMsg": "Hi Idan, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Idan! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Vadim Solovey",
-        "title": "CTO & Managing Director",
-        "linkedin": "https://www.linkedin.com/in/vadimska/",
-        "source": "LinkedIn",
-        "email": "vadim@doit.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFPoV5ZQ7Me5A/profile-displayphoto-shrink_400_400/B4EZYg.M3iHkAs-/0/1744309899319?e=2147483647&v=beta&t=jMCQ4alC-xlz-1CeW__YKp9NK049thY6Mw774gJuPkU",
-        "connectMsg": "Hi Vadim, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Vadim! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Yoav Toussia-Cohen",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/yoavtc/",
-        "source": "LinkedIn",
-        "email": "yoav@doit.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQGhQRDSN2jeEw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1714095852738?e=2147483647&v=beta&t=AdlS6drQdP9Qo9paPN9KMrUoEOuvSZy_ZfSXvY1ecn0",
-        "connectMsg": "Hi Yoav, I noticed DoiT is hiring a CSMs — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yoav! I wanted to share how Develeap helps companies like DoiT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=doit.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-02-26"
-  },
-  {
-    "id": "068c59ab",
-    "title": "Site Reliability Engineer",
-    "subtitle": "It is \"hiring your faith\" to believe that God works through ",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/dr-roselyn-r-majek-jp-frsa-mba-dms-bschons-mh-bsc-hons-ldn-swk-9b144835_the-hermeneutics-interpretations-of-the-activity-7432694085024575488-ViK0",
-    "category": "sre",
-    "posted": "2026-02-26",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "It is \"hiring your faith\" to believe that God works through the office, regardless of the person. The \"Public Sin\" of Di",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Dr Roselyn Majek",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/dr-roselyn-r-majek-jp-frsa-mba-dms-bschons-mh-bsc-hons-ldn-swk-9b144835/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "",
-        "connectMsg": "Hi Dr, I noticed Unknown is hiring a Site Reliability Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Dr! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-02-26"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====

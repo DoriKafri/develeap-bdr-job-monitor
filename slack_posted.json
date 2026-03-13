@@ -346,6 +346,7 @@
     "scylladb|devops|job opportunity: controller|2026-02-20",
     "scylladb|devops|job opportunity: controller",
     "scaleops|||sales engineer - il",
+    "riskified|||riskified site reliability engineering (sre)",
     "rise|||data engineer",
     "remoterockethub||||mlops engineer, usa israel | remoterockethub",
     "remoterockethub||||mlops engineer, usa israel",
@@ -410,6 +411,7 @@
     "port|ai|ai full stack engineer at port - comeet|2026-03-02",
     "port|ai|ai full stack engineer at port - comeet",
     "port|ai|ai full stack engineer",
+    "plurai|||plurai ai engineer",
     "play||||devops tech lead at play perfect - comeet",
     "play||||devops tech lead",
     "play|||devops tech lead|2026-03-06",
@@ -666,6 +668,7 @@
     "kpmg israel||||generative ai engineer",
     "kpmg israel||||cloud security engineer",
     "kpmg israel||||associate generative ai engineer",
+    "kpmg israel|||senior generative ai engineer (llms & agents) at kpmg",
     "kpmg israel|||generative ai engineer|2026-03-06",
     "kpmg israel|||generative ai engineer|2026-03-04",
     "kpmg israel|||generative ai engineer",
@@ -935,6 +938,7 @@
     "comblack|||infrastructure engineer | center district",
     "comblack|||devsecops | center district, israel",
     "comblack|||devsecops expert | center district",
+    "comblack|||comblack devsecops engineer | center district",
     "comblack|||cloud engineer",
     "comblack|||cloud architect | center district, israel",
     "codevalue||||devops engineer at codevalue - comeet",
@@ -2009,7 +2013,11 @@
     "if you need additional capacity the first thing business owners typically look to|||ai/agentic engineer at if you need additional capacity the first thing business owners typically look to": "2026-03-12T08:44:01.391795+00:00",
     "ai-generated code slows down delivery with complex prs not every ai problem|||ai engineer at ai-generated code slows down delivery with complex prs not every ai problem": "2026-03-12T09:19:38.075247+00:00",
     "legit security|||legit security senior platform engineer": "2026-03-12T11:21:22.728642+00:00",
-    "kpmg israel|||data engineer -gcp & bigquery expert": "2026-03-12T17:39:51.892630+00:00"
+    "kpmg israel|||data engineer -gcp & bigquery expert": "2026-03-12T17:39:51.892630+00:00",
+    "plurai|||plurai ai engineer": "2026-03-13T07:39:02.495679+00:00",
+    "riskified|||riskified site reliability engineering (sre)": "2026-03-13T07:39:02.495679+00:00",
+    "comblack|||comblack devsecops engineer | center district": "2026-03-13T07:39:02.495679+00:00",
+    "kpmg israel|||senior generative ai engineer (llms & agents) at kpmg": "2026-03-13T07:39:02.495679+00:00"
   },
-  "updated": "2026-03-12T17:39:51.906159+00:00"
+  "updated": "2026-03-13T07:39:02.509358+00:00"
 }
