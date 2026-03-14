@@ -163,8 +163,12 @@ COMPANY_DOMAINS = {
     "classiq": "classiq.io",
     "cloudinary": "cloudinary.com",
     "codevalue": "codevalue.net",
+    "comblack": "comblack.co.il",
     "commit": "comm-it.com",
     "comm-it": "comm-it.com",
+    "comm it": "comm-it.com",
+    "commbox": "commbox.io",
+    "commit": "comm-it.com",
     "cyberark": "cyberark.com",
     "cymulate": "cymulate.com",
     "datadog": "datadoghq.com",
@@ -230,7 +234,9 @@ COMPANY_DOMAINS = {
     "pagaya": "pagaya.com",
     "pango": "pango.co.il",
     "paragon": "useparagon.com",
+    "kyndryl": "kyndryl.com",
     "pentera": "pentera.io",
+    "plurai": "plurai.ai",
     "phasev": "phasev.ai",
     "pixellot": "pixellot.tv",
     "plainid": "plainid.com",
@@ -3602,7 +3608,7 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
             "linkedin", "secrettelaviv", "aijobs", "efinancialcareers",
             "monster", "ziprecruiter", "dice", "stackoverflow", "hired",
             "angel", "wellfound", "lever", "greenhouse", "workday",
-            "jobify360", "goozali", "lhh", "jobvite", "ashbyhq",
+            "jobify360", "goozali", "lhh", "jobvite", "ashbyhq", "isecjobs",
         }
         if len(domain_company) > 2 and domain_company.lower() not in job_boards:
             # Verify the URL looks like a career/job page, not a random page
@@ -3758,7 +3764,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             r"simplyhired\.com", r"jooble\.", r"talent\.com",
             r"jobrapido\.", r"careerjet\.",
             r"gotfriends\.co\.il", r"whist\.co\.il", r"medulla\.co\.il",
-            r"jobify360\.co\.il",
+            r"jobify360\.co\.il", r"isecjobs\.com",
         ]
         if any(re.search(p, url_lower) for p in index_url_patterns):
             continue
@@ -4273,8 +4279,13 @@ COMPANY_ALIASES = {
     "levi strauss & co.":   "Levi Strauss & Co.",
     "levi strauss & co":    "Levi Strauss & Co.",
     "levi strauss":         "Levi Strauss & Co.",
-    "commit":               "Commit",
-    "comm-it":              "Commit",
+    "commit":               "CommIT",
+    "comm-it":              "CommIT",
+    "comm it":              "CommIT",
+    "commbox":              "CommBox",
+    "comblack":             "Comblack",
+    "plurai":               "Plurai",
+    "kyndryl":              "Kyndryl",
     "millennium":           "Millennium",
     "elbit systems israel": "Elbit Systems",
     "elbit systems":        "Elbit Systems",
