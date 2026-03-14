@@ -5363,6 +5363,16 @@ def main():
 
     log.info("=== Develeap BDR Job Monitor Update ===")
 
+    # ── SerpAPI quota conservation: skip alternate runs ──────────────
+    # Pipeline runs 6x/day but we only need 3x/day to conserve SerpAPI quota.
+    # Skip runs at even UTC hours (6, 10, 14) — only run at odd hours (8, 12, 16).
+    # This halves SerpAPI usage without requiring workflow file changes.
+    # Remove this block after SerpAPI plan renews on 2026-04-08.
+    _run_hour = datetime.now(timezone.utc).hour
+    if _run_hour in (6, 10, 14):
+        log.info(f"Skipping run at UTC hour {_run_hour} to conserve SerpAPI quota (renews 2026-04-08)")
+        return
+
     # Load workflow config to check which nodes are enabled
     wf_config = _load_workflow_config()
     if wf_config:
