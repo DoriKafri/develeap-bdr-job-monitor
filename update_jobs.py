@@ -1118,13 +1118,13 @@ LINKEDIN_FTS_QUERIES_PER_CATEGORY = {
 # ── Develeap Customer FTS ────────────────────────────────────────────────
 # Targeted searches for LinkedIn posts mentioning Develeap customer companies.
 # Rotates through the customer list, searching a batch per run.
-DEVELEAP_CUSTOMER_FTS_BATCH_SIZE = 8  # Number of customers to search per run
+DEVELEAP_CUSTOMER_FTS_BATCH_SIZE = 3  # Number of customers to search per run (reduced to conserve SerpAPI quota)
 DEVELEAP_CUSTOMER_FTS_STATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "develeap_customer_fts_state.json")
 
 # How many categories to search per run (rotation)
 # Increased from 4 to 5 to ensure each category is searched more frequently
 # with 9 categories: ceil(9/5)=2 runs to cover all categories
-LINKEDIN_FTS_CATS_PER_RUN = 5
+LINKEDIN_FTS_CATS_PER_RUN = 3  # Reduced from 5 to conserve SerpAPI quota
 # Max queries per category per run — increased to 2 for better coverage
 LINKEDIN_FTS_MAX_QUERIES_PER_CAT = 2
 # File to track which categories were searched last, for round-robin rotation
@@ -1369,16 +1369,9 @@ def search_bing(query: str, freshness: str = "") -> list[dict]:
 
 
 GOOGLE_JOBS_QUERIES = [
-    ("FinOps Engineer", "Tel Aviv, Israel"),
-    ("FinOps", "Israel"),
-    ("Cloud FinOps", "Israel"),
-    ("Cloud Cost Engineer", "Israel"),
+    # Reduced from 10 to 2 to conserve SerpAPI quota (renews 2026-04-08)
     ("DevOps Engineer", "Israel"),
-    ("Platform Engineer", "Israel"),
-    ("SRE", "Israel"),
     ("AI Engineer", "Israel"),
-    ("MLOps Engineer", "Israel"),
-    ("Agentic AI Engineer", "Israel"),
 ]
 
 
@@ -1473,11 +1466,12 @@ def search_duckduckgo(query: str, timelimit: str = "") -> list[dict]:
 
 
 def search_jobs(query: str) -> list[dict]:
-    """Search with DuckDuckGo first, fall back to SerpAPI (conserve SerpAPI quota)."""
+    """Search with DuckDuckGo only — SerpAPI fallback disabled to conserve quota (renews 2026-04-08)."""
     results = search_duckduckgo(query)
-    if not results:
-        time.sleep(random.uniform(1.5, 3.0))  # Rate limiting
-        results = search_serpapi(query)
+    # SerpAPI fallback DISABLED to conserve quota
+    # if not results:
+    #     time.sleep(random.uniform(1.5, 3.0))
+    #     results = search_serpapi(query)
     return results
 
 
@@ -1815,13 +1809,14 @@ def _fts_search_all_engines(query: str) -> list[dict]:
             log.warning(f"Bing failed for FTS: {e}")
         time.sleep(random.uniform(0.5, 1.5))
 
-    # 3. SerpAPI (Google via API) — last month
-    if SERPAPI_KEY:
-        try:
-            _add(search_serpapi(query, tbs="qdr:m1"))
-        except Exception as e:
-            log.warning(f"SerpAPI failed for FTS: {e}")
-        time.sleep(random.uniform(0.5, 1.5))
+    # 3. SerpAPI (Google via API) — DISABLED to conserve SerpAPI quota
+    # Google CSE + Bing + DuckDuckGo provide sufficient coverage for FTS
+    # if SERPAPI_KEY:
+    #     try:
+    #         _add(search_serpapi(query, tbs="qdr:m1"))
+    #     except Exception as e:
+    #         log.warning(f"SerpAPI failed for FTS: {e}")
+    #     time.sleep(random.uniform(0.5, 1.5))
 
     # 4. DuckDuckGo (free, always available) — last month (DDG index is slower)
     try:
@@ -3101,7 +3096,7 @@ def _get_stakeholders(company: str) -> list:
 # ── Auto-stakeholder discovery cache ──────────────────────────────────────
 _stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
 _auto_discover_count = 0                    # Track search engine usage per run
-AUTO_DISCOVER_MAX = 40                      # Max auto-lookups per pipeline run
+AUTO_DISCOVER_MAX = 3                       # Max auto-lookups per pipeline run (reduced to conserve SerpAPI quota — renews 2026-04-08)
 
 # Leadership title patterns for auto-discovery
 _LEADERSHIP_RE = re.compile(
@@ -5513,7 +5508,7 @@ def main():
     # Second pass: fetch missing photos (deduplicated by LinkedIn URL)
     photo_count = 0
     fetch_count = 0
-    max_fetches = 10  # Rate limit: max SerpAPI image searches per run (conserve quota)
+    max_fetches = 0  # DISABLED to conserve SerpAPI quota (renews 2026-04-08)
     for j in merged:
         company = j.get("company", "")
         for s in j.get("stakeholders", []):
