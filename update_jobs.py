@@ -4623,6 +4623,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         "michigan", "pennsylvania", "north carolina", "arizona", "portland",
         "minneapolis", "london", "berlin", "paris", "mumbai", "bangalore",
         "singapore", "tokyo", "sydney", "toronto", "vancouver",
+        "us government", "u.s. government",
     ]
     def _is_non_israel_location(j):
         loc = j.get("location", "").lower()
