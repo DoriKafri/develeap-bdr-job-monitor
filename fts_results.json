@@ -334,5 +334,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-14T11:16:30Z"
+  },
+  {
+    "title": "Staff Data Engineer at Intuit Israel",
+    "snippet": "Intuit Israel is hiring a Staff Data Engineer, for Intuit's Fintech AI & Data transformation! Build scalable, AI-native ",
+    "url": "https://www.linkedin.com/posts/shayruvio_staff-data-engineer-activity-7437227587334119425-_eGQ",
+    "company": "Intuit Israel",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/shayruvio/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-14T11:44:14Z"
+  },
+  {
+    "title": "Data Engineer",
+    "snippet": "We're #hiring a new Senior Data Engineer in Tel Aviv-Yafo, Tel Aviv District. Apply today or share this post with your n",
+    "url": "https://www.linkedin.com/posts/perion_hiring-activity-7433865808759664640-h8e3",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/perion/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-14T11:44:14Z"
+  },
+  {
+    "title": "Data Engineer",
+    "snippet": "... Data Engineer Europe: https://zoolatech.com/daza People Programs Assistant (HR Team) Poland, Warsaw: https://zoolate",
+    "url": "https://www.linkedin.com/posts/zoolatech_zoolatech-hiring-openpositions-activity-7437901431971405825-hlgx",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/zoolatech/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-14T11:44:14Z"
   }
 ]
