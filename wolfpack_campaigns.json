@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-03-12T12:37:57.414Z",
+  "lastUpdated": "2026-03-15T11:41:39.814Z",
   "campaigns": [
     {
       "id": "wp_test_dori_sim",
@@ -25456,6 +25456,1722 @@
         "pausedAt": "2026-03-12T12:37:57.414Z"
       },
       "_customerType": "customer"
+    },
+    {
+      "id": "camp_mmropb3a7se9y",
+      "name": "Mastercard — DevOps Tech Lead - Myworkdayjobs.com",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Mastercard",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=mastercard.com&sz=128",
+        "source": "workday"
+      },
+      "targetJob": {
+        "title": "DevOps Tech Lead - Myworkdayjobs.com",
+        "url": "https://mastercard.wd1.myworkdayjobs.com/en-US/CorporateCareers/job/DevOps-Tech-Lead_R-264397",
+        "category": "devops",
+        "source": "workday",
+        "posted": "2026-03-14"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Jorn Lambert",
+          "title": "Chief Product Officer",
+          "email": "jorn.lambert@mastercard.com",
+          "linkedin": "https://www.linkedin.com/in/jornlambert/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4D03AQHdveKBc5QUaA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1650887085800?e=2147483647&v=beta&t=VGLQhaI2-zcLSowL3UhaUQ5ZlOAGp_ie-pnQ1SaesO4",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Jorn, I noticed Mastercard is hiring a DevOps Tech Lead — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Jorn! I wanted to share how Develeap helps companies like Mastercard accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Rania Alhajjar",
+          "title": "Talent Acquisition Lead, Nordics & Baltics at Mastercard (ex-Klarna)",
+          "email": "rania.alhajjar@mastercard.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_2",
+          "name": "Onn Hachmon",
+          "title": "Director Software Engineering",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_3",
+          "name": "Muly Benjamin",
+          "title": "Team Lead",
+          "email": "muly_benjamin@mastercard.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_4",
+          "name": "Dave Fleming",
+          "title": "EVP, Global Head, R&D",
+          "email": "dave.fleming@mastercard.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_5",
+          "name": "Magnus White",
+          "title": "Director, DevOps Engineering",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_6",
+          "name": "Melissa Alessandroni",
+          "title": "Technical Talent Acquisition Specialist",
+          "email": "melissa_alessandroni@mastercard.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_7",
+          "name": "Kamran Manzoor",
+          "title": "Lead Developer/DevOps Architect",
+          "email": "",
+          "linkedin": "",
+          "phone": "+45 80 01 60 98",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_8",
+          "name": "Mimmi Berglund",
+          "title": "Director, Account Management, Nordics & Baltics",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_9",
+          "name": "Jeppe Jensen",
+          "title": "Senior IT projektleder",
+          "email": "",
+          "linkedin": "",
+          "phone": "+4542940440",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_10",
+          "name": "Aga Wiszniewska",
+          "title": "Talent Acquisition Manager",
+          "email": "aga.wiszniewska@mastercard.com",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        },
+        {
+          "id": "contact_11",
+          "name": "Rakhesh Sekhar",
+          "title": "Director DevOps @ MasterCard Digital Foundation Services- BizOps, Operations & Technology",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "HubSpot",
+          "connectMsg": "",
+          "followUpMsg": ""
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3amuarr",
+      "name": "KPMG Israel — Senior Generative AI Engineer (LLMs & Agents) at KPMG",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "KPMG Israel",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "Senior Generative AI Engineer (LLMs & Agents) at KPMG",
+        "url": "https://www.comeet.com/jobs/somekhchaikin/F3.007/senior-generative-ai-engineer-llms--agents/1A.564",
+        "category": "agentic",
+        "source": "comeet",
+        "posted": "2026-03-13"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Dina Pasca-Raz",
+          "title": "Partner, Head of Technology",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "Company Website",
+          "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Senior Generative AI Engineer (LLMs & Agents) — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3azejsq",
+      "name": "CommIT — DevOps Engineer at CommIT - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "CommIT",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=comm-it.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "DevOps Engineer at CommIT - Comeet",
+        "url": "https://www.comeet.com/jobs/comm-it/76.008/devops-engineer/28.76C",
+        "category": "devops",
+        "source": "comeet",
+        "posted": "2026-03-13"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Ilan Sokolov",
+          "title": "CTO",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/ilan-sokolov/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHOa_jZ5lAD9w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1697281804260?e=2147483647&v=beta&t=ixyu7s97GptaVj9ANuGduwuF91MbdqeQVrGmJ34wOKQ",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Ilan, I noticed CommIT is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Ilan! I wanted to share how Develeap helps companies like CommIT accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3anui48",
+      "name": "KPMG Israel — Data Engineer -GCP & BigQuery Expert at KPMG - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "KPMG Israel",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "Data Engineer -GCP & BigQuery Expert at KPMG - Comeet",
+        "url": "https://www.comeet.com/jobs/somekhchaikin/F3.007/data-engineer--gcp--bigquery-expert/0D.465",
+        "category": "data",
+        "source": "comeet",
+        "posted": "2026-03-12"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Dina Pasca-Raz",
+          "title": "Partner, Head of Technology",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "",
+          "source": "Company Website",
+          "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Data Engineer -GCP & BigQuery Expert — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3a29qqr",
+      "name": "Riskified — Riskified Site Reliability Engineering (SRE)",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Riskified",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=riskified.com&sz=128",
+        "source": "linkedin"
+      },
+      "targetJob": {
+        "title": "Riskified Site Reliability Engineering (SRE)",
+        "url": "https://il.linkedin.com/jobs/view/site-reliability-engineering-sre-at-riskified-4375339656",
+        "category": "sre",
+        "source": "linkedin",
+        "posted": "2026-03-12"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "David Meredith",
+          "title": "ctor & CEO for global NASDAQ SaaS category-leader",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/davidmeredith",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4E03AQFtPBDEdaAIBQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1570947518289?e=2147483647&v=beta&t=ELV9DmFLfpNbEV37chPK28kmOrvp2jM1Zvqrvncgkl4",
+          "source": "Auto-discovered",
+          "connectMsg": "Hi David, I noticed Riskified is hiring a Riskified Site Reliability Engineering (SRE) — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Riskified accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3arowwj",
+      "name": "Check Point Software — DevOps Cloud Engineer Owning High-Scale ...",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Check Point Software",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
+        "source": "linkedin"
+      },
+      "targetJob": {
+        "title": "DevOps Cloud Engineer Owning High-Scale ...",
+        "url": "https://il.linkedin.com/jobs/view/devops-cloud-engineer-owning-high-scale-cloud-infrastructure-at-check-point-software-4355693297",
+        "category": "cloud",
+        "source": "linkedin",
+        "posted": "2026-03-12"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Shira Gorodiski Barkay",
+          "title": "Talent Acquisition &amp; Sourcing Specialist",
+          "email": "",
+          "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+          "phone": "",
+          "photo": "",
+          "source": "LinkedIn Job Poster",
+          "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Nataly Kremer",
+          "title": "CPO & Head of R&D",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/nataly-kremer-12744b29/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D5603AQHsznULgNebxA/profile-displayphoto-shrink_400_400/B56ZaGPJzbHsAg-/0/1746008843907?e=2147483647&v=beta&t=26Jj9Gv3caqvXYtSKWrhWew50DTINaSu4Ct1scdEYyo",
+          "source": "Company Website",
+          "connectMsg": "Hi Nataly, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Nataly! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_2",
+          "name": "Tomer Lev",
+          "title": "Engineering Director",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/tomerlev/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHmppXzNWgYzw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517759061266?e=2147483647&v=beta&t=9a6Mw5wpx5JKLfy0vo-KcEQnRoJdaeHKsWDTrIsaAXA",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Tomer, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Tomer! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_3",
+          "name": "Ofir Israel",
+          "title": "Engineering Director",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/ofirisrael/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHUHb3Ivwt3xw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1676502872116?e=2147483647&v=beta&t=avEqG9-8Cc6BSweIlOxOIWqamujjVmJNzDrDmEvim7c",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Ofir, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Ofir! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_4",
+          "name": "Alex Spokoiny",
+          "title": "Chief Information Officer",
+          "email": "",
+          "linkedin": "",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQEc0Wdgisc6iw/profile-displayphoto-scale_200_200/B4DZxYDZEWJwAY-/0/1771003810659?e=2147483647&v=beta&t=hp-1Dw_hcJlhNBllWlyOPGSLUGZRx7NQak1asmovkBU",
+          "source": "Company Website",
+          "connectMsg": "Hi Alex, I noticed Check Point Software is hiring a DevOps Cloud Engineer Owning High-Scale ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Alex! I wanted to share how Develeap helps companies like Check Point Software accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3altwnb",
+      "name": "Comblack — comblack DevSecOps Engineer | Center District, ...",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Comblack",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=comblack.co.il&sz=128",
+        "source": "linkedin"
+      },
+      "targetJob": {
+        "title": "comblack DevSecOps Engineer | Center District, ...",
+        "url": "https://il.linkedin.com/jobs/view/devsecops-engineer-at-comblack-4384834983",
+        "category": "security",
+        "source": "linkedin",
+        "posted": "2026-03-12"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Tzvi Vasserman‏",
+          "title": "ctors",
+          "email": "",
+          "linkedin": "https://il.linkedin.com/in/tzvi-vasserman",
+          "phone": "",
+          "photo": "",
+          "source": "Auto-discovered",
+          "connectMsg": "Hi Tzvi, I noticed Comblack is hiring a comblack DevSecOps Engineer | Center District, ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Tzvi! I wanted to share how Develeap helps companies like Comblack accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Nicol Dadov",
+          "title": "Human Resources Recruiter ב-שירות התעסוקה הישראלי - Israeli Employment Service",
+          "email": "",
+          "linkedin": "https://il.linkedin.com/in/nicol-dadov/iw",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D5603AQG0DjyXTo5hpg/profile-displayphoto-scale_400_400/B56ZflQbZCGQAk-/0/1751897979249?e=2147483647&v=beta&t=GfbF_zVRtpOAEt1tm4oyNsxko489kqwGgDutXW9zSSI",
+          "source": "LinkedIn Job Poster",
+          "connectMsg": "Hi Nicol, I noticed Comblack is hiring a comblack DevSecOps Engineer | Center District, ... — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Nicol! I wanted to share how Develeap helps companies like Comblack accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3au0fzi",
+      "name": "Unknown — Senior Security Engineer",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Unknown",
+        "domain": "",
+        "logo": "",
+        "source": "linkedin_fts"
+      },
+      "targetJob": {
+        "title": "Senior Security Engineer",
+        "url": "https://www.linkedin.com/posts/doriamit_senior-security-engineer-msc-storm-microsoft-activity-7437862330593492992-DdqW",
+        "category": "security",
+        "source": "linkedin_fts",
+        "posted": "2026-03-12"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "",
+          "title": "Post Publisher",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/doriamit/",
+          "phone": "",
+          "photo": "",
+          "source": "Post Publisher",
+          "connectMsg": "Hi there, I noticed Unknown is hiring a Senior Security Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, there! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3ap7pah",
+      "name": "Remedio — Senior Devops Engineer at Remedio - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Remedio",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=gytpol.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "Senior Devops Engineer at Remedio - Comeet",
+        "url": "https://www.comeet.com/jobs/remedio/CA.000/senior-devops-engineer/D3.763",
+        "category": "devops",
+        "source": "comeet",
+        "posted": "2026-03-10"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Tal Peer",
+          "title": "CEO & Co-Founder",
+          "email": "tal@gytpol.com",
+          "linkedin": "https://www.linkedin.com/in/talpeer/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/C4E03AQH_BFrHQJPfGA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1625741012725?e=2147483647&v=beta&t=-jd07d9kXHEiX478aNTafpPBjlFYfRJy79r0xmPwDEs",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Tal, I noticed Remedio is hiring a Senior Devops Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Tal! I wanted to share how Develeap helps companies like Remedio accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3aoybof",
+      "name": "Legit Security — Senior Platform Engineer at Legit Security - Comeet",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Legit Security",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=legitsecurity.com&sz=128",
+        "source": "comeet"
+      },
+      "targetJob": {
+        "title": "Senior Platform Engineer at Legit Security - Comeet",
+        "url": "https://www.comeet.com/jobs/legitsecurity.com/37.004/senior-platform-engineer/3C.163?coref=1.10.u4F_01C&1770285285042",
+        "category": "platform",
+        "source": "comeet",
+        "posted": "2026-03-09"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Roni Fuchs",
+          "title": "Co-Founder & CEO",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/ronifuchs/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D16AQHFG44vkDEeJQ/profile-displaybackgroundimage-shrink_200_800/B4DZfvoy.5GgAU-/0/1752072139188?e=2147483647&v=beta&t=aYR_FdeBoXrgEDYY_kzEHUGhBbIK7CLyq40bbp9nVWg",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Roni, I noticed Legit Security is hiring a Senior Platform Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Roni! I wanted to share how Develeap helps companies like Legit Security accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Liav Caspi",
+          "title": "Co-Founder & CTO",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/liav-caspi-67b10647/",
+          "phone": "",
+          "photo": "https://media.licdn.com/dms/image/v2/D4D03AQFiCCq7_Kmt6A/profile-displayphoto-scale_200_200/B4DZqbAm9MJcAg-/0/1763537219984?e=2147483647&v=beta&t=uB9Ky1K6B9KCS9MFalOCqbGbE95rorxWlZDsxXOmQZA",
+          "source": "LinkedIn",
+          "connectMsg": "Hi Liav, I noticed Legit Security is hiring a Senior Platform Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Liav! I wanted to share how Develeap helps companies like Legit Security accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3a3wgpi",
+      "name": "Radware — Architect Lead,Agentic AI Security – EMEA - Radware",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "Radware",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=radware.com&sz=128",
+        "source": "linkedin"
+      },
+      "targetJob": {
+        "title": "Architect Lead,Agentic AI Security – EMEA - Radware",
+        "url": "https://il.linkedin.com/jobs/view/architect-lead-agentic-ai-security-%E2%80%93-emea-at-radware-4378186886",
+        "category": "agentic",
+        "source": "linkedin",
+        "posted": "2026-03-03"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Roy Zisapel‏",
+          "title": "‏CEO at Radware",
+          "email": "",
+          "linkedin": "https://il.linkedin.com/in/roy-zisapel-24b4204",
+          "phone": "",
+          "photo": "",
+          "source": "Auto-discovered",
+          "connectMsg": "Hi Roy, I noticed Radware is hiring a Architect Lead,Agentic AI Security – EMEA — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Roy! I wanted to share how Develeap helps companies like Radware accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        },
+        {
+          "id": "contact_1",
+          "name": "Fima Lifshitc‏",
+          "title": "CTO. Radware. מרץ 2020 -להציג 6 חודש שנים 1. Tel Aviv Area",
+          "email": "",
+          "linkedin": "https://il.linkedin.com/in/fima-lifshitc-a011993",
+          "phone": "",
+          "photo": "",
+          "source": "Auto-discovered",
+          "connectMsg": "Hi Fima, I noticed Radware is hiring a Architect Lead,Agentic AI Security – EMEA — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Fima! I wanted to share how Develeap helps companies like Radware accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "high_potential"
+    },
+    {
+      "id": "camp_mmropb3aw0rkc",
+      "name": "When you hear someone — AI/Agentic Engineer at When you hear someone",
+      "status": "paused",
+      "createdBy": "dori.kafri@develeap.com",
+      "createdAt": "2026-03-15T11:41:39.814Z",
+      "company": {
+        "name": "When you hear someone",
+        "domain": "",
+        "logo": "https://www.google.com/s2/favicons?domain=whenyouhearsomeone.com&sz=128",
+        "source": "linkedin_fts"
+      },
+      "targetJob": {
+        "title": "AI/Agentic Engineer at When you hear someone",
+        "url": "https://www.linkedin.com/posts/akshat-jain-iit_your-network-is-not-for-referrals-only-activity-7435157149388906496-MOjt",
+        "category": "agentic",
+        "source": "linkedin_fts",
+        "posted": "2026-03-05"
+      },
+      "teamMembers": [
+        {
+          "email": "dori.kafri@develeap.com",
+          "displayName": "Dori Kafri",
+          "role": "BDR",
+          "channels": [
+            "linkedin"
+          ]
+        }
+      ],
+      "targetContacts": [
+        {
+          "id": "contact_0",
+          "name": "Akshat Jain Iit",
+          "title": "Post Publisher",
+          "email": "",
+          "linkedin": "https://www.linkedin.com/in/akshat-jain-iit/",
+          "phone": "",
+          "photo": "",
+          "source": "Post Publisher",
+          "connectMsg": "Hi Akshat, I noticed When you hear someone is hiring a AI/Agentic Engineer — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+          "followUpMsg": "Thanks for connecting, Akshat! I wanted to share how Develeap helps companies like When you hear someone accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        }
+      ],
+      "flow": {
+        "nodes": {
+          "start": {
+            "type": "trigger_start",
+            "position": {
+              "x": 300,
+              "y": 60
+            },
+            "next": [
+              "conn_1"
+            ]
+          },
+          "conn_1": {
+            "type": "action_linkedin_connect",
+            "position": {
+              "x": 300,
+              "y": 160
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": [
+              "wait_1"
+            ]
+          },
+          "wait_1": {
+            "type": "wait",
+            "position": {
+              "x": 300,
+              "y": 260
+            },
+            "config": {
+              "days": 3
+            },
+            "next": [
+              "msg_1"
+            ]
+          },
+          "msg_1": {
+            "type": "action_linkedin_message",
+            "position": {
+              "x": 300,
+              "y": 360
+            },
+            "config": {
+              "sender": "dori.kafri@develeap.com",
+              "contactIdx": 0
+            },
+            "next": []
+          }
+        },
+        "nodeOrder": [
+          "start",
+          "conn_1",
+          "wait_1",
+          "msg_1"
+        ],
+        "connections": []
+      },
+      "marketing": {
+        "linkedinAds": {
+          "enabled": false
+        },
+        "contentPlan": [],
+        "socialEngagement": {
+          "enabled": false
+        }
+      },
+      "responseTracking": {
+        "engagementScore": 0,
+        "touchpoints": []
+      },
+      "adaptiveRules": [],
+      "executionState": {
+        "currentNodeId": "start",
+        "completedNodes": [],
+        "nextExecutionAt": null,
+        "pausedAt": "2026-03-15T11:41:39.814Z"
+      },
+      "_customerType": "prospect"
     }
   ]
 }
