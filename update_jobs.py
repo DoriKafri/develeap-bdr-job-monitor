@@ -1442,56 +1442,49 @@ INDEED_ROLE_QUERIES = [
 
 
 def search_indeed_serpapi_engine() -> list[dict]:
-    """Search Indeed via SerpAPI's engine=indeed endpoint.
+    """Search Indeed individual job listings via SerpAPI Google engine.
 
-    Google site: queries return Indeed search-result pages (/q-...) which the URL
-    filter rejects. SerpAPI's Indeed engine returns individual job listings with
-    viewjob?jk=... URLs that pass all filters.
+    Uses site:il.indeed.com/viewjob queries to get individual job listing URLs
+    (viewjob?jk=...) rather than Indeed search-result pages (/q-...) which the
+    URL filter rejects. Company name is extracted from the Google snippet, which
+    typically reads "Job Title at Company - Location, Israel."
     """
     if not SERPAPI_KEY:
         return []
     all_results = []
     for role in INDEED_ROLE_QUERIES:
+        query = f"site:il.indeed.com/viewjob {role} Israel"
         try:
             resp = requests.get("https://serpapi.com/search", params={
-                "engine": "indeed",
-                "q": role,
-                "l": "Israel",
+                "engine": "google",
+                "q": query,
                 "api_key": SERPAPI_KEY,
+                "gl": "il",
                 "hl": "en",
+                "num": 10,
             }, timeout=15)
             if resp.status_code != 200:
-                log.warning(f"Indeed engine HTTP {resp.status_code} for '{role}'")
+                log.warning(f"Indeed viewjob search HTTP {resp.status_code} for '{role}'")
                 continue
             data = resp.json()
             if "error" in data:
-                log.warning(f"Indeed engine error: {data['error']}")
+                log.warning(f"Indeed viewjob search error: {data['error']}")
                 break  # likely out of quota
-            for r in data.get("jobs_results", []):
-                job_id = r.get("id", "")
-                url = f"https://il.indeed.com/viewjob?jk={job_id}" if job_id else r.get("link", "")
-                if not url:
+            results = []
+            for r in data.get("organic_results", []):
+                url = r.get("link", "")
+                if not url or "viewjob" not in url:
                     continue
-                company = r.get("company_name", r.get("company", ""))
-                location_str = r.get("location", "Israel")
-                description = (r.get("description") or r.get("snippet") or "")[:500]
-                snippet = f"{company} - {location_str}. {description}"
-                # Include company in title ("Role at Company") so extract_company()
-                # can reliably parse it — the il.indeed.com/viewjob URL is a job board
-                # domain and yields no company signal on its own.
-                title = r.get("title", "")
-                if company:
-                    title = f"{title} at {company}"
-                all_results.append({
-                    "title": title,
-                    "snippet": snippet,
+                results.append({
+                    "title": r.get("title", ""),
+                    "snippet": r.get("snippet", ""),
                     "url": url,
                     "date": r.get("date", ""),
                 })
-            count = len(data.get("jobs_results", []))
-            log.info(f"  Indeed engine '{role}' → {count} results")
+            all_results.extend(results)
+            log.info(f"  Indeed viewjob '{role}' → {len(results)} results")
         except Exception as e:
-            log.warning(f"Indeed engine search failed for '{role}': {e}")
+            log.warning(f"Indeed viewjob search failed for '{role}': {e}")
         time.sleep(random.uniform(1.0, 2.0))
     return all_results
 
