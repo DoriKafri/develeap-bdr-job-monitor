@@ -3734,9 +3734,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # LinkedIn: only accept /jobs/view/ (individual listings) or /posts/ (FTS)
         if "linkedin.com/jobs" in url_lower and "/jobs/view/" not in url_lower:
             continue
-        # Indeed: only accept /viewjob (individual listings), skip all other Indeed pages
-        if "indeed.com" in url_lower and "/viewjob" not in url_lower:
-            continue
+        # Indeed: accept individual job pages (/viewjob, /job/, /pagead/, /rc/clk)
+        # Skip only search/listing index pages (/q-, /jobs?, /cmp/*/jobs)
+        if "indeed.com" in url_lower:
+            if re.search(r'indeed\.com/(?:q-|jobs\?|cmp/.*/jobs|.*-משרות)', url_lower):
+                continue
         # LinkedIn posts: only accept if they came from FTS (have _source_override)
         if "linkedin.com/posts/" in url_lower and not r.get("_source_override"):
             continue
