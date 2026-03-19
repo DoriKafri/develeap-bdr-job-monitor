@@ -1429,6 +1429,73 @@ def search_google_jobs() -> list[dict]:
     return all_results
 
 
+INDEED_ROLE_QUERIES = [
+    "DevOps Engineer",
+    "AI Engineer",
+    "Platform Engineer",
+    "SRE",
+    "MLOps Engineer",
+    "FinOps Engineer",
+    "Cloud Engineer",
+    "Infrastructure Engineer",
+]
+
+
+def search_indeed_serpapi_engine() -> list[dict]:
+    """Search Indeed via SerpAPI's engine=indeed endpoint.
+
+    Google site: queries return Indeed search-result pages (/q-...) which the URL
+    filter rejects. SerpAPI's Indeed engine returns individual job listings with
+    viewjob?jk=... URLs that pass all filters.
+    """
+    if not SERPAPI_KEY:
+        return []
+    all_results = []
+    for role in INDEED_ROLE_QUERIES:
+        try:
+            resp = requests.get("https://serpapi.com/search", params={
+                "engine": "indeed",
+                "q": role,
+                "l": "Israel",
+                "api_key": SERPAPI_KEY,
+                "hl": "en",
+            }, timeout=15)
+            if resp.status_code != 200:
+                log.warning(f"Indeed engine HTTP {resp.status_code} for '{role}'")
+                continue
+            data = resp.json()
+            if "error" in data:
+                log.warning(f"Indeed engine error: {data['error']}")
+                break  # likely out of quota
+            for r in data.get("jobs_results", []):
+                job_id = r.get("id", "")
+                url = f"https://il.indeed.com/viewjob?jk={job_id}" if job_id else r.get("link", "")
+                if not url:
+                    continue
+                company = r.get("company_name", r.get("company", ""))
+                location_str = r.get("location", "Israel")
+                description = (r.get("description") or r.get("snippet") or "")[:500]
+                snippet = f"{company} - {location_str}. {description}"
+                # Include company in title ("Role at Company") so extract_company()
+                # can reliably parse it — the il.indeed.com/viewjob URL is a job board
+                # domain and yields no company signal on its own.
+                title = r.get("title", "")
+                if company:
+                    title = f"{title} at {company}"
+                all_results.append({
+                    "title": title,
+                    "snippet": snippet,
+                    "url": url,
+                    "date": r.get("date", ""),
+                })
+            count = len(data.get("jobs_results", []))
+            log.info(f"  Indeed engine '{role}' → {count} results")
+        except Exception as e:
+            log.warning(f"Indeed engine search failed for '{role}': {e}")
+        time.sleep(random.uniform(1.0, 2.0))
+    return all_results
+
+
 def search_duckduckgo(query: str, timelimit: str = "") -> list[dict]:
     """Search using DuckDuckGo HTML (no API key needed).
     timelimit: optional date filter, e.g. 'm-3' for last 3 months, 'm-1' for last month.
@@ -5001,8 +5068,16 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         if url not in existing_urls and key not in existing_keys and norm_key not in existing_norm:
             truly_new.append(j)
         else:
-            # Duplicate listing found on a different source — record the alternate source
+            # Duplicate listing found — update company if existing entry has "Unknown"
             match = existing_urls.get(url) or existing_keys.get(key) or existing_norm.get(norm_key)
+            if match and match.get("company", "").strip() in ("Unknown", "") and j.get("company", "").strip() not in ("Unknown", ""):
+                new_company = j["company"]
+                log.info(f"  Updated company for existing listing: 'Unknown' → '{new_company}' ({url[:60]})")
+                match["company"] = new_company
+                match["isDeveleapCustomer"] = is_develeap_customer(new_company)
+                match["isPastCustomer"] = is_develeap_past_customer(new_company)
+                match["stakeholders"] = _get_stakeholders(new_company)
+                match["logo"] = _get_company_logo(new_company, url)
             if match and url and url != match.get("sourceUrl", ""):
                 alt_source = detect_source(url)
                 alt_sources = match.get("altSources", [])
@@ -5459,7 +5534,14 @@ def main():
     all_raw.extend(gj_results)
     log.info(f"Google Jobs engine: {len(gj_results)} results")
 
-    # 1c. Add seed jobs (manually curated listings for categories search engines miss)
+    # 1c. Search Indeed via SerpAPI's dedicated Indeed engine
+    # (site: queries return search-result pages that get filtered; engine=indeed returns viewjob URLs)
+    log.info("Searching Indeed (SerpAPI engine=indeed)...")
+    indeed_results = search_indeed_serpapi_engine()
+    all_raw.extend(indeed_results)
+    log.info(f"Indeed engine: {len(indeed_results)} results")
+
+    # 1d. Add seed jobs (manually curated listings for categories search engines miss)
     all_raw.extend(SEED_JOBS)
     log.info(f"Added {len(SEED_JOBS)} seed jobs")
 
