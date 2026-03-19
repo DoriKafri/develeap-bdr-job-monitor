@@ -3698,46 +3698,60 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # Skip results that are clearly not job listings
         title_lower = title.lower()
+        url_lower = url.lower()
+        _is_indeed = "indeed.com" in url_lower
         skip_keywords = ["how to", "salary", "resume", "interview tips", "career advice",
                          "blog", "article", "guide", "tutorial", "top 10", "best companies",
                          "average salary", "job description template", "what is a",
                          "conference", "meetup", "event", "webinar", "course",
-                         "jobs in israel", "apply now", "remote jobs in",
+                         "apply now", "remote jobs in",
                          "archives", "משרות דרושים", "as a service for startups"]
+        # "jobs in israel" skips aggregators but NOT Indeed individual listings
+        if not _is_indeed:
+            skip_keywords.append("jobs in israel")
         if any(kw in title_lower for kw in skip_keywords):
+            if _is_indeed:
+                log.info(f"  [Indeed debug] title-keyword skip: {title[:80]} | url={url[:100]}")
             continue
 
         # Skip Hebrew aggregator pages ("we found N job offers", "jobs wanted")
         hebrew_skip = ["מצאנו", "הצעות עבודה", "משרות אחרונות", "חיפוש משרות"]
         if any(kw in title for kw in hebrew_skip):
+            if _is_indeed:
+                log.info(f"  [Indeed debug] hebrew-skip: {title[:80]} | url={url[:100]}")
             continue
 
         # Skip aggregator titles like "DevOps Engineer Jobs..." or "5 AI Engineer jobs..."
-        if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', title_lower):
+        # But NOT Indeed individual listing titles (which often contain "job in" text)
+        if not _is_indeed and re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', title_lower):
             continue
 
         # Skip search/aggregator pages — only allow individual job listing URLs
-        url_lower = url.lower()
         skip_url_patterns = [
             # Search result pages
-            "google.com/search", "indeed.com/q-", "indeed.com/jobs?", "indeed.com/jobs/",
+            "google.com/search",
             "linkedin.com/jobs/search",
             # LinkedIn job search pages (e.g. /jobs/devops-engineer-jobs)
             # Only /jobs/view/ are individual listings
             "glassdoor.com/Job/",
-            # Generic job listing indexes
-            "/jobs?q=", "/search?",
+            # Generic job listing indexes (not for Indeed — handled separately below)
+            "/search?",
         ]
+        # Add non-Indeed-specific patterns
+        if not _is_indeed:
+            skip_url_patterns.extend(["/jobs?q="])
         if any(p in url for p in skip_url_patterns):
+            if _is_indeed:
+                log.info(f"  [Indeed debug] url-pattern skip: {url[:120]}")
             continue
 
         # LinkedIn: only accept /jobs/view/ (individual listings) or /posts/ (FTS)
         if "linkedin.com/jobs" in url_lower and "/jobs/view/" not in url_lower:
             continue
-        # Indeed: accept individual job pages (/viewjob, /job/, /pagead/, /rc/clk)
-        # Skip only search/listing index pages (/q-, /jobs?, /cmp/*/jobs)
-        if "indeed.com" in url_lower:
-            if re.search(r'indeed\.com/(?:q-|jobs\?|cmp/.*/jobs|.*-משרות)', url_lower):
+        # Indeed: only skip search/aggregator pages, allow all individual job pages
+        if _is_indeed:
+            if re.search(r'indeed\.com/(?:q-|cmp/.*/jobs|.*-משרות)', url_lower):
+                log.info(f"  [Indeed debug] indeed-specific skip: {url[:120]}")
                 continue
         # LinkedIn posts: only accept if they came from FTS (have _source_override)
         if "linkedin.com/posts/" in url_lower and not r.get("_source_override"):
@@ -3764,9 +3778,10 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             continue
 
         # Skip pages that are clearly job indexes, not individual listings
+        # (Indeed is excluded — its URL patterns are handled above)
         index_url_patterns = [
             r"/jobs/?$", r"/careers/?$", r"/openings/?$",
-            r"/jobs/?\?", r"/location/", r"/locations/", r"/category/",
+            r"/location/", r"/locations/", r"/category/",
             r"/job-location-category/", r"/jobs/mena/",
             r"/list/", r"startup\.jobs/",
             r"secrettelaviv\.com", r"efinancialcareers\.com",
@@ -3777,7 +3792,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             r"gotfriends\.co\.il", r"whist\.co\.il", r"medulla\.co\.il",
             r"jobify360\.co\.il", r"isecjobs\.com",
         ]
+        if not _is_indeed:
+            index_url_patterns.append(r"/jobs/?\?")
         if any(re.search(p, url_lower) for p in index_url_patterns):
+            if _is_indeed:
+                log.info(f"  [Indeed debug] index-pattern skip: {url[:120]}")
             continue
 
         # Clean Hebrew localization artifacts from LinkedIn titles
@@ -3792,7 +3811,10 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # Skip jobs that don't match any relevant technical category
         if category is None:
-            log.debug(f"  Skipping irrelevant job (no category match): {title[:60]}")
+            if _is_indeed:
+                log.info(f"  [Indeed debug] no-category skip: {title[:80]} | url={url[:100]}")
+            else:
+                log.debug(f"  Skipping irrelevant job (no category match): {title[:60]}")
             continue
         # For LinkedIn FTS results, prefer the pre-extracted company name
         if r.get("_source_override") == "linkedin_fts" and r.get("company"):
@@ -3805,6 +3827,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         else:
             company = extract_company(title, snippet, url)
         location = extract_location(title, snippet)
+
+        if _is_indeed:
+            log.info(f"  [Indeed debug] PASSED all filters: {title[:80]} | cat={category} | co={company} | loc={location}")
 
         # Generate stable ID from URL
         job_id = hashlib.md5(url.encode()).hexdigest()[:8]
@@ -3941,7 +3966,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
                 _src = j.get("source", "")
                 max_age = 30 if "indeed.com" in url else 14
                 if age_days > max_age:
-                    log.info(f"  Skipping old listing ({age_days} days, date={best_date}): {j['title'][:50]}")
+                    log.info(f"  Skipping old listing ({age_days} days, max={max_age}, date={best_date}): {j['title'][:50]} | {url[:80]}")
                     continue
             except ValueError:
                 pass
