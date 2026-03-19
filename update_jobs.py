@@ -156,6 +156,12 @@ _INDEED_JK_COMPANIES = {
     "265d91706aba7be9": "Deloitte",
     "fef614e7c609fe4c": "Millennium Management",
     "b8a2f34142b6b48e": "Motorola Solutions",
+    "c04481e66ceb36a3": "ONE ZERO Digital Bank",
+    "bebd430761ea2bff": "KPMG",
+    "ca1fa3eaca20e1f8": "Surecomp",
+    "d954128d73966629": "NVIDIA",
+    "1911add4ce480a7d": "Red River",
+    "c004fd7a3d1c6772": "IAI - Israel Aerospace Industries",
 }
 
 # For companies whose website favicon doesn't work (expired SSL, no favicon, etc.)
