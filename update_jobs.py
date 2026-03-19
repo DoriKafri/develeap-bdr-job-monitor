@@ -3928,6 +3928,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         # ── 3. Skip listings older than threshold ──
         # FTS posts: 7 days (we want only fresh hiring announcements)
         # Regular listings: 14 days
+        # Indeed/job boards: 30 days (listings stay up longer on aggregators)
         # Use best available date: snippet_date, activity_date, or none
         best_date = snippet_date or activity_date
         if best_date:
@@ -3935,7 +3936,8 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             try:
                 post_dt = dt_cls.strptime(best_date, "%Y-%m-%d")
                 age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - post_dt).days
-                max_age = 14
+                _src = j.get("source", "")
+                max_age = 30 if "indeed.com" in url else 14
                 if age_days > max_age:
                     log.info(f"  Skipping old listing ({age_days} days, date={best_date}): {j['title'][:50]}")
                     continue
@@ -3997,7 +3999,11 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             continue
 
         if url:
-            page_data = scrape_job_page(url)
+            # Indeed blocks automated scraping (401) — skip and use search result data directly
+            if "indeed.com" in url:
+                page_data = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": []}
+            else:
+                page_data = scrape_job_page(url)
 
             # Playwright for LinkedIn: always for /posts/ (FTS-style), 429-fallback for /jobs/
             # LinkedIn job pages return auth wall (413 chars) from GH Actions, so Playwright
