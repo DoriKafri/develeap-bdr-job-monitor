@@ -122,6 +122,42 @@ DEVELEAP_PAST_CUSTOMERS = [
 ]
 
 # ── Direct Logo URL Overrides ─────────────────────────────────────────────
+# Indeed job key (jk) → company name mapping
+# Indeed blocks scraping from data center IPs (both HTTP 401 and Playwright bot-detection).
+# Company names are extracted via browser-side scraping and cached here.
+_INDEED_JK_COMPANIES = {
+    "179e22243d60343d": "Deloitte",
+    "9b48b8e5884835b7": "AppCard",
+    "7cf0120fd723666d": "Teads",
+    "1e9438def9c6dc2b": "Qualitest",
+    "b2737877ea70b4c0": "KPMG",
+    "42f4c7e85ab2dc19": "Veeva Systems",
+    "55d25a7c3e6be88e": "Intel",
+    "85e8eb065b33e5ab": "Algosec",
+    "df9776a4708416df": "Siemens",
+    "2e19480cde96f2f2": "CyberArk",
+    "990dc1d50306f4e7": "ARMO",
+    "d84b944f8fccfb2d": "Qualcomm",
+    "a5ed2036e1f6c18e": "Google",
+    "6f063c7e2bfe7de5": "Thales",
+    "df13bbfde9e4397e": "Lemonade",
+    "decc1398a3f038f2": "Palo Alto Networks",
+    "c85d02fdbefac12f": "Workday",
+    "3495eaada87aa565": "Shield",
+    "418c1ea5fb3651cc": "Glassbox",
+    "22e2a55d6d2905d7": "Coralogix",
+    "e2e1670544632e50": "CyberArk",
+    "d67ca2fc1c4791fa": "Immunai",
+    "38b32068ae735de1": "Workday",
+    "3e0c9a972ce5a6ce": "Abra",
+    "f64a2c1e468549e4": "Qualitest",
+    "c21df977c7b5d846": "Classiq",
+    "60c3eb5442e60345": "ERGO",
+    "265d91706aba7be9": "Deloitte",
+    "fef614e7c609fe4c": "Millennium Management",
+    "b8a2f34142b6b48e": "Motorola Solutions",
+}
+
 # For companies whose website favicon doesn't work (expired SSL, no favicon, etc.)
 # Maps company name (lowercase) → full logo URL
 COMPANY_LOGO_OVERRIDES = {
@@ -3679,6 +3715,13 @@ def _is_location_fragment(text: str) -> bool:
 
 def extract_company(title: str, snippet: str, url: str = "") -> str:
     """Try to extract company name from search result."""
+
+    # Indeed viewjob URLs: lookup by job key (jk parameter)
+    # Indeed blocks scraping from DC IPs, so we cache known jk→company mappings
+    if "indeed.com/viewjob" in url:
+        jk_match = re.search(r'[?&]jk=([a-f0-9]+)', url)
+        if jk_match and jk_match.group(1) in _INDEED_JK_COMPANIES:
+            return _INDEED_JK_COMPANIES[jk_match.group(1)]
 
     # Helper: clean up company name casing
     def _fix_casing(name: str) -> str:
