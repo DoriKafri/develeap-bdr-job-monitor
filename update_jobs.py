@@ -1006,6 +1006,15 @@ SEARCH_QUERIES = [
     # Solutions Architect / Sales Engineer roles (companies hiring these likely need DevOps help)
     "site:linkedin.com/jobs/view Solutions Architect Israel cloud OR kubernetes OR DevOps",
     "site:linkedin.com/jobs/view Sales Engineer Israel cloud OR DevOps OR infrastructure",
+    # Indeed Israel (individual job listings — il.indeed.com/viewjob)
+    "site:il.indeed.com DevOps Engineer Israel",
+    "site:il.indeed.com Cloud Engineer Israel",
+    "site:il.indeed.com AI Engineer Israel",
+    "site:il.indeed.com Platform Engineer Israel",
+    "site:il.indeed.com SRE Israel",
+    "site:il.indeed.com FinOps Israel",
+    "site:il.indeed.com DevSecOps Israel",
+    "site:il.indeed.com Infrastructure Engineer Israel",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -1146,6 +1155,7 @@ SOURCE_MAP = {
     "comeet.com": "comeet",
     "myworkdayjobs.com": "workday",
     "remoteyeah.com": "remoteyeah",
+    "indeed.com": "indeed",
 }
 
 
@@ -3541,6 +3551,10 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
     url = unquote(url)
     title = unquote(title)
     snippet = unquote(snippet)
+
+    # Strip aggregator site suffixes from title before company extraction
+    # e.g. "DevOps Engineer - Tel Aviv - Indeed.com" → "DevOps Engineer - Tel Aviv"
+    title = re.sub(r'\s*[-–|]\s*Indeed(?:\.com)?\s*$', '', title, flags=re.IGNORECASE).strip()
 
     # 0. ATS URL patterns — HIGHEST PRIORITY (most reliable source of company name)
     # Greenhouse / Lever / Ashby / Comeet / Workday URLs embed the company slug

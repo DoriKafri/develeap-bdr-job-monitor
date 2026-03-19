@@ -301,6 +301,7 @@
   .badge-ashby { background:#E0F2F1; color:#00695C; }
   .badge-comeet { background:#E3F2FD; color:#1565C0; }
   .badge-workday { background:#FFF3E0; color:#E65100; }
+  .badge-indeed { background:#E8EAF6; color:#2557A7; }
   .badge-other { background:#F5F5F5; color:#616161; }
   .source-badge { display:inline-flex; align-items:center; gap:4px; }
   .source-badge img { width:14px; height:14px; border-radius:2px; }
@@ -8895,8 +8896,8 @@ function _cleanupListingStatuses() {
   if (changed) _saveListingStatuses(obj);
 }
 
-let SOURCE_LABELS = {linkedin:'LinkedIn',linkedin_fts:'LinkedIn FTS',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',other:'Other'};
-let SOURCE_DOMAINS = {linkedin:'linkedin.com',linkedin_fts:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org'};
+let SOURCE_LABELS = {linkedin:'LinkedIn',linkedin_fts:'LinkedIn FTS',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',indeed:'Indeed',other:'Other'};
+let SOURCE_DOMAINS = {linkedin:'linkedin.com',linkedin_fts:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org',indeed:'indeed.com'};
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
 let CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps',cloud:'Cloud & Infrastructure',security:'Security & DevSecOps',data:'Data Engineering',platform:'Platform Engineering',sre:'SRE'};
 let CAT_COLORS = {devops:'#FDAB3D',ai:'#579BFC',agentic:'#A25DDC',finops:'#00897B',cloud:'#0288D1',security:'#D32F2F',data:'#7B1FA2',platform:'#00695C',sre:'#E64A19'};
