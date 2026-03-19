@@ -1511,8 +1511,35 @@ def search_indeed_serpapi_engine() -> list[dict]:
                 url = r.get("link", "")
                 if not url or "viewjob" not in url:
                     continue
+                title_raw = r.get("title", "")
+                # Parse Google's Indeed title: "Job Title - Company - City, Country | Indeed.com"
+                # Extract company so extract_company() downstream isn't left guessing from
+                # the il.indeed.com/viewjob URL (a job board domain with no company signal).
+                company = ""
+                job_title = title_raw
+                clean = re.sub(r'\s*\|\s*Indeed(?:\.com)?\s*$', '', title_raw, flags=re.IGNORECASE).strip()
+                if clean != title_raw:
+                    job_title = clean  # always use the stripped version as base
+                    parts = re.split(r'\s+-\s+', clean)
+                    if len(parts) >= 3:
+                        last = parts[-1]
+                        if re.search(r',|Israel|Remote|Hybrid', last, re.IGNORECASE):
+                            # Standard format: Title - Company - Location
+                            company = parts[-2].strip()
+                            job_title = " - ".join(parts[:-2]).strip()
+                        else:
+                            # No recognisable location — last part is probably company
+                            company = parts[-1].strip()
+                            job_title = " - ".join(parts[:-1]).strip()
+                    elif len(parts) == 2:
+                        last = parts[-1]
+                        if not re.search(r',|Israel|Remote|Hybrid', last, re.IGNORECASE):
+                            job_title = parts[0].strip()
+                            company = parts[1].strip()
+                # Reformat as "Role at Company" so extract_company() step-2 regex picks it up
+                title_out = f"{job_title} at {company}" if company else job_title
                 results.append({
-                    "title": r.get("title", ""),
+                    "title": title_out,
                     "snippet": r.get("snippet", ""),
                     "url": url,
                     "date": r.get("date", ""),
