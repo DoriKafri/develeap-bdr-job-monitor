@@ -2987,6 +2987,121 @@ def _scrape_linkedin_playwright(url: str) -> dict:
     return result
 
 
+def _scrape_indeed_playwright(url: str) -> dict:
+    """Scrape an Indeed job page using Playwright to extract company name.
+    Indeed blocks regular HTTP requests (401) but Playwright with a real browser works.
+    Returns {company, location, closed, date}."""
+    result = {"company": "", "location": "", "closed": False, "date": ""}
+    browser = _get_playwright_browser()
+    if not browser:
+        return result
+
+    page = None
+    try:
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            locale="en-US",
+            viewport={"width": 1280, "height": 900},
+        )
+        page = context.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=15000)
+        page.wait_for_timeout(2000)
+
+        text = page.inner_text("body") or ""
+        log.info(f"  Indeed Playwright scrape {url[:60]}: text_len={len(text)}")
+
+        # ── Extract company name ──
+        # Indeed uses data-testid or specific CSS classes for company name
+        for selector in [
+            '[data-testid="inlineHeader-companyName"]',  # Modern Indeed
+            '[data-company-name="true"]',
+            '.jobsearch-InlineCompanyRating-companyHeader',  # Legacy
+            '.css-1saizt3',  # Common Indeed company class
+            '.jobsearch-CompanyInfoWithoutHeaderImage a',
+            '.icl-u-xs-mr--xs',  # Company name link
+        ]:
+            try:
+                el = page.query_selector(selector)
+                if el:
+                    company = el.inner_text().strip()
+                    if company and len(company) <= 60:
+                        result["company"] = company
+                        log.info(f"  Indeed company from selector '{selector}': {company}")
+                        break
+            except Exception:
+                continue
+
+        # Fallback: try JSON-LD structured data
+        if not result["company"]:
+            try:
+                raw_html = page.content()
+                ld_match = re.search(r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>', raw_html, re.DOTALL)
+                if ld_match:
+                    import json
+                    ld_data = json.loads(ld_match.group(1))
+                    if isinstance(ld_data, list):
+                        ld_data = ld_data[0]
+                    hiring_org = ld_data.get("hiringOrganization", {})
+                    if isinstance(hiring_org, dict):
+                        co_name = hiring_org.get("name", "")
+                        if co_name:
+                            result["company"] = co_name
+                            log.info(f"  Indeed company from JSON-LD: {co_name}")
+                    # Also grab date and location from JSON-LD
+                    if not result["date"]:
+                        date_posted = ld_data.get("datePosted", "")
+                        if date_posted:
+                            result["date"] = _normalize_date(date_posted)
+                    if not result["location"]:
+                        job_loc = ld_data.get("jobLocation", {})
+                        if isinstance(job_loc, dict):
+                            addr = job_loc.get("address", {})
+                            if isinstance(addr, dict):
+                                result["location"] = addr.get("addressLocality", "") or addr.get("addressCountry", "")
+            except Exception as e:
+                log.debug(f"  Indeed JSON-LD parse failed: {e}")
+
+        # Fallback: extract company from page text patterns
+        if not result["company"] and text:
+            # Indeed pages often show "Company Name\nRating\nLocation\nJob type"
+            # or "Company Name - Location" near the top
+            lines = [l.strip() for l in text.split('\n') if l.strip()][:20]
+            for line in lines:
+                # Skip obvious non-company lines
+                if len(line) > 50 or len(line) < 2:
+                    continue
+                if any(kw in line.lower() for kw in ["apply", "save", "sign in", "indeed",
+                       "search", "post your resume", "job type", "salary", "location",
+                       "full-time", "part-time", "contract", "remote", "hybrid"]):
+                    continue
+                # A short line that looks like a company name (capitalized, no common words)
+                if re.match(r'^[A-Z\u0590-\u05FF]', line) and not re.search(r'\b(engineer|developer|manager|senior|junior|lead)\b', line, re.IGNORECASE):
+                    result["company"] = line
+                    log.info(f"  Indeed company from page text: {line}")
+                    break
+
+        # ── Check if listing is closed ──
+        text_lower = text.lower()
+        closed_phrases = ["this job has expired", "this job is no longer available",
+                          "no longer accepting applications", "position has been filled"]
+        for phrase in closed_phrases:
+            if phrase in text_lower:
+                result["closed"] = True
+                log.info(f"  Indeed CLOSED: {url[:60]} — '{phrase}'")
+                break
+
+        context.close()
+    except Exception as e:
+        log.info(f"  Indeed Playwright scrape failed for {url[:60]}: {e}")
+        if page:
+            try:
+                page.context.close()
+            except Exception:
+                pass
+    return result
+
+
 def _normalize_date(raw: str) -> str:
     """Normalize various date formats to YYYY-MM-DD."""
     raw = raw.strip()
@@ -3884,6 +3999,16 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         title = re.sub(r'\s*גיוס\s*עובדים\s*', ' ', title).strip()
         title = re.sub(r'\s{2,}', ' ', title)  # collapse double spaces
 
+        # Clean Indeed titles: strip location suffixes and "Indeed" brand
+        # "DevOps Engineer - Israel - תל אביב -יפו, מחוז ..." → "DevOps Engineer"
+        if _is_indeed:
+            title = re.sub(r'\s*[-–]\s*Indeed(?:\.com)?\s*$', '', title, flags=re.IGNORECASE).strip()
+            # Strip " - Israel - Hebrew location" or " - Hebrew location, מחוז ..."
+            title = re.sub(r'\s*[-–]\s*Israel\s*[-–].*$', '', title).strip()
+            title = re.sub(r'\s*[-–]\s*[\u0590-\u05FF].*$', '', title).strip()
+            # Strip trailing " - location" if it looks like a city/region
+            title = re.sub(r'\s*[-–]\s*(?:Tel Aviv|Herzliya|Haifa|Jerusalem|Netanya|Ramat Gan|Remote).*$', '', title, flags=re.IGNORECASE).strip()
+
         # Use _source_override from LinkedIn FTS results, otherwise detect from URL
         source = r.get("_source_override") or detect_source(url)
         category = detect_category(title, snippet)
@@ -4105,9 +4230,18 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             continue
 
         if url:
-            # Indeed blocks automated scraping (401) — skip and use search result data directly
+            # Indeed blocks regular HTTP (401) — use Playwright headless browser instead
             if "indeed.com" in url:
-                page_data = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": []}
+                indeed_data = _scrape_indeed_playwright(url)
+                page_data = {
+                    "date": indeed_data.get("date", ""),
+                    "company": indeed_data.get("company", ""),
+                    "closed": indeed_data.get("closed", False),
+                    "location_country": indeed_data.get("location", ""),
+                    "is_career_page": False,
+                    "_http_status": 200 if indeed_data.get("company") else 0,
+                    "hiring_team": [],
+                }
             else:
                 page_data = scrape_job_page(url)
 
