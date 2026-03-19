@@ -3073,7 +3073,8 @@ def _scrape_indeed_playwright(url: str) -> dict:
                     continue
                 if any(kw in line.lower() for kw in ["apply", "save", "sign in", "indeed",
                        "search", "post your resume", "job type", "salary", "location",
-                       "full-time", "part-time", "contract", "remote", "hybrid"]):
+                       "full-time", "part-time", "contract", "remote", "hybrid",
+                       "find jobs", "company reviews", "upload", "notifications"]):
                     continue
                 # A short line that looks like a company name (capitalized, no common words)
                 if re.match(r'^[A-Z\u0590-\u05FF]', line) and not re.search(r'\b(engineer|developer|manager|senior|junior|lead)\b', line, re.IGNORECASE):
@@ -4230,18 +4231,10 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             continue
 
         if url:
-            # Indeed blocks regular HTTP (401) — use Playwright headless browser instead
+            # Indeed blocks both HTTP (401) and Playwright (bot-detection on DC IPs)
+            # Use search result data only — company stays Unknown if not in title/snippet
             if "indeed.com" in url:
-                indeed_data = _scrape_indeed_playwright(url)
-                page_data = {
-                    "date": indeed_data.get("date", ""),
-                    "company": indeed_data.get("company", ""),
-                    "closed": indeed_data.get("closed", False),
-                    "location_country": indeed_data.get("location", ""),
-                    "is_career_page": False,
-                    "_http_status": 200 if indeed_data.get("company") else 0,
-                    "hiring_team": [],
-                }
+                page_data = {"date": "", "company": "", "closed": False, "location_country": "", "is_career_page": False, "_http_status": 0, "hiring_team": []}
             else:
                 page_data = scrape_job_page(url)
 
