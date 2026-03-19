@@ -1006,15 +1006,11 @@ SEARCH_QUERIES = [
     # Solutions Architect / Sales Engineer roles (companies hiring these likely need DevOps help)
     "site:linkedin.com/jobs/view Solutions Architect Israel cloud OR kubernetes OR DevOps",
     "site:linkedin.com/jobs/view Sales Engineer Israel cloud OR DevOps OR infrastructure",
-    # Indeed Israel (individual job listings — il.indeed.com/viewjob)
-    "site:il.indeed.com DevOps Engineer Israel",
-    "site:il.indeed.com Cloud Engineer Israel",
-    "site:il.indeed.com AI Engineer Israel",
-    "site:il.indeed.com Platform Engineer Israel",
-    "site:il.indeed.com SRE Israel",
-    "site:il.indeed.com FinOps Israel",
-    "site:il.indeed.com DevSecOps Israel",
-    "site:il.indeed.com Infrastructure Engineer Israel",
+    # Indeed Israel (uses SerpAPI — DDG can't find Indeed results)
+    # Consolidated into 3 broad queries to conserve SerpAPI quota
+    "site:il.indeed.com DevOps OR Cloud OR Infrastructure OR SRE Engineer Israel",
+    "site:il.indeed.com AI OR ML OR Platform OR Data Engineer Israel",
+    "site:il.indeed.com FinOps OR DevSecOps OR Security Engineer Israel",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -1379,9 +1375,8 @@ def search_bing(query: str, freshness: str = "") -> list[dict]:
 
 
 GOOGLE_JOBS_QUERIES = [
-    # Reduced from 10 to 2 to conserve SerpAPI quota (renews 2026-04-08)
+    # Reduced from 10 to 1 to conserve SerpAPI quota (renews 2026-04-08)
     ("DevOps Engineer", "Israel"),
-    ("AI Engineer", "Israel"),
 ]
 
 
@@ -1476,12 +1471,14 @@ def search_duckduckgo(query: str, timelimit: str = "") -> list[dict]:
 
 
 def search_jobs(query: str) -> list[dict]:
-    """Search with DuckDuckGo only — SerpAPI fallback disabled to conserve quota (renews 2026-04-08)."""
+    """Search with DuckDuckGo first; SerpAPI only for Indeed (DDG can't find Indeed results)."""
+    # Indeed queries MUST use SerpAPI — DuckDuckGo returns zero results for site:il.indeed.com
+    if "indeed.com" in query.lower():
+        if SERPAPI_KEY:
+            return search_serpapi(query)
+        return []
     results = search_duckduckgo(query)
-    # SerpAPI fallback DISABLED to conserve quota
-    # if not results:
-    #     time.sleep(random.uniform(1.5, 3.0))
-    #     results = search_serpapi(query)
+    # SerpAPI fallback DISABLED for non-Indeed queries to conserve quota (renews 2026-04-08)
     return results
 
 
@@ -3106,7 +3103,7 @@ def _get_stakeholders(company: str) -> list:
 # ── Auto-stakeholder discovery cache ──────────────────────────────────────
 _stakeholder_cache: dict[str, list] = {}   # company_lower → contacts list
 _auto_discover_count = 0                    # Track search engine usage per run
-AUTO_DISCOVER_MAX = 3                       # Max auto-lookups per pipeline run (reduced to conserve SerpAPI quota — renews 2026-04-08)
+AUTO_DISCOVER_MAX = 0                       # DISABLED to conserve SerpAPI quota — renews 2026-04-08
 
 # Leadership title patterns for auto-discovery
 _LEADERSHIP_RE = re.compile(
@@ -3723,7 +3720,7 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
         url_lower = url.lower()
         skip_url_patterns = [
             # Search result pages
-            "google.com/search", "indeed.com/q-", "indeed.com/jobs?",
+            "google.com/search", "indeed.com/q-", "indeed.com/jobs?", "indeed.com/jobs/",
             "linkedin.com/jobs/search",
             # LinkedIn job search pages (e.g. /jobs/devops-engineer-jobs)
             # Only /jobs/view/ are individual listings
@@ -3736,6 +3733,9 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
 
         # LinkedIn: only accept /jobs/view/ (individual listings) or /posts/ (FTS)
         if "linkedin.com/jobs" in url_lower and "/jobs/view/" not in url_lower:
+            continue
+        # Indeed: only accept /viewjob (individual listings), skip all other Indeed pages
+        if "indeed.com" in url_lower and "/viewjob" not in url_lower:
             continue
         # LinkedIn posts: only accept if they came from FTS (have _source_override)
         if "linkedin.com/posts/" in url_lower and not r.get("_source_override"):
