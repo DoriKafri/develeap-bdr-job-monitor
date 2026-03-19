@@ -3661,6 +3661,18 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
         if not _is_job_title(company):
             return company
 
+    # 6. Indeed snippet often starts with "Company Name\n..." or "Company Name. Location."
+    # SerpApi rich_snippet text may contain company info at the start
+    if "indeed.com" in url:
+        # Try first line of snippet before any dash/newline/period
+        first_chunk = re.split(r'[\n\r.;]', snippet)[0].strip() if snippet else ""
+        if first_chunk:
+            # Skip if it's a job title, location, or too long
+            if (len(first_chunk) <= 40 and not _is_job_title(first_chunk)
+                    and not _is_location_fragment(first_chunk)
+                    and not re.match(r'^\d', first_chunk)):
+                return _fix_casing(first_chunk)
+
     return "Unknown"
 
 
@@ -4956,9 +4968,10 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
 
         # Skip Unknown/empty company jobs from new — they stay in existing for dedup
         # but we don't want to re-add them as new listings
-        # Exception: linkedin_fts results are allowed with Unknown company (they're social
-        # posts where company extraction is harder; the hiring signal is still valuable)
-        if j.get("company", "").strip() in ("Unknown", "") and j.get("source") != "linkedin_fts":
+        # Exception: linkedin_fts and indeed results are allowed with Unknown company
+        # (linkedin_fts = social posts where company extraction is harder;
+        #  indeed = scraping blocked so company comes from search result only)
+        if j.get("company", "").strip() in ("Unknown", "") and j.get("source") not in ("linkedin_fts", "indeed"):
             continue
 
         # Skip company-page listings from new jobs too
