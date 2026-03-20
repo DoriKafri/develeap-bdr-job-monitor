@@ -5276,24 +5276,25 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
             truly_new.append(j)
         else:
             # Duplicate listing found — update company if existing entry has "Unknown"
+            # or a garbled/job-title-like company from a previous parsing bug
             match = existing_urls.get(url) or existing_keys.get(key) or existing_norm.get(norm_key)
             if match:
-                # If existing record has unknown/empty company but new job has real company,
-                # update the existing record with the correct company name and logo.
-                new_company = j.get("company", "").strip()
-                old_company_m = match.get("company", "").strip()
-                if new_company and new_company not in ("Unknown", "") and old_company_m in ("Unknown", ""):
-                    log.info(f"  Company resolved: '{old_company_m}' → '{new_company}' for {j.get('title', '')[:50]}")
-                    match["company"] = new_company
-                    match["logo"] = _get_company_logo(new_company, match.get("sourceUrl", ""))
-                    match["stakeholders"] = _get_stakeholders(new_company)
-                    match["isDeveleapCustomer"] = is_develeap_customer(new_company)
-                    match["isPastCustomer"] = is_develeap_past_customer(new_company)
+                _old_co = match.get("company", "").strip()
+                _new_co = j.get("company", "").strip()
+                # Update company if existing entry has Unknown/empty company or a garbled/
+                # job-title-like name from a previous parsing bug
+                if _new_co and _new_co not in ("Unknown", "") and (_old_co in ("Unknown", "") or _is_job_title(_old_co)):
+                    log.info(f"  Company resolved: '{_old_co}' → '{_new_co}' for {j.get('title', '')[:50]}")
+                    match["company"] = _new_co
+                    match["logo"] = _get_company_logo(_new_co, match.get("sourceUrl", ""))
+                    match["stakeholders"] = _get_stakeholders(_new_co)
+                    match["isDeveleapCustomer"] = is_develeap_customer(_new_co)
+                    match["isPastCustomer"] = is_develeap_past_customer(_new_co)
                 # Also refresh logo if company is known but logo is missing
-                elif old_company_m and old_company_m not in ("Unknown", "") and not match.get("logo"):
-                    match["logo"] = _get_company_logo(old_company_m, match.get("sourceUrl", ""))
+                elif _old_co and _old_co not in ("Unknown", "") and not match.get("logo"):
+                    match["logo"] = _get_company_logo(_old_co, match.get("sourceUrl", ""))
                     if match["logo"]:
-                        log.info(f"  Logo refreshed for: {old_company_m}")
+                        log.info(f"  Logo refreshed for: {_old_co}")
                 if url and url != match.get("sourceUrl", ""):
                     alt_source = detect_source(url)
                     alt_sources = match.get("altSources", [])
@@ -5837,6 +5838,29 @@ def main():
         if any(re.search(p, url) for p in ats_url_patterns):
             fixed = extract_company("", "", url)  # URL-only extraction
             if fixed != "Unknown" and fixed.lower() != old_company.lower():
+                needs_fix = True
+        # For Indeed viewjob URLs, detect garbled company names left from a prior
+        # parsing bug (e.g. "Requirements: B", "Platform C++ Engineer (Cortex XDR)").
+        # Reset them to "Unknown" so the merge step can overwrite with the correct
+        # company name when the same URL is found in the new search results.
+        elif re.search(r'indeed\.com/viewjob', url, re.IGNORECASE) and old_company not in ("Unknown", ""):
+            _role_words = {"engineer", "developer", "architect", "analyst", "consultant",
+                           "specialist", "manager", "director", "coordinator", "administrator"}
+            _is_garbled = (
+                ":" in old_company                                           # "Requirements: B"
+                or len(old_company) > 45                                     # description snippets
+                or any(w in old_company.lower() for w in               # description-starter words
+                       ("requirements", "experience", "skills", "qualifications"))
+                or any(f" {w}" in old_company.lower()                        # embedded role words
+                       or old_company.lower().startswith(w)
+                       for w in _role_words)
+                or bool(re.search(r'\(\s*(?:ra\'?anana|tel[- ]?aviv|herzliya|'
+                                  r'haifa|jerusalem|netanya|petah tikva|'
+                                  r'ramat gan|beer.?sheva)\b', old_company,
+                                  re.IGNORECASE))                            # "(Raanana Office)"
+            )
+            if _is_garbled:
+                fixed = "Unknown"
                 needs_fix = True
         # Also fix entries where company looks like a job title
         elif _is_job_title(old_company) or old_company in ("Unknown", ""):
