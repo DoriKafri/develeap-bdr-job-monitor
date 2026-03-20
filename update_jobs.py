@@ -153,11 +153,15 @@ DEVELEAP_PAST_CUSTOMERS = [
     "Rapyd","Revelator","Sentrycs","Verbit","WalkMe",
 ]
 
-# ── Direct Logo URL Overrides ─────────────────────────────────────────────
-# Indeed job key (jk) → company name mapping
+# ── Indeed JK Company Cache ───────────────────────────────────────────────
+# Indeed job key (jk) → company name, persisted to indeed_cache.json with timestamps.
 # Indeed blocks scraping from data center IPs (both HTTP 401 and Playwright bot-detection).
-# Company names are extracted via browser-side scraping and cached here.
-_INDEED_JK_COMPANIES = {
+# Entries older than 30 days are evicted so the pipeline can re-derive the company name.
+
+INDEED_CACHE_FILE = "indeed_cache.json"
+
+# Seed entries used only to initialize the cache file on first run.
+_INDEED_JK_SEED: dict = {
     "179e22243d60343d": "Deloitte",
     "9b48b8e5884835b7": "AppCard",
     "7cf0120fd723666d": "Teads",
@@ -195,6 +199,51 @@ _INDEED_JK_COMPANIES = {
     "1911add4ce480a7d": "Red River",
     "c004fd7a3d1c6772": "IAI - Israel Aerospace Industries",
 }
+
+_INDEED_JK_CACHE: dict = {}   # {jk: {"company": str, "updated": "YYYY-MM-DD"}}
+_INDEED_JK_CACHE_DIRTY: bool = False
+
+
+def _load_indeed_cache() -> dict:
+    """Load indeed_cache.json, evict entries older than 30 days, return the live cache."""
+    global _INDEED_JK_CACHE_DIRTY
+    try:
+        with open(INDEED_CACHE_FILE) as _f:
+            raw = json.load(_f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # First run: seed from the hardcoded dict, dated today.
+        _today = datetime.now(timezone.utc).date().isoformat()
+        raw = {jk: {"company": co, "updated": _today} for jk, co in _INDEED_JK_SEED.items()}
+        _INDEED_JK_CACHE_DIRTY = True
+
+    _cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).date().isoformat()
+    kept: dict = {}
+    for jk, entry in raw.items():
+        if entry.get("updated", "1970-01-01") >= _cutoff:
+            kept[jk] = entry
+        else:
+            _INDEED_JK_CACHE_DIRTY = True  # expired entries → need to save the pruned file
+    return kept
+
+
+def _save_indeed_cache() -> None:
+    """Persist _INDEED_JK_CACHE to indeed_cache.json if the cache has changed."""
+    global _INDEED_JK_CACHE_DIRTY
+    if not _INDEED_JK_CACHE_DIRTY:
+        return
+    with open(INDEED_CACHE_FILE, "w") as _f:
+        json.dump(_INDEED_JK_CACHE, _f, indent=2, sort_keys=True)
+    _INDEED_JK_CACHE_DIRTY = False
+
+
+def _cache_indeed_company(jk: str, company: str) -> None:
+    """Add or refresh a jk→company entry in the cache."""
+    global _INDEED_JK_CACHE, _INDEED_JK_CACHE_DIRTY
+    _INDEED_JK_CACHE[jk] = {"company": company, "updated": datetime.now(timezone.utc).date().isoformat()}
+    _INDEED_JK_CACHE_DIRTY = True
+
+
+_INDEED_JK_CACHE = _load_indeed_cache()
 
 # For companies whose website favicon doesn't work (expired SSL, no favicon, etc.)
 # Maps company name (lowercase) → full logo URL
@@ -3987,15 +4036,15 @@ def _is_location_fragment(text: str) -> bool:
     return False
 
 
-def extract_company(title: str, snippet: str, url: str = "") -> str:
+def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
     """Try to extract company name from search result."""
 
     # Indeed viewjob URLs: lookup by job key (jk parameter)
-    # Indeed blocks scraping from DC IPs, so we cache known jk→company mappings
+    # Indeed blocks scraping from DC IPs, so we use a timestamped cache.
     if "indeed.com/viewjob" in url:
         jk_match = re.search(r'[?&]jk=([a-f0-9]+)', url)
-        if jk_match and jk_match.group(1) in _INDEED_JK_COMPANIES:
-            return _INDEED_JK_COMPANIES[jk_match.group(1)]
+        if jk_match and jk_match.group(1) in _INDEED_JK_CACHE:
+            return _INDEED_JK_CACHE[jk_match.group(1)]["company"]
 
     # Helper: clean up company name casing
     def _fix_casing(name: str) -> str:
@@ -4167,6 +4216,16 @@ def extract_company(title: str, snippet: str, url: str = "") -> str:
                 return _fix_casing(first_chunk)
 
     return "Unknown"
+
+
+def extract_company(title: str, snippet: str, url: str = "") -> str:
+    """Extract company name, back-filling the Indeed JK cache on a cache miss."""
+    result = _extract_company_inner(title, snippet, url)
+    if result and result != "Unknown" and "indeed.com/viewjob" in url:
+        jk_match = re.search(r'[?&]jk=([a-f0-9]+)', url)
+        if jk_match and jk_match.group(1) not in _INDEED_JK_CACHE:
+            _cache_indeed_company(jk_match.group(1), result)
+    return result
 
 
 def extract_location(title: str, snippet: str) -> str:
@@ -6221,6 +6280,7 @@ def main():
     else:
         log.info("No new listings — skipping Slack notification")
 
+    _save_indeed_cache()
     log.info("=== Update complete ===")
 
 
