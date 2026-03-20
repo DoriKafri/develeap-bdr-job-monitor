@@ -318,6 +318,9 @@ COMPANY_DOMAINS = {
     "yael group": "yaelgroup.com",
     "zenity": "zenity.io",
     "zscaler": "zscaler.com",
+    "iai": "iai.co.il",
+    "israel aerospace industries": "iai.co.il",
+    "iai - israel aerospace industries": "iai.co.il",
 }
 
 def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
@@ -5846,6 +5849,9 @@ def main():
         elif re.search(r'indeed\.com/viewjob', url, re.IGNORECASE) and old_company not in ("Unknown", ""):
             _role_words = {"engineer", "developer", "architect", "analyst", "consultant",
                            "specialist", "manager", "director", "coordinator", "administrator"}
+            # ATS platform names that occasionally appear as company on Indeed
+            _ats_platforms = {"workday", "greenhouse", "lever", "ashby", "jobvite",
+                              "smartrecruiters", "bamboohr", "icims", "comeet"}
             _is_garbled = (
                 ":" in old_company                                           # "Requirements: B"
                 or len(old_company) > 45                                     # description snippets
@@ -5858,6 +5864,7 @@ def main():
                                   r'haifa|jerusalem|netanya|petah tikva|'
                                   r'ramat gan|beer.?sheva)\b', old_company,
                                   re.IGNORECASE))                            # "(Raanana Office)"
+                or old_company.lower() in _ats_platforms                     # ATS name as company
             )
             if _is_garbled:
                 fixed = "Unknown"
