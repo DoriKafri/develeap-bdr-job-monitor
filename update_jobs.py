@@ -19,6 +19,10 @@ import base64
 import logging
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus, unquote, urljoin
+try:
+    from zoneinfo import ZoneInfo as _ZoneInfo
+except ImportError:
+    _ZoneInfo = None
 
 import requests
 from bs4 import BeautifulSoup
@@ -59,6 +63,34 @@ def _shutdown_playwright():
         pass
     _playwright_browser = None
     _playwright_instance = None
+
+# ── Weekend detection (Israel timezone) ────────────────────────────────────
+def _is_israel_weekend() -> bool:
+    """Return True during Israel weekend: Thursday 19:00 → Sunday 07:00.
+
+    During the weekend, SerpAPI-heavy operations (Indeed, Google Jobs) are
+    skipped to conserve the monthly quota.  Free engines (DuckDuckGo, Google
+    CSE, Bing) still run normally.
+    """
+    try:
+        if _ZoneInfo:
+            il_tz = _ZoneInfo("Asia/Jerusalem")
+            now_il = datetime.now(il_tz)
+        else:
+            raise RuntimeError("zoneinfo unavailable")
+    except Exception:
+        # Fallback: UTC+2 (Israel standard time, conservative)
+        now_il = datetime.now(timezone(timedelta(hours=2)))
+    weekday = now_il.weekday()   # 0=Mon … 3=Thu … 5=Sat … 6=Sun
+    hour = now_il.hour
+    if weekday == 3 and hour >= 19:   # Thursday after 19:00
+        return True
+    if weekday in (4, 5):             # Friday and Saturday (full days)
+        return True
+    if weekday == 6 and hour < 7:     # Sunday before 07:00
+        return True
+    return False
+
 
 # ── Configuration ──────────────────────────────────────────────────────────
 NETLIFY_SITE_ID = os.environ.get("NETLIFY_SITE_ID", "9533027e-5008-40ca-924c-dede933f0473")
@@ -1003,6 +1035,86 @@ COMPANY_STAKEHOLDERS = {
     ],
     "aws": [
         {"name": "Harel Ifhar", "title": "General Manager, AWS Israel", "linkedin": "https://il.linkedin.com/in/harel-ifhar-593508/", "source": "LinkedIn", "email": ""},
+    ],
+    # ── Additional companies added for contact coverage (Mar 2026) ──────────
+    "algosec": [
+        {"name": "Avishai Wool", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/avishaiw/", "source": "LinkedIn", "email": ""},
+        {"name": "Yuval Baron", "title": "CEO", "linkedin": "https://www.linkedin.com/in/yuval-baron-b08b04/", "source": "LinkedIn", "email": ""},
+    ],
+    "rapyd": [
+        {"name": "Arik Shtilman", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/arik-shtilman/", "source": "LinkedIn", "email": ""},
+        {"name": "Omer Priel", "title": "Co-Founder & CTO", "linkedin": "https://il.linkedin.com/in/omer-priel/", "source": "LinkedIn", "email": ""},
+    ],
+    "lemonade": [
+        {"name": "Shai Wininger", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/shaiwi/", "source": "LinkedIn", "email": ""},
+        {"name": "Daniel Schreiber", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/danielschreiber/", "source": "LinkedIn", "email": ""},
+    ],
+    "shield": [
+        {"name": "Shiran Weitzman", "title": "CEO & Co-Founder", "linkedin": "https://www.linkedin.com/in/shiran-weitzman/", "source": "LinkedIn", "email": ""},
+        {"name": "Assaf Glikman", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/assaf-glikman/", "source": "LinkedIn", "email": ""},
+    ],
+    "one zero": [
+        {"name": "Gal Bar Dea", "title": "CEO", "linkedin": "https://www.linkedin.com/in/gal-bar-dea/", "source": "LinkedIn", "email": ""},
+        {"name": "Amnon Shashua", "title": "Co-Founder & Chairman", "linkedin": "https://www.linkedin.com/in/amnon-shashua/", "source": "LinkedIn", "email": ""},
+    ],
+    "one zero digital bank": [
+        {"name": "Gal Bar Dea", "title": "CEO", "linkedin": "https://www.linkedin.com/in/gal-bar-dea/", "source": "LinkedIn", "email": ""},
+        {"name": "Amnon Shashua", "title": "Co-Founder & Chairman", "linkedin": "https://www.linkedin.com/in/amnon-shashua/", "source": "LinkedIn", "email": ""},
+    ],
+    "immunai": [
+        {"name": "Noam Solomon", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/noamsolomon/", "source": "LinkedIn", "email": ""},
+        {"name": "Luis Voloch", "title": "Co-Founder", "linkedin": "https://www.linkedin.com/in/luisvoloch/", "source": "LinkedIn", "email": ""},
+    ],
+    "glassbox": [
+        {"name": "Yaron Gueta", "title": "Co-Founder & CTO", "linkedin": "https://www.linkedin.com/in/yaron-gueta/", "source": "LinkedIn", "email": ""},
+        {"name": "Hanan Blumstein", "title": "Co-Founder & CEO", "linkedin": "https://www.linkedin.com/in/hanan-blumstein/", "source": "LinkedIn", "email": ""},
+    ],
+    "iai": [
+        {"name": "Boaz Levy", "title": "President & CEO", "linkedin": "https://www.linkedin.com/in/boaz-levy-/", "source": "LinkedIn", "email": ""},
+    ],
+    "israel aerospace industries": [
+        {"name": "Boaz Levy", "title": "President & CEO", "linkedin": "https://www.linkedin.com/in/boaz-levy-/", "source": "LinkedIn", "email": ""},
+    ],
+    "iai - israel aerospace industries": [
+        {"name": "Boaz Levy", "title": "President & CEO", "linkedin": "https://www.linkedin.com/in/boaz-levy-/", "source": "LinkedIn", "email": ""},
+    ],
+    "palo alto networks": [
+        {"name": "Amit Waisel", "title": "VP R&D, Israel", "linkedin": "https://il.linkedin.com/in/amitwaisel/", "source": "LinkedIn", "email": ""},
+        {"name": "Lee Klarich", "title": "Chief Product Officer", "linkedin": "https://www.linkedin.com/in/leeklarich/", "source": "LinkedIn", "email": ""},
+    ],
+    "commbox": [
+        {"name": "Eli Israelov", "title": "CEO & Co-Founder", "linkedin": "https://il.linkedin.com/in/eli-israelov/", "source": "LinkedIn", "email": ""},
+    ],
+    "google": [
+        {"name": "Barak Regev", "title": "Managing Director, Google Israel", "linkedin": "https://il.linkedin.com/in/barakregev/", "source": "LinkedIn", "email": ""},
+    ],
+    "abra": [
+        {"name": "Bill Barhydt", "title": "CEO & Founder", "linkedin": "https://www.linkedin.com/in/billbarhydt/", "source": "LinkedIn", "email": ""},
+    ],
+    "teads": [
+        {"name": "Pierre Chappaz", "title": "Co-Founder & Executive Chairman", "linkedin": "https://www.linkedin.com/in/pierrechappaz/", "source": "LinkedIn", "email": ""},
+        {"name": "Jeremy Arditi", "title": "Co-Founder & Co-CEO", "linkedin": "https://www.linkedin.com/in/jeremyarditi/", "source": "LinkedIn", "email": ""},
+    ],
+    "veeva systems": [
+        {"name": "Peter Gassner", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/petergassner/", "source": "LinkedIn", "email": ""},
+    ],
+    "veeva": [
+        {"name": "Peter Gassner", "title": "Founder & CEO", "linkedin": "https://www.linkedin.com/in/petergassner/", "source": "LinkedIn", "email": ""},
+    ],
+    "appcard": [
+        {"name": "Yair Goldfinger", "title": "CEO & Founder", "linkedin": "https://www.linkedin.com/in/yairgoldfinger/", "source": "LinkedIn", "email": ""},
+    ],
+    "cisco": [
+        {"name": "Inbal Kreiss", "title": "VP & Site Leader, Cisco Israel", "linkedin": "https://il.linkedin.com/in/inbal-kreiss/", "source": "LinkedIn", "email": ""},
+    ],
+    "siemens": [
+        {"name": "Avi Margalit", "title": "CEO, Siemens Israel", "linkedin": "https://il.linkedin.com/in/avi-margalit/", "source": "LinkedIn", "email": ""},
+    ],
+    "qualcomm": [
+        {"name": "Ziv Binyamini", "title": "VP & GM, Qualcomm Israel", "linkedin": "https://il.linkedin.com/in/ziv-binyamini/", "source": "LinkedIn", "email": ""},
+    ],
+    "kyndryl": [
+        {"name": "Martin Schroeter", "title": "CEO", "linkedin": "https://www.linkedin.com/in/martin-schroeter/", "source": "LinkedIn", "email": ""},
     ],
 }
 
@@ -3509,6 +3621,8 @@ _SKIP_COMPANIES_FOR_STAKEHOLDERS = {
     "factored", "attil", "mksinst", "adaptive6", "crawljobs",
     "vertexventures", "my team", "tel aviv ...", "tel aviv,",
     "$84k", "secure agentic ai", "shi", "campbellsoup",
+    # Staffing/outsourcing firms — not direct employers
+    "devsavant", "truelogic", "red river",
 }
 
 
@@ -5748,18 +5862,29 @@ def main():
         log.info(f"  '{query}' → {len(results)} results")
         time.sleep(random.uniform(1.0, 2.5))
 
+    # Detect Israel weekend — skip SerpAPI-heavy searches to conserve quota
+    _weekend = _is_israel_weekend()
+    if _weekend:
+        log.info("Israel weekend mode (Thu 19:00 – Sun 07:00): skipping SerpAPI-dependent searches (Google Jobs, Indeed)")
+
     # 1b. Also search Google Jobs engine (structured job listings)
-    log.info("Searching Google Jobs engine...")
-    gj_results = search_google_jobs()
-    all_raw.extend(gj_results)
-    log.info(f"Google Jobs engine: {len(gj_results)} results")
+    if not _weekend:
+        log.info("Searching Google Jobs engine...")
+        gj_results = search_google_jobs()
+        all_raw.extend(gj_results)
+        log.info(f"Google Jobs engine: {len(gj_results)} results")
+    else:
+        log.info("Skipping Google Jobs engine (weekend mode)")
 
     # 1c. Search Indeed via SerpAPI's dedicated Indeed engine
     # (site: queries return search-result pages that get filtered; engine=indeed returns viewjob URLs)
-    log.info("Searching Indeed (SerpAPI engine=indeed)...")
-    indeed_results = search_indeed_serpapi_engine()
-    all_raw.extend(indeed_results)
-    log.info(f"Indeed engine: {len(indeed_results)} results")
+    if not _weekend:
+        log.info("Searching Indeed (SerpAPI engine=indeed)...")
+        indeed_results = search_indeed_serpapi_engine()
+        all_raw.extend(indeed_results)
+        log.info(f"Indeed engine: {len(indeed_results)} results")
+    else:
+        log.info("Skipping Indeed engine (weekend mode)")
 
     # 1d. Add seed jobs (manually curated listings for categories search engines miss)
     all_raw.extend(SEED_JOBS)
