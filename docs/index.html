@@ -526,6 +526,16 @@
   .queue-btn-play:hover { background:#1B5E20; }
   .queue-btn-clear { background:var(--bg); color:var(--danger); border:1px solid var(--danger) !important; }
   .queue-btn-clear:hover { background:#FFEBEE; }
+  .queue-btn-retry { background:var(--bg); color:#F57C00; border:1px solid #F57C00 !important; }
+  .queue-btn-retry:hover { background:#FFF3E0; }
+  .queue-count-badge { display:inline-flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.12); border-radius:10px; padding:1px 6px; font-size:11px; font-weight:700; min-width:18px; }
+  .queue-select-all-label { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); user-select:none; }
+  .queue-select-all-label:hover { border-color:var(--primary); color:var(--primary); }
+  .queue-select-all-label input[type=checkbox] { width:15px; height:15px; cursor:pointer; accent-color:var(--primary); }
+  .queue-bulk-bar { display:flex; align-items:center; gap:10px; background:#EEF2FF; border:1px solid #C7D2FE; border-radius:10px; padding:10px 16px; margin-bottom:12px; flex-wrap:wrap; }
+  .queue-bulk-bar span { font-size:13px; font-weight:700; color:#3730A3; flex:1; }
+  .queue-bulk-bar button { padding:6px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid; transition:all 0.15s; }
+  .queue-card-checkbox { width:16px; height:16px; cursor:pointer; accent-color:var(--primary); flex-shrink:0; margin-top:4px; }
   .queue-stats { display:flex; gap:16px; margin-bottom:20px; }
   .queue-stat { flex:1; padding:16px 20px; border-radius:12px; background:white; box-shadow:var(--shadow); border-left:4px solid var(--primary); cursor:pointer; transition:all 0.15s; user-select:none; }
   .queue-stat:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
@@ -1503,16 +1513,27 @@
         </div>
       </div>
       <div class="queue-global-controls">
+        <label class="queue-select-all-label">
+          <input type="checkbox" id="queueSelectAll" onchange="toggleSelectAll(this.checked)">
+          Select All
+        </label>
         <button class="btn queue-btn-play" id="queueGlobalToggle" onclick="toggleQueueGlobal()">
           <span id="queueToggleIcon">▶</span> <span id="queueToggleLabel">Resume All</span>
         </button>
-        <button class="btn queue-btn-clear" onclick="clearCompletedQueue()">🗑 Clear Completed</button>
+        <button class="btn queue-btn-retry" onclick="retryAllFailed()">↻ Retry Failed <span id="failedCountBadge" class="queue-count-badge">0</span></button>
+        <button class="btn queue-btn-clear" onclick="clearCompletedQueue()">🗑 Clear Done <span id="completedCountBadge" class="queue-count-badge">0</span></button>
         <button class="btn" style="background:var(--primary);color:white" onclick="refreshQueueView()">↻ Refresh</button>
       </div>
     </div>
     <div id="queueOpportunities"></div>
     <div id="queueRateLimits"></div>
     <div class="queue-stats" id="queueStats"></div>
+    <div id="queueBulkBar" class="queue-bulk-bar" style="display:none">
+      <span id="queueBulkCount">0 items selected</span>
+      <button onclick="bulkRetrySelected()" style="background:#FFF3E0;color:#F57C00;border-color:#F57C00">↻ Retry Selected</button>
+      <button onclick="bulkDeleteSelected()" style="background:#FFEBEE;color:var(--danger);border-color:var(--danger)">🗑 Delete Selected</button>
+      <button onclick="clearBulkSelection()" style="background:var(--bg);color:var(--text-light);border-color:var(--border)">✕ Clear</button>
+    </div>
     <div class="queue-list" id="queueList"></div>
   </div>
 
@@ -13736,6 +13757,21 @@ var renderQueueView = function() {
   const oppCount = q.filter(e => (e.opportunities || []).some(o => o.status === 'open')).length;
 
   const totalCount = q.length;
+
+  // Update bulk action button counters
+  const failedTotal = (counts.failed || 0) + (counts.error || 0);
+  const doneTotal = (counts.completed || 0) + (counts.message_sent || 0) + (counts.email_sent || 0) + (counts.reply_received || 0);
+  const failedBadge = document.getElementById('failedCountBadge');
+  const completedBadge = document.getElementById('completedCountBadge');
+  if (failedBadge) failedBadge.textContent = failedTotal;
+  if (completedBadge) completedBadge.textContent = doneTotal;
+
+  // Update Select All checkbox state
+  const selectAllCb = document.getElementById('queueSelectAll');
+  if (selectAllCb) { selectAllCb.checked = false; selectAllCb.indeterminate = false; }
+  _selectedQueueItems.clear();
+  _updateBulkBar();
+
   statsEl.innerHTML = `
     <div class="queue-stat${_queueFilter === null ? ' filter-active' : ''}" onclick="filterQueue(null)" style="border-left-color:var(--primary)"><div class="queue-stat-number" style="color:var(--primary)">${totalCount}</div><div class="queue-stat-label">All</div></div>
     <div class="queue-stat pending${_queueFilter === 'pending' ? ' filter-active' : ''}" onclick="filterQueue('pending')"><div class="queue-stat-number">${counts.pending + counts.processing}</div><div class="queue-stat-label">Pending</div></div>
@@ -13954,6 +13990,7 @@ var renderQueueView = function() {
 
     return `
     <div class="queue-card status-${statusClass}">
+      <input type="checkbox" class="queue-card-checkbox" data-idx="${origIdx}" ${_selectedQueueItems.has(origIdx) ? 'checked' : ''} onclick="event.stopPropagation();toggleSelectQueueItem(${origIdx},this.checked)">
       <div class="queue-card-avatar">${avatarContent}</div>
       <div class="queue-card-info">
         <div class="queue-card-name">
@@ -14084,13 +14121,98 @@ var toggleQueueGlobal = async function() {
 }
 
 var clearCompletedQueue = async function() {
+  const doneStatuses = new Set(['completed', 'message_sent', 'email_sent', 'reply_received', 'conn_accepted']);
   const before = _queueData.queue.length;
-  _queueData.queue = _queueData.queue.filter(e => e.status !== 'completed');
+  _queueData.queue = _queueData.queue.filter(e => !doneStatuses.has(e.status));
   const removed = before - _queueData.queue.length;
   if (removed === 0) { _showToast('No completed entries to clear'); return; }
   await _saveQueueToGitHub();
   renderQueueView();
-  _showToast(`🗑 Cleared ${removed} completed entries`);
+  _showToast(`🗑 Cleared ${removed} completed/sent entries`);
+}
+
+var retryAllFailed = async function() {
+  const failStatuses = new Set(['failed', 'error']);
+  let count = 0;
+  _queueData.queue.forEach(e => {
+    if (failStatuses.has(e.status)) {
+      e.status = 'pending';
+      e.error = null;
+      e.completedAt = null;
+      count++;
+    }
+  });
+  if (count === 0) { _showToast('No failed entries to retry'); return; }
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast(`↻ Retrying ${count} failed entries`);
+}
+
+var _selectedQueueItems = new Set();
+
+var _updateBulkBar = function() {
+  const bar = document.getElementById('queueBulkBar');
+  const countEl = document.getElementById('queueBulkCount');
+  if (!bar) return;
+  const n = _selectedQueueItems.size;
+  bar.style.display = n > 0 ? 'flex' : 'none';
+  if (countEl) countEl.textContent = n + ' item' + (n !== 1 ? 's' : '') + ' selected';
+}
+
+var toggleSelectAll = function(checked) {
+  const q = _queueData.queue || [];
+  const visibleCards = document.querySelectorAll('.queue-card-checkbox');
+  visibleCards.forEach(cb => {
+    const idx = parseInt(cb.dataset.idx);
+    cb.checked = checked;
+    if (checked) _selectedQueueItems.add(idx);
+    else _selectedQueueItems.delete(idx);
+  });
+  _updateBulkBar();
+}
+
+var toggleSelectQueueItem = function(idx, checked) {
+  if (checked) _selectedQueueItems.add(idx);
+  else _selectedQueueItems.delete(idx);
+  // Update Select All checkbox state
+  const allCards = document.querySelectorAll('.queue-card-checkbox');
+  const selectAllCb = document.getElementById('queueSelectAll');
+  if (selectAllCb && allCards.length > 0) {
+    const checkedCount = Array.from(allCards).filter(cb => cb.checked).length;
+    selectAllCb.checked = checkedCount === allCards.length;
+    selectAllCb.indeterminate = checkedCount > 0 && checkedCount < allCards.length;
+  }
+  _updateBulkBar();
+}
+
+var clearBulkSelection = function() {
+  _selectedQueueItems.clear();
+  document.querySelectorAll('.queue-card-checkbox').forEach(cb => cb.checked = false);
+  const selectAllCb = document.getElementById('queueSelectAll');
+  if (selectAllCb) { selectAllCb.checked = false; selectAllCb.indeterminate = false; }
+  _updateBulkBar();
+}
+
+var bulkRetrySelected = async function() {
+  if (_selectedQueueItems.size === 0) return;
+  let count = 0;
+  _selectedQueueItems.forEach(idx => {
+    const e = _queueData.queue[idx];
+    if (e) { e.status = 'pending'; e.error = null; e.completedAt = null; count++; }
+  });
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast(`↻ Retrying ${count} selected entries`);
+}
+
+var bulkDeleteSelected = async function() {
+  if (_selectedQueueItems.size === 0) return;
+  const count = _selectedQueueItems.size;
+  const idxsToRemove = Array.from(_selectedQueueItems).sort((a, b) => b - a);
+  idxsToRemove.forEach(idx => { _queueData.queue.splice(idx, 1); });
+  await _saveQueueToGitHub();
+  renderQueueView();
+  _showToast(`🗑 Deleted ${count} entries`);
 }
 
 // Inline edit queue message
