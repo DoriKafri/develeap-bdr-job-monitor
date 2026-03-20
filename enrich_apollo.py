@@ -13,6 +13,7 @@ import sys
 import json
 import time
 import re
+import base64
 import requests
 from datetime import datetime
 
@@ -24,6 +25,31 @@ DOCS_HTML = "docs/index.html"
 
 # Rate limiting: Apollo allows 600 calls/hour ≈ 10/min
 REQUEST_DELAY = 0.25  # seconds between API calls
+
+# LinkedIn default avatar URL — not a real profile photo, skip it
+_LINKEDIN_DEFAULT_AVATAR = "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2"
+
+
+def _download_photo_b64(url):
+    """Download a profile photo URL and return a base64 data URI, or None on failure."""
+    if not url or url == _LINKEDIN_DEFAULT_AVATAR:
+        return None
+    try:
+        r = requests.get(
+            url,
+            headers={"User-Agent": "Mozilla/5.0", "Referer": ""},
+            timeout=10,
+            allow_redirects=True,
+        )
+        if r.status_code != 200:
+            return None
+        ct = r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
+        if not ct.startswith("image/"):
+            return None
+        b64 = base64.b64encode(r.content).decode("ascii")
+        return f"data:{ct};base64,{b64}"
+    except Exception:
+        return None
 
 # ── Workflow Config ───────────────────────────────────────────────────────
 WORKFLOW_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workflow_config.json")
@@ -187,6 +213,8 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
                         if not primary_phone:
                             primary_phone = num
 
+                photo_url = person.get("photo_url", "")
+                photo_data = _download_photo_b64(photo_url)
                 return {
                     "apolloId": person.get("id", ""),
                     "email": person.get("email", ""),
@@ -196,7 +224,8 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
                     "phone": mobile_phone or primary_phone,
                     "phoneType": "mobile" if mobile_phone else ("other" if primary_phone else ""),
                     "allPhones": all_phones,
-                    "photoUrl": person.get("photo_url", ""),
+                    "photoUrl": photo_url,
+                    "photoData": photo_data or "",
                     "city": person.get("city", ""),
                     "country": person.get("country", ""),
                     "seniority": person.get("seniority", ""),

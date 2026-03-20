@@ -8185,14 +8185,24 @@ const WA_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentCo
 
 function _contactKey(s) { return s.name.toLowerCase().trim(); }
 
+function _avatarInitialsHtml(name) {
+  const initials = (name||'').split(' ').filter(Boolean).map(n=>n[0]).join('').substring(0,2).toUpperCase()||'?';
+  const colors = ['#4A90D9','#7B68EE','#E87D3E','#50C878','#E05C5C','#4BC0C0','#9B59B6','#E67E22','#27AE60','#2980B9'];
+  let h = 0; for (let i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))&0x7fffffff;
+  const bg = colors[h % colors.length];
+  return `<span style="background:${bg};color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:13px;font-weight:700;letter-spacing:0.5px;border-radius:50%;user-select:none">${initials}</span>`;
+}
+function _avatarImgErr(el, name) {
+  el.onerror = null;
+  el.parentNode.innerHTML = _avatarInitialsHtml(name);
+}
 function _stakeholderAvatar(s) {
-  const initials = s.name.split(' ').map(n=>n[0]).join('').substring(0,2);
-  // Use base64 photo from Python enrichment if available
-  if (s.photo) {
-    return `<img src="${s.photo}" alt="${initials}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`;
+  const photoSrc = s.photo; // base64 data URI or URL
+  if (photoSrc) {
+    const esc = (s.name||'').replace(/'/g,"\\'");
+    return `<img src="${photoSrc}" alt="" loading="lazy" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="_avatarImgErr(this,'${esc}')">`;
   }
-  // Fallback to initials
-  return initials;
+  return _avatarInitialsHtml(s.name || '');
 }
 
 // ── Manual contacts (localStorage) ──────────────────────────────────────
@@ -8391,10 +8401,11 @@ function _enrichWithApollo(stakeholders, job) {
         headline: apollo.headline || '',
         city: apollo.city || '',
         country: apollo.country || '',
-        photoUrl: apollo.photoUrl || ''
+        photoUrl: apollo.photoUrl || '',
+        photoData: apollo.photoData || ''
       };
-      // Use Apollo photo if we don't have one
-      if (!s.photo && apollo.photoUrl) s.photo = apollo.photoUrl;
+      // Use Apollo photo if we don't have one — prefer base64 (self-hosted) over URL
+      if (!s.photo) s.photo = apollo.photoData || apollo.photoUrl || '';
     }
   });
 
@@ -13923,10 +13934,11 @@ var renderQueueView = function() {
       actions = `<button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
     }
 
-    // Avatar: use photo if available, otherwise initials
+    // Avatar: use photo if available, otherwise styled initials
+    const _qName = (entry.contactName||'').replace(/'/g,"\\'");
     const avatarContent = entry.contactPhoto
-      ? `<img src="${entry.contactPhoto}" alt="${initials}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentNode.innerHTML='${initials}'">`
-      : initials;
+      ? `<img src="${entry.contactPhoto}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy" referrerpolicy="no-referrer" onerror="_avatarImgErr(this,'${_qName}')">`
+      : _avatarInitialsHtml(entry.contactName||initials);
     // Company logo: small inline logo next to company name
     const compLogoHtml = entry.companyLogo
       ? `<img src="${entry.companyLogo}" alt="" style="width:16px;height:16px;border-radius:3px;object-fit:contain;vertical-align:middle;margin-right:4px" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
