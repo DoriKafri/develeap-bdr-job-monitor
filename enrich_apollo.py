@@ -16,7 +16,7 @@ import re
 import base64
 import logging
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,7 +29,9 @@ APOLLO_API_KEY = os.environ.get("APOLLO_API_KEY", "").strip()
 APOLLO_WEBHOOK_URL = os.environ.get("APOLLO_WEBHOOK_URL", "").strip()
 APOLLO_BASE = "https://api.apollo.io/api/v1"
 OUTPUT_FILE = "apollo_data.json"
+ARCHIVE_FILE = "apollo_data_archive.json"
 DOCS_HTML = "docs/index.html"
+ARCHIVE_DAYS = 90  # contacts/orgs not updated in this many days are archived
 
 # Rate limiting: Apollo allows 600 calls/hour ≈ 10/min
 REQUEST_DELAY = 0.25  # seconds between API calls
@@ -312,6 +314,7 @@ def enrich_person(name, company, email=None, linkedin_url=None):
                 "seniority": person.get("seniority", ""),
                 "departments": person.get("departments", []),
                 "headline": person.get("headline", ""),
+                "last_updated": datetime.now(timezone.utc).isoformat(),
             }
         else:
             return None
@@ -383,12 +386,104 @@ def enrich_organization(company_name, domain=None):
                 "country": org.get("country", ""),
                 "shortDescription": org.get("short_description", ""),
                 "logoUrl": org.get("logo_url", ""),
+                "last_updated": datetime.now(timezone.utc).isoformat(),
             }
         else:
             return None
     else:
         log.warning("Org enrichment failed for '%s': HTTP %d %s", company_name, resp.status_code, resp.text[:200])
         return None
+
+
+def prune_apollo_data():
+    """Archive contacts/orgs older than ARCHIVE_DAYS from apollo_data.json.
+
+    Entries without a last_updated timestamp are stamped with today's date so
+    they are preserved until they naturally age out in a future run.
+    The archive file is cumulative — new archived entries are merged in so
+    history is never lost.  The archive is never loaded during normal runs.
+    """
+    if not os.path.exists(OUTPUT_FILE):
+        return
+
+    try:
+        with open(OUTPUT_FILE, "r") as f:
+            data = json.load(f)
+    except Exception as e:
+        log.warning("Prune: could not read %s: %s", OUTPUT_FILE, e)
+        return
+
+    cutoff = datetime.now(timezone.utc) - timedelta(days=ARCHIVE_DAYS)
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    def _is_stale(entry):
+        ts = entry.get("last_updated")
+        if not ts:
+            return False  # will be stamped below; keep for now
+        try:
+            dt = datetime.fromisoformat(ts)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt < cutoff
+        except Exception:
+            return False
+
+    contacts = data.get("contacts", {})
+    orgs = data.get("organizations", {})
+
+    # Stamp entries that are missing last_updated so they age out naturally later
+    stamped = 0
+    for entry in list(contacts.values()) + list(orgs.values()):
+        if isinstance(entry, dict) and "last_updated" not in entry:
+            entry["last_updated"] = now_iso
+            stamped += 1
+
+    stale_contacts = {k: v for k, v in contacts.items() if isinstance(v, dict) and _is_stale(v)}
+    stale_orgs = {k: v for k, v in orgs.items() if isinstance(v, dict) and _is_stale(v)}
+
+    if not stale_contacts and not stale_orgs:
+        if stamped:
+            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            log.info("Prune: stamped %d entries with last_updated (no archives needed yet)", stamped)
+        else:
+            log.info("Prune: nothing to archive (all entries are < %d days old)", ARCHIVE_DAYS)
+        return
+
+    # Load existing archive (cumulative)
+    archive = {"contacts": {}, "organizations": {}}
+    if os.path.exists(ARCHIVE_FILE):
+        try:
+            with open(ARCHIVE_FILE, "r") as f:
+                archive = json.load(f)
+        except Exception:
+            pass
+
+    archive.setdefault("contacts", {})
+    archive.setdefault("organizations", {})
+    archive["contacts"].update(stale_contacts)
+    archive["organizations"].update(stale_orgs)
+    archive["last_archived"] = now_iso
+
+    with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
+        json.dump(archive, f, indent=2, ensure_ascii=False)
+
+    # Remove stale entries from active data
+    for k in stale_contacts:
+        del contacts[k]
+    for k in stale_orgs:
+        del orgs[k]
+
+    if stamped:
+        log.info("Prune: stamped %d entries with last_updated", stamped)
+
+    log.info(
+        "Prune: archived %d contacts, %d orgs (older than %d days) → %s",
+        len(stale_contacts), len(stale_orgs), ARCHIVE_DAYS, ARCHIVE_FILE,
+    )
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 def main():
@@ -469,6 +564,7 @@ def main():
                 for field in ("phone", "phoneType", "allPhones"):
                     if result.get(field):
                         existing_entry[field] = result[field]
+                existing_entry["last_updated"] = datetime.now(timezone.utc).isoformat()
                 print(f"    -> Phone request sent via webhook")
             else:
                 contacts_enriched[key] = result
@@ -533,6 +629,10 @@ def main():
         print(f"  Phone re-enrichments: {phone_re_enrich} (via webhook)")
     print(f"  Organizations enriched: {total_orgs} ({new_orgs} new)")
     print(f"  Output: {OUTPUT_FILE}")
+
+    # Prune stale entries to keep apollo_data.json lean
+    log.info("Pruning entries older than %d days...", ARCHIVE_DAYS)
+    prune_apollo_data()
 
 
 if __name__ == "__main__":
