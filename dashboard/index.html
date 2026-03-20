@@ -16548,14 +16548,22 @@ function _wfUpdateUndoButtons() {
 
 /* Keyboard shortcuts: Ctrl/Cmd+Z = Undo, Ctrl/Cmd+Shift+Z = Redo */
 document.addEventListener('keydown', function(e) {
-  // Only act when workflow tab is visible
-  var wfTab = document.getElementById('workflowTab');
-  if(!wfTab || wfTab.style.display === 'none') return;
   var mod = e.metaKey || e.ctrlKey;
   if(!mod || e.key.toLowerCase() !== 'z') return;
-  // Don't intercept when typing in input/textarea/select
   var tag = document.activeElement && document.activeElement.tagName;
   if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  // Wolf Pack editor shortcut (takes priority when wolf pack editor is visible)
+  var wpEditorView = document.getElementById('wpEditorView');
+  if(wpEditorView && wpEditorView.style.display !== 'none') {
+    e.preventDefault();
+    if(e.shiftKey) { _wpRedo(); } else { _wpUndo(); }
+    return;
+  }
+
+  // Workflow editor shortcut
+  var wfTab = document.getElementById('workflowTab');
+  if(!wfTab || wfTab.style.display === 'none') return;
   e.preventDefault();
   if(e.shiftKey) { _wfRedo(); } else { _wfUndo(); }
 });
@@ -18465,6 +18473,7 @@ function _wpUpdateNodeConfig(nodeId, key, value) {
   if (!_wpSelectedCampaign) return;
   var node = _wpSelectedCampaign.flow.nodes[nodeId];
   if (!node) return;
+  _wpSaveState();
   if (!node.config) node.config = {};
   node.config[key] = value;
   _wpFlowDirty = true;
@@ -18474,6 +18483,7 @@ function _wpUpdateNodeConfig(nodeId, key, value) {
 
 function _wpDeleteNode(nodeId) {
   if (!_wpSelectedCampaign) return;
+  _wpSaveState();
   var flow = _wpSelectedCampaign.flow;
   // Remove from nodes
   delete flow.nodes[nodeId];
@@ -18489,6 +18499,7 @@ function _wpDeleteNode(nodeId) {
 
 function _wpAddNode(templateId) {
   if (!_wpSelectedCampaign) return;
+  _wpSaveState();
   var flow = _wpSelectedCampaign.flow;
   var nodeId = templateId + '_' + Date.now().toString(36);
 
@@ -18527,6 +18538,7 @@ function _wpStartNodeDrag(e, nodeId) {
   if (!_wpSelectedCampaign) return;
   var node = _wpSelectedCampaign.flow.nodes[nodeId];
   if (!node) return;
+  _wpSaveState();
   _wpDragState = {
     nodeId: nodeId,
     startX: e.clientX,
@@ -18578,6 +18590,7 @@ document.addEventListener('mouseup', function(e) {
       // Avoid duplicate connections
       var exists = (flow.connections || []).some(function(c) { return c.from === _wpConnectSource && c.to === targetId; });
       if (!exists) {
+        _wpSaveState();
         flow.connections.push({ from: _wpConnectSource, to: targetId });
         var srcNode = flow.nodes[_wpConnectSource];
         if (srcNode && srcNode.next) srcNode.next.push(targetId);
@@ -18617,9 +18630,56 @@ function _wpFitCanvas() {
   _wpDrawFlowCanvas(document.getElementById('wpEditorCanvas'));
 }
 
-// Undo/Redo stubs
-function _wpUndo() { /* TODO */ }
-function _wpRedo() { /* TODO */ }
+// Undo/Redo implementation
+var _WP_UNDO_MAX = 20;
+
+function _wpSnapshot() {
+  if (!_wpSelectedCampaign) return null;
+  return JSON.parse(JSON.stringify(_wpSelectedCampaign.flow));
+}
+
+function _wpRestoreFlow(snap) {
+  if (!_wpSelectedCampaign || !snap) return;
+  _wpSelectedCampaign.flow = JSON.parse(JSON.stringify(snap));
+}
+
+function _wpSaveState() {
+  var snap = _wpSnapshot();
+  if (!snap) return;
+  _wpUndoStack.push(snap);
+  if (_wpUndoStack.length > _WP_UNDO_MAX) _wpUndoStack.shift();
+  _wpRedoStack = [];
+  _wpUpdateUndoButtons();
+}
+
+function _wpUndo() {
+  if (!_wpUndoStack.length) return;
+  var cur = _wpSnapshot();
+  if (cur) _wpRedoStack.push(cur);
+  _wpRestoreFlow(_wpUndoStack.pop());
+  _wpSelectedNode = null;
+  _wpFlowDirty = true;
+  _wpRenderEditor();
+  _wpUpdateUndoButtons();
+}
+
+function _wpRedo() {
+  if (!_wpRedoStack.length) return;
+  var cur = _wpSnapshot();
+  if (cur) _wpUndoStack.push(cur);
+  _wpRestoreFlow(_wpRedoStack.pop());
+  _wpSelectedNode = null;
+  _wpFlowDirty = true;
+  _wpRenderEditor();
+  _wpUpdateUndoButtons();
+}
+
+function _wpUpdateUndoButtons() {
+  var u = document.getElementById('wpUndoBtn');
+  var r = document.getElementById('wpRedoBtn');
+  if (u) u.disabled = !_wpUndoStack.length;
+  if (r) r.disabled = !_wpRedoStack.length;
+}
 
 // Helper
 function _getUserDisplayName(email) {
