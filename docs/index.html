@@ -9285,7 +9285,7 @@ function messageOnLinkedIn(stakeholderIdx) {
         btn.style.background = '#C62828';
       }
     }
-    _showToast(`❌ Failed to queue message. Try again.`);
+    _showToast('❌ ' + (err.message || 'Failed to queue message. Try again.'));
   });
 
   // Track outreach status
@@ -9301,6 +9301,7 @@ var _LI_QUEUE_PATH, _LI_QUEUE_API;
 var _liQueueSha = null;
 
 async function _pushToLinkedInQueue(entry) {
+  if (!_GH_TOKEN) throw new Error('Add your GitHub token in Settings → Integrations');
   // Add user attribution
   var currentEmail = _getCurrentUserEmail();
   var targetUser = _actingAsUser || currentEmail;
@@ -15158,7 +15159,7 @@ var messageOnLinkedInV2 = function(stakeholderIdx) {
         btn.disabled = false;
       }
     }
-    _showToast(`❌ Failed to queue. Try again.`);
+    _showToast('❌ ' + (err.message || 'Failed to queue. Try again.'));
   });
 
   // Track outreach status
