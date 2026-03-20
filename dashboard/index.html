@@ -1323,6 +1323,12 @@
   .share-btn svg { width:14px; height:14px; }
   .share-btn-row { opacity:0; transition:opacity 0.15s; }
   tr:hover .share-btn-row { opacity:1; }
+  .enrich-btn { display:inline-flex;align-items:center;justify-content:center;width:28px;height:24px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--text-light);font-size:13px;cursor:pointer;transition:all 0.15s;opacity:0; }
+  tr:hover .enrich-btn { opacity:1; }
+  .enrich-btn:hover { background:var(--primary-light);border-color:var(--primary);color:var(--primary); }
+  .enrich-btn:disabled { opacity:0.5;cursor:default; }
+  .enrich-btn.has-data { color:var(--text-lighter); }
+  tr:hover .enrich-btn.has-data { opacity:0.7; }
   .share-toast {
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
     background:var(--primary); color:white; padding:10px 20px; border-radius:10px;
@@ -1486,6 +1492,8 @@
   [data-theme="dark"] .share-menu-sep { background:#1a3d45; }
   [data-theme="dark"] .share-btn { background:#0e2f38; border-color:var(--border); color:var(--text-light); }
   [data-theme="dark"] .share-btn:hover { background:#0a4550; color:var(--teal); border-color:var(--teal); }
+  [data-theme="dark"] .enrich-btn { background:none; border-color:var(--border); color:var(--text-light); }
+  [data-theme="dark"] .enrich-btn:hover { background:#0a4550; color:var(--teal); border-color:var(--teal); }
   [data-theme="dark"] .share-detail-btn { background:#0e2f38; border-color:var(--border); color:var(--text); }
   [data-theme="dark"] .share-detail-btn:hover { background:#0a4550; color:var(--teal); border-color:var(--teal); }
 
@@ -1723,6 +1731,7 @@
           <th style="min-width:70px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div></th>
           <th style="min-width:60px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
           <th style="min-width:90px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div></th>
+          <th style="width:36px;text-align:center;padding:0 4px" title="Manually enrich contacts via Apollo">🧬</th>
         </tr></thead>
         <tbody id="jobsTable"></tbody>
       </table>
@@ -10486,7 +10495,7 @@ function renderJobs() {
   if (_hiddenBySearch) _parts.push(_hiddenBySearch + ' by search');
   const _filterInfo = _parts.length ? ' · filtered out: ' + _parts.join(', ') : '';
   document.getElementById('resultCount').innerHTML = jobs.length + ' of ' + _total + ' listings' + (_filterInfo ? '<span style="color:var(--text-lighter);font-size:12px">' + _filterInfo + '</span>' : '');
-  if (!jobs.length) { tbody.innerHTML='<tr><td colspan="8"><div class="empty-state"><h3>No listings match your filters</h3><p>Try adjusting your search or column filters</p></div></td></tr>'; return; }
+  if (!jobs.length) { tbody.innerHTML='<tr><td colspan="9"><div class="empty-state"><h3>No listings match your filters</h3><p>Try adjusting your search or column filters</p></div></td></tr>'; return; }
 
   // Sort  -  "NEW" listings always pinned to the top
   jobs.sort((a,b) => {
@@ -10513,6 +10522,7 @@ function renderJobs() {
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
       <td>${formatDate(j.posted)}</td>
       <td>${(()=>{const ls=getEffectiveListingStatus(j);const STATUS_LABELS={new:'New',active:'Active',in_progress:'In Progress',not_relevant:'Not Relevant',filter_out_company:'Filter Company'};return '<div class="status-dropdown" onclick="event.stopPropagation();toggleStatusMenu(this)" data-job-id="'+j.id+'" data-company="'+j.company.replace(/"/g,'&quot;')+'" data-status="'+ls+'">'+'<button class="status-badge sb-'+ls+'"><span class="status-dot"></span>'+STATUS_LABELS[ls]+'<svg class="status-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4.5L6 7.5L9 4.5"/></svg></button>'+'<div class="status-menu">'+'<div class="status-option'+(ls==='new'?' selected':'')+'" onclick="event.stopPropagation();handleStatusClick(this)" data-value="new"><span class="opt-dot d-new"></span>New<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'<div class="status-option'+(ls==='active'?' selected':'')+'" onclick="event.stopPropagation();handleStatusClick(this)" data-value="active"><span class="opt-dot d-active"></span>Active<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'<div class="status-option'+(ls==='in_progress'?' selected':'')+'" onclick="event.stopPropagation();handleStatusClick(this)" data-value="in_progress"><span class="opt-dot d-in_progress"></span>In Progress<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'<div class="status-option'+(ls==='not_relevant'?' selected':'')+'" onclick="event.stopPropagation();handleStatusClick(this)" data-value="not_relevant"><span class="opt-dot d-not_relevant"></span>Not Relevant<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'<div class="status-option'+(ls==='existing_customer'?' selected':'')+'" onclick="event.stopPropagation();handleStatusClick(this)" data-value="existing_customer"><span class="opt-dot d-existing_customer"></span>Existing Customer<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'<div class="status-option" onclick="event.stopPropagation();handleStatusClick(this)" data-value="filter_out_company"><span class="opt-dot d-filter_out_company"></span>Filter Company<svg class="opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+'</div></div>';})()}</td>
+      <td onclick="event.stopPropagation()" style="text-align:center;padding:4px 2px">${_getEnrichBtn(j)}</td>
     </tr>`).join('');
 }
 
@@ -12061,6 +12071,55 @@ async function _loadApolloData() {
   } catch (e) {
     console.warn('Failed to load Apollo data:', e);
     return null;
+  }
+}
+
+// ── Manual Apollo Enrichment ─────────────────────────────────────────────────
+function _getEnrichBtn(j) {
+  const companyKey = (j.company || '').toLowerCase().trim();
+  const companyEscaped = j.company.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const hasData = _apolloCache && (
+    ((_apolloCache.organizations || {})[companyKey] || {}).apolloId ||
+    Object.keys(_apolloCache.contacts || {}).some(k => k.endsWith('|' + companyKey))
+  );
+  const cls = 'enrich-btn' + (hasData ? ' has-data' : '');
+  const label = hasData ? '🔄' : '🧬';
+  const title = (hasData ? 'Re-enrich ' : 'Enrich ') + j.company + ' contacts via Apollo';
+  return `<button class="${cls}" onclick="manualEnrichListing('${j.id}','${companyEscaped}',this)" title="${title}">${label}</button>`;
+}
+
+async function manualEnrichListing(jobId, company, btn) {
+  const ghToken = localStorage.getItem('bdr_gh_token') || '';
+  if (!ghToken) { _showToast('Add your GitHub token in Settings → Integrations first'); return; }
+  const origHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">⏳</span>';
+  try {
+    const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/workflows/hubspot-sync.yml/dispatches', {
+      method: 'POST',
+      headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'main', inputs: { company_filter: company } }),
+    });
+    if (!resp.ok) { const t = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (t ? ': ' + t.slice(0, 80) : '')); }
+    _showToast('🧬 Enriching ' + company + ' — results ready in ~2 min');
+    btn.innerHTML = '⏳';
+    // After ~2 min, reload Apollo data and refresh UI
+    setTimeout(async () => {
+      try {
+        await _loadApolloData();
+        renderJobs();
+        if (_activeJobForOutreach && _activeJobForOutreach.id === jobId) {
+          delete _activeJobForOutreach._mergedStakeholders;
+          openDetail(jobId);
+        }
+      } catch (e) { /* ignore reload errors */ }
+      btn.innerHTML = origHTML;
+      btn.disabled = false;
+    }, 120000);
+  } catch (e) {
+    btn.innerHTML = origHTML;
+    btn.disabled = false;
+    _showToast('Enrichment error: ' + e.message);
   }
 }
 
