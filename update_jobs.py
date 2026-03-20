@@ -188,6 +188,7 @@ COMPANY_DOMAINS = {
     "applied materials": "appliedmaterials.com",
     "applied materials - israel": "appliedmaterials.com",
     "aqua security": "aquasec.com",
+    "armis": "armis.com",
     "armissecurity": "armis.com",
     "arpeely": "arpeely.com",
     "attil": "attil.io",
@@ -201,7 +202,10 @@ COMPANY_DOMAINS = {
     "booking": "booking.com",
     "cato networks": "catonetworks.com",
     "chaos labs": "chaoslabs.xyz",
+    "check point": "checkpoint.com",
     "check point software": "checkpoint.com",
+    "checkpoint software": "checkpoint.com",
+    "palo alto networks": "paloaltonetworks.com",
     "classiq": "classiq.io",
     "cloudinary": "cloudinary.com",
     "codevalue": "codevalue.net",
@@ -5266,26 +5270,35 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         else:
             # Duplicate listing found — update company if existing entry has "Unknown"
             match = existing_urls.get(url) or existing_keys.get(key) or existing_norm.get(norm_key)
-            if match and match.get("company", "").strip() in ("Unknown", "") and j.get("company", "").strip() not in ("Unknown", ""):
-                new_company = j["company"]
-                log.info(f"  Updated company for existing listing: 'Unknown' → '{new_company}' ({url[:60]})")
-                match["company"] = new_company
-                match["isDeveleapCustomer"] = is_develeap_customer(new_company)
-                match["isPastCustomer"] = is_develeap_past_customer(new_company)
-                match["stakeholders"] = _get_stakeholders(new_company)
-                match["logo"] = _get_company_logo(new_company, url)
-            if match and url and url != match.get("sourceUrl", ""):
-                alt_source = detect_source(url)
-                alt_sources = match.get("altSources", [])
-                # Avoid adding the same source URL twice
-                if not any(a.get("sourceUrl") == url for a in alt_sources):
-                    alt_sources.append({
-                        "source": alt_source,
-                        "sourceUrl": url,
-                        "title": j.get("title", "")[:80]
-                    })
-                    match["altSources"] = alt_sources
-                    log.info(f"  Alt source added: {match.get('company','')} — {alt_source} ({url[:60]})")
+            if match:
+                # If existing record has unknown/empty company but new job has real company,
+                # update the existing record with the correct company name and logo.
+                new_company = j.get("company", "").strip()
+                old_company_m = match.get("company", "").strip()
+                if new_company and new_company not in ("Unknown", "") and old_company_m in ("Unknown", ""):
+                    log.info(f"  Company resolved: '{old_company_m}' → '{new_company}' for {j.get('title', '')[:50]}")
+                    match["company"] = new_company
+                    match["logo"] = _get_company_logo(new_company, match.get("sourceUrl", ""))
+                    match["stakeholders"] = _get_stakeholders(new_company)
+                    match["isDeveleapCustomer"] = is_develeap_customer(new_company)
+                    match["isPastCustomer"] = is_develeap_past_customer(new_company)
+                # Also refresh logo if company is known but logo is missing
+                elif old_company_m and old_company_m not in ("Unknown", "") and not match.get("logo"):
+                    match["logo"] = _get_company_logo(old_company_m, match.get("sourceUrl", ""))
+                    if match["logo"]:
+                        log.info(f"  Logo refreshed for: {old_company_m}")
+                if url and url != match.get("sourceUrl", ""):
+                    alt_source = detect_source(url)
+                    alt_sources = match.get("altSources", [])
+                    # Avoid adding the same source URL twice
+                    if not any(a.get("sourceUrl") == url for a in alt_sources):
+                        alt_sources.append({
+                            "source": alt_source,
+                            "sourceUrl": url,
+                            "title": j.get("title", "")[:80]
+                        })
+                        match["altSources"] = alt_sources
+                        log.info(f"  Alt source added: {match.get('company','')} — {alt_source} ({url[:60]})")
 
     merged = existing + truly_new
 
