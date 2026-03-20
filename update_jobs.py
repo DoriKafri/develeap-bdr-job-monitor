@@ -413,6 +413,13 @@ def _get_company_logo(company: str, source_url: str = "", title: str = "") -> st
     )
     if not is_unknown and not _is_platform_company and not _is_platform_domain(company_lower + ".com"):
         base = stripped_company or company_lower
+
+        # If the company name itself looks like a domain (contains a known TLD),
+        # use it directly — e.g. "monday.com" → "monday.com", "wix.com" → "wix.com"
+        tld_m = re.search(r'(\w[\w-]*)\.(com|io|ai|co|net|org|app|dev|cloud|security)(?:\b|$)', base)
+        if tld_m and not _is_platform_domain(tld_m.group(0)):
+            return _favicon(tld_m.group(0))
+
         clean = re.sub(r'[^a-z0-9]', '', base)
         words = base.split()
         first_clean = re.sub(r'[^a-z0-9]', '', words[0]) if words else ""
