@@ -14,8 +14,16 @@ import json
 import time
 import re
 import base64
+import logging
 import requests
 from datetime import datetime
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%H:%M:%S",
+)
+log = logging.getLogger(__name__)
 
 APOLLO_API_KEY = os.environ.get("APOLLO_API_KEY", "").strip()
 APOLLO_WEBHOOK_URL = os.environ.get("APOLLO_WEBHOOK_URL", "").strip()
@@ -29,10 +37,58 @@ REQUEST_DELAY = 0.25  # seconds between API calls
 # LinkedIn default avatar URL — not a real profile photo, skip it
 _LINKEDIN_DEFAULT_AVATAR = "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2"
 
+# Known LinkedIn CDN prefixes that frequently rotate/expire — skip downloading
+_LINKEDIN_CDN_PREFIXES = (
+    "https://media.licdn.com/",
+    "https://media-exp",
+    "https://static.licdn.com/",
+)
+
+_MAX_RETRIES = 3
+_RETRY_BASE_DELAY = 60  # seconds; doubles each retry
+
+
+def _apollo_request_with_retry(method, url, **kwargs):
+    """Execute an Apollo API request with exponential backoff on 429."""
+    for attempt in range(_MAX_RETRIES + 1):
+        try:
+            resp = requests.request(method, url, **kwargs)
+        except requests.Timeout:
+            log.warning("Request timed out: %s %s (attempt %d/%d)", method, url, attempt + 1, _MAX_RETRIES + 1)
+            if attempt < _MAX_RETRIES:
+                time.sleep(_RETRY_BASE_DELAY * (2 ** attempt))
+                continue
+            raise
+        except requests.ConnectionError as exc:
+            log.warning("Connection error: %s %s — %s (attempt %d/%d)", method, url, exc, attempt + 1, _MAX_RETRIES + 1)
+            if attempt < _MAX_RETRIES:
+                time.sleep(_RETRY_BASE_DELAY * (2 ** attempt))
+                continue
+            raise
+
+        if resp.status_code == 429:
+            wait = _RETRY_BASE_DELAY * (2 ** attempt)
+            log.warning("Rate limited (429). Waiting %ds before retry %d/%d...", wait, attempt + 1, _MAX_RETRIES)
+            if attempt < _MAX_RETRIES:
+                time.sleep(wait)
+                continue
+            log.error("Rate limit retries exhausted for %s %s", method, url)
+            return resp
+
+        return resp
+
+    return resp  # unreachable, but satisfies type checkers
+
 
 def _download_photo_b64(url):
     """Download a profile photo URL and return a base64 data URI, or None on failure."""
-    if not url or url == _LINKEDIN_DEFAULT_AVATAR:
+    if not url:
+        return None
+    if url == _LINKEDIN_DEFAULT_AVATAR:
+        return None
+    # LinkedIn CDN URLs rotate frequently and are not reliably downloadable
+    if any(url.startswith(prefix) for prefix in _LINKEDIN_CDN_PREFIXES):
+        log.debug("Skipping LinkedIn CDN photo (may be expired/rotated): %s", url[:80])
         return None
     try:
         r = requests.get(
@@ -42,14 +98,24 @@ def _download_photo_b64(url):
             allow_redirects=True,
         )
         if r.status_code != 200:
+            log.debug("Photo download returned HTTP %d for %s", r.status_code, url[:80])
             return None
         ct = r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
         if not ct.startswith("image/"):
+            log.debug("Photo URL returned non-image content-type '%s': %s", ct, url[:80])
             return None
         b64 = base64.b64encode(r.content).decode("ascii")
         return f"data:{ct};base64,{b64}"
-    except Exception:
+    except requests.Timeout:
+        log.debug("Timeout downloading photo: %s", url[:80])
         return None
+    except requests.ConnectionError as exc:
+        log.debug("Connection error downloading photo: %s — %s", url[:80], exc)
+        return None
+    except requests.RequestException as exc:
+        log.warning("Unexpected error downloading photo %s: %s", url[:80], exc)
+        return None
+
 
 # ── Workflow Config ───────────────────────────────────────────────────────
 WORKFLOW_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workflow_config.json")
@@ -60,8 +126,10 @@ def _load_workflow_config():
         try:
             with open(WORKFLOW_CONFIG_PATH, "r") as f:
                 return json.load(f)
-        except Exception:
-            pass
+        except json.JSONDecodeError as exc:
+            log.warning("workflow_config.json is invalid JSON: %s", exc)
+        except OSError as exc:
+            log.warning("Could not read workflow_config.json: %s", exc)
     return {}
 
 def _is_node_enabled(config, node_id):
@@ -94,11 +162,15 @@ def extract_stakeholders_from_html(path):
     try:
         with open(path, "r", encoding="utf-8") as f:
             content = f.read()
+    except OSError as exc:
+        log.warning("Could not read %s: %s", path, exc)
+        return []
 
+    try:
         # Find ALL_JOBS array (may use let or const)
         match = re.search(r'(?:let|const|var)\s+ALL_JOBS\s*=\s*\[', content)
         if not match:
-            print("Warning: Could not find ALL_JOBS in HTML")
+            log.warning("Could not find ALL_JOBS in HTML")
             return []
 
         # Extract company names and stakeholders from ALL_JOBS entries
@@ -138,9 +210,8 @@ def extract_stakeholders_from_html(path):
                     "company": company,
                     "key": key,
                 })
-
-    except Exception as e:
-        print(f"Warning: Could not read {path}: {e}")
+    except re.error as exc:
+        log.error("Regex error parsing HTML: %s", exc)
 
     return stakeholders
 
@@ -159,13 +230,13 @@ def extract_companies_from_html(path):
             content = f.read()
         for m in re.finditer(r'"company"\s*:\s*"([^"]+)"', content):
             companies.add(m.group(1))
-    except Exception as e:
-        print(f"Warning: Could not read {path}: {e}")
+    except OSError as exc:
+        log.warning("Could not read %s: %s", path, exc)
     return sorted(companies)
 
 
-def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
-    """Enrich a person via Apollo People Match API."""
+def enrich_person(name, company, email=None, linkedin_url=None):
+    """Enrich a person via Apollo People Match API with exponential backoff retries."""
     parts = name.strip().split(" ", 1)
     first_name = parts[0]
     last_name = parts[1] if len(parts) > 1 else ""
@@ -188,69 +259,68 @@ def enrich_person(name, company, email=None, linkedin_url=None, _retried=False):
         payload["linkedin_url"] = linkedin_url
 
     try:
-        resp = requests.post(
+        resp = _apollo_request_with_retry(
+            "POST",
             f"{APOLLO_BASE}/people/match",
             headers=apollo_post_headers(),
             json=payload,
             timeout=15,
         )
-        if resp.status_code == 200:
-            data = resp.json()
-            person = data.get("person")
-            if person:
-                # Extract phone numbers — prefer mobile for WhatsApp
-                phones = person.get("phone_numbers") or []
-                mobile_phone = ""
-                primary_phone = ""
-                all_phones = []
-                for ph in phones:
-                    num = ph.get("sanitized_number", "")
-                    ph_type = ph.get("type", "").lower()
-                    if num:
-                        all_phones.append({"number": num, "type": ph_type})
-                        if ph_type == "mobile" and not mobile_phone:
-                            mobile_phone = num
-                        if not primary_phone:
-                            primary_phone = num
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        log.error("People match network error for %s @ %s: %s", name, company, exc)
+        return None
 
-                photo_url = person.get("photo_url", "")
-                photo_data = _download_photo_b64(photo_url)
-                return {
-                    "apolloId": person.get("id", ""),
-                    "email": person.get("email", ""),
-                    "emailStatus": person.get("email_status", ""),
-                    "title": person.get("title", ""),
-                    "linkedin_url": person.get("linkedin_url", ""),
-                    "phone": mobile_phone or primary_phone,
-                    "phoneType": "mobile" if mobile_phone else ("other" if primary_phone else ""),
-                    "allPhones": all_phones,
-                    "photoUrl": photo_url,
-                    "photoData": photo_data or "",
-                    "city": person.get("city", ""),
-                    "country": person.get("country", ""),
-                    "seniority": person.get("seniority", ""),
-                    "departments": person.get("departments", []),
-                    "headline": person.get("headline", ""),
-                }
-            else:
-                return None
-        elif resp.status_code == 429 and not _retried:
-            print("    Rate limited, waiting 60s...")
-            time.sleep(60)
-            return enrich_person(name, company, email, linkedin_url, _retried=True)
-        else:
-            try:
-                err_body = resp.text[:200]
-            except Exception:
-                err_body = ""
-            print(f"    People match failed: HTTP {resp.status_code} {err_body}")
+    if resp.status_code == 200:
+        try:
+            data = resp.json()
+        except json.JSONDecodeError as exc:
+            log.error("People match returned invalid JSON for %s @ %s: %s", name, company, exc)
             return None
-    except Exception as e:
-        print(f"    People match error: {e}")
+
+        person = data.get("person")
+        if person:
+            # Extract phone numbers — prefer mobile for WhatsApp
+            phones = person.get("phone_numbers") or []
+            mobile_phone = ""
+            primary_phone = ""
+            all_phones = []
+            for ph in phones:
+                num = ph.get("sanitized_number", "")
+                ph_type = ph.get("type", "").lower()
+                if num:
+                    all_phones.append({"number": num, "type": ph_type})
+                    if ph_type == "mobile" and not mobile_phone:
+                        mobile_phone = num
+                    if not primary_phone:
+                        primary_phone = num
+
+            photo_url = person.get("photo_url", "")
+            photo_data = _download_photo_b64(photo_url)
+            return {
+                "apolloId": person.get("id", ""),
+                "email": person.get("email", ""),
+                "emailStatus": person.get("email_status", ""),
+                "title": person.get("title", ""),
+                "linkedin_url": person.get("linkedin_url", ""),
+                "phone": mobile_phone or primary_phone,
+                "phoneType": "mobile" if mobile_phone else ("other" if primary_phone else ""),
+                "allPhones": all_phones,
+                "photoUrl": photo_url,
+                "photoData": photo_data or "",
+                "city": person.get("city", ""),
+                "country": person.get("country", ""),
+                "seniority": person.get("seniority", ""),
+                "departments": person.get("departments", []),
+                "headline": person.get("headline", ""),
+            }
+        else:
+            return None
+    else:
+        log.warning("People match failed for %s @ %s: HTTP %d %s", name, company, resp.status_code, resp.text[:200])
         return None
 
 
-def enrich_organization(company_name, domain=None, _retried=False):
+def enrich_organization(company_name, domain=None):
     """Enrich a company via Apollo Organization Enrichment API.
     Tries domain first (preferred), falls back to organization_name."""
     try:
@@ -263,61 +333,61 @@ def enrich_organization(company_name, domain=None, _retried=False):
             clean = company_name.lower().strip().replace(" ", "")
             params["domain"] = f"{clean}.com"
 
-        resp = requests.get(
+        resp = _apollo_request_with_retry(
+            "GET",
             f"{APOLLO_BASE}/organizations/enrich",
             headers=apollo_get_headers(),
             params=params,
             timeout=15,
         )
 
-        # If domain guess failed, retry with organization_name
+        # If domain guess failed, retry with plain company name as domain
         if resp.status_code != 200 and not domain:
-            resp = requests.get(
+            resp = _apollo_request_with_retry(
+                "GET",
                 f"{APOLLO_BASE}/organizations/enrich",
                 headers=apollo_get_headers(),
                 params={"domain": company_name.lower().strip()},
                 timeout=15,
             )
 
-        if resp.status_code == 200:
-            data = resp.json()
-            org = data.get("organization")
-            if org:
-                techs = []
-                for t in (org.get("current_technologies") or [])[:15]:
-                    techs.append(t.get("name", ""))
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        log.error("Org enrichment network error for '%s': %s", company_name, exc)
+        return None
 
-                return {
-                    "apolloId": org.get("id", ""),
-                    "name": org.get("name", ""),
-                    "domain": org.get("primary_domain", ""),
-                    "website": org.get("website_url", ""),
-                    "industry": org.get("industry", ""),
-                    "employeeCount": org.get("estimated_num_employees"),
-                    "annualRevenue": org.get("annual_revenue"),
-                    "foundedYear": org.get("founded_year"),
-                    "technologies": techs,
-                    "linkedinUrl": org.get("linkedin_url", ""),
-                    "city": org.get("city", ""),
-                    "country": org.get("country", ""),
-                    "shortDescription": org.get("short_description", ""),
-                    "logoUrl": org.get("logo_url", ""),
-                }
-            else:
-                return None
-        elif resp.status_code == 429 and not _retried:
-            print("    Rate limited, waiting 60s...")
-            time.sleep(60)
-            return enrich_organization(company_name, domain, _retried=True)
-        else:
-            try:
-                err_body = resp.text[:200]
-            except Exception:
-                err_body = ""
-            print(f"    Org enrichment failed: HTTP {resp.status_code} {err_body}")
+    if resp.status_code == 200:
+        try:
+            data = resp.json()
+        except json.JSONDecodeError as exc:
+            log.error("Org enrichment returned invalid JSON for '%s': %s", company_name, exc)
             return None
-    except Exception as e:
-        print(f"    Org enrichment error: {e}")
+
+        org = data.get("organization")
+        if org:
+            techs = []
+            for t in (org.get("current_technologies") or [])[:15]:
+                techs.append(t.get("name", ""))
+
+            return {
+                "apolloId": org.get("id", ""),
+                "name": org.get("name", ""),
+                "domain": org.get("primary_domain", ""),
+                "website": org.get("website_url", ""),
+                "industry": org.get("industry", ""),
+                "employeeCount": org.get("estimated_num_employees"),
+                "annualRevenue": org.get("annual_revenue"),
+                "foundedYear": org.get("founded_year"),
+                "technologies": techs,
+                "linkedinUrl": org.get("linkedin_url", ""),
+                "city": org.get("city", ""),
+                "country": org.get("country", ""),
+                "shortDescription": org.get("short_description", ""),
+                "logoUrl": org.get("logo_url", ""),
+            }
+        else:
+            return None
+    else:
+        log.warning("Org enrichment failed for '%s': HTTP %d %s", company_name, resp.status_code, resp.text[:200])
         return None
 
 
@@ -356,8 +426,10 @@ def main():
                 existing = prev.get("contacts", {})
                 existing_orgs = prev.get("organizations", {})
                 print(f"  Loaded existing data: {len(existing)} contacts, {len(existing_orgs)} orgs")
-        except Exception:
-            pass
+        except json.JSONDecodeError as exc:
+            log.warning("Existing %s is invalid JSON, starting fresh: %s", OUTPUT_FILE, exc)
+        except OSError as exc:
+            log.warning("Could not read %s, starting fresh: %s", OUTPUT_FILE, exc)
 
     # 1. Extract stakeholders and companies
     stakeholders = extract_stakeholders_from_html(DOCS_HTML)
