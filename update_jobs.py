@@ -3462,6 +3462,17 @@ def detect_category(title: str, snippet: str) -> str | None:
     return None  # No matching category — job is not relevant
 
 
+def _categorize_job(title: str, snippet: str) -> str:
+    """Like detect_category but falls back to 'other' instead of None.
+
+    Use this when assigning categories to existing jobs that may not match
+    any keyword list (e.g. older jobs, scraped titles with unusual phrasing).
+    detect_category() is still used for *new* job filtering (returns None to
+    skip irrelevant roles); this wrapper is for enrichment only.
+    """
+    return detect_category(title, snippet) or "other"
+
+
 def _fetch_linkedin_photo(name: str, company: str, linkedin_url: str) -> str:
     """Find LinkedIn profile photo URL via SerpAPI Google Images.
 
@@ -5444,10 +5455,13 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         # Preserve linkedin_fts source (don't overwrite with generic "linkedin")
         if j.get("source") != "linkedin_fts":
             j["source"] = detect_source(j.get("sourceUrl", ""))
-        # Re-classify category (picks up newly added categories like security, sre, etc.)
+        # Re-classify category (picks up newly added categories; fills missing ones)
         _new_cat = detect_category(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
         if _new_cat is not None:
             j["category"] = _new_cat
+        elif not j.get("category"):
+            # No keyword match but job has no category — assign "other" so it's always set
+            j["category"] = _categorize_job(j.get("title", ""), j.get("description", "") or j.get("subtitle", ""))
         # Re-classify customer status
         company = j.get("company", "")
         j["isDeveleapCustomer"] = is_develeap_customer(company)
