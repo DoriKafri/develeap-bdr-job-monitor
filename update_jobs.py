@@ -1543,17 +1543,64 @@ def search_bing(query: str, freshness: str = "") -> list[dict]:
 
 
 GOOGLE_JOBS_QUERIES = [
-    # Reduced from 10 to 1 to conserve SerpAPI quota (renews 2026-04-08)
+    # Full list — 2-3 are selected per run via rotation to conserve SerpAPI quota
     ("DevOps Engineer", "Israel"),
+    ("AI Engineer", "Israel"),
+    ("Platform Engineer", "Israel"),
+    ("SRE", "Israel"),
+    ("MLOps Engineer", "Israel"),
+    ("FinOps Engineer", "Israel"),
+    ("Cloud Engineer", "Israel"),
+    ("Infrastructure Engineer", "Israel"),
+    ("DevSecOps Engineer", "Israel"),
+    ("Agentic AI Developer", "Israel"),
 ]
+
+GOOGLE_JOBS_ROTATION_FILE = os.path.join(os.path.dirname(__file__), "google_jobs_rotation.json")
+_QUERIES_PER_RUN = 2  # keep quota low: 2 queries × ~10 results = ~20 calls
+
+
+def _get_google_jobs_rotation() -> list[tuple[str, str]]:
+    """Return 2-3 queries for this run using deterministic round-robin rotation.
+
+    State is persisted in google_jobs_rotation.json so across runs all queries
+    get coverage evenly.  Falls back to the first _QUERIES_PER_RUN queries if
+    the file can't be read/written.
+    """
+    try:
+        if os.path.exists(GOOGLE_JOBS_ROTATION_FILE):
+            with open(GOOGLE_JOBS_ROTATION_FILE) as f:
+                state = json.load(f)
+            next_idx = int(state.get("next_index", 0)) % len(GOOGLE_JOBS_QUERIES)
+        else:
+            next_idx = 0
+
+        # Pick _QUERIES_PER_RUN queries starting at next_idx (wraps around)
+        n = len(GOOGLE_JOBS_QUERIES)
+        selected = [GOOGLE_JOBS_QUERIES[(next_idx + i) % n] for i in range(_QUERIES_PER_RUN)]
+
+        # Persist updated index
+        new_idx = (next_idx + _QUERIES_PER_RUN) % n
+        with open(GOOGLE_JOBS_ROTATION_FILE, "w") as f:
+            json.dump({"next_index": new_idx, "last_run": datetime.utcnow().isoformat()}, f)
+
+        log.info(f"Google Jobs rotation: idx={next_idx} → queries {[q for q, _ in selected]}")
+        return selected
+    except Exception as e:
+        log.warning(f"Google Jobs rotation state error (using defaults): {e}")
+        return GOOGLE_JOBS_QUERIES[:_QUERIES_PER_RUN]
 
 
 def search_google_jobs() -> list[dict]:
-    """Search using SerpAPI's Google Jobs engine for structured job listings."""
+    """Search using SerpAPI's Google Jobs engine for structured job listings.
+
+    Uses round-robin rotation so all 10 queries get coverage over 5 runs
+    without burning the full SerpAPI quota in a single run.
+    """
     if not SERPAPI_KEY:
         return []
     all_results = []
-    for query, location in GOOGLE_JOBS_QUERIES:
+    for query, location in _get_google_jobs_rotation():
         try:
             resp = requests.get("https://serpapi.com/search", params={
                 "engine": "google_jobs",
