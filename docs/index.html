@@ -1666,6 +1666,7 @@
   <!-- TOP BAR (mobile only) -->
   <div class="top-bar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <button class="topbar-theme-btn" id="topbarThemeBtn" onclick="toggleTheme()" title="Toggle dark/light mode" style="background:none;border:none;cursor:pointer;font-size:18px;padding:6px 8px;margin-left:auto;color:var(--text);border-radius:6px;line-height:1;" aria-label="Toggle theme"><span id="topbarThemeIcon">🌙</span></button>
     <div class="nav-actions nav-actions-mobile">
       <span class="last-update" id="lastUpdateMobile"></span>
       <button class="btn btn-run" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run</button>
@@ -2715,6 +2716,8 @@ function toggleTheme() {
   _updateThemeButton(next);
 }
 function _updateThemeButton(theme) {
+  var tbIcon = document.getElementById("topbarThemeIcon");
+  if (tbIcon) { tbIcon.textContent = (theme === "dark") ? "☀️" : "🌙"; }
   var icon = document.getElementById('themeToggleIcon');
   var label = document.getElementById('themeToggleLabel');
   if (!icon) return;
