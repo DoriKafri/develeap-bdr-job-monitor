@@ -1,6 +1,6 @@
 {
-  "lastProcessed": "2026-03-20T08:07:49.244168+00:00",
-  "processRunId": "run-1773994069",
+  "lastProcessed": "2026-03-20T10:07:15.940649+00:00",
+  "processRunId": "run-1774001235",
   "dailyStats": {
     "date": "2026-03-20",
     "connectsSent": 0,
@@ -23,5 +23,5 @@
       "resetDate": "2026-03-20"
     }
   },
-  "runNotes": "No actionable items in queue. 254 paused, 9 processing (stale), 2 failed. No pending connects, messages, SOS, or WhatsApp items to process."
+  "runNotes": "No actionable items in queue. 254 paused, 9 processing (stale - all Develeap internal, no type set), 2 failed. Zero pending connects, messages, SOS, WhatsApp, or conn_pending items to process. Queue is idle."
 }
