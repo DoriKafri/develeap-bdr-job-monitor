@@ -8196,11 +8196,16 @@ function _avatarImgErr(el, name) {
   el.onerror = null;
   el.parentNode.innerHTML = _avatarInitialsHtml(name);
 }
+function _avatarUsablePhoto(src) {
+  // Only use base64 data URIs — external CDN URLs (LinkedIn etc.) block cross-origin
+  // loads and don't reliably fire onerror, leaving broken/blank thumbnails.
+  return src && src.startsWith('data:') ? src : null;
+}
 function _stakeholderAvatar(s) {
-  const photoSrc = s.photo; // base64 data URI or URL
+  const photoSrc = _avatarUsablePhoto(s.photo);
   if (photoSrc) {
     const esc = (s.name||'').replace(/'/g,"\\'");
-    return `<img src="${photoSrc}" alt="" loading="lazy" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="_avatarImgErr(this,'${esc}')">`;
+    return `<img src="${photoSrc}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="_avatarImgErr(this,'${esc}')">`;
   }
   return _avatarInitialsHtml(s.name || '');
 }
@@ -13934,10 +13939,11 @@ var renderQueueView = function() {
       actions = `<button class="btn-delete" onclick="event.stopPropagation();deleteQueueEntry(${origIdx})" title="Delete">🗑</button>`;
     }
 
-    // Avatar: use photo if available, otherwise styled initials
+    // Avatar: use base64 photo if available, otherwise styled initials
+    // (LinkedIn CDN URLs block cross-origin loads and don't fire onerror reliably)
     const _qName = (entry.contactName||'').replace(/'/g,"\\'");
-    const avatarContent = entry.contactPhoto
-      ? `<img src="${entry.contactPhoto}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy" referrerpolicy="no-referrer" onerror="_avatarImgErr(this,'${_qName}')">`
+    const avatarContent = _avatarUsablePhoto(entry.contactPhoto)
+      ? `<img src="${entry.contactPhoto}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy" onerror="_avatarImgErr(this,'${_qName}')">`
       : _avatarInitialsHtml(entry.contactName||initials);
     // Company logo: small inline logo next to company name
     const compLogoHtml = entry.companyLogo
