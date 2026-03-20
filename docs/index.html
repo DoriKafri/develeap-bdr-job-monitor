@@ -1630,10 +1630,6 @@
 
     <div class="nav-bottom" id="sidebarUserArea">
       <div class="sidebar-user" id="sidebarUser"></div>
-      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle dark/light mode">
-        <span class="theme-toggle-icon" id="themeToggleIcon">🌙</span>
-        <span id="themeToggleLabel">Dark mode</span>
-      </button>
       <div class="sidebar-signout" onclick="signOut()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
         Sign Out
@@ -1666,7 +1662,6 @@
   <!-- TOP BAR (mobile only) -->
   <div class="top-bar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
-    <button onclick="toggleTheme()" id="themeToggleMobile" title="Toggle dark/light mode" style="background:none;border:none;cursor:pointer;font-size:18px;padding:6px 8px;color:var(--text);margin-left:auto;"><span id="themeToggleIconMobile">🌙</span></button>
     <div class="nav-actions nav-actions-mobile">
       <span class="last-update" id="lastUpdateMobile"></span>
       <button class="btn btn-run" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run</button>
@@ -2088,6 +2083,13 @@
                     <div class="intg-step-title">Display Settings</div>
                   </div>
                   <div class="intg-step-body">
+                    <div style="margin-bottom:14px">
+                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:8px">Theme</label>
+                      <button id="themeToggleBtn" onclick="toggleTheme()" style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:500;">
+                        <span id="themeToggleIcon">🌙</span>
+                        <span id="themeToggleLabel">Dark mode</span>
+                      </button>
+                    </div>
                     <div style="margin-bottom:10px">
                       <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Portal ID (Hub ID) — for building HubSpot links</label>
                       <input type="text" id="hubspotPortalId" class="intg-input" placeholder="e.g. 25695560" style="width:200px;max-width:200px" />
@@ -2718,15 +2720,12 @@ function toggleTheme() {
 function _updateThemeButton(theme) {
   var icon = document.getElementById('themeToggleIcon');
   var label = document.getElementById('themeToggleLabel');
-  var iconMobile = document.getElementById('themeToggleIconMobile');
   if (theme === 'dark') {
     if (icon) { icon.textContent = '☀️'; }
     if (label) { label.textContent = 'Light mode'; }
-    if (iconMobile) { iconMobile.textContent = '☀️'; }
   } else {
     if (icon) { icon.textContent = '🌙'; }
     if (label) { label.textContent = 'Dark mode'; }
-    if (iconMobile) { iconMobile.textContent = '🌙'; }
   }
 }
 // Init button state on load
