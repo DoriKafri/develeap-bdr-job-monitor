@@ -1919,6 +1919,23 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
             </div>
+            <!-- GitHub Token -->
+            <div style="background:var(--bg);border-radius:14px;padding:16px;border:1px solid var(--border);margin-bottom:12px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px">🔑 GitHub Access Token</div>
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">Required for reading/writing JSON data files. Stored locally only — never committed to the repo. Needs <code>repo</code> scope.</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <div class="intg-input-row" style="flex:1;min-width:240px">
+                  <input type="password" id="ghTokenInput" class="intg-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" oninput="document.getElementById('ghTokenSaveResult').textContent=''" />
+                  <button type="button" onclick="document.getElementById('ghTokenInput').type = document.getElementById('ghTokenInput').type === 'password' ? 'text' : 'password'" class="intg-toggle-vis" title="Toggle visibility">👁</button>
+                </div>
+                <button class="intg-save-btn" onclick="saveGhToken()" style="background:var(--primary)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  Save Locally
+                </button>
+                <span id="ghTokenSaveResult" style="font-size:12px;color:var(--text-light)"></span>
+              </div>
+            </div>
+
             <!-- Quick actions -->
             <div style="background:var(--bg);border-radius:14px;padding:16px;border:1px solid var(--border)">
               <div style="font-weight:700;font-size:14px;margin-bottom:12px">Quick Actions</div>
@@ -9304,7 +9321,21 @@ function _base64ToUtf8(b64) {
 }
 
 // ── GitHub Persistent Storage ───────────────────────────────
-const _GH_TOKEN = ['Z2hwXzNxdEpoSVZ0aWg2', 'WjJxa0tsNll0Z0xlN0Ny', 'SFlOVzAyMHZpUA=='].map(p => atob(p)).join('');
+// Token is stored in localStorage only — never hardcoded in source
+const _GH_TOKEN = localStorage.getItem('bdr_gh_token') || '';
+function saveGhToken() {
+  const inp = document.getElementById('ghTokenInput');
+  const val = (inp ? inp.value : '').trim();
+  const res = document.getElementById('ghTokenSaveResult');
+  if (!val) { if (res) res.textContent = 'Enter a token first.'; return; }
+  if (!val.startsWith('ghp_') && !val.startsWith('github_pat_')) {
+    if (res) res.textContent = 'Token should start with ghp_ or github_pat_';
+    return;
+  }
+  localStorage.setItem('bdr_gh_token', val);
+  if (inp) inp.value = '';
+  if (res) res.textContent = 'Saved! Reload the page to activate.';
+}
 const _GH_REPO = 'DoriKafri/develeap-bdr-job-monitor';
 const _GH_PATH = 'outreach_status.json';
 const _GH_API = `https://api.github.com/repos/${_GH_REPO}/contents/${_GH_PATH}`;
