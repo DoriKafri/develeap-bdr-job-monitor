@@ -1670,7 +1670,6 @@
   <!-- TOP BAR (mobile only) -->
   <div class="top-bar">
     <button class="hamburger" onclick="toggleSidebar()">☰</button>
-    <button onclick="toggleTheme()" id="themeToggleMobile" title="Toggle dark/light mode" style="background:none;border:none;cursor:pointer;font-size:18px;padding:6px 8px;color:var(--text);margin-left:auto;"><span id="themeToggleIconMobile">🌙</span></button>
     <div class="nav-actions nav-actions-mobile">
       <span class="last-update" id="lastUpdateMobile"></span>
       <button class="btn btn-run" onclick="triggerWorkflowRun()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run</button>
@@ -1845,6 +1844,17 @@
           Back to Settings
         </div>
         <div style="padding:16px" class="settings-content-inner">
+        <!-- Dark Mode Toggle - Top Level -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--bg-alt);border-radius:10px;border:1px solid var(--border);margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="themeToggleIcon" style="font-size:22px">🌙</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--text)" id="themeToggleLabel">Dark Mode</div>
+              <div style="font-size:12px;color:var(--text-light)">Switch between light and dark theme</div>
+            </div>
+          </div>
+          <button id="themeToggleBtn" onclick="toggleTheme()" style="padding:8px 20px;border:1.5px solid var(--teal);border-radius:8px;background:var(--teal);color:#fff;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:0.3px;transition:opacity 0.15s">Toggle</button>
+        </div>
         <div class="api-key-section" style="margin-bottom:24px">
           <h3>🔑 Anthropic API Key (for AI Polish)</h3>
           <input type="password" id="anthropicApiKey" class="api-key-input" placeholder="sk-ant-..." />
@@ -2093,13 +2103,6 @@
                     <div class="intg-step-title">Display Settings</div>
                   </div>
                   <div class="intg-step-body">
-                    <div style="margin-bottom:14px">
-                      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:8px">Theme</label>
-                      <button id="themeToggleBtn" onclick="toggleTheme()" style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:500;">
-                        <span id="themeToggleIcon">🌙</span>
-                        <span id="themeToggleLabel">Dark mode</span>
-                      </button>
-                    </div>
                     <div style="margin-bottom:10px">
                       <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Portal ID (Hub ID) — for building HubSpot links</label>
                       <input type="text" id="hubspotPortalId" class="intg-input" placeholder="e.g. 25695560" style="width:200px;max-width:200px" />
@@ -2728,16 +2731,13 @@ function toggleTheme() {
   _updateThemeButton(next);
 }
 function _updateThemeButton(theme) {
-  var iconMobile = document.getElementById('themeToggleIconMobile');
   var icon = document.getElementById('themeToggleIcon');
   var label = document.getElementById('themeToggleLabel');
   if (theme === 'dark') {
     if (icon) { icon.textContent = '☀️'; }
-    if (iconMobile) { iconMobile.textContent = '☀️'; }
     if (label) { label.textContent = 'Light mode'; }
   } else {
     if (icon) { icon.textContent = '🌙'; }
-    if (iconMobile) { iconMobile.textContent = '🌙'; }
     if (label) { label.textContent = 'Dark mode'; }
   }
 }
