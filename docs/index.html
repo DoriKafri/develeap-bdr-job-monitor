@@ -1323,6 +1323,10 @@
   .share-btn svg { width:14px; height:14px; }
   .share-btn-row { opacity:0; transition:opacity 0.15s; }
   tr:hover .share-btn-row { opacity:1; }
+  .enrich-apollo-btn { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:5px; border:1px solid #CE93D8; background:#F3E5F5; color:#7B1FA2; font-size:10px; font-weight:600; cursor:pointer; transition:all 0.15s; white-space:nowrap; margin-top:3px; }
+  .enrich-apollo-btn:hover { background:#E1BEE7; border-color:#AB47BC; }
+  .enrich-apollo-btn.enriched { background:#E8F5E9; border-color:#A5D6A7; color:#2E7D32; }
+  .enrich-apollo-btn.loading { opacity:0.7; cursor:wait; }
   .share-toast {
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
     background:var(--primary); color:white; padding:10px 20px; border-radius:10px;
@@ -8979,6 +8983,111 @@ function _enrichWithApollo(stakeholders, job) {
   }
 }
 
+function _getLocalApolloKey() {
+  return localStorage.getItem('_apolloApiKeyLocal') || '';
+}
+
+async function _manualEnrichJob(jobId, btn) {
+  const job = ALL_JOBS.find(j => j.id === jobId);
+  if (!job) return;
+
+  let apiKey = _getLocalApolloKey();
+  if (!apiKey) {
+    apiKey = (prompt('Enter your Apollo API key for browser enrichment:\n(Saved locally in your browser only)') || '').trim();
+    if (!apiKey) return;
+    localStorage.setItem('_apolloApiKeyLocal', apiKey);
+  }
+
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.textContent = '⏳';
+
+  try {
+    const resp = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
+      body: JSON.stringify({
+        api_key: apiKey,
+        q_organization_name: job.company,
+        person_titles: ['CTO','VP Engineering','VP R&D','Head of Engineering','Director of Engineering','VP Technology','Chief Technology Officer','R&D Manager','Engineering Manager'],
+        page: 1,
+        per_page: 5
+      })
+    });
+
+    if (!resp.ok) {
+      const errTxt = await resp.text().catch(() => '');
+      throw new Error('HTTP ' + resp.status + ': ' + errTxt.substring(0, 120));
+    }
+
+    const data = await resp.json();
+    const people = data.people || [];
+
+    if (!people.length) {
+      btn.classList.remove('loading');
+      btn.classList.add('enriched');
+      btn.textContent = '0 found';
+      btn.title = 'No contacts found at ' + job.company;
+      btn.disabled = false;
+      _showToast('No contacts found at ' + job.company);
+      return;
+    }
+
+    if (!job.stakeholders) job.stakeholders = [];
+    let added = 0;
+    people.forEach(p => {
+      const name = ((p.first_name || '') + ' ' + (p.last_name || '')).trim();
+      if (!name) return;
+      const exists = job.stakeholders.some(s => s.name && s.name.toLowerCase() === name.toLowerCase());
+      if (!exists) {
+        job.stakeholders.push({
+          name: name,
+          title: p.title || '',
+          email: p.email || '',
+          linkedin: p.linkedin_url || '',
+          photo: p.photo_url || '',
+          source: 'Apollo',
+          _apolloEnriched: true,
+          _apolloData: {
+            email: p.email || '',
+            emailStatus: p.email_status || '',
+            phone: p.sanitized_phone || '',
+            seniority: p.seniority || '',
+            departments: p.departments || [],
+            headline: p.headline || '',
+            city: p.city || '',
+            country: p.country || '',
+            photoUrl: p.photo_url || ''
+          }
+        });
+        added++;
+      }
+    });
+
+    job._manualApolloEnriched = true;
+    job._mergedStakeholders = _mergeStakeholdersWithCrm(job);
+
+    btn.classList.remove('loading');
+    btn.classList.add('enriched');
+    btn.textContent = '✓ ' + people.length + ' found';
+    btn.title = people.length + ' contacts at ' + job.company + (added ? ' (' + added + ' new)' : '');
+    btn.disabled = false;
+
+    _showToast('Found ' + people.length + ' contacts at ' + job.company);
+
+    if (_activeJobForOutreach && _activeJobForOutreach.id === jobId) {
+      openDetail(jobId);
+    }
+  } catch (e) {
+    btn.classList.remove('loading');
+    btn.textContent = '⚠ Error';
+    btn.title = e.message;
+    btn.disabled = false;
+    _showToast('Apollo error: ' + e.message.substring(0, 80));
+    console.error('Apollo manual enrich error:', e);
+  }
+}
+
 function buildOutreachSection(job) {
   const stakeholders = job._mergedStakeholders || _mergeStakeholdersWithCrm(job);
   const hasStakeholders = stakeholders.length > 0;
@@ -10507,7 +10616,7 @@ function renderJobs() {
   tbody.innerHTML = jobs.map(j=>`
     <tr class="${j.isDeveleapCustomer?'develeap-customer':(j.isPastCustomer?'past-customer':'')}" onclick="openDetail('${j.id}')" style="cursor:pointer">
       <td><div class="job-title-cell"><div style="display:flex;align-items:start;gap:6px"><div style="flex:1;min-width:0"><span class="job-title"><a href="${j.sourceUrl}" target="_blank" onclick="event.stopPropagation()">${j.title}</a></span><span class="job-subtitle">${j.subtitle}</span></div><button class="share-btn share-btn-row" onclick="event.stopPropagation();shareListing('${j.id}',event)" title="Share this listing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div></td>
-      <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}</div></div></td>
+      <td><div class="company-cell"><div class="company-logo">${j.logo?'<img src="'+j.logo+'" alt="'+j.company.charAt(0)+'" onerror="this.onerror=null;this.parentNode.textContent=\''+j.company.charAt(0)+'\'">':j.company.charAt(0)}</div><div class="company-info"><span class="company-name">${j.company}</span><span class="company-industry">${j.companyIndustry}</span>${_getCrmBadgeHtml(j.company)}<button class="enrich-apollo-btn${j._manualApolloEnriched?' enriched':''}" onclick="event.stopPropagation();_manualEnrichJob('${j.id}',this)" title="Enrich contacts with Apollo">${j._manualApolloEnriched?'✓ Enriched':'🚀 Enrich'}</button></div></div></td>
       <td><div class="location-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</div></td>
       <td>${(j.altSources&&j.altSources.length)?'<div class="alt-sources-wrap" onclick="event.stopPropagation()"><span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span><span class="alt-sources-indicator" title="Also found on '+j.altSources.map(a=>SOURCE_LABELS[a.source]||a.source).join(', ')+'">+'+j.altSources.length+'</span><div class="alt-sources-panel">'+j.altSources.map(a=>'<a href="'+a.sourceUrl+'" target="_blank" onclick="event.stopPropagation()" class="alt-source-link"><span class="badge badge-'+a.source+' source-badge" style="font-size:11px">'+sourceIcon(a.source)+(SOURCE_LABELS[a.source]||a.source)+'</span></a>').join('')+'</div></div>':'<span class="badge badge-'+j.source+' source-badge">'+sourceIcon(j.source)+(SOURCE_LABELS[j.source]||j.source)+'</span>'}${j.ftsJobUrl?'<a href="'+j.ftsJobUrl+'" target="_blank" onclick="event.stopPropagation()" class="fts-job-link" style="margin-left:4px" title="Direct job application link">📋 Apply</a>':''}</td>
       <td><span class="badge" style="background:${CAT_COLORS[j.category]}22;color:${CAT_COLORS[j.category]}">${CAT_LABELS[j.category]||j.category}</span></td>
