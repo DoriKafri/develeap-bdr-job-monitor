@@ -612,6 +612,38 @@
   .queue-card-actions button.btn-delete:hover { border-color:var(--danger); color:var(--danger); }
   .queue-empty { text-align:center; padding:60px 20px; color:var(--text-light); }
   .queue-empty h3 { font-size:18px; margin-bottom:8px; color:var(--text); }
+  /* Conversion Analytics */
+  #analyticsView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; }
+  #analyticsView.active { display:flex; flex-direction:column; }
+  .analytics-view { padding:24px 32px; }
+  .analytics-header h2 { margin:0 0 4px; }
+  .analytics-period { font-size:13px; color:var(--text-light); margin-bottom:24px; }
+  .analytics-funnel { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin-bottom:28px; }
+  .funnel-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px 16px; text-align:center; border-top:4px solid transparent; }
+  .funnel-card.f-sent { border-top-color:#1565C0; }
+  .funnel-card.f-connected { border-top-color:#7B1FA2; }
+  .funnel-card.f-replied { border-top-color:#2E7D32; }
+  .funnel-card.f-meeting { border-top-color:#F57F17; }
+  .funnel-card-count { font-size:36px; font-weight:700; line-height:1; margin-bottom:6px; }
+  .funnel-card.f-sent .funnel-card-count { color:#1565C0; }
+  .funnel-card.f-connected .funnel-card-count { color:#7B1FA2; }
+  .funnel-card.f-replied .funnel-card-count { color:#2E7D32; }
+  .funnel-card.f-meeting .funnel-card-count { color:#F57F17; }
+  .funnel-card-label { font-size:12px; color:var(--text-light); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; }
+  .funnel-card-rate { font-size:13px; font-weight:600; color:var(--text); }
+  .analytics-bars { background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px 24px; margin-bottom:20px; max-width:640px; }
+  .analytics-bars h3 { margin:0 0 16px; font-size:15px; }
+  .abar-row { margin-bottom:16px; }
+  .abar-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; }
+  .abar-label span:last-child { font-weight:600; }
+  .abar-track { background:#F5F5F5; border-radius:4px; height:10px; overflow:hidden; }
+  .abar-fill { height:100%; border-radius:4px; transition:width 0.6s ease; min-width:2px; }
+  .abar-fill.f-sent { background:#1565C0; }
+  .abar-fill.f-connected { background:#7B1FA2; }
+  .abar-fill.f-replied { background:#2E7D32; }
+  .abar-fill.f-meeting { background:#F57F17; }
+  .analytics-reset { background:none; border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:12px; cursor:pointer; color:var(--text-light); margin-top:4px; }
+  .analytics-reset:hover { border-color:var(--danger); color:var(--danger); }
   .queue-type-badge { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; }
   .queue-type-badge.message { background:#E3F2FD; color:#0A66C2; }
   .queue-type-badge.connect { background:#F3E5F5; color:#7B1FA2; }
@@ -1575,6 +1607,10 @@
         <span>Queue</span>
         <span class="nav-item-badge" id="sidebarQueueBadge" style="display:none">0</span>
       </div>
+      <div class="nav-item" data-view="analytics" onclick="setView('analytics')">
+        <span>📊</span>
+        <span>Analytics</span>
+      </div>
       <div class="nav-item" data-view="workflow" onclick="setView('workflow')">
         <span>⚡</span>
         <span>Workflow Editor</span>
@@ -1731,6 +1767,19 @@
       <button onclick="clearBulkSelection()" style="background:var(--bg);color:var(--text-light);border-color:var(--border)">✕ Clear</button>
     </div>
     <div class="queue-list" id="queueList"></div>
+  </div>
+
+  <!-- Analytics View -->
+  <div id="analyticsView">
+    <div class="analytics-view">
+      <div class="analytics-header">
+        <h2>📊 Conversion Analytics</h2>
+        <div class="analytics-period" id="analyticsPeriodLabel"></div>
+      </div>
+      <div class="analytics-funnel" id="analyticsFunnel"></div>
+      <div class="analytics-bars" id="analyticsBarsPanel"></div>
+      <button class="analytics-reset" onclick="convTracker.resetWeek()">Reset this week's data</button>
+    </div>
   </div>
 
   <!-- Settings View -->
@@ -9303,6 +9352,7 @@ function _setOutreachStatus(key, status) {
   s[key] = status;
   _saveOutreachStatuses(s);
   _scheduleSyncToGitHub();
+  if (typeof convTracker !== 'undefined') convTracker.trackStatus(status, key);
 }
 
 // ── UTF-8 safe Base64 helpers (GitHub API) ──────────────────
@@ -13996,6 +14046,7 @@ var setView = function(v) {
   const settingsView = document.getElementById('settingsView');
   const workflowView = document.getElementById('workflowView');
   const wolfPackView = document.getElementById('wolfPackView');
+  const analyticsView = document.getElementById('analyticsView');
   const statsBar = document.querySelector('.stats-bar');
   const filtersBar = document.querySelector('.filters-bar');
 
@@ -14004,6 +14055,7 @@ var setView = function(v) {
   if (settingsView) settingsView.classList.remove('active');
   if (workflowView) workflowView.classList.remove('active');
   if (wolfPackView) wolfPackView.classList.remove('active');
+  if (analyticsView) analyticsView.classList.remove('active');
 
   if (v === 'queue') {
     if (tableContainer) tableContainer.style.display = 'none';
@@ -14034,6 +14086,12 @@ var setView = function(v) {
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     _loadCampaignsFromGitHub().then(function() { _wpRenderCurrentView(); });
+  } else if (v === 'analytics') {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (analyticsView) { analyticsView.classList.add('active'); analyticsView.style.overflowY = 'auto'; analyticsView.style.flex = '1'; analyticsView.style.minHeight = '0'; }
+    if (statsBar) statsBar.style.display = 'none';
+    if (filtersBar) filtersBar.style.display = 'none';
+    renderAnalyticsView();
   } else {
     if (tableContainer) tableContainer.style.display = '';
     if (statsBar) statsBar.style.display = '';
@@ -19040,6 +19098,84 @@ window._getHelpFor = function(query) {
   results.sort(function(a, b) { return b.score - a.score; });
   return results;
 };
+
+// ── Conversion Tracker ───────────────────────────────────────
+var convTracker = (function() {
+  var KEY = 'bdr_conv_events';
+  function _load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
+  function _save(ev) { localStorage.setItem(KEY, JSON.stringify(ev)); }
+  function _weekStart() {
+    var d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() - d.getDay()); return d.getTime();
+  }
+  function track(event, contactKey) {
+    var ev = _load();
+    ev.push({ event: event, contactKey: contactKey || '', ts: Date.now() });
+    _save(ev);
+  }
+  function trackStatus(status, contactKey) {
+    var map = { invited: 'outreach_sent', connected: 'connection_accepted', replied: 'reply_received', meeting_set: 'meeting_booked' };
+    if (map[status]) track(map[status], contactKey);
+  }
+  function getWeekStats() {
+    var ws = _weekStart();
+    var counts = { outreach_sent: 0, connection_accepted: 0, reply_received: 0, meeting_booked: 0 };
+    _load().filter(function(e) { return e.ts >= ws; }).forEach(function(e) {
+      if (counts[e.event] !== undefined) counts[e.event]++;
+    });
+    return counts;
+  }
+  function resetWeek() {
+    if (!confirm('Reset this week\'s conversion data?')) return;
+    var ws = _weekStart();
+    _save(_load().filter(function(e) { return e.ts < ws; }));
+    renderAnalyticsView();
+    _showToast('Analytics reset for this week');
+  }
+  return { track: track, trackStatus: trackStatus, getWeekStats: getWeekStats, resetWeek: resetWeek };
+})();
+
+function renderAnalyticsView() {
+  var stats = convTracker.getWeekStats();
+  var sent = stats.outreach_sent, conn = stats.connection_accepted, replied = stats.reply_received, meeting = stats.meeting_booked;
+  function pct(n, d) { return d ? Math.round(n / d * 100) + '%' : '–'; }
+
+  var periodEl = document.getElementById('analyticsPeriodLabel');
+  if (periodEl) {
+    var d = new Date(), ws = new Date(d); ws.setDate(d.getDate() - d.getDay()); ws.setHours(0,0,0,0);
+    var we = new Date(ws); we.setDate(ws.getDate() + 6);
+    var fmt = function(dt) { return dt.toLocaleDateString('en-US', { month:'short', day:'numeric' }); };
+    periodEl.textContent = 'Week of ' + fmt(ws) + ' – ' + fmt(we);
+  }
+
+  var funnel = document.getElementById('analyticsFunnel');
+  if (funnel) {
+    funnel.innerHTML = [
+      { cls:'f-sent',      count:sent,    label:'Outreach Sent',        rate:'this week' },
+      { cls:'f-connected', count:conn,    label:'Connections Accepted', rate:pct(conn, sent) + ' of sent' },
+      { cls:'f-replied',   count:replied, label:'Replies Received',     rate:pct(replied, conn) + ' of connected' },
+      { cls:'f-meeting',   count:meeting, label:'Meetings Booked',      rate:pct(meeting, replied) + ' of replied' }
+    ].map(function(c) {
+      return '<div class="funnel-card ' + c.cls + '">' +
+        '<div class="funnel-card-count">' + c.count + '</div>' +
+        '<div class="funnel-card-label">' + c.label + '</div>' +
+        '<div class="funnel-card-rate">' + c.rate + '</div></div>';
+    }).join('');
+  }
+
+  var bars = document.getElementById('analyticsBarsPanel');
+  if (bars) {
+    var mx = Math.max(sent, 1);
+    bars.innerHTML = '<h3>Conversion Funnel</h3>' + [
+      { cls:'f-sent',      label:'Outreach Sent',        count:sent,    w:Math.round(sent/mx*100) },
+      { cls:'f-connected', label:'Connections Accepted', count:conn,    w:Math.round(conn/mx*100) },
+      { cls:'f-replied',   label:'Replies Received',     count:replied, w:Math.round(replied/mx*100) },
+      { cls:'f-meeting',   label:'Meetings Booked',      count:meeting, w:Math.round(meeting/mx*100) }
+    ].map(function(r) {
+      return '<div class="abar-row"><div class="abar-label"><span>' + r.label + '</span><span>' + r.count + '</span></div>' +
+        '<div class="abar-track"><div class="abar-fill ' + r.cls + '" style="width:' + r.w + '%"></div></div></div>';
+    }).join('');
+  }
+}
 
 </script>
 <div id="col-filter-portal" class="col-filter-dropdown" style="position:fixed;z-index:9999;"></div>
