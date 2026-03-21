@@ -418,5 +418,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-20T16:32:46Z"
+  },
+  {
+    "title": "AI Engineer at Nebius",
+    "snippet": "... machine learning workloads. At Nebius, engineers work on large-scale GPU clusters, virtualization systems, and cloud",
+    "url": "https://www.linkedin.com/posts/soumit-patil-332825271_find-your-role-open-positions-at-nebius-activity-7439371738968133632-t3Rm",
+    "company": "Nebius",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Soumit Patil",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/soumit-patil-332825271/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T05:59:23Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... hiring platform Access. ➔ Amdox learning platform Access. ➔ Mentorship ... Machine Learning | Exploring Real-World A",
+    "url": "https://www.linkedin.com/posts/amdox-technology_wearehiring-internship-internhiring-activity-7438812379154624512-eAsx",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/amdox-technology/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T05:59:23Z"
   }
 ]
