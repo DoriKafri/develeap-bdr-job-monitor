@@ -466,5 +466,65 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-21T07:27:26Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "Sharon Vendrov's Post. View profile for Sharon Vendrov · Sharon Vendrov. VP Cloud Infrastructure & IT ... great company.",
+    "url": "https://www.linkedin.com/posts/sharon-vendrov-91309975_sysaid-companyculture-leadership-activity-7438165806418657280-Bbp7",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Sharon Vendrov",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/sharon-vendrov-91309975/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T09:52:11Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... needs a real raster engine. ruby-libgd is the first step. Ruby gets its ... Cloud‑Native by Design: Visualize COG, Z",
+    "url": "https://www.linkedin.com/posts/eranyariv_israel-opensource-reactjs-activity-7437447944519270401-KQZ4",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eranyariv/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T09:52:11Z"
+  },
+  {
+    "title": "Cloud Engineer at Your data residency strategy",
+    "snippet": "... cloud infrastructure, the risk profile changes completely. Engineers in ... Your data residency strategy needs a war",
+    "url": "https://www.linkedin.com/posts/krishna-b-kumaar-2b8298aa_%3F%3F%3F%3F-%3F%3F%3F-%3F-%3F%3F%3F%3F%3F-%3F%3F%3F%3F%3F-activity-7437902686613581825--ucC",
+    "company": "Your data residency strategy",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Krishna Kumaar",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/krishna-b-kumaar-2b8298aa/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T09:52:11Z"
+  },
+  {
+    "title": "AI Engineer at that",
+    "snippet": "Too many teams are still building “AI” that needs a human babysitter to finish the job. ... 2️⃣ Infrastructure is ready ",
+    "url": "https://www.linkedin.com/posts/vertex-ventures-israel_yearoftheagents-activity-7436700493923516416-TupO",
+    "company": "that",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Vertex Ventures",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/vertex-ventures-israel/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T09:52:11Z"
+  },
+  {
+    "title": "AI Engineer at it",
+    "snippet": "Like automating processes or moving away from spreadsheets or using the cloud. ... To create a real leap, it needs a cle",
+    "url": "https://www.linkedin.com/posts/tomfgoodwin_the-two-worlds-i-live-in-couldnt-be-more-activity-7436784831566614528-Hkez",
+    "company": "it",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/tomfgoodwin/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T09:52:11Z"
   }
 ]
