@@ -406,6 +406,15 @@ COMPANY_DOMAINS = {
     "iai": "iai.co.il",
     "israel aerospace industries": "iai.co.il",
     "iai - israel aerospace industries": "iai.co.il",
+    "similarweb": "similarweb.com",
+    "pagaya": "pagaya.com",
+    "grafana": "grafana.com",
+    "grafana labs": "grafana.com",
+    "wiz": "wiz.io",
+    "d-fend": "d-fendsolutions.com",
+    "d-fend solutions": "d-fendsolutions.com",
+    "starburst": "starburstdata.com",
+    "buildots": "buildots.com",
 }
 
 def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
@@ -1293,6 +1302,15 @@ SEARCH_QUERIES = [
     # Built In job board
     "site:builtin.com/job Israel DevOps OR SRE OR Cloud engineer",
     "site:builtin.com/job Israel AI OR ML OR Data engineer",
+    "site:job-boards.greenhouse.io Israel engineer",
+    "Similarweb Israel engineer site:boards.greenhouse.io",
+    "site:boards.greenhouse.io/pagayais",
+    "site:boards.greenhouse.io/grafanalabs",
+    "Wiz Israel DevSecOps OR Cloud Security Engineer",
+    "site:jobs.lever.co/d-fendsolutions",
+    "site:jobs.lever.co/starburstdata",
+    "Data Engineer Israel hiring site:linkedin.com/jobs",
+    "SRE Site Reliability Engineer Israel hiring site:linkedin.com/jobs",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
