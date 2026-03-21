@@ -312,6 +312,7 @@ COMPANY_DOMAINS = {
     "factored": "factored.ai",
     "fetcherr": "fetcherr.io",
     "fireblocks": "fireblocks.com",
+    "fiverr": "fiverr.com",
     "forter": "forter.com",
     "fundamental": "fundamental.cc",
     "global payments inc.": "globalpayments.com",
@@ -323,6 +324,7 @@ COMPANY_DOMAINS = {
     "imagen": "imagen-ai.com",
     "intuit": "intuit.com",
     "intuit israel": "intuit.com",
+    "jfrog": "jfrog.com",
     "kpmg": "kpmg.com",
     "leidos": "leidos.com",
     "legit security": "legitsecurity.com",
@@ -360,6 +362,7 @@ COMPANY_DOMAINS = {
     "oligo security": "oligo.security",
     "pagaya": "pagaya.com",
     "pango": "pango.co.il",
+    "payoneer": "payoneer.com",
     "paragon": "useparagon.com",
     "kyndryl": "kyndryl.com",
     "pentera": "pentera.io",
@@ -381,6 +384,7 @@ COMPANY_DOMAINS = {
     "taboola": "taboola.com",
     "tastewise": "tastewise.io",
     "tavily": "tavily.com",
+    "torq": "torq.io",
     "team8": "team8.vc",
     "techaviv": "techaviv.com",
     "terasky": "terasky.com",
@@ -1272,6 +1276,23 @@ SEARCH_QUERIES = [
     "site:il.indeed.com \"Data Platform\" OR MLOps OR DataOps OR \"Data Infrastructure\" Israel",
     "site:il.indeed.com FinOps OR DevSecOps OR Security Engineer Israel",
     "site:il.indeed.com \"Cloud Cost\" OR \"Cloud Financial\" OR \"FinOps Practitioner\" OR \"Cloud Economics\" Israel",
+    # Greenhouse boards - expanded coverage for Israeli companies
+    "site:boards.greenhouse.io Israel DevOps OR SRE OR Platform engineer",
+    "site:boards.greenhouse.io Israel Cloud OR Infrastructure engineer",
+    "site:boards.greenhouse.io Israel AI OR ML OR Data engineer",
+    "site:boards.greenhouse.io Israel Security OR DevSecOps engineer",
+    "site:boards.greenhouse.io/torq",
+    "site:boards.greenhouse.io/jfrog",
+    "site:boards.greenhouse.io/taboola",
+    "site:boards.greenhouse.io/cloudinary",
+    # Lever job boards - expanded coverage
+    "site:jobs.lever.co Israel DevOps OR SRE OR Platform engineer",
+    "site:jobs.lever.co Israel Cloud OR AI OR Data engineer",
+    "site:jobs.lever.co/payoneer",
+    "site:jobs.lever.co/fiverr",
+    # Built In job board
+    "site:builtin.com/job Israel DevOps OR SRE OR Cloud engineer",
+    "site:builtin.com/job Israel AI OR ML OR Data engineer",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
