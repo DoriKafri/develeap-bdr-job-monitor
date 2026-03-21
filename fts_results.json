@@ -586,5 +586,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-21T19:43:29Z"
+  },
+  {
+    "title": "AI Engineer at developer who no longer",
+    "snippet": "A developer who no longer needs a cloud API. A company that can run its own model on-premise and keep its data private. ",
+    "url": "https://www.linkedin.com/posts/arekskuza_during-last-weeks-tech-titans-ai-forum-event-activity-7439759274685308928-Y2Wt",
+    "company": "developer who no longer",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/arekskuza/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T22:15:11Z"
   }
 ]
