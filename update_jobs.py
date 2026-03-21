@@ -402,6 +402,11 @@ COMPANY_DOMAINS = {
     "iai": "iai.co.il",
     "israel aerospace industries": "iai.co.il",
     "iai - israel aerospace industries": "iai.co.il",
+    # Companies identified in 2026-03 coverage gap audit
+    "torq": "torq.io",
+    "payoneer": "payoneer.com",
+    "jfrog": "jfrog.com",
+    "fiverr": "fiverr.com",
 }
 
 def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
@@ -1272,6 +1277,23 @@ SEARCH_QUERIES = [
     "site:il.indeed.com \"Data Platform\" OR MLOps OR DataOps OR \"Data Infrastructure\" Israel",
     "site:il.indeed.com FinOps OR DevSecOps OR Security Engineer Israel",
     "site:il.indeed.com \"Cloud Cost\" OR \"Cloud Financial\" OR \"FinOps Practitioner\" OR \"Cloud Economics\" Israel",
+    # ── 2026-03 coverage gap fix: Greenhouse/Lever broad Israel queries ──
+    "site:boards.greenhouse.io Israel (DevOps OR SRE OR Platform OR Cloud OR AI OR Data OR Security OR FinOps)",
+    "site:jobs.lever.co Israel (DevOps OR SRE OR Platform OR Cloud OR AI OR Data OR Security)",
+    "site:builtin.com/jobs Israel (DevOps OR Cloud OR AI OR Platform OR SRE OR MLOps OR DataOps)",
+    # Company-specific Greenhouse/Lever queries for companies missing from search results
+    "site:boards.greenhouse.io/torq Israel",
+    "site:boards.greenhouse.io/payoneer Israel",
+    "site:boards.greenhouse.io/jfrog Israel",
+    "site:boards.greenhouse.io/taboola Israel",
+    "site:boards.greenhouse.io/cloudinary Israel",
+    "site:boards.greenhouse.io/fiverr Israel",
+    "site:jobs.lever.co/torq Israel",
+    "site:jobs.lever.co/payoneer Israel",
+    "site:jobs.lever.co/jfrog Israel",
+    "site:jobs.lever.co/taboola Israel",
+    "site:jobs.lever.co/cloudinary Israel",
+    "site:jobs.lever.co/fiverr Israel",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -2428,6 +2450,13 @@ GREENHOUSE_BOARD_SLUGS = {
     "zafran": "zafransecurity",
     "armo": "armosec",
     "plus500": "plus500",
+    # Companies identified in 2026-03 coverage gap audit
+    "torq": "Torq",
+    "payoneer": "Payoneer",
+    "jfrog": "jfrog",
+    "taboola": "taboola",
+    "cloudinary": "cloudinary",
+    "fiverr": "fiverr",
 }
 
 # Israel location indicators for Greenhouse board filtering
