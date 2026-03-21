@@ -2816,8 +2816,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-20T17:08:57Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 302, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 1166, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 78, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2818, "error": ""}];
+let LAST_UPDATED = "2026-03-21T09:02:57Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 294, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 1384, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 54, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 3127, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2841,15 +2841,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -2858,6 +2849,15 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -4162,7 +4162,7 @@ let ALL_JOBS = [
     "id": "47297ecd",
     "title": "LLM Engineer",
     "subtitle": "Experience with LLM evaluations. Experience with Conversational AI. Experience in Data Science or MLOps. Experience in software architecture design. Experience ...",
-    "company": "Unknown",
+    "company": "Workday",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -4216,7 +4216,7 @@ let ALL_JOBS = [
     "id": "baaeba57",
     "title": "Senior LLM Software Engineer",
     "subtitle": "Proven ability to lead Team Collaboration within a software development team and mentor junior engineers. Fluent in English, including both written and verbal ...",
-    "company": "Unknown",
+    "company": "Workday",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -4517,6 +4517,38 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-11"
   },
   {
+    "id": "de08da6b",
+    "title": "AI Engineer at Nebius",
+    "subtitle": "... machine learning workloads. At Nebius, engineers work on large-scale GPU clusters, virtualization systems, and cloud",
+    "company": "Nebius",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/soumit-patil-332825271_find-your-role-open-positions-at-nebius-activity-7439371738968133632-t3Rm",
+    "category": "ai",
+    "posted": "2026-03-16",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "... machine learning workloads. At Nebius, engineers work on large-scale GPU clusters, virtualization systems, and cloud",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Soumit Patil",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/soumit-patil-332825271/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi Soumit, I noticed Nebius is hiring a AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Soumit! I wanted to share how Develeap helps companies like Nebius accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=nebius.com&sz=128",
+    "ftsJobUrl": ""
+  },
+  {
     "id": "1f5e31f1",
     "title": "Conifers.ai Senior Software Engineer - Agentic AI",
     "subtitle": "By leveraging agentic AI, Conifers helps security teams inve",
@@ -4732,6 +4764,11 @@ let ALL_JOBS = [
       {
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/refery-io_uae-hiring-startups-activity-7437422332631150592-K-2l",
+        "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/amdox-technology_wearehiring-internship-internhiring-activity-7438812379154624512-eAsx",
         "title": "AI Engineer"
       }
     ],
@@ -5382,6 +5419,11 @@ let ALL_JOBS = [
       {
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/jasonthornesap_cybersecurity-leadership-hiring-activity-7434154811392016384-eo1V",
+        "title": "Security Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/regina-gafiulina_%D7%92%D7%9D-%D7%91%D7%AA%D7%A7%D7%95%D7%A4%D7%94-%D7%9E%D7%95%D7%A8%D7%9B%D7%91%D7%AA-%D7%9E%D7%9E%D7%A9%D7%99%D7%9B%D7%94-%D7%9C%D7%A9%D7%9E%D7%95%D7%A8-%D7%A2%D7%9C-%D7%A9%D7%92%D7%A8%D7%94-%D7%A9%D7%9C-activity-7436682668970516480-ZgHz",
         "title": "Security Engineer"
       }
     ],
@@ -6137,31 +6179,14 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Julia Raiskin",
-        "title": "Chief Executive Officer, APAC. She is",
-        "linkedin": "https://sg.linkedin.com/in/julia-raiskin",
+        "name": "Israel Englander",
+        "title": "Chief Executive Officer of Millennium, which he founded",
+        "linkedin": "https://www.linkedin.com/in/israel-englander",
         "source": "Auto-discovered",
         "email": "",
-        "connectMsg": "Hi Julia, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Julia! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Laurent Paulhac",
-        "title": "Group CEO at Millennium",
-        "linkedin": "https://www.linkedin.com/in/laurent-paulhac-451819",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi Laurent, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Laurent! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "David West",
-        "title": "CEO at Millennium Technologies, Inc.",
-        "linkedin": "https://www.linkedin.com/in/david-west-9638481a",
-        "source": "Auto-discovered",
-        "email": "",
-        "connectMsg": "Hi David, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
+        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Ben Clark",
@@ -6174,14 +6199,31 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Ben! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
-        "name": "Israel Englander",
-        "title": "Chief Executive Officer of Millennium, which he founded",
-        "linkedin": "https://www.linkedin.com/in/israel-englander",
+        "name": "David West",
+        "title": "CEO at Millennium Technologies, Inc.",
+        "linkedin": "https://www.linkedin.com/in/david-west-9638481a",
         "source": "Auto-discovered",
         "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQG9BVdjYqr_Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1688994070187?e=2147483647&v=beta&t=NX4P6BkP1boX06EYZhZ23lnQCGL_MWDEVIxLPo111vY",
-        "connectMsg": "Hi Israel, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Israel! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi David, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Laurent Paulhac",
+        "title": "Group CEO at Millennium",
+        "linkedin": "https://www.linkedin.com/in/laurent-paulhac-451819",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Laurent, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Laurent! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Julia Raiskin",
+        "title": "Chief Executive Officer, APAC. She is",
+        "linkedin": "https://sg.linkedin.com/in/julia-raiskin",
+        "source": "Auto-discovered",
+        "email": "",
+        "connectMsg": "Hi Julia, I noticed Millennium is hiring a Millennium MLOps Engineer | Tel Aviv-Yafo ... — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Julia! I wanted to share how Develeap helps companies like Millennium accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=mlp.com&sz=128",
@@ -6659,16 +6701,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Dori Kafri, CEO at Develeap",
-        "title": "CEO, I lead our employee-owned, people-first professional se",
-        "linkedin": "https://il.linkedin.com/in/dori-kafri",
-        "source": "Auto-discovered",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
-        "connectMsg": "Hi Dori, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Dori! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
         "name": "Kobi Avshalom‏",
         "title": "‏CTO at Develeap",
         "linkedin": "https://il.linkedin.com/in/jacob-avshalom",
@@ -6677,6 +6709,16 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQHFJfTLSvcN6Q/profile-displayphoto-shrink_200_200/B4DZR9l8IUHUAY-/0/1737273885607?e=2147483647&v=beta&t=sIFkQqRsIlDYJ44Kwb2sbQB9dutPUXJ5JH8M83R_mgo",
         "connectMsg": "Hi Kobi, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
         "followUpMsg": "Thanks for connecting, Kobi! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
+      },
+      {
+        "name": "Dori Kafri, CEO at Develeap",
+        "title": "CEO, I lead our employee-owned, people-first professional se",
+        "linkedin": "https://il.linkedin.com/in/dori-kafri",
+        "source": "Auto-discovered",
+        "email": "",
+        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQHjzl0QPxuUhA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1616859673638?e=2147483647&v=beta&t=bJaQNPtaKz4TcFqkTRrRJy_F-eaP48zK0mEOCd32EGI",
+        "connectMsg": "Hi Dori, I'm Dori from Develeap. I noticed Develeap is growing the team with a DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
+        "followUpMsg": "Thanks for connecting, Dori! Since Develeap already works with Develeap, I wanted to reach out about the DevOps Engineer hiring. We often help teams ramp up faster with interim DevOps & cloud-native transformation expertise while permanent hires onboard. Would a quick chat be useful?"
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=develeap.com&sz=128",
@@ -6864,506 +6906,6 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=vertexventures.com&sz=128",
     "_first_seen": "2026-03-07"
-  },
-  {
-    "id": "5b819c58",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "We are seeking a Senior DevOps Engineer to help scale and st",
-    "company": "Jobgether",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "lever",
-    "sourceUrl": "https://jobs.lever.co/jobgether/d6a13ef8-32e0-447d-a257-8ff9ed826a73",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are seeking a Senior DevOps Engineer to help scale and strengthen a fast-growing, high-traffic platform serving milli",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=jobgether.com&sz=128",
-    "altSources": [
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://il.linkedin.com/jobs/view/senior-devops-engineer-at-jobgether-4381684560",
-        "title": "Jobgether גיוס עובדים Senior DevOps Engineer"
-      }
-    ],
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "3766c34b",
-    "title": "Senior Backend Developer - (Agentic AI, Data Innovation Team)",
-    "subtitle": "We're looking for a Senior Backend Developer to join our Dat",
-    "company": "BMC",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "other",
-    "sourceUrl": "https://jobs.bmc.com/Careers/JobDetail/Sr-Innovator-Israel-ISR/45969",
-    "category": "agentic",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We're looking for a Senior Backend Developer to join our Data Innovation Team, building the next-generation Agentic AI O",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Ram Chakravarti",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/ramchak/",
-        "source": "Company Website",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQHT8mcmazWDVQ/profile-displayphoto-shrink_400_400/B4EZdVWltiHsAo-/0/1749483674847?e=2147483647&v=beta&t=bf7vnY93vJnncDefgAG1IcG-Xdoo4Jc9sc4vgXkorB8",
-        "connectMsg": "Hi Ram, I noticed BMC is hiring a Senior Backend Developer — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Ram! I wanted to share how Develeap helps companies like BMC accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=bmc.com&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "7d12476c",
-    "title": "Senior DevOps Engineer| Tikal Careers",
-    "subtitle": "5+ Years in DevOps- Extensive experience working in complex,",
-    "company": "Tikal",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/tikalk/68.00c/senior-devops-engineer/68.63e",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "5+ Years in DevOps- Extensive experience working in complex, large-scale environments. · Kubernetes Expertise- Strong kn",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Lior Kanfi",
-        "title": "Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/liorkanfi/",
-        "source": "LinkedIn",
-        "email": "lior@tikalk.com",
-        "connectMsg": "Hi Lior, I noticed Tikal is hiring a Senior DevOps Engineer| Tikal Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Lior! I wanted to share how Develeap helps companies like Tikal accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Amir Misgav",
-        "title": "DevOps Tech Leader",
-        "linkedin": "https://www.linkedin.com/in/amir-misgav/",
-        "source": "LinkedIn",
-        "email": "amir@tikalk.com",
-        "connectMsg": "Hi Amir, I noticed Tikal is hiring a Senior DevOps Engineer| Tikal Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Amir! I wanted to share how Develeap helps companies like Tikal accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Tamir Tausi",
-        "title": "Head of Sales",
-        "linkedin": "https://il.linkedin.com/in/tamirtausi",
-        "source": "LinkedIn",
-        "email": "tamir@tikalk.com",
-        "connectMsg": "Hi Tamir, I noticed Tikal is hiring a Senior DevOps Engineer| Tikal Careers — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Tamir! I wanted to share how Develeap helps companies like Tikal accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=tikalk.com&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "6d9056bd",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "We're looking for a hands-on DevOps Engineer with a strong c",
-    "company": "Earnix",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/earnix/93.00B/senior-devops-engineer/6D.463",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We're looking for a hands-on DevOps Engineer with a strong cloud-native mindset to help build, maintain, and evolve our ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Erez Barak",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/erezbarak/",
-        "source": "LinkedIn",
-        "email": "erez@earnix.com",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQG27yGY9BdiEA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1656519252642?e=2147483647&v=beta&t=g1ezNsK7J46Nr6OjRR-KHuLbxHoCrrMJTr8xk1LzV0A",
-        "connectMsg": "Hi Erez, I noticed Earnix is hiring a Senior DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Erez! I wanted to share how Develeap helps companies like Earnix accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Yaakov Cohen",
-        "title": "VP Engineering, AI Platform",
-        "linkedin": "https://www.linkedin.com/in/yaakovcohen/",
-        "source": "LinkedIn",
-        "email": "yaakov@earnix.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQECfglhlwcWJg/profile-displayphoto-shrink_200_200/B4DZdCAxc0GUAY-/0/1749159189163?e=2147483647&v=beta&t=GWF0PJ_PYq795GHDKJEGCIYpTu4how07es0EwWuuCfE",
-        "connectMsg": "Hi Yaakov, I noticed Earnix is hiring a Senior DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yaakov! I wanted to share how Develeap helps companies like Earnix accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Robin Gilthorpe",
-        "title": "CEO",
-        "linkedin": "https://www.linkedin.com/in/robingilthorpe/",
-        "source": "LinkedIn",
-        "email": "robin@earnix.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQEJ1IH3sDCx2g/profile-displayphoto-scale_400_400/B4EZo2TWx3KYAk-/0/1761847636096?e=2147483647&v=beta&t=RqtEWKB6Np7A1A-8a0ef0LlTtP0TAnK1HPGo05ntTCo",
-        "connectMsg": "Hi Robin, I noticed Earnix is hiring a Senior DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Robin! I wanted to share how Develeap helps companies like Earnix accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=earnix.com&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "fa05ca65",
-    "title": "Generative AI Engineer",
-    "subtitle": "At KPMG Israel, our Generative AI delivery team stands at th",
-    "company": "KPMG Israel",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/somekhchaikin/F3.007/generative-ai-technical-expert/8C.A46",
-    "category": "ai",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "At KPMG Israel, our Generative AI delivery team stands at the forefront of technological innovation, representing the mo",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Dina Pasca-Raz",
-        "title": "Partner, Head of Technology",
-        "linkedin": "",
-        "source": "Company Website",
-        "email": "",
-        "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Generative AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
-    "altSources": [
-      {
-        "source": "other",
-        "sourceUrl": "https://kpmg.co.il/technologyconsulting/he/vacancies/technology-consulting/generative-ai-engineer",
-        "title": "Generative AI Engineer"
-      },
-      {
-        "source": "other",
-        "sourceUrl": "https://kpmg.co.il/technologyconsulting/careers/jobs/generative-ai-engineer",
-        "title": "Generative AI Engineer"
-      },
-      {
-        "source": "comeet",
-        "sourceUrl": "https://www.comeet.com/jobs/somekhchaikin/F3.007/generative-ai-engineer/8C.A46",
-        "title": "Generative AI Engineer"
-      }
-    ],
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "9961d2b0",
-    "title": "AI Agent Security | DevOps Engineer",
-    "subtitle": "Join Zenity as a DevOps Engineer in our Engineering departme",
-    "company": "Zenity",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/zenity/19.000/devops-engineer/FE.26A",
-    "category": "agentic",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": true,
-    "isPastCustomer": false,
-    "description": "Join Zenity as a DevOps Engineer in our Engineering department. Tel Aviv location ... 3+ years of experience in DevOps, ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Michael Bargury",
-        "title": "Co-Founder & CTO",
-        "linkedin": "https://www.linkedin.com/in/michaelbargury/",
-        "source": "LinkedIn",
-        "email": "michael@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D16AQE09ZzyG5xs-Q/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1661197020859?e=2147483647&v=beta&t=VFFpWO7VRucwDlQkBSl1hXXZ7EoRb1bd6pPPXtvv5wk",
-        "connectMsg": "Hi Michael, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Michael! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | DevOps Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Ronen Yaari",
-        "title": "VP Engineering",
-        "linkedin": "https://www.linkedin.com/in/ronen-yaari-79a1ba4/",
-        "source": "LinkedIn",
-        "email": "ronen@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQFiCHgEkxl6Mg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1636960316139?e=2147483647&v=beta&t=p62V2HL1m6lRpX2c8cktVI5RdLcHyJQvYgXbBjyYcXw",
-        "connectMsg": "Hi Ronen, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Ronen! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | DevOps Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Shay Haluba",
-        "title": "Director of Engineering & Innovation",
-        "linkedin": "https://www.linkedin.com/in/shay-haluba/",
-        "source": "LinkedIn",
-        "email": "shay@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQG3PXjizkgfkA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1561400981992?e=2147483647&v=beta&t=fN-gyq0GWuvd5QEL0wGzr0u-6lZz5ugOobkkbQuv9QE",
-        "connectMsg": "Hi Shay, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Shay! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | DevOps Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Ben Kliger",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/benkliger/",
-        "source": "Crunchbase",
-        "email": "ben@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQFvfldx3L7VEg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1613636379320?e=2147483647&v=beta&t=fE_HnATM_a6PViVVpiSrHviar-hiumOb4I9rvltEtfM",
-        "connectMsg": "Hi Ben, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | DevOps Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Ben! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | DevOps Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=zenity.io&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "3f2e0739",
-    "title": "DevOps Tech Lead at Play Perfect - Comeet",
-    "subtitle": "Play Perfect is a fast-growing mobile gaming company enterta",
-    "company": "Play",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/play_perfect/69.001/devops-tech-lead/29.C53",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Play Perfect is a fast-growing mobile gaming company entertaining millions of players worldwide, headquartered in Tel Av",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Idan Ayzen",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/idan-ayzen-31a226178/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Idan, I noticed Play is hiring a DevOps Tech Lead — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Idan! I wanted to share how Develeap helps companies like Play accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=play.com&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "a60e8d35",
-    "title": "Senior DevOps Infra Engineer at BioCatch - Comeet",
-    "subtitle": "Senior DevOps Infra Engineer. R&D; Israel - TLV; Intermediat",
-    "company": "Biocatch",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/biocatch/03.00E/senior-devops-infra-engineer/46.A51",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Senior DevOps Infra Engineer. R&D; Israel - TLV; Intermediate; Full-time. Description. BioCatch is the leader in Behavio",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Gadi Mazor",
-        "title": "CEO",
-        "linkedin": "https://www.linkedin.com/in/gadimazor/",
-        "source": "LinkedIn",
-        "email": "gadi@biocatch.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQGPxmYPdFiufw/profile-displayphoto-scale_400_400/B4EZtKyRJYGcAg-/0/1766486252926?e=2147483647&v=beta&t=6Mq6gOyoAXw5auqprbX-7czFwYUgazdFGyQe-8ZsYVY",
-        "connectMsg": "Hi Gadi, I noticed Biocatch is hiring a Senior DevOps Infra Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Gadi! I wanted to share how Develeap helps companies like Biocatch accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Avi Turgeman",
-        "title": "Founder & CTO",
-        "linkedin": "https://www.linkedin.com/in/aviturgeman/",
-        "source": "LinkedIn",
-        "email": "avi@biocatch.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQE3Y5xZGvly2g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1673448009225?e=2147483647&v=beta&t=Z0JHrKGWSAg8Z6xdadYX4buVw1uoIXm_PjXdLKQNp-Q",
-        "connectMsg": "Hi Avi, I noticed Biocatch is hiring a Senior DevOps Infra Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Avi! I wanted to share how Develeap helps companies like Biocatch accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=biocatch.com&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "73af3dba",
-    "title": "AI Agent Security | QA & Automation Engineer",
-    "subtitle": "Zenity is the first and only holistic platform built to secu",
-    "company": "Zenity",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/zenity/19.000/qa--automation-engineer/CA.26F",
-    "category": "agentic",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": true,
-    "isPastCustomer": false,
-    "description": "Zenity is the first and only holistic platform built to secure and govern AI Agents from buildtime to runtime. We help o",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Michael Bargury",
-        "title": "Co-Founder & CTO",
-        "linkedin": "https://www.linkedin.com/in/michaelbargury/",
-        "source": "LinkedIn",
-        "email": "michael@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D16AQE09ZzyG5xs-Q/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1661197020859?e=2147483647&v=beta&t=VFFpWO7VRucwDlQkBSl1hXXZ7EoRb1bd6pPPXtvv5wk",
-        "connectMsg": "Hi Michael, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | QA & Automation Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Michael! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | QA & Automation Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Ronen Yaari",
-        "title": "VP Engineering",
-        "linkedin": "https://www.linkedin.com/in/ronen-yaari-79a1ba4/",
-        "source": "LinkedIn",
-        "email": "ronen@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQFiCHgEkxl6Mg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1636960316139?e=2147483647&v=beta&t=p62V2HL1m6lRpX2c8cktVI5RdLcHyJQvYgXbBjyYcXw",
-        "connectMsg": "Hi Ronen, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | QA & Automation Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Ronen! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | QA & Automation Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Shay Haluba",
-        "title": "Director of Engineering & Innovation",
-        "linkedin": "https://www.linkedin.com/in/shay-haluba/",
-        "source": "LinkedIn",
-        "email": "shay@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C5603AQG3PXjizkgfkA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1561400981992?e=2147483647&v=beta&t=fN-gyq0GWuvd5QEL0wGzr0u-6lZz5ugOobkkbQuv9QE",
-        "connectMsg": "Hi Shay, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | QA & Automation Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Shay! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | QA & Automation Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      },
-      {
-        "name": "Ben Kliger",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/benkliger/",
-        "source": "Crunchbase",
-        "email": "ben@zenity.io",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQFvfldx3L7VEg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1613636379320?e=2147483647&v=beta&t=fE_HnATM_a6PViVVpiSrHviar-hiumOb4I9rvltEtfM",
-        "connectMsg": "Hi Ben, I'm Dori from Develeap. I noticed Zenity is growing the team with a AI Agent Security | QA & Automation Engineer role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Ben! Since Develeap already works with Zenity, I wanted to reach out about the AI Agent Security | QA & Automation Engineer hiring. We often help teams ramp up faster with interim Agentic AI and automation expertise while permanent hires onboard. Would a quick chat be useful?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=zenity.io&sz=128",
-    "_first_seen": "2026-03-06"
-  },
-  {
-    "id": "ea4045bc",
-    "title": "Staff DevOps Engineer at Gett - Comeet",
-    "subtitle": "Staff DevOps Engineer. R&D; Tel Aviv, Israel ... Experience ",
-    "company": "Gett",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/gett/A0.002/staff-devops-engineer/C7.B5F",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Staff DevOps Engineer. R&D; Tel Aviv, Israel ... Experience with FinOps best practices, including identifying excessive ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yaki Zakai",
-        "title": "CTO",
-        "linkedin": "https://il.linkedin.com/in/yaki-zakai-62847",
-        "source": "LinkedIn",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E16AQGl5yArm2skMA/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1658080981776?e=2147483647&v=beta&t=kfyetS3V3kLma8plrAAOUrUY7nBJdZ67u3o5TIMA414",
-        "connectMsg": "Hi Yaki, I noticed Gett is hiring a Staff DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yaki! I wanted to share how Develeap helps companies like Gett accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Matteo de Renzi",
-        "title": "CEO",
-        "linkedin": "https://uk.linkedin.com/in/matteoderenzi",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Matteo, I noticed Gett is hiring a Staff DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Matteo! I wanted to share how Develeap helps companies like Gett accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQHAtKCIwI2Mxg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1622224202837?e=2147483647&v=beta&t=rNzRnYojO93qfg-yqwrBoEy7WFm5r0CoAt_VjU5jjl4"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=gett.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "b9d529d7",
-    "title": "Senior Full-stack Engineer (Beacon Project)",
-    "subtitle": "Senior Full-stack Engineer (Beacon Project) - Digital Market",
-    "company": "Truelogic",
-    "companyIndustry": "",
-    "location": "Remote",
-    "locationSlug": "remote",
-    "source": "ashby",
-    "sourceUrl": "https://jobs.ashbyhq.com/truelogic/224c524f-3dd9-40ed-813c-25d6a655468c/application",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Senior Full-stack Engineer (Beacon Project) - Digital Marketing - Uruguay ; Location. Uruguay ; Employment Type. Full ti",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=truelogic.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11",
-    "altSources": [
-      {
-        "source": "ashby",
-        "sourceUrl": "https://jobs.ashbyhq.com/truelogic/2cfa6e15-b1e6-40bf-8f11-8c1044e5c79b/application",
-        "title": "Senior Full-stack Engineer (Beacon Project)"
-      }
-    ]
-  },
-  {
-    "id": "3cbac1fc",
-    "title": "Mobile Software Engineer in test @ DevSavant Inc.",
-    "subtitle": "At DevSavant, we are a trusted technology partner. We delive",
-    "company": "Devsavant",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "ashby",
-    "sourceUrl": "https://jobs.ashbyhq.com/devsavant/bd4a5a28-2c7d-4394-a41c-547b269aa33e",
-    "category": "devops",
-    "posted": "2026-03-06",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "At DevSavant, we are a trusted technology partner. We deliver innovative, high-quality solutions with a focus on excelle",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=devsavant.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====
