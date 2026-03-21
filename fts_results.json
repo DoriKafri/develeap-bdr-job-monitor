@@ -550,5 +550,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-21T14:50:15Z"
+  },
+  {
+    "title": "AI Engineer at Why Every Startup",
+    "snippet": "... AI יכול להחליף תהליכים שלמים אנחנו רק בתחילת העידן הזה – וקשה עדיין לחזות עד ... Why Every Startup Needs a CFO Befor",
+    "url": "https://www.linkedin.com/posts/brooks-keret_ai-startups-fintech-activity-7439929565147332608-_vOy",
+    "company": "Why Every Startup",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Brooks Keret",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/brooks-keret/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T19:43:29Z"
+  },
+  {
+    "title": "AI Engineer at Your company",
+    "snippet": "Tamas Szakacs. AI Technology Consultant @ TELLgen Srls | Interdisciplinary AI Researcher @ TELLgen.ai ... Your company n",
+    "url": "https://www.linkedin.com/posts/james-gorry-b0bb939_token-sales-aiagents-activity-7436890988817825794-KCtp",
+    "company": "Your company",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "James Gorry",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/james-gorry-b0bb939/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T19:43:29Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Avi Bensimon. Co-Founder, Mentorys.ai | AI Training, Consulting ... A great company that is lucky to have you. Like · Re",
+    "url": "https://www.linkedin.com/posts/ohad-boaron-79a78b37_im-happy-to-share-that-ive-started-a-new-activity-7438833038366752768-qRoA",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ohad Boaron",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ohad-boaron-79a78b37/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-21T19:43:29Z"
   }
 ]
