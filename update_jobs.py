@@ -1,4 +1,4 @@
-!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Develeap BDR Job Monitor — Automated Update Script
 Searches Israeli job boards, updates the HTML dashboard, deploys to Netlify,
@@ -1811,6 +1811,7 @@ INDEED_ROLE_QUERIES = [
     "FinOps Engineer",
     "Cloud Engineer",
     "Infrastructure Engineer",
+    "BMC Software Israel",
 ]
 
 
@@ -2482,6 +2483,18 @@ GREENHOUSE_BOARD_SLUGS = {
     "zafran": "zafransecurity",
     "armo": "armosec",
     "plus500": "plus500",
+    "jfrog": "jfrog",
+    "wiz": "wizinc",
+    "fireblocks": "fireblocks",
+    "similarweb": "similarweb",
+    "torq": "torq",
+    "grafana labs": "grafanalabs",
+    "pagaya": "pagaya",
+}
+
+LEVER_BOARD_SLUGS = {
+    "cloudinary": "cloudinary",
+    "d-fend solutions": "d-fendsolutions",
 }
 
 # Israel location indicators for Greenhouse board filtering
@@ -2547,6 +2560,44 @@ def scan_greenhouse_boards() -> list[dict]:
         time.sleep(random.uniform(0.5, 1.5))
 
     log.info(f"Greenhouse boards scan: found {len(all_results)} Israel-based roles")
+    return all_results
+
+
+
+def scan_lever_boards() -> list:
+    """Scan known Lever boards for Israel-based DevOps/Cloud/AI roles."""
+    all_results = []
+    for company_name, slug in LEVER_BOARD_SLUGS.items():
+        api_url = f"https://api.lever.co/v0/postings/{slug}?mode=json"
+        try:
+            resp = requests.get(api_url, timeout=15)
+            if resp.status_code != 200:
+                log.warning(f"  Lever board {slug}: HTTP {resp.status_code}")
+                continue
+            jobs = resp.json()
+            if not isinstance(jobs, list):
+                continue
+            for j in jobs:
+                location = j.get("categories", {}).get("location", "")
+                title = j.get("text", "")
+                job_url = j.get("hostedUrl", "")
+                loc_lower = location.lower()
+                if not any(loc in loc_lower for loc in _GH_ISRAEL_LOCATIONS):
+                    continue
+                title_lower = title.lower()
+                if not any(kw in title_lower for kw in _GH_ROLE_KEYWORDS):
+                    continue
+                all_results.append({
+                    "title": title,
+                    "company": company_name.title(),
+                    "location": location,
+                    "url": job_url,
+                    "source": "Lever",
+                })
+                log.info(f"  Lever [{company_name}]: {title} ({location})")
+        except Exception as e:
+            log.warning(f"  Lever board {slug}: {e}")
+    log.info(f"Lever boards: {len(all_results)} relevant jobs found")
     return all_results
 
 
@@ -6154,6 +6205,11 @@ def main():
     greenhouse_results = scan_greenhouse_boards()
     all_raw.extend(greenhouse_results)
     log.info(f"Greenhouse boards scan: {len(greenhouse_results)} results")
+
+    log.info("Scanning Lever boards for open roles...")
+    lever_results = scan_lever_boards()
+    all_raw.extend(lever_results)
+    log.info(f"Lever boards scan: {len(lever_results)} results")
 
     log.info(f"Total raw results: {len(all_raw)}")
 
