@@ -15,7 +15,7 @@ import hashlib
 import zipfile
 import io
 import html as html_mod
-import base64
+import base6
 import logging
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus, unquote, urljoin
@@ -2471,7 +2471,7 @@ GREENHOUSE_BOARD_SLUGS = {
     "nice": "nice",
     "redis": "Redis",
     "cyberark": "cyberark",
-    "monday.com": "mondaydotcom",
+    "monday.com": "mondaycom",
     "mobileye": "mobileye",
     "checkpoint": "checkpoint",
     "cellebrite": "cellebrite",
@@ -2994,6 +2994,11 @@ def scrape_job_page(url: str) -> dict:
                     result["is_career_page"] = True
                     log.info(f"  CAREER PAGE ({len(job_links)} job links): {url[:60]}")
 
+    # Override: Greenhouse/Lever board URLs are always valid job listings, not career pages
+        if result["is_career_page"] and ('greenhouse.io' in url.lower() or 'lever.co' in url.lower()):
+            result["is_career_page"] = False
+            log.info(f"  Career page override - job board URL is valid: {url[:60]}")
+                    
         if result["is_career_page"]:
             return result
 
