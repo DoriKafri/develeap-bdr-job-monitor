@@ -706,5 +706,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-22T20:49:15Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Tech hiring doesn't stop for air-raid sirens. Israeli companies are recruiting hundreds of AI researchers, cyber experts",
+    "url": "https://www.linkedin.com/posts/talent-2-0_futureofwork-remotework-techtalent-activity-7439226582935851008-ZgPv",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/talent-2-0/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T21:17:59Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Hiring: Senior Technical Writer at Axonius! Want to own the documentation for two key product domains in a global cybers",
+    "url": "https://www.linkedin.com/posts/caroline-tabach_axonius-careers-activity-7437101559643217920-HRoJ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/caroline-tabach/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T21:17:59Z"
   }
 ]
