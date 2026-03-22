@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+!/usr/bin/env python3
 """
 Develeap BDR Job Monitor — Automated Update Script
 Searches Israeli job boards, updates the HTML dashboard, deploys to Netlify,
