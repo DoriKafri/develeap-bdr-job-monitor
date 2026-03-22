@@ -29,6 +29,7 @@
     "zenity|agentic|ai agent security | devops engineer|2026-03-06",
     "zenity|agentic|ai agent security | devops engineer",
     "your data residency strategy|||cloud engineer at your data residency strategy",
+    "your company|||ai engineer at your company",
     "yafo ...|||ai engineer",
     "yael group|||yael group devsecops",
     "yael group|||enterprise infrastructure engineer - yael group",
@@ -64,6 +65,7 @@
     "wix|||senior finops engineer",
     "wix|finops|senior finops engineer @ wix - lhh job board|2026-03-05",
     "wix|finops|senior finops engineer @ wix - lhh job board",
+    "why every startup|||ai engineer at why every startup",
     "when you hear someone|||ai/agentic engineer at when you hear someone",
     "voyantis||||ai-native software engineer \u2013 tel aviv, israel",
     "voyantis||||ai-native software engineer",
@@ -169,6 +171,7 @@
     "unknown||||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown|||staff software engineer (data & ai platform)",
     "unknown|||staff product manager, data platform",
+    "unknown|||sr staff site reliability engineer",
     "unknown|||spclst, engineering",
     "unknown|||software engineer iii, cloud security",
     "unknown|||software engineer - analytics platform",
@@ -185,6 +188,7 @@
     "unknown|||senior embedded linux engineer cc++ infrastructure",
     "unknown|||senior devops platform engineer",
     "unknown|||senior devops engineer hod hasharon, center district, israel",
+    "unknown|||senior devops engineer",
     "unknown|||senior devops core engineer",
     "unknown|||senior dataops engineer",
     "unknown|||senior data engineer - core data platform team",
@@ -212,6 +216,7 @@
     "unknown|||devex team lead",
     "unknown|||data engineer",
     "unknown|||cloud engineer",
+    "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
     "unknown|||ai/ml engineer",
     "unknown|||ai/agentic engineer",
@@ -935,6 +940,7 @@
     "dialog|sre|(site reliability engineer) sre, \u05de\u05e9\u05e8\u05d4 ...|2026-03-05",
     "dialog|sre|(site reliability engineer) sre, \u05de\u05e9\u05e8\u05d4 ...",
     "devsavant|||mobile software engineer in test",
+    "developer who no longer|||ai engineer at developer who no longer",
     "deloitte||||senior cloud finops engineer",
     "deloitte||||junior cloud finops engineer",
     "deloitte||||jobs at deloitte - comeet",
@@ -2149,7 +2155,13 @@
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026": "2026-03-20T13:29:00.061549+00:00",
     "nebius|||ai engineer at nebius": "2026-03-21T09:02:58.043862+00:00",
     "your data residency strategy|||cloud engineer at your data residency strategy": "2026-03-21T13:25:21.119061+00:00",
-    "that|||ai engineer at that": "2026-03-21T13:25:21.119061+00:00"
+    "that|||ai engineer at that": "2026-03-21T13:25:21.119061+00:00",
+    "unknown|||sr staff site reliability engineer": "2026-03-22T07:23:05.003881+00:00",
+    "unknown|||senior devops engineer": "2026-03-22T07:23:05.003881+00:00",
+    "unknown|||automation & cloud systems engineer": "2026-03-22T07:23:05.003881+00:00",
+    "why every startup|||ai engineer at why every startup": "2026-03-22T07:23:05.003881+00:00",
+    "your company|||ai engineer at your company": "2026-03-22T07:23:05.003881+00:00",
+    "developer who no longer|||ai engineer at developer who no longer": "2026-03-22T07:23:05.003881+00:00"
   },
-  "updated": "2026-03-21T13:25:21.142764+00:00"
+  "updated": "2026-03-22T07:23:05.028067+00:00"
 }
