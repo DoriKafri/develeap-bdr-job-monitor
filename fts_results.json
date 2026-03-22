@@ -670,5 +670,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-22T16:52:42Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Everyone assumes the biggest hiring challenge today is AI engineers. But in real conversations with founders the problem",
+    "url": "https://www.linkedin.com/posts/vitalyvystavnoy_hiring-mobiledevelopment-techrecruitment-activity-7439295906773921792-5TSw",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/vitalyvystavnoy/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T20:49:15Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We're #hiring a new Senior Frontend / Full-Stack Developer in Tel Aviv District. Apply today or share this post with you",
+    "url": "https://www.linkedin.com/posts/adgeai_hiring-activity-7436740116250955776-YdRx",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/adgeai/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T20:49:15Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Israeli tech firms continue hiring hundreds of engineers and AI specialists despite the war with Iran. Candidates resume",
+    "url": "https://www.linkedin.com/posts/beamstart_talent-amid-conflict-israeli-tech-firms-activity-7439699615433764865-84Df",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/beamstart/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T20:49:15Z"
   }
 ]
