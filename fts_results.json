@@ -658,5 +658,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-22T14:51:31Z"
+  },
+  {
+    "title": "Cloud Engineer at Post Europe",
+    "snippet": "Europe needs a Tech Group — a dedicated body of ministers, modeled on the ... cloud computing, and global connectivity. ",
+    "url": "https://www.linkedin.com/posts/cristina-vanberghen-8546848b_cybersecurity-eucyberact-cyberresilience-activity-7436732665577410560-Kpv6",
+    "company": "Post Europe",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Cristina Vanberghen",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/cristina-vanberghen-8546848b/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-22T16:52:42Z"
   }
 ]
