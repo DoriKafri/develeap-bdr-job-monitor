@@ -2496,7 +2496,6 @@ GREENHOUSE_BOARD_SLUGS = {
     "redis": "Redis"
     "cyberark": "cyberark",
     "monday.com": "mondaycom",
-    "mobileye": "mobileye",
     "checkpoint": "checkpoint",
     "cellebrite": "cellebrite",
     "tufin": "tufin",
@@ -3020,11 +3019,14 @@ def scrape_job_page(url: str) -> dict:
         # 3. Check for multiple job listing links on the page (strong signal of a career page)
         if not result["is_career_page"]:
             # Count distinct job links on the page (Greenhouse pattern: /jobs/\d+)
-            if 'greenhouse.io' in (final_url or url).lower():
-                job_links = set(re.findall(r'/jobs/(\d+)', text))
-                if len(job_links) > 5:
-                    result["is_career_page"] = True
-                    log.info(f"  CAREER PAGE ({len(job_links)} job links): {url[:60]}")
+            _cur_url = (final_url or url).lower()
+            if 'greenhouse.io' in _cur_url:
+                # Only flag as career page if the URL itself is NOT a specific job listing
+                if not re.search(r'/jobs/\d+', _cur_url):
+                    job_links = set(re.findall(r'/jobs/(\d+)', text))
+                    if len(job_links) > 5:
+                        result["is_career_page"] = True
+                        log.info(f"  CAREER PAGE ({len(job_links)} job links): {url[:60]}")
 
     # Override: Greenhouse/Lever board URLs are always valid job listings, not career pages
         if result["is_career_page"] and ('greenhouse.io' in url.lower() or 'lever.co' in url.lower()):
