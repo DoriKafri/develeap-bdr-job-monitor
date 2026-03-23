@@ -2493,7 +2493,7 @@ def search_develeap_customer_fts() -> list[dict]:
 # These companies have public Greenhouse boards we can query directly via API.
 GREENHOUSE_BOARD_SLUGS = {
     "nice": "nice",
-    "redis": "Redis"
+    "redis": "Redis",
     "cyberark": "cyberark",
     "monday.com": "mondaycom",
     "checkpoint": "checkpoint",
