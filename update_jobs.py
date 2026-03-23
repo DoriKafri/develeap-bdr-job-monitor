@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#COMPANY_DOMAINS = {!/usr/bin/env python3
 """
 Develeap BDR Job Monitor — Automated Update Script
 Searches Israeli job boards, updates the HTML dashboard, deploys to Netlify,
@@ -15,7 +15,7 @@ import hashlib
 import zipfile
 import io
 import html as html_mod
-import base6
+import base
 import logging
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus, unquote, urljoin
@@ -416,8 +416,17 @@ COMPANY_DOMAINS = {
     "wiz": "wiz.io",
     "d-fend": "d-fendsolutions.com",
     "d-fend solutions": "d-fendsolutions.com",
-    "starburst": "starburstdata.com",
+    "starburst": "starburst.io",
     "buildots": "buildots.com",
+    "d fendsolutions": "d-fendsolutions.com",
+    "bright data": "brightdata.com",
+    "lusha": "lusha.com",
+    "human security": "humansecurity.com",
+    "automat-it": "automat-it.com",
+    "meta": "meta.com",
+    "google deepmind": "deepmind.google",
+    "lemonade": "lemonade.com",
+    "coralogix": "coralogix.com",
 }
 
 def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
@@ -1326,6 +1335,21 @@ SEARCH_QUERIES = [
     "site:jobs.lever.co/starburstdata",
     "Data Engineer Israel hiring site:linkedin.com/jobs",
     "SRE Site Reliability Engineer Israel hiring site:linkedin.com/jobs",
+    "site:boards.greenhouse.io bright data Israel",
+    "site:boards.greenhouse.io lusha Israel",
+    "site:boards.greenhouse.io human security Israel",
+    "site:boards.greenhouse.io starburst Israel",
+    "site:boards.greenhouse.io buildots Israel",
+    "site:boards.greenhouse.io coralogix Israel",
+    "site:boards.greenhouse.io lemonade Israel",
+    "site:boards.greenhouse.io meta Israel",
+    "Automat-it DevOps Israel",
+    "Google DeepMind engineer Israel",
+    "Meta infrastructure engineer Israel Tel Aviv",
+    "Bright Data DevOps Israel",
+    "NVIDIA MLOps Israel",
+    "Payoneer DevOps Israel site:linkedin.com",
+    "Mobileye DevOps Israel site:linkedin.com",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -2469,7 +2493,7 @@ def search_develeap_customer_fts() -> list[dict]:
 # These companies have public Greenhouse boards we can query directly via API.
 GREENHOUSE_BOARD_SLUGS = {
     "nice": "nice",
-    "redis": "Redis",
+    "redis": "Redis"
     "cyberark": "cyberark",
     "monday.com": "mondaycom",
     "mobileye": "mobileye",
@@ -2490,11 +2514,19 @@ GREENHOUSE_BOARD_SLUGS = {
     "torq": "torq",
     "grafana labs": "grafanalabs",
     "pagaya": "pagaya",
+    "brightdata": "brightdata",
+    "humansecurity": "humansecurity",
+    "starburst": "starburst",
+    "buildots": "buildots",
+    "lusha": "lusha",
+    "lemonade": "lemonade",
+    "coralogix": "coralogix",
 }
 
 LEVER_BOARD_SLUGS = {
     "cloudinary": "cloudinary",
     "d-fend solutions": "d-fendsolutions",
+    "automat-it": "automat-it",
 }
 
 # Israel location indicators for Greenhouse board filtering
