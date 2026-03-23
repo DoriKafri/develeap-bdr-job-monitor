@@ -1,4 +1,4 @@
-#COMPANY_DOMAINS = {!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Develeap BDR Job Monitor — Automated Update Script
 Searches Israeli job boards, updates the HTML dashboard, deploys to Netlify,
@@ -2526,6 +2526,7 @@ LEVER_BOARD_SLUGS = {
     "cloudinary": "cloudinary",
     "d-fend solutions": "d-fendsolutions",
     "automat-it": "automat-it",
+    "payoneer": "payoneer",
 }
 
 # Israel location indicators for Greenhouse board filtering
