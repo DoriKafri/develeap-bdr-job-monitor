@@ -15,7 +15,7 @@ import hashlib
 import zipfile
 import io
 import html as html_mod
-import base
+import base64
 import logging
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus, unquote, urljoin
