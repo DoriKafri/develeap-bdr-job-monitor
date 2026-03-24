@@ -1195,6 +1195,34 @@ COMPANY_STAKEHOLDERS = {
     ],
 }
 
+# ── Manual Jobs ──────────────────────────────────────────────────────────────
+# Jobs that were shared manually (e.g. by the sales team) and may not appear
+# in SerpApi results.  They are injected into new_jobs before merge so they
+# go through the same dedup / scrape / age-check pipeline as everything else.
+MANUAL_JOBS = [
+    {
+        "url": "https://www.linkedin.com/jobs/view/4342809696/",
+        "title": "DevOps Engineer",
+        "company": "Natural Intelligence",
+        "location": "Tel Aviv, Israel",
+        "source": "linkedin",
+    },
+    {
+        "url": "https://www.linkedin.com/jobs/view/4384850189/",
+        "title": "DevOps Engineer",
+        "company": "Unilink Ltd.",
+        "location": "Holon, Israel",
+        "source": "linkedin",
+    },
+    {
+        "url": "https://www.linkedin.com/jobs/view/4379860956/",
+        "title": "Senior DevOps Engineer",
+        "company": "AppCard",
+        "location": "Hod HaSharon, Israel",
+        "source": "linkedin",
+    },
+]
+
 SEARCH_QUERIES = [
     # LinkedIn individual job listings (highest quality)
     "site:linkedin.com/jobs/view DevOps Engineer Israel",
@@ -6345,6 +6373,51 @@ def main():
             j["isPastCustomer"] = is_develeap_past_customer(fixed)
             j["stakeholders"] = _get_stakeholders(fixed)
             j["logo"] = _get_company_logo(fixed, url, j.get("title", ""))
+
+    # 3c. Inject manually-shared jobs (from sales team, WhatsApp, etc.)
+    if MANUAL_JOBS:
+        for mj in MANUAL_JOBS:
+            url = mj["url"]
+            # Skip if already in new_jobs (found by SerpApi this run)
+            if any(url in nj.get("sourceUrl", "") for nj in new_jobs):
+                log.info(f"  Manual job already in new_jobs: {mj['title'][:50]}")
+                continue
+            # Skip if already in existing dashboard
+            if any(url in ej.get("sourceUrl", "") for ej in existing):
+                log.info(f"  Manual job already in dashboard: {mj['title'][:50]}")
+                continue
+            today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            company = mj.get("company", "Unknown")
+            location = mj.get("location", "Israel")
+            source = mj.get("source", "linkedin")
+            title = mj["title"]
+            job_id = hashlib.md5(url.encode()).hexdigest()[:8]
+            job = {
+                "id": job_id,
+                "title": title,
+                "subtitle": "",
+                "company": company,
+                "companyIndustry": "",
+                "location": location,
+                "locationSlug": location.lower().replace(" ", "-"),
+                "source": source,
+                "sourceUrl": url,
+                "category": detect_category(title, "") or "devops",
+                "posted": today_str,
+                "isNew": True,
+                "isDeveleapCustomer": is_develeap_customer(company),
+                "isPastCustomer": is_develeap_past_customer(company),
+                "description": "",
+                "skills": [],
+                "stakeholders": _get_stakeholders(company),
+                "logo": _get_company_logo(company, url, title),
+                "ftsJobUrl": "",
+                "_first_seen": today_str,
+                "_manual": True,
+            }
+            new_jobs.append(job)
+            log.info(f"  Injected manual job: {title} at {company}")
+        log.info(f"After manual injection: {len(new_jobs)} total new jobs")
 
     # 4. Merge and identify new listings
     merged, truly_new = merge_jobs(existing, new_jobs)
