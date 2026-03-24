@@ -2816,8 +2816,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-24T07:45:13Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 115, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 1305, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 62, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 833, "error": ""}];
+let LAST_UPDATED = "2026-03-24T09:34:34Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 179, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 827, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 58, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 11247, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2841,6 +2841,15 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -2849,15 +2858,6 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -2916,7 +2916,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=3f43ec1327ed02da",
     "category": "sre",
     "posted": "2026-03-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Site Reliability Engineer | AI Infrastructure, TLV Location: Tel Aviv, Israel (Hybrid, 3 days in-office) Reports to: Head of AI Solutions and Innovations ...",
@@ -2938,7 +2938,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=e0f4555eb8e6ce8c",
     "category": "sre",
     "posted": "2026-03-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "תיאור משרה מלא. Tel Aviv, Tel Aviv, Israel IT Ref ID: JR-005017. Our Mission ... Review for Site Reliability Engineer at Palo Alto Networks, תל אביב -יפו, TA.",
@@ -2964,6 +2964,69 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://cdn.brandfetch.io/idfPYio-v-/w/400/h/400/theme/dark/icon.jpeg",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-24"
+  },
+  {
+    "id": "e434a1a8",
+    "title": "L3 Support Engineer",
+    "subtitle": "Our employees work at the cutting edge of AI cloud infrastructure alongside some of the most experienced and innovative leaders and engineers in the field.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=20088b155a94fcb1",
+    "category": "cloud",
+    "posted": "2026-03-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Our employees work at the cutting edge of AI cloud infrastructure alongside some of the most experienced and innovative leaders and engineers in the field.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-24"
+  },
+  {
+    "id": "c064be3a",
+    "title": "Senior AI Engineer - AI Developer Workflows @ Datadog",
+    "subtitle": "Datadog - Tel Aviv, Israel. Open position found via Greenhouse boards API.",
+    "company": "Datadoghq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://careers.datadoghq.com/detail/7097751/?gh_jid=7097751",
+    "category": "ai",
+    "posted": "2026-03-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Datadog - Tel Aviv, Israel. Open position found via Greenhouse boards API.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Olivier Pomel",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/olivierpomel/",
+        "source": "LinkedIn",
+        "email": "olivier@datadoghq.com",
+        "connectMsg": "Hi Olivier, I noticed Datadoghq is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Olivier! I wanted to share how Develeap helps companies like Datadoghq accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Alexis Le-Quoc",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/alexislequoc/",
+        "source": "LinkedIn",
+        "email": "alexis@datadoghq.com",
+        "connectMsg": "Hi Alexis, I noticed Datadoghq is hiring a Senior AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Alexis! I wanted to share how Develeap helps companies like Datadoghq accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=datadoghq.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-24"
   },
@@ -4672,7 +4735,7 @@ let ALL_JOBS = [
     "id": "47297ecd",
     "title": "LLM Engineer",
     "subtitle": "Experience with LLM evaluations. Experience with Conversational AI. Experience in Data Science or MLOps. Experience in software architecture design. Experience ...",
-    "company": "Workday",
+    "company": "Unknown",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -4718,7 +4781,7 @@ let ALL_JOBS = [
         "followUpMsg": "Thanks for connecting, Boaz! I wanted to share how Develeap helps companies like IAI - Israel Aerospace Industries accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=iai.co.il&sz=128",
+    "logo": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-19"
   },

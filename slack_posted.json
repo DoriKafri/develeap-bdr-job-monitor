@@ -210,6 +210,7 @@
     "unknown|||mlops engineer",
     "unknown|||machine learning platform engineer - \u05e0\u05ea\u05e0\u05d9\u05d4, \u05de\u05d7\u05d5\u05d6 \u05d4\u05de\u05e8\u05db\u05d6",
     "unknown|||machine learning engineer",
+    "unknown|||l3 support engineer",
     "unknown|||junior cloud finops engineer",
     "unknown|||it infrastructure engineer",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
@@ -981,6 +982,7 @@
     "datadog|||senior software engineer - ide ai experiences - llm",
     "datadog|ai|senior software engineer - ide ai experiences - llm ...|2026-03-04",
     "datadog|ai|senior software engineer - ide ai experiences - llm ...",
+    "datadoghq|||senior ai engineer - ai developer workflows @ datadog",
     "d fendsolutions|||senior devops engineer",
     "cymulate||||job application for ai engineer at cymulate",
     "cymulate|||job application for ai engineer at cymulate|2026-02-27",
@@ -2187,7 +2189,9 @@
     "cloudinary|||senior devops engineer": "2026-03-22T21:28:51.983763+00:00",
     "d fendsolutions|||senior devops engineer": "2026-03-22T21:28:51.983763+00:00",
     "unknown|||site reliability engineer | ai infrastructure": "2026-03-24T07:45:14.051183+00:00",
-    "palo alto networks|||senior sre (it infrastructure)": "2026-03-24T07:45:14.051183+00:00"
+    "palo alto networks|||senior sre (it infrastructure)": "2026-03-24T07:45:14.051183+00:00",
+    "unknown|||l3 support engineer": "2026-03-24T09:34:35.042400+00:00",
+    "datadoghq|||senior ai engineer - ai developer workflows @ datadog": "2026-03-24T09:34:35.042400+00:00"
   },
-  "updated": "2026-03-24T07:45:14.075523+00:00"
+  "updated": "2026-03-24T09:34:35.067788+00:00"
 }
