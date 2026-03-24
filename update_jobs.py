@@ -1206,6 +1206,8 @@ _BLOCKED_URLS = {
     "https://www.linkedin.com/posts/joachim-timlon-93bbb324_what-will-be-humans-role-in-the-agentic-activity-7439997437718691840-eAmW",
     # Arek Skuza / SkuzaAI — conference recap about AI sustainability
     "https://www.linkedin.com/posts/arekskuza_during-last-weeks-tech-titans-ai-forum-event-activity-7439759274685308928-Y2Wt",
+    # Krishna B Kumaar — geopolitical/tech commentary, not a job listing
+    "https://www.linkedin.com/posts/krishna-b-kumaar-2b8298aa_%3F%3F%3F%3F-%3F%3F%3F-%3F-%3F%3F%3F%3F%3F-%3F%3F%3F%3F%3F-activity-7437902686613581825--ucC",
 }
 
 # ── Manual Jobs ──────────────────────────────────────────────────────────────
