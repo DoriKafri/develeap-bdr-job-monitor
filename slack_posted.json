@@ -217,6 +217,7 @@
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown|||finops engineer",
+    "unknown|||field deploy engineer",
     "unknown|||dsp & ai development engineer",
     "unknown|||devops team leader, israel",
     "unknown|||devops team lead",
@@ -250,6 +251,7 @@
     "unity|||senior devops engineer, data platform",
     "unity|data|senior devops engineer, data platform|2026-03-04",
     "unity|data|senior devops engineer, data platform",
+    "unilink ltd.|||devops engineer",
     "unframe||||job application for applied ai engineer at unframe",
     "unframe|||job application for full stack software engineer at unframe",
     "unframe|||job application for applied ai engineer at unframe|2026-03-04",
@@ -1242,6 +1244,7 @@
     "apple|||ai engineer at apple",
     "applai|||automation & agentic ai student",
     "appcharge|||senior backend engineer",
+    "appcard|||senior devops engineer",
     "apiiro|||job application for senior devops engineer at apiiro",
     "apheris|||ai engineer at apheris",
     "amazon web services aws|||software development engineer, aws agentic ai",
@@ -2193,7 +2196,10 @@
     "palo alto networks|||senior sre (it infrastructure)": "2026-03-24T07:45:14.051183+00:00",
     "unknown|||l3 support engineer": "2026-03-24T09:34:35.042400+00:00",
     "datadoghq|||senior ai engineer - ai developer workflows @ datadog": "2026-03-24T09:34:35.042400+00:00",
-    "unknown|||senior machine learning platform engineer": "2026-03-24T14:00:07.145651+00:00"
+    "unknown|||senior machine learning platform engineer": "2026-03-24T14:00:07.145651+00:00",
+    "unknown|||field deploy engineer": "2026-03-24T15:39:35.460826+00:00",
+    "unilink ltd.|||devops engineer": "2026-03-24T15:39:35.460826+00:00",
+    "appcard|||senior devops engineer": "2026-03-24T15:39:35.460826+00:00"
   },
-  "updated": "2026-03-24T14:00:07.170658+00:00"
+  "updated": "2026-03-24T15:39:35.486061+00:00"
 }
