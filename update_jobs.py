@@ -1195,6 +1195,19 @@ COMPANY_STAKEHOLDERS = {
     ],
 }
 
+# ── Blocked URLs ─────────────────────────────────────────────────────────────
+# LinkedIn FTS posts that are NOT job listings (thought-leadership, opinion
+# pieces, etc.) but match search keywords.  Checked in merge_jobs to prevent
+# them from being re-added after manual removal.
+_BLOCKED_URLS = {
+    # Brooks-Keret CFO as a Service — thought-leadership about AI replacing processes
+    "https://www.linkedin.com/posts/brooks-keret_ai-startups-fintech-activity-7439929565147332608-_vOy",
+    # Joachim Timlon — academic post about agentic AI in organizations
+    "https://www.linkedin.com/posts/joachim-timlon-93bbb324_what-will-be-humans-role-in-the-agentic-activity-7439997437718691840-eAmW",
+    # Arek Skuza / SkuzaAI — conference recap about AI sustainability
+    "https://www.linkedin.com/posts/arekskuza_during-last-weeks-tech-titans-ai-forum-event-activity-7439759274685308928-Y2Wt",
+}
+
 # ── Manual Jobs ──────────────────────────────────────────────────────────────
 # Jobs that were shared manually (e.g. by the sales team) and may not appear
 # in SerpApi results.  They are injected into new_jobs before merge so they
@@ -5366,6 +5379,12 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     if before_agg != len(existing):
         log.info(f"  Removed {before_agg - len(existing)} aggregator pages from existing jobs")
 
+    # Remove manually-blocked URLs (false positive FTS posts, etc.)
+    before_blocked = len(existing)
+    existing = [j for j in existing if j.get("sourceUrl", "") not in _BLOCKED_URLS]
+    if before_blocked != len(existing):
+        log.info(f"  Removed {before_blocked - len(existing)} blocked URLs from existing jobs")
+
     # Remove jobs with empty or broken URLs
     before_url = len(existing)
     existing = [j for j in existing if j.get("sourceUrl", "").startswith("http")]
@@ -5442,7 +5461,7 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
     # Re-check existing listings — remove closed, stale (>14d), and non-Israel
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cleaned = []
-    removed_urls = set()  # Track URLs of removed jobs to prevent re-adding as "new"
+    removed_urls = set(_BLOCKED_URLS)  # Seed with manually-blocked URLs + track removals
     for j in existing:
         # Skip all cleanup checks for mock/test listings
         if j.get("_isMock"):
