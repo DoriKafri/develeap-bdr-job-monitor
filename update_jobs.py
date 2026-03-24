@@ -1350,6 +1350,14 @@ SEARCH_QUERIES = [
     "NVIDIA MLOps Israel",
     "Payoneer DevOps Israel site:linkedin.com",
     "Mobileye DevOps Israel site:linkedin.com",
+    "FinOps Engineer Israel site:indeed.com",
+    "Cloud FinOps Israel site:linkedin.com",
+    "FinOps Analyst Israel site:indeed.com",
+    "Cloud Cost Optimization Israel",
+    "FinOps Manager Israel site:linkedin.com",
+    "Datadog DevOps Israel",
+    "Palantir DevOps Israel",
+    "CrowdStrike DevOps Israel",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -2520,6 +2528,7 @@ GREENHOUSE_BOARD_SLUGS = {
     "lusha": "lusha",
     "lemonade": "lemonade",
     "coralogix": "coralogix",
+    "datadog": "datadog",
 }
 
 LEVER_BOARD_SLUGS = {
@@ -2527,6 +2536,7 @@ LEVER_BOARD_SLUGS = {
     "d-fend solutions": "d-fendsolutions",
     "automat-it": "automat-it",
     "payoneer": "payoneer",
+    "palantir": "palantir",
 }
 
 # Israel location indicators for Greenhouse board filtering
