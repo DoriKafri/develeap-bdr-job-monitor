@@ -255,9 +255,9 @@ COMPANY_LOGO_OVERRIDES = {
     "elbit": "https://cdn.brandfetch.io/idC9T5H0p4/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1773091597994",
     "palo alto networks": "https://cdn.brandfetch.io/idfPYio-v-/w/400/h/400/theme/dark/icon.jpeg",
     "palo alto": "https://cdn.brandfetch.io/idfPYio-v-/w/400/h/400/theme/dark/icon.jpeg",
-        "iai": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
-            "israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
-                "iai - israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
+    "iai": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
+    "israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
+    "iai - israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
 }
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
@@ -4314,6 +4314,17 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
         "mastercard": "Mastercard",
         "amat": "Applied Materials",
         "salesforce": "Salesforce",
+        # Comeet slugs
+        "hibob": "HiBob",
+        "nextta": "Nextta",
+        "d-fend": "D-Fend Solutions",
+        "dfend": "D-Fend Solutions",
+        "fiverr": "Fiverr",
+        "varonis": "Varonis",
+        "outbrain": "Outbrain",
+        "similarweb": "SimilarWeb",
+        "synamedia": "Synamedia",
+        "guesty": "Guesty",
     }
 
     # Decode URL-encoded characters (e.g. Hebrew %D7%90 → א) so all
