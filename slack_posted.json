@@ -182,6 +182,7 @@
     "unknown|||software ai engineer",
     "unknown|||soc test automation and infrastructure engineer, platforms|2026-03-06",
     "unknown|||soc test automation and infrastructure engineer, platforms",
+    "unknown|||site reliability engineer | ai infrastructure",
     "unknown|||site reliability engineer",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
@@ -517,6 +518,7 @@
     "paragon|||paragon site reliability engineer (sre)",
     "pango|||senior devops engineer",
     "pango|||devex platform engineer",
+    "palo alto networks|||senior sre (it infrastructure)",
     "palantir|||palantir technologies - administrative business partner",
     "palantir|||forward deployed security engineer - us government",
     "orchid|||senior ai engineer",
@@ -2183,7 +2185,9 @@
     "fireblocks|||application security engineer @ fireblocks": "2026-03-22T21:28:51.983763+00:00",
     "cloudinary|||senior data engineer - platform": "2026-03-22T21:28:51.983763+00:00",
     "cloudinary|||senior devops engineer": "2026-03-22T21:28:51.983763+00:00",
-    "d fendsolutions|||senior devops engineer": "2026-03-22T21:28:51.983763+00:00"
+    "d fendsolutions|||senior devops engineer": "2026-03-22T21:28:51.983763+00:00",
+    "unknown|||site reliability engineer | ai infrastructure": "2026-03-24T07:45:14.051183+00:00",
+    "palo alto networks|||senior sre (it infrastructure)": "2026-03-24T07:45:14.051183+00:00"
   },
-  "updated": "2026-03-22T21:28:52.009278+00:00"
+  "updated": "2026-03-24T07:45:14.075523+00:00"
 }
