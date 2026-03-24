@@ -766,5 +766,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-24T16:52:26Z"
+  },
+  {
+    "title": "Security Engineer",
+    "snippet": "... hiring and Wiz, officially approved This kind of momentum doesn't happen ... DevSecOps Jonathan Gagne - F8th Inc. JS",
+    "url": "https://www.linkedin.com/posts/danielrecanati_a-very-strong-week-for-israels-tech-ecosystem-activity-7440030907199291392-10O9",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/danielrecanati/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-24T22:55:44Z"
+  },
+  {
+    "title": "Cloud Engineer at where Claude",
+    "snippet": "This is an extension of my previous post, where Claude is hiring ... #ApplicationSecurity #CloudSecurity #DevSecOps #Sof",
+    "url": "https://www.linkedin.com/posts/iyonsi-israel-123b72b0_the-modern-software-engineer-0520-at-activity-7439574870994354176-E-sG",
+    "company": "where Claude",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Iyonsi Israel",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/iyonsi-israel-123b72b0/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-24T22:55:44Z"
   }
 ]
