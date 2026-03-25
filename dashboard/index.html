@@ -2818,8 +2818,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-25T09:33:29Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 215, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 14433, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 122, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 3895, "error": ""}];
+let LAST_UPDATED = "2026-03-25T13:59:05Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 75, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 2630, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 40, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 1974, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2843,15 +2843,6 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -2860,6 +2851,15 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -2940,7 +2940,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=99ce8345c3ad0ef4",
     "category": "data",
     "posted": "2026-03-25",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "This is a hands-on data engineering role, focused on designing, implementing, and maintaining reliable data flows for analytics and machine learning.",
@@ -2951,60 +2951,26 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-25"
   },
   {
-    "id": "491196c3",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Unilink Ltd.",
+    "id": "de5737d2",
+    "title": "Team Lead (VP) - Citi Integrated Digital Assets Platform",
+    "subtitle": "Job Overview. The Citi Integrated Digital Assets Platform Engineering Team Lead must be a highly motivated and proactive hands-on software team ...",
+    "company": "Team Lead (VP)",
     "companyIndustry": "",
-    "location": "Holon, Israel",
-    "locationSlug": "holon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=e1b2a00bae6cc58e",
+    "category": "platform",
     "posted": "2026-03-25",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
+    "description": "Job Overview. The Citi Integrated Digital Assets Platform Engineering Team Lead must be a highly motivated and proactive hands-on software team ...",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=unilinkltd.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=teamleadvp.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-03-25",
-    "_manual": true
-  },
-  {
-    "id": "790d603d",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "",
-    "company": "AppCard",
-    "companyIndustry": "",
-    "location": "Hod HaSharon, Israel",
-    "locationSlug": "hod-hasharon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
-    "category": "devops",
-    "posted": "2026-03-25",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yair Goldfinger",
-        "title": "CEO & Founder",
-        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Yair, I noticed AppCard is hiring a Senior DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yair! I wanted to share how Develeap helps companies like AppCard accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-25",
-    "_manual": true
+    "_first_seen": "2026-03-25"
   },
   {
     "id": "f8cea915",
@@ -3624,6 +3590,47 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=d-fendsolutions.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-22"
+  },
+  {
+    "id": "ae7f5f0f",
+    "title": "DevOps Engineer",
+    "subtitle": "",
+    "company": "Natural Intelligence",
+    "companyIndustry": "",
+    "location": "Tel Aviv, Israel",
+    "locationSlug": "tel-aviv-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
+    "category": "devops",
+    "posted": "2026-03-22",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nesia Fishman",
+        "title": "Senior Talent Acquisition @Natural intelligence",
+        "linkedin": "https://il.linkedin.com/in/nesia-fishman-9b7410a7",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Nesia, I noticed Natural Intelligence is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Nesia! I wanted to share how Develeap helps companies like Natural Intelligence accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
+        "name": "Greg Lavender",
+        "title": "CTO & SVP",
+        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Greg, I noticed Natural Intelligence is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Natural Intelligence accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=naturalintelligence.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-24"
   },
   {
     "id": "47616593",
@@ -5214,47 +5221,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=motorola.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-19"
-  },
-  {
-    "id": "ae7f5f0f",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Natural Intelligence",
-    "companyIndustry": "",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
-    "category": "devops",
-    "posted": "2026-03-18",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Nesia Fishman",
-        "title": "Senior Talent Acquisition @Natural intelligence",
-        "linkedin": "https://il.linkedin.com/in/nesia-fishman-9b7410a7",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Nesia, I noticed Natural Intelligence is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Nesia! I wanted to share how Develeap helps companies like Natural Intelligence accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Greg Lavender",
-        "title": "CTO & SVP",
-        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Greg, I noticed Natural Intelligence is hiring a DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Greg! I wanted to share how Develeap helps companies like Natural Intelligence accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=naturalintelligence.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-24"
   },
   {
     "id": "a89b532a",
