@@ -198,6 +198,7 @@ _INDEED_JK_SEED: dict = {
     "d954128d73966629": "NVIDIA",
     "1911add4ce480a7d": "Red River",
     "c004fd7a3d1c6772": "IAI - Israel Aerospace Industries",
+    "e1b2a00bae6cc58e": "Citi",
 }
 
 _INDEED_JK_CACHE: dict = {}   # {jk: {"company": str, "updated": "YYYY-MM-DD"}}
@@ -291,6 +292,8 @@ COMPANY_DOMAINS = {
     "check point software": "checkpoint.com",
     "checkpoint software": "checkpoint.com",
     "palo alto networks": "paloaltonetworks.com",
+    "citi": "citi.com",
+    "citigroup": "citi.com",
     "classiq": "classiq.io",
     "cloudinary": "cloudinary.com",
     "codevalue": "codevalue.net",
@@ -399,6 +402,9 @@ COMPANY_DOMAINS = {
     "tikalk": "tikalk.com",
     "transmit security": "transmitsecurity.com",
     "unframe": "unframe.com",
+    "unilink": "unilink.co.il",
+    "unilink ltd": "unilink.co.il",
+    "unilink ltd.": "unilink.co.il",
     "upstream security": "upstream.auto",
     "upstream": "upstream.auto",
     "varonis": "varonis.com",
@@ -4344,7 +4350,7 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
         "quanthealth": "Quant Health",
         "aquasec": "Aqua Security",
         # Comeet slugs
-        "somekhchaikin": "Somekh Chaikin",  # KPMG Israel affiliate
+        "somekhchaikin": "KPMG Israel",  # KPMG Israel affiliate (Somekh Chaikin)
         "comm-it": "CommIT",
         "vastdata": "Vast Data",
         "biocatch": "BioCatch",
@@ -5189,6 +5195,7 @@ COMPANY_ALIASES = {
     "tikalk":               "Tikal",
     "tikal":                "Tikal",
     "somekhchaikin":        "KPMG Israel",
+    "somekh chaikin":       "KPMG Israel",
     "kpmg":                 "KPMG Israel",
     "kpmg israel":          "KPMG Israel",
     "intuit israel":        "Intuit",
