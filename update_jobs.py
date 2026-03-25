@@ -1302,6 +1302,55 @@ SEARCH_QUERIES = [
     "Data Platform Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "MLOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
     "DataOps Engineer Israel site:lever.co OR site:greenhouse.io OR site:jobs.ashbyhq.com",
+    # Workable (popular ATS, no public board API without auth)
+    "DevOps Engineer Israel site:apply.workable.com",
+    "Cloud Engineer Israel site:apply.workable.com",
+    "SRE Israel site:apply.workable.com",
+    "AI Engineer Israel site:apply.workable.com",
+    "Platform Engineer Israel site:apply.workable.com",
+    "Infrastructure Engineer Israel site:apply.workable.com",
+    "Data Engineer Israel site:apply.workable.com",
+    # Teamtailor (auth required for API)
+    "DevOps Engineer Israel site:career.teamtailor.com OR site:careers.teamtailor.com",
+    "Cloud Engineer Israel site:career.teamtailor.com OR site:careers.teamtailor.com",
+    "SRE Israel site:career.teamtailor.com OR site:careers.teamtailor.com",
+    "AI Engineer Israel site:career.teamtailor.com OR site:careers.teamtailor.com",
+    # SmartRecruiters
+    "DevOps Engineer Israel site:jobs.smartrecruiters.com",
+    "Cloud Engineer Israel site:jobs.smartrecruiters.com",
+    "SRE Israel site:jobs.smartrecruiters.com",
+    "AI Engineer Israel site:jobs.smartrecruiters.com",
+    "Platform Engineer Israel site:jobs.smartrecruiters.com",
+    "Data Engineer Israel site:jobs.smartrecruiters.com",
+    # Recruitee
+    "DevOps Engineer Israel site:recruitee.com",
+    "Cloud Engineer Israel site:recruitee.com",
+    "AI Engineer Israel site:recruitee.com",
+    # Ashby
+    "DevOps Engineer Israel site:jobs.ashbyhq.com",
+    "Cloud Engineer Israel site:jobs.ashbyhq.com",
+    "SRE Israel site:jobs.ashbyhq.com",
+    "AI Engineer Israel site:jobs.ashbyhq.com",
+    "Data Engineer Israel site:jobs.ashbyhq.com",
+    "Platform Engineer Israel site:jobs.ashbyhq.com",
+    # BambooHR
+    "DevOps Engineer Israel site:bamboohr.com/careers",
+    "Cloud Engineer Israel site:bamboohr.com/careers",
+    # Pinpoint
+    "DevOps Engineer Israel site:pinpointhq.com",
+    "Cloud Engineer Israel site:pinpointhq.com",
+    # Breezy HR
+    "DevOps Engineer Israel site:breezy.hr",
+    "Cloud Engineer Israel site:breezy.hr",
+    # iCIMS
+    "DevOps Engineer Israel site:icims.com",
+    "Cloud Engineer Israel site:icims.com",
+    "SRE Israel site:icims.com",
+    # Israeli ATS platforms (Niloosoft/Hunter.ai, ADAM, CIVI, KopelReem)
+    "DevOps Engineer Israel site:niloosoft.com OR site:hunter.co.il",
+    "DevOps Engineer Israel site:adam.co.il OR site:adamtotal.co.il",
+    "DevOps Israel site:civi.co.il",
+    "DevOps Israel site:kopelreem.co.il",
     # Greenhouse EU job boards (some companies use job-boards.eu.greenhouse.io)
     "DevOps Engineer Israel site:job-boards.eu.greenhouse.io",
     "Platform Engineer Israel site:job-boards.eu.greenhouse.io",
@@ -2577,6 +2626,18 @@ GREENHOUSE_BOARD_SLUGS = {
     "coralogix": "coralogix",
     "datadog": "datadog",
     "tipalti": "tipalti",
+    "axonius": "axonius",
+    "lightricks": "lightricks",
+    "riskified": "riskified",
+    "yotpo": "yotpo",
+    "via": "via",
+    "cato networks": "catonetworks",
+    "orca security": "orcasecurity",
+    "placer.ai": "placerlabs",
+    "salt security": "saltsecurity",
+    "taboola": "taboola",
+    "appsflyer": "appsflyer",
+    "forter": "forter",
 }
 
 LEVER_BOARD_SLUGS = {
@@ -2585,6 +2646,7 @@ LEVER_BOARD_SLUGS = {
     "automat-it": "automat-it",
     "payoneer": "payoneer",
     "palantir": "palantir",
+    "walkme": "walkme",
 }
 
 # Israel location indicators for Greenhouse board filtering
