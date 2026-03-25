@@ -6492,11 +6492,25 @@ def main():
                 or old_company.lower() in _ats_platforms                     # ATS name as company
             )
             if _is_garbled:
-                fixed = "Unknown"
+                # Try JK cache/seed before falling back to Unknown
+                jk_match = re.search(r'[?&]jk=([a-f0-9]+)', url)
+                if jk_match and jk_match.group(1) in _INDEED_JK_CACHE:
+                    fixed = _INDEED_JK_CACHE[jk_match.group(1)]["company"]
+                elif jk_match and jk_match.group(1) in _INDEED_JK_SEED:
+                    fixed = _INDEED_JK_SEED[jk_match.group(1)]
+                else:
+                    fixed = "Unknown"
                 needs_fix = True
         # Also fix entries where company looks like a job title
         elif _is_job_title(old_company) or old_company in ("Unknown", ""):
-            fixed = extract_company(j.get("title", ""), j.get("description", ""), url)
+            # For Indeed jobs, check the JK cache first (most reliable source)
+            jk_match = re.search(r'[?&]jk=([a-f0-9]+)', url)
+            if jk_match and jk_match.group(1) in _INDEED_JK_CACHE:
+                fixed = _INDEED_JK_CACHE[jk_match.group(1)]["company"]
+            elif jk_match and jk_match.group(1) in _INDEED_JK_SEED:
+                fixed = _INDEED_JK_SEED[jk_match.group(1)]
+            else:
+                fixed = extract_company(j.get("title", ""), j.get("description", ""), url)
             if fixed != old_company:
                 needs_fix = True
 
