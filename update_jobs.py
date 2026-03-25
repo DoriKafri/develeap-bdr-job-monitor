@@ -148,7 +148,7 @@ DEVELEAP_CUSTOMERS = [
 DEVELEAP_PAST_CUSTOMERS = [
     "AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx",
     "Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat",
-    "Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech",
+    "Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Similarweb","Torq","Bright Data","Tipalti","Knostic","LedderTech",
     "mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI",
     "Rapyd","Revelator","Sentrycs","Verbit","WalkMe",
 ]
@@ -391,6 +391,7 @@ COMPANY_DOMAINS = {
     "tastewise": "tastewise.io",
     "tavily": "tavily.com",
     "torq": "torq.io",
+    "tipalti": "tipalti.com",
     "team8": "team8.vc",
     "techaviv": "techaviv.com",
     "terasky": "terasky.com",
@@ -2575,6 +2576,7 @@ GREENHOUSE_BOARD_SLUGS = {
     "lemonade": "lemonade",
     "coralogix": "coralogix",
     "datadog": "datadog",
+    "tipalti": "tipalti",
 }
 
 LEVER_BOARD_SLUGS = {
@@ -4325,6 +4327,7 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
         "similarweb": "SimilarWeb",
         "synamedia": "Synamedia",
         "guesty": "Guesty",
+        "tipalti": "Tipalti",
     }
 
     # Decode URL-encoded characters (e.g. Hebrew %D7%90 → א) so all
