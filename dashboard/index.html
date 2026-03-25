@@ -2818,8 +2818,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-24T17:41:30Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 134, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 0, "latency_ms": 15135, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 95, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 1441, "error": ""}];
+let LAST_UPDATED = "2026-03-25T06:30:40Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 152, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 5148, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 76, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 823, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2843,6 +2843,15 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [
       {
+        "name": "Shira Gorodiski Barkay",
+        "title": "Talent Acquisition &amp; Sourcing Specialist",
+        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
+        "source": "LinkedIn Job Poster",
+        "email": "",
+        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      },
+      {
         "name": "Ann Kapon",
         "title": "Talent Acquisition Specialist at Check Point Software Technologies Ltd",
         "linkedin": "https://il.linkedin.com/in/ann-kapon-3aa426208",
@@ -2851,15 +2860,6 @@ let ALL_JOBS = [
         "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGQaKfCIS9ItA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676143211949?e=2147483647&v=beta&t=CYKhVPG6Uk98JuLsaM0-q_TXB1M2HLRUL8WbrdTNhoQ",
         "connectMsg": "Hi Ann, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
         "followUpMsg": "Thanks for connecting, Ann! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Shira Gorodiski Barkay",
-        "title": "Talent Acquisition &amp; Sourcing Specialist",
-        "linkedin": "https://il.linkedin.com/in/shira-gorodiski-barkay-5a22a3132",
-        "source": "LinkedIn Job Poster",
-        "email": "",
-        "connectMsg": "Hi Shira, I noticed Check Point Software is hiring a Senior FinOps Engineer (25020) — sounds like exciting growth! I lead Develeap, an Israeli FinOps and cloud cost optimization consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shira! I wanted to share how Develeap helps companies like Check Point Software accelerate their FinOps and cloud cost optimization initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       },
       {
         "name": "Nataly Kremer",
@@ -2905,6 +2905,62 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-11"
+  },
+  {
+    "id": "491196c3",
+    "title": "DevOps Engineer",
+    "subtitle": "",
+    "company": "Unilink Ltd.",
+    "companyIndustry": "",
+    "location": "Holon, Israel",
+    "locationSlug": "holon,-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
+    "category": "devops",
+    "posted": "2026-03-25",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=unilinkltd.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-25",
+    "_manual": true
+  },
+  {
+    "id": "790d603d",
+    "title": "Senior DevOps Engineer",
+    "subtitle": "",
+    "company": "AppCard",
+    "companyIndustry": "",
+    "location": "Hod HaSharon, Israel",
+    "locationSlug": "hod-hasharon,-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
+    "category": "devops",
+    "posted": "2026-03-25",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Yair Goldfinger",
+        "title": "CEO & Founder",
+        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
+        "source": "LinkedIn",
+        "email": "",
+        "connectMsg": "Hi Yair, I noticed AppCard is hiring a Senior DevOps Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Yair! I wanted to share how Develeap helps companies like AppCard accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-25",
+    "_manual": true
   },
   {
     "id": "f8cea915",
@@ -3087,7 +3143,7 @@ let ALL_JOBS = [
     "source": "linkedin",
     "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
     "category": "devops",
-    "posted": "2026-03-23",
+    "posted": "2026-03-24",
     "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
@@ -3159,7 +3215,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-03-22"
+    "_first_seen": "2026-03-22",
+    "altSources": [
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=23fcadfaba349af6",
+        "title": "Senior DevOps Engineer"
+      }
+    ]
   },
   {
     "id": "dc9d9788",
@@ -4822,7 +4885,7 @@ let ALL_JOBS = [
     "id": "47297ecd",
     "title": "LLM Engineer",
     "subtitle": "Experience with LLM evaluations. Experience with Conversational AI. Experience in Data Science or MLOps. Experience in software architecture design. Experience ...",
-    "company": "Unknown",
+    "company": "Workday",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -5145,6 +5208,38 @@ let ALL_JOBS = [
     "_first_seen": "2026-03-19"
   },
   {
+    "id": "a89b532a",
+    "title": "Cloud Engineer at where Claude",
+    "subtitle": "This is an extension of my previous post, where Claude is hiring ... #ApplicationSecurity #CloudSecurity #DevSecOps #Sof",
+    "company": "where Claude",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/iyonsi-israel-123b72b0_the-modern-software-engineer-0520-at-activity-7439574870994354176-E-sG",
+    "category": "cloud",
+    "posted": "2026-03-17",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "This is an extension of my previous post, where Claude is hiring ... #ApplicationSecurity #CloudSecurity #DevSecOps #Sof",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Iyonsi Israel",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/iyonsi-israel-123b72b0/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi Iyonsi, I noticed where Claude is hiring a Cloud Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Iyonsi! I wanted to share how Develeap helps companies like where Claude accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=whereclaude.com&sz=128",
+    "ftsJobUrl": ""
+  },
+  {
     "id": "de08da6b",
     "title": "AI Engineer at Nebius",
     "subtitle": "... machine learning workloads. At Nebius, engineers work on large-scale GPU clusters, virtualization systems, and cloud",
@@ -5214,7 +5309,7 @@ let ALL_JOBS = [
     "id": "a4a6b130",
     "title": "Senior Generative AI Engineer (LLMs & Agents) at KPMG",
     "subtitle": "At KPMG Israel, our Generative AI delivery team leads the market in advanced AI solution delivery. We work across the full spectrum of generative AI ...",
-    "company": "KPMG Israel",
+    "company": "Somekh Chaikin",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -5234,11 +5329,11 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
-        "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Senior Generative AI Engineer (LLMs & Agents) — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Dina, I noticed Somekh Chaikin is hiring a Senior Generative AI Engineer (LLMs & Agents) — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like Somekh Chaikin accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=somekhchaikin.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-13"
   },
@@ -5432,9 +5527,53 @@ let ALL_JOBS = [
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/david-magerman-954b25174_pok%C3%A9mon-go-players-unknowingly-trained-activity-7440021703520350208-ApNT",
         "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/adlin-pertishya-7114a7221_israeli-cybersecurity-startup-jazz-raises-activity-7437372141907464192-8dO9",
+        "title": "AI Engineer"
       }
     ],
     "_first_seen": "2026-03-13"
+  },
+  {
+    "id": "950ba27a",
+    "title": "Cloud Engineer",
+    "subtitle": "Sharon Vendrov's Post. View profile for Sharon Vendrov · Sharon Vendrov. VP Cloud Infrastructure & IT ... great company.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/sharon-vendrov-91309975_sysaid-companyculture-leadership-activity-7438165806418657280-Bbp7",
+    "category": "cloud",
+    "posted": "2026-03-13",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Sharon Vendrov's Post. View profile for Sharon Vendrov · Sharon Vendrov. VP Cloud Infrastructure & IT ... great company.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Sharon Vendrov",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/sharon-vendrov-91309975/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi Sharon, I noticed Unknown is hiring a Cloud Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Sharon! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "",
+    "ftsJobUrl": "",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/eranyariv_israel-opensource-reactjs-activity-7437447944519270401-KQZ4",
+        "title": "Cloud Engineer"
+      }
+    ]
   },
   {
     "id": "6a36c10a",
@@ -5543,7 +5682,7 @@ let ALL_JOBS = [
     "id": "af7324f4",
     "title": "Data Engineer -GCP & BigQuery Expert at KPMG - Comeet",
     "subtitle": "We are looking for an experienced and hands-on Data Engineer to lead the migration of enterprise data platforms to Google Cloud Platform (GCP). In this role, ...",
-    "company": "KPMG Israel",
+    "company": "Somekh Chaikin",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -5563,11 +5702,11 @@ let ALL_JOBS = [
         "linkedin": "",
         "source": "Company Website",
         "email": "",
-        "connectMsg": "Hi Dina, I noticed KPMG Israel is hiring a Data Engineer -GCP & BigQuery Expert — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like KPMG Israel accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+        "connectMsg": "Hi Dina, I noticed Somekh Chaikin is hiring a Data Engineer -GCP & BigQuery Expert — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Dina! I wanted to share how Develeap helps companies like Somekh Chaikin accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=kpmg.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=somekhchaikin.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-12",
     "altSources": [
@@ -6087,6 +6226,11 @@ let ALL_JOBS = [
         "source": "linkedin",
         "sourceUrl": "https://www.linkedin.com/posts/regina-gafiulina_%D7%92%D7%9D-%D7%91%D7%AA%D7%A7%D7%95%D7%A4%D7%94-%D7%9E%D7%95%D7%A8%D7%9B%D7%91%D7%AA-%D7%9E%D7%9E%D7%A9%D7%99%D7%9B%D7%94-%D7%9C%D7%A9%D7%9E%D7%95%D7%A8-%D7%A2%D7%9C-%D7%A9%D7%92%D7%A8%D7%94-%D7%A9%D7%9C-activity-7436682668970516480-ZgHz",
         "title": "Security Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/danielrecanati_a-very-strong-week-for-israels-tech-ecosystem-activity-7440030907199291392-10O9",
+        "title": "Security Engineer"
       }
     ],
     "_first_seen": "2026-03-11"
@@ -6165,367 +6309,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=cisco.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-13"
-  },
-  {
-    "id": "5d335915",
-    "title": "DevOps & Infrastructure Engineer - Varonis Careers",
-    "subtitle": "We are looking for a DevOps & infrastructure Engineer to joi",
-    "company": "Varonis",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "other",
-    "sourceUrl": "https://jobs.jobvite.com/varonis-internal/job/oWPyzfwC",
-    "category": "devops",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are looking for a DevOps & infrastructure Engineer to join our Labs team. A successful candidate will join a team of ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yaki Faitelson",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/yaki-faitelson",
-        "source": "LinkedIn",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQF55EpE5VKkQA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1727093843704?e=2147483647&v=beta&t=KBm8tZPOZGhTH4ktNclOx15tQ9hkOSzq97h0SlMNwXc",
-        "connectMsg": "Hi Yaki, I noticed Varonis is hiring a DevOps & Infrastructure Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yaki! I wanted to share how Develeap helps companies like Varonis accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "David Bass",
-        "title": "EVP Engineering & CTO",
-        "linkedin": "https://www.linkedin.com/in/dave-bass-15017b4/",
-        "source": "LinkedIn",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQFSF33rNWNYSQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1661244919533?e=2147483647&v=beta&t=3Jns7rProL4ePDFBtsyfUxnZs1VgiWMKuHdDfE6Xlvk",
-        "connectMsg": "Hi David, I noticed Varonis is hiring a DevOps & Infrastructure Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, David! I wanted to share how Develeap helps companies like Varonis accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=varonis.com&sz=128",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "64a44e47",
-    "title": "Senior AI Engineer (Agentic & Platform) - Tel Aviv",
-    "subtitle": "Own features end to end - take ideas from early concept thro",
-    "company": "Traild",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/senior-ai-engineer-agentic-platform-tel-aviv-at-traild-4376787708",
-    "category": "agentic",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Own features end to end - take ideas from early concept through production. · 7+ years of professional software engineer",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Brad Smorgon",
-        "title": "Founder & CEO",
-        "linkedin": "https://au.linkedin.com/in/bradsmorgon",
-        "source": "LinkedIn",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D5603AQGQwGt86qf6Dw/profile-displayphoto-scale_200_200/B56ZpWbs29J4AY-/0/1762386693963?e=2147483647&v=beta&t=FWWjxYSzAWUh2YG8AVfVB1sgsalRknVQWuPqpXnhEcI",
-        "connectMsg": "Hi Brad, I noticed Traild is hiring a Senior AI Engineer (Agentic & Platform) — sounds like exciting growth! I lead Develeap, an Israeli Agentic AI and automation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Brad! I wanted to share how Develeap helps companies like Traild accelerate their Agentic AI and automation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=traild.com&sz=128",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "5eed00d8",
-    "title": "Transmit Security DevSecOps | Tel Aviv-Yafo ...",
-    "subtitle": "You will work closely with developers and DevOps engineers t",
-    "company": "Transmit Security",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/devsecops-at-transmit-security-4338534695",
-    "category": "security",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": true,
-    "isPastCustomer": false,
-    "description": "You will work closely with developers and DevOps engineers to help identify and remediate application and infrastructure",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Mickey Boodaei",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://il.linkedin.com/in/mickeyboodaei",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Mickey, I'm Dori from Develeap. I noticed Transmit Security is growing the team with a Transmit Security DevSecOps | Tel Aviv-Yafo ... role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Mickey! Since Develeap already works with Transmit Security, I wanted to reach out about the Transmit Security DevSecOps | Tel Aviv-Yafo ... hiring. We often help teams ramp up faster with interim DevOps & cloud engineering expertise while permanent hires onboard. Would a quick chat be useful?",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQG7wG5009f7Ww/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1625226642896?e=2147483647&v=beta&t=pZbIXQO3NqZH3v1sFF5yUqqcAN2K_Vmirw8w8Jc1Ks8"
-      },
-      {
-        "name": "Shmulik Regev",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/shmulik-regev-9085622/",
-        "source": "LinkedIn",
-        "email": "",
-        "connectMsg": "Hi Shmulik, I'm Dori from Develeap. I noticed Transmit Security is growing the team with a Transmit Security DevSecOps | Tel Aviv-Yafo ... role — great to see! As a current partner, I'd love to discuss how we can support your scaling efforts. Would love to connect.",
-        "followUpMsg": "Thanks for connecting, Shmulik! Since Develeap already works with Transmit Security, I wanted to reach out about the Transmit Security DevSecOps | Tel Aviv-Yafo ... hiring. We often help teams ramp up faster with interim DevOps & cloud engineering expertise while permanent hires onboard. Would a quick chat be useful?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=transmitsecurity.com&sz=128",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "70e7ffbf",
-    "title": "Israel Software Infrastructure Engineer",
-    "subtitle": "אימות אבטחה · Lead the development and integration of infras",
-    "company": "Applied Materials Israel",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin",
-    "sourceUrl": "https://il.linkedin.com/jobs/view/software-infrastructure-engineer-at-applied-materials-israel-4349842156",
-    "category": "devops",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "אימות אבטחה · Lead the development and integration of infrastructure components for our team. · Ensure seamless integrat",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Nir Yogev",
-        "title": "VP Engineering",
-        "linkedin": "https://www.linkedin.com/in/nir-yogev-0a2a2618/",
-        "source": "LinkedIn",
-        "email": "nir.yogev@amat.com",
-        "photo": "https://media.licdn.com/dms/image/v2/C4D03AQG7Z3Ze0FMoIg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1659897415284?e=2147483647&v=beta&t=Sbbc5WOoFiNzpR6cVaaAiHaCHkIsU5lV9A0gUc7r-H0",
-        "connectMsg": "Hi Nir, I noticed Applied Materials Israel is hiring a Israel Software Infrastructure Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Nir! I wanted to share how Develeap helps companies like Applied Materials Israel accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Anat Tzur",
-        "title": "Director of DevOps",
-        "linkedin": "https://www.linkedin.com/in/anat-tzur/",
-        "source": "LinkedIn",
-        "email": "anat.tzur@amat.com",
-        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQGTfjOLXnMJtw/profile-displayphoto-shrink_200_200/B4DZSJDtd.HcAY-/0/1737466239589?e=2147483647&v=beta&t=oUak7glGWtbSCF4qanFYbDg57NSOwbSH8zFxjoeQEbQ",
-        "connectMsg": "Hi Anat, I noticed Applied Materials Israel is hiring a Israel Software Infrastructure Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Anat! I wanted to share how Develeap helps companies like Applied Materials Israel accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appliedmaterials.com&sz=128",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "db5c1ab9",
-    "title": "AI Agent Engineer",
-    "subtitle": "We are currently looking for an AI Agent Engineer in Israel.",
-    "company": "Jobgether",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "lever",
-    "sourceUrl": "https://jobs.lever.co/jobgether/3541e2b4-2cf0-4c0a-bcc3-3830519458ab",
-    "category": "agentic",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are currently looking for an AI Agent Engineer in Israel. This role offers a unique opportunity to design, build, and",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=jobgether.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "30178717",
-    "title": "Staff Cloud Architect (Delivery) - EMEA",
-    "subtitle": "This role is based remotely in Ireland, ideally in or around",
-    "company": "DoiT International",
-    "companyIndustry": "",
-    "location": "Remote",
-    "locationSlug": "remote",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/doitintl/jobs/7657214003",
-    "category": "cloud",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "This role is based remotely in Ireland, ideally in or around the UK, Ireland, Estonia, the Netherlands, Sweden and Israe",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Vadim Solovey",
-        "title": "CTO & Managing Director",
-        "linkedin": "https://www.linkedin.com/in/vadimska/",
-        "source": "LinkedIn",
-        "email": "vadim@doit.com",
-        "connectMsg": "Hi Vadim, I noticed DoiT International is hiring a Staff Cloud Architect (Delivery) — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Vadim! I wanted to share how Develeap helps companies like DoiT International accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      },
-      {
-        "name": "Yoav Toussia-Cohen",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/yoavtc/",
-        "source": "LinkedIn",
-        "email": "yoav@doit.com",
-        "connectMsg": "Hi Yoav, I noticed DoiT International is hiring a Staff Cloud Architect (Delivery) — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Yoav! I wanted to share how Develeap helps companies like DoiT International accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=doit.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-11"
-  },
-  {
-    "id": "a24567e4",
-    "title": "Staff Data Engineer at Intuit Israel",
-    "subtitle": "Intuit Israel is hiring a Staff Data Engineer, for Intuit's ",
-    "company": "Intuit",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/shayruvio_staff-data-engineer-activity-7437227587334119425-_eGQ",
-    "category": "data",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Intuit Israel is hiring a Staff Data Engineer, for Intuit's Fintech AI ... Data Platform. 57m. Report this post; Close m",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Shay Ruvio",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/shayruvio/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "https://media.licdn.com/dms/image/v2/D4E03AQFK2n3mjeWZ6g/profile-displayphoto-scale_200_200/B4EZtCjqKVHoAY-/0/1766348204639?e=2147483647&v=beta&t=KAVm8JjmSsMT_3FBedoymnw80NDMy5e34lVQ7AreH4I",
-        "connectMsg": "Hi Shay, I noticed Intuit is hiring a Staff Data Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Shay! I wanted to share how Develeap helps companies like Intuit accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=intuit.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-10"
-  },
-  {
-    "id": "14e5ff5a",
-    "title": "Cloud Engineer",
-    "subtitle": "Bar Sagiv. MDR Analyst | MBA Cybersecurity & Forensics | AWS",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/taly-gliksman_%D7%90%D7%99%D7%9F-%D7%A0%D7%A9%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%A1%D7%A4%D7%A8-%D7%9C%D7%94%D7%99%D7%99%D7%98%D7%A7-%D7%95%D7%A1%D7%99%D7%99%D7%91%D7%A8-eran-shaham-activity-7437118508460744704-83mf",
-    "category": "cloud",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Bar Sagiv. MDR Analyst | MBA Cybersecurity & Forensics | AWS SAA | ISC2 CC | DevSecOps Certified ... Headhunter-I'm Hiri",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/taly-gliksman/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "",
-        "connectMsg": "Hi there, I noticed Unknown is hiring a Cloud Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, there! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-10",
-    "altSources": [
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/usu-the-man_google-x-leaders-in-tech-event-was-further-activity-7434513126638850048-FZHj",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/dennestorres_companies-are-training-ai-to-lie-to-you-activity-7434745873827385344-YORC",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/israel-ibok_aiautomation-businessstrategy-profitability-activity-7434493460818108418-6zqB",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/erezyalon_appsecil-appsec-owasp-activity-7434584800239177728-vrLx",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/shekinah-afolabi_i-just-saw-this-hiring-bottlenecks-has-been-activity-7436767572299173889-E9D0",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/marclouvion_the-next-generation-of-solo-entrepreneurs-activity-7435704507528859648-uXsg",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/sharon-vendrov-91309975_sysaid-companyculture-leadership-activity-7438165806418657280-Bbp7",
-        "title": "Cloud Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/eranyariv_israel-opensource-reactjs-activity-7437447944519270401-KQZ4",
-        "title": "Cloud Engineer"
-      }
-    ]
-  },
-  {
-    "id": "eed3711d",
-    "title": "Senior Devops Engineer at Remedio - Comeet",
-    "subtitle": "We are looking for a Senior DevOps Engineer to take ownership of our cloud infrastructure and help scale the systems that power our platform.",
-    "company": "Remedio",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "comeet",
-    "sourceUrl": "https://www.comeet.com/jobs/remedio/CA.000/senior-devops-engineer/D3.763",
-    "category": "devops",
-    "posted": "2026-03-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We are looking for a Senior DevOps Engineer to take ownership of our cloud infrastructure and help scale the systems that power our platform.",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Tal Peer",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/talpeer/",
-        "source": "LinkedIn",
-        "email": "tal@gytpol.com",
-        "photo": "https://media.licdn.com/dms/image/v2/C4E03AQH_BFrHQJPfGA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1625741012725?e=2147483647&v=beta&t=-jd07d9kXHEiX478aNTafpPBjlFYfRJy79r0xmPwDEs",
-        "connectMsg": "Hi Tal, I noticed Remedio is hiring a Senior Devops Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Tal! I wanted to share how Develeap helps companies like Remedio accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=gytpol.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-03-14"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====
