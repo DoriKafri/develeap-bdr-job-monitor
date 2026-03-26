@@ -391,6 +391,9 @@ COMPANY_DOMAINS = {
     "similarweb": "similarweb.com",
     "surecomp": "surecomp.com",
     "taboola": "taboola.com",
+    "tomorrow": "tomorrow.io",
+    "bluevine": "bluevine.com",
+    "bluevine israel": "bluevine.com",
     "tastewise": "tastewise.io",
     "tavily": "tavily.com",
     "torq": "torq.io",
@@ -1427,12 +1430,18 @@ SEARCH_QUERIES = [
     "Wiz Israel DevSecOps OR Cloud Security Engineer",
     "site:wiz.io/careers Israel engineer",
     "site:boards.greenhouse.io/fireblocks",
+    "site:job-boards.greenhouse.io/fireblocks",
     "site:boards.greenhouse.io/pagaya",
     "site:boards.greenhouse.io/grafanalabs",
     "site:job-boards.greenhouse.io Israel engineer",
     "site:job-boards.greenhouse.io/torq",
     "site:job-boards.greenhouse.io/jfrog",
     "site:job-boards.greenhouse.io/cloudinary",
+    "site:job-boards.greenhouse.io/armissecurity",
+    "site:boards.greenhouse.io/armissecurity",
+    "site:boards.greenhouse.io/tomorrow",
+    "site:job-boards.greenhouse.io/tomorrow",
+    "site:job-boards.greenhouse.io/bluevineisrael",
     "site:jobs.lever.co/d-fendsolutions",
     "site:jobs.lever.co/starburstdata",
     "Data Engineer Israel hiring site:linkedin.com/jobs",
@@ -4876,6 +4885,10 @@ def parse_search_results(raw_results: list[dict]) -> list[dict]:
             fts_company = j.get("company", "").strip()
             if len(fts_company) < 3 or re.match(r'^(in\s+)?\d{4}$', fts_company, re.IGNORECASE):
                 log.info(f"  Skipping FTS with invalid company name '{fts_company}': {j['title'][:50]}")
+                continue
+            # Skip FTS false positives from "...where X is hiring" phrases in post body
+            if re.match(r'^where\s+', fts_company, re.IGNORECASE):
+                log.info(f"  Skipping FTS with false-positive company '{fts_company}': {j['title'][:50]}")
                 continue
             # Fix FTS company names that are actually poster names (e.g. "Lerner's Post")
             if re.search(r"'s\s+Post$", fts_company, re.IGNORECASE):
