@@ -259,6 +259,9 @@ COMPANY_LOGO_OVERRIDES = {
     "iai": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
     "israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
     "iai - israel aerospace industries": "https://images.seeklogo.com/logo-png/44/1/israel-aerospace-industries-logo-png_seeklogo-449345.png",
+    "nice": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
+    "nice systems": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
+    "nice ltd": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
 }
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
@@ -2256,6 +2259,22 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         # (e.g. "Helen Doron", "Dell Technologies")
         if not _from_hiring_context and re.match(r'^[A-Z][a-z]+\s+[A-Z][a-z]+$', company):
             company = ""  # Likely a person name, not company
+        # Reject sentence fragments mistakenly captured as company names.
+        # These happen when the regex grabs context words before the company.
+        # e.g. "where Claude is hiring" -> company = "where Claude"
+        _SENTENCE_STARTERS = frozenset([
+            "where", "when", "this", "that", "which", "what", "how",
+            "it", "he", "she", "they", "we", "a", "an", "the",
+            "my", "our", "your", "their", "i", "you",
+        ])
+        if company and company.lower().split()[0] in _SENTENCE_STARTERS:
+            company = ""  # Sentence fragment, not a company name
+        # Reject if company name contains "claude" (AI tool reference, not a company)
+        if company and re.search(r'\bclaude\b', company, re.IGNORECASE):
+            company = ""
+        # Reject overly long company names (>40 chars = likely a sentence fragment)
+        if company and len(company) > 40:
+            company = ""
 
     # Extract job title from the post content
     job_title = ""
@@ -6346,6 +6365,50 @@ def main():
     _stakeholder_cache.clear()
 
     log.info("=== Develeap BDR Job Monitor Update ===")
+
+    # ── CRM-only fast path: skip all scraping, just refresh contacts ──
+    # Set CRM_ONLY_REGEN=1 to load existing jobs, refresh stakeholders
+    # from freshly-written crm_data.json, regenerate HTML, and deploy.
+    # Runs in ~5 min vs ~49 min for a full scrape.
+    if os.environ.get("CRM_ONLY_REGEN", "").strip() == "1":
+        log.info("CRM_ONLY_REGEN=1: skipping search/scrape, refreshing CRM contacts only")
+        if not os.path.exists(DASHBOARD_PATH):
+            log.error(f"Dashboard not found at {DASHBOARD_PATH}")
+            return
+        with open(DASHBOARD_PATH, "r", encoding="utf-8") as f:
+            _crm_html = f.read()
+        _crm_existing = load_existing_jobs(_crm_html)
+        log.info(f"Loaded {len(_crm_existing)} existing jobs for CRM refresh")
+        _crm_hidden = _load_hidden_companies()
+        if _crm_hidden:
+            _before = len(_crm_existing)
+            _crm_existing = [j for j in _crm_existing if j.get("company", "").lower() not in _crm_hidden]
+            if _before - len(_crm_existing):
+                log.info(f"  Removed {_before - len(_crm_existing)} listing(s) from hidden companies")
+        # Re-read crm_data.json into cache so _get_stakeholders sees fresh data
+        _stakeholder_cache.clear()
+        _crm_refreshed = 0
+        for _j in _crm_existing:
+            _co = _j.get("company", "")
+            if _co and _co != "Unknown":
+                _j["stakeholders"] = _get_stakeholders(_co)
+                _crm_refreshed += 1
+        log.info(f"Refreshed stakeholders for {_crm_refreshed} jobs from crm_data.json")
+        _crm_health = check_source_health()
+        _crm_updated = update_dashboard_html(_crm_html, _crm_existing, health=_crm_health)
+        with open(DASHBOARD_PATH, "w", encoding="utf-8") as f:
+            f.write(_crm_updated)
+        _docs = os.path.join(os.path.dirname(DASHBOARD_PATH), "..", "docs", "index.html")
+        os.makedirs(os.path.dirname(_docs), exist_ok=True)
+        with open(_docs, "w", encoding="utf-8") as f:
+            f.write(_crm_updated)
+        log.info("Dashboard HTML updated (CRM-only regen, dashboard/ + docs/)")
+        if deploy_to_netlify(_crm_updated):
+            log.info("\u2705 Netlify deploy successful (CRM-only regen)")
+        else:
+            log.warning("\u26a0\ufe0f  Netlify deploy failed")
+        log.info("=== CRM-only update complete ===")
+        return
 
     # ── SerpAPI quota conservation: skip alternate runs ──────────────
     # Pipeline runs 6x/day but we only need 3x/day to conserve SerpAPI quota.
