@@ -2653,6 +2653,9 @@ GREENHOUSE_BOARD_SLUGS = {
     "taboola": "taboola",
     "appsflyer": "appsflyer",
     "forter": "forter",
+    "armis": "armissecurity",
+    "tomorrow.io": "tomorrow",
+    "bluevine": "bluevineisrael",
 }
 
 LEVER_BOARD_SLUGS = {
