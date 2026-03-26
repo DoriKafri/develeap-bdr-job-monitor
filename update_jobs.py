@@ -6349,7 +6349,8 @@ def main():
     # This halves SerpAPI usage without requiring workflow file changes.
     # Remove this block after SerpAPI plan renews on 2026-04-08.
     _run_hour = datetime.now(timezone.utc).hour
-    if _run_hour in (6, 10, 14):
+    _is_manual = os.environ.get('GITHUB_EVENT_NAME', '') == 'workflow_dispatch'
+    if _run_hour in (6, 10, 14) and not _is_manual:
         log.info(f"Skipping run at UTC hour {_run_hour} to conserve SerpAPI quota (renews 2026-04-08)")
         return
 
