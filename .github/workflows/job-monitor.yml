@@ -16,7 +16,7 @@ concurrency:
 jobs:
   update-dashboard:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
 
     steps:
       - name: Checkout repository
@@ -47,6 +47,25 @@ jobs:
           DASHBOARD_PATH: dashboard/index.html
         run: python update_jobs.py
 
+      - name: Sync HubSpot CRM contacts (fix phase)
+        env:
+          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+          HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
+          DASHBOARD_PATH: dashboard/index.html
+        run: python sync_hubspot.py
+
+      - name: Re-run dashboard with fresh CRM data (re-run phase)
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
+          GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}
+          DASHBOARD_PATH: dashboard/index.html
+          CRM_ONLY_REGEN: "1"
+        run: python update_jobs.py
+
       - name: Commit updated dashboard
         run: |
           git config user.name "github-actions[bot]"
@@ -61,7 +80,7 @@ jobs:
           cp /tmp/dashboard_gen.html dashboard/index.html
           cp /tmp/docs_gen.html docs/index.html
           cp /tmp/slack_posted_gen.json slack_posted.json 2>/dev/null || true
-          git add dashboard/index.html docs/index.html slack_posted.json
+          git add dashboard/index.html docs/index.html slack_posted.json crm_data.json
           git diff --staged --quiet || git commit -m "chore: update job listings $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
 
