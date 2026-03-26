@@ -2680,6 +2680,7 @@ _GH_ROLE_KEYWORDS = [
     "cloud architect", "infrastructure", "mlops", "ai engineer", "machine learning",
     "data engineer", "devsecops", "security engineer", "finops", "agentic",
     "backend engineer", "solutions architect", "sales engineer",
+    "software architect", "full stack", "fullstack",
 ]
 
 
@@ -2719,7 +2720,7 @@ def scan_greenhouse_boards() -> list[dict]:
 
                 all_results.append({
                     "title": f"{title} @ {company_name.title()}",
-                    "snippet": f"{company_name.title()} - {location}. Open position found via Greenhouse boards API.",
+                    "snippet": f"{company_name.title()} - {location}. 0 days ago via Greenhouse API (active listing).",
                     "url": job_url,
                 })
                 log.info(f"  Greenhouse board [{slug}]: {title} | {location}")
@@ -4408,6 +4409,9 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
         "synamedia": "Synamedia",
         "guesty": "Guesty",
         "tipalti": "Tipalti",
+        "armissecurity": "Armis",
+        "bluevineisrael": "Bluevine",
+        "tomorrow": "Tomorrow.io",
     }
 
     # Decode URL-encoded characters (e.g. Hebrew %D7%90 → א) so all
