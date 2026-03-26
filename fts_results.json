@@ -826,5 +826,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-26T06:58:05Z"
+  },
+  {
+    "title": "DevOps Engineer at NVIDIA",
+    "snippet": "NVIDIA is hiring! Senior DevOps Engineer - Israel, Tel-Hai OpenShift · GitLab CI/CD · Kubernetes · Vault -if this sounds",
+    "url": "https://www.linkedin.com/posts/tomer-arbiv_senior-devops-engineer-nsv-activity-7441835635503636481-rIRn",
+    "company": "NVIDIA",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Tomer Arbiv",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/tomer-arbiv/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-26T16:53:14Z"
   }
 ]
