@@ -9959,7 +9959,7 @@ function _cleanupListingStatuses() {
   if (changed) _saveListingStatuses(obj);
 }
 
-let SOURCE_LABELS = {linkedin:'LinkedIn',linkedin_fts:'LinkedIn FTS',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',indeed:'Indeed',other:'Other'};
+let SOURCE_LABELS = {linkedin:'LinkedIn',linkedin_fts:'LinkedIn FTS',alljobs:'AllJobs',drushim:'Drushim',glassdoor:'Glassdoor',facebook:'Facebook',telegram:'Telegram',builtin:'BuiltIn',goozali:'Goozali',greenhouse:'Greenhouse',lever:'Lever',ashby:'Ashby',comeet:'Comeet',workday:'Workday',indeed:'Indeed',other:'Company Website'};
 let SOURCE_DOMAINS = {linkedin:'linkedin.com',linkedin_fts:'linkedin.com',glassdoor:'glassdoor.com',alljobs:'alljobs.co.il',drushim:'drushim.co.il',builtin:'builtin.com',goozali:'goozali.com',greenhouse:'greenhouse.io',lever:'lever.co',ashby:'ashbyhq.com',comeet:'comeet.com',workday:'workday.com',facebook:'facebook.com',telegram:'telegram.org',indeed:'indeed.com'};
 function sourceIcon(src) { const d=SOURCE_DOMAINS[src]; return d?'<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=32" alt="">':''; }
 let CAT_LABELS = {devops:'DevOps',ai:'AI/ML',agentic:'Agentic',finops:'FinOps',cloud:'Cloud & Infrastructure',security:'Security & DevSecOps',data:'Data Engineering',platform:'Platform Engineering',sre:'SRE'};
@@ -10294,6 +10294,9 @@ function toggleColFilter(col, iconEl) {
   dropdown.dataset.col = col;
   var values = getUniqueValues(col);
   var selected = columnFilters[col] || new Set(values);
+  // Compute per-value counts from base-filtered jobs
+  var valueCounts = {};
+  _getBaseFilteredJobs().forEach(function(j){ var v = getColValue(j, col); if(v) valueCounts[v] = (valueCounts[v]||0)+1; });
   dropdown.innerHTML = '<div class="col-filter-search"><input type="text" placeholder="Search..." oninput="filterColOptions(\''+col+'\',this.value)"></div>' +
     '<div class="col-filter-options" id="opts-'+col+'">' +
     values.map(function(v){
@@ -10305,7 +10308,9 @@ function toggleColFilter(col, iconEl) {
           if (domain) prefix = '<img src="https://www.google.com/s2/favicons?domain='+domain+'&sz=32" alt="" style="width:16px;height:16px;border-radius:3px;vertical-align:middle;margin-right:6px">';
         }
       }
-      return '<label class="col-filter-option" data-val="'+v+'"><input type="checkbox" '+(selected.has(v)?'checked':'')+' onchange="updateColFilterPreview(\''+col+'\')"> '+prefix+v+'</label>';
+      var cnt = valueCounts[v] || 0;
+      var countHtml = cnt ? ' <span class="src-count">'+cnt+'</span>' : '';
+      return '<label class="col-filter-option" data-val="'+v+'"><input type="checkbox" '+(selected.has(v)?'checked':'')+' onchange="updateColFilterPreview(\''+col+'\')"> '+prefix+v+countHtml+'</label>';
     }).join('') +
     '</div>' +
     '<div class="col-filter-actions">' +
