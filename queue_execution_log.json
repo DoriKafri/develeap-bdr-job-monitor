@@ -1,6 +1,6 @@
 {
-  "lastProcessed": "2026-03-27T07:09:40.277Z",
-  "processRunId": "run-1774595413266",
+  "lastProcessed": "2026-03-27T09:10:27.890Z",
+  "processRunId": "run-1774602627890",
   "dailyStats": {
     "date": "2026-03-27",
     "connectsSent": 0,
@@ -23,5 +23,5 @@
       "resetDate": "2026-03-27"
     }
   },
-  "runNotes": "Queue scan at 2026-03-27T07:09:40.277Z (IST ~09:09 - within 08:00-18:00 window). Friday (not weekend). All 60 queue entries are paused. No actionable items: 0 conn_pending, 0 pending/connect, 0 pending/message, 0 _sosReadyToSend, 0 pending/whatsapp, 0 whatsapp_waiting. Rate limits: connections 0/20, messages 0/50. No LinkedIn browser automation performed. Queue idle."
+  "runNotes": "Queue scan at 2026-03-27T09:10:27.890Z (IST ~12:10). Friday (not weekend). All 120 queue entries are paused. No actionable items. Rate limits: connections 0/20, messages 0/50. Queue idle."
 }
