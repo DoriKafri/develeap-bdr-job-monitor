@@ -898,5 +898,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-27T10:39:00Z"
+  },
+  {
+    "title": "Almost everyone is hiring via AI now at Almost everyone",
+    "snippet": "Why Headhunters are (still) smarter than AI for hiring: Almost everyone is hiring via AI now. ... Agentic AI, recruiters",
+    "url": "https://www.linkedin.com/posts/nexourz_nexourz-built-an-ai-hiring-copilot-that-reads-activity-7440060777278894081-rhNe",
+    "company": "Almost everyone",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/nexourz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T11:35:32Z"
+  },
+  {
+    "title": "Enterprise Account Executives right now",
+    "snippet": "... is hiring Enterprise Account Executives right now. Across New York ... Agentic AI is the first thing that actually f",
+    "url": "https://www.linkedin.com/posts/kinner_i-replaced-my-entire-sales-team-with-ai-activity-7438101554903064576-6j0J",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/kinner/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T11:35:32Z"
+  },
+  {
+    "title": "AI/Agentic Engineer at If your team",
+    "snippet": "... agentic workflows directly into SaaS products. In C#. Without bolting on a ... If your team is hiring .NET / Full St",
+    "url": "https://www.linkedin.com/posts/radoslaw-wosik_ai-will-replace-net-developers-cool-story-activity-7439991846304632833-qvQo",
+    "company": "If your team",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Radoslaw Wosik",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/radoslaw-wosik/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T11:35:32Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Come work for one of the consulting leaders ... #CapgeminiIsHiring Agentic AI Solution Architects & Agentic AI Technical",
+    "url": "https://www.linkedin.com/posts/soumens_ai-makeitreal-lifeatcapgemini-activity-7438737108875341824-nPY5",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/soumens/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T11:35:32Z"
   }
 ]
