@@ -1221,6 +1221,10 @@ _BLOCKED_URLS = {
     "https://www.linkedin.com/posts/arekskuza_during-last-weeks-tech-titans-ai-forum-event-activity-7439759274685308928-Y2Wt",
     # Krishna B Kumaar — geopolitical/tech commentary, not a job listing
     "https://www.linkedin.com/posts/krishna-b-kumaar-2b8298aa_%3F%3F%3F%3F-%3F%3F%3F-%3F-%3F%3F%3F%3F%3F-%3F%3F%3F%3F%3F-activity-7437902686613581825--ucC",
+    # Nexourz — AI hiring copilot commentary, not a job listing ("Almost everyone is hiring via AI")
+    "https://www.linkedin.com/posts/nexourz_nexourz-built-an-ai-hiring-copilot-that-reads-activity-7440060777278894081-rhNe",
+    # Iyonsi Israel — blog post about modern software engineering, not a job listing
+    "https://www.linkedin.com/posts/iyonsi-israel-123b72b0_the-modern-software-engineer-0520-at-activity-7439574870994354176-E-sG",
 }
 
 # ── Manual Jobs ──────────────────────────────────────────────────────────────
