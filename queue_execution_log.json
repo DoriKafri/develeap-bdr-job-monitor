@@ -1,8 +1,8 @@
 {
-  "lastProcessed": "2026-03-26T16:09:50.045Z",
-  "processRunId": "run-1774541390045",
+  "lastProcessed": "2026-03-27T05:09:51.237Z",
+  "processRunId": "run-1774588191237",
   "dailyStats": {
-    "date": "2026-03-26",
+    "date": "2026-03-27",
     "connectsSent": 0,
     "messagesSent": 0,
     "repliesReceived": 0,
@@ -15,13 +15,13 @@
     "connections": {
       "today": 0,
       "limit": 20,
-      "resetDate": "2026-03-26"
+      "resetDate": "2026-03-27"
     },
     "messages": {
       "today": 0,
       "limit": 50,
-      "resetDate": "2026-03-26"
+      "resetDate": "2026-03-27"
     }
   },
-  "runNotes": "Queue scan at 2026-03-26T16:09:50.045Z (IST 18:09 — past 08:00-18:00 window). All queue entries are paused. No actionable items: 0 conn_pending, 0 pending/connect, 0 pending/message, 0 _sosReadyToSend, 0 pending/whatsapp, 0 whatsapp_waiting. No browser automation performed. Queue idle."
+  "runNotes": "Queue scan at 2026-03-27T05:09:51.237Z (IST ~08:08 — within 08:00-18:00 window). Friday (not weekend). All 67 queue entries are paused. No actionable items: 0 conn_pending, 0 pending/connect, 0 pending/message, 0 _sosReadyToSend, 0 pending/whatsapp, 0 whatsapp_waiting. Rate limits reset for 2026-03-27. No LinkedIn browser automation performed. Queue idle."
 }
