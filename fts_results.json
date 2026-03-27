@@ -862,5 +862,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-27T08:56:00Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "We're #hiring a new Cloud Group Leader & Solution Architect in Rishon LeZion, Center District. Apply today or share this",
+    "url": "https://www.linkedin.com/posts/risco-group_hiring-activity-7440357598467342337-zOlk",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Risco Group",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/risco-group/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T10:39:00Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "HIRING in ISRAEL!!! (fully remote) We're looking to connect with talented Customer Success professionals who bring stron",
+    "url": "https://www.linkedin.com/posts/lital-ben-porat-aa804845_senior-customer-success-manager-israel-at-activity-7441887922489856000-ECZh",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Lital Ben Porat",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/lital-ben-porat-aa804845/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T10:39:00Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "We're Hiring | Cloud Security Researcher — Gurugram (Work from Office) Are you passionate about cloud security, threat r",
+    "url": "https://www.linkedin.com/posts/chavi-manocha-i-m-always-hiring-31b091b3_job-opportunity-cloud-security-researcher-activity-7440333650078101504-eVdO",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Chavi Manocha Always",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/chavi-manocha-i-m-always-hiring-31b091b3/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-27T10:39:00Z"
   }
 ]
