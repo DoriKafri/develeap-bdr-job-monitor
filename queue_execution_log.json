@@ -1,6 +1,6 @@
 {
-  "lastProcessed": "2026-03-27T09:10:27.890Z",
-  "processRunId": "run-1774602627890",
+  "lastProcessed": "2026-03-27T13:08:11.221717+00:00",
+  "processRunId": "run-1774616891221",
   "dailyStats": {
     "date": "2026-03-27",
     "connectsSent": 0,
@@ -23,5 +23,5 @@
       "resetDate": "2026-03-27"
     }
   },
-  "runNotes": "Queue scan at 2026-03-27T09:10:27.890Z (IST ~12:10). Friday (not weekend). All 120 queue entries are paused. No actionable items. Rate limits: connections 0/20, messages 0/50. Queue idle."
+  "runNotes": "Queue scan at 2026-03-27T13:08:11.221717+00:00 (IST ~16:07). Friday (within operating hours). 265 total entries: 254 paused, 9 stuck in processing (all Develeap internal, since Mar 7), 2 failed (Chrome timeouts). Zero pending/actionable items. No actions taken. Rate limits: connections 0/20, messages 0/50."
 }
