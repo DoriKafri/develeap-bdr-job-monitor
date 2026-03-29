@@ -1,33 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Develeap BDR - Job Listings Monitor</title>
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Develeap BDR">
-<meta property="og:title" content="Develeap BDR - Job Listings Monitor">
-<meta property="og:description" content="Real-time job listings monitor for DevOps, Cloud, AI & Security roles in Israel. Track hiring trends and opportunities.">
-<meta property="og:image" content="https://dorikafri.github.io/develeap-bdr-job-monitor/og-card.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:url" content="https://dorikafri.github.io/develeap-bdr-job-monitor/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Develeap BDR - Job Listings Monitor">
-<meta name="twitter:description" content="Real-time job listings monitor for DevOps, Cloud, AI & Security roles in Israel.">
-<meta name="twitter:image" content="https://dorikafri.github.io/develeap-bdr-job-monitor/og-card.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='white'/%3E%3Ccircle cx='20' cy='18' r='10' fill='%23F5A623'/%3E%3Crect x='10' y='34' width='20' height='20' fill='%23222222'/%3E%3Cpath d='M34 10 L34 54 C48 54 58 44 58 32 C58 20 48 10 34 10Z' fill='%23222222'/%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="128x128" href="https://www.google.com/s2/favicons?domain=develeap.com&sz=128">
-<link rel="shortcut icon" href="https://www.google.com/s2/favicons?domain=develeap.com&sz=64">
 <script>
-  // Apply theme immediately to prevent FOUC
-  (function(){
-    var saved = localStorage.getItem('bdr_theme');
-    if (saved) { document.documentElement.setAttribute('data-theme', saved); }
-    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+// Histogram drill-down: filter by date + category via URL params
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var filterDate = params.get('filterDate');
+  var filterCategory = params.get('filterCategory');
+  if (!filterDate || !filterCategory) return;
+
+  function applyDrilldown() {
+    if (typeof ALL_JOBS === 'undefined' || typeof renderJobs !== 'function') {
+      return setTimeout(applyDrilldown, 200);
     }
-  })();
+    var catMap = { devops:'DevOps', ai:'AI/ML', cloud:'Cloud', security:'Security',
+      sre:'SRE', data:'Data Engineering', platform:'Platform Engineering', finops:'FinOps', agentic:'Agentic' };
+
+    // Override renderJobs to inject our filter
+    var origJobs = ALL_JOBS.slice();
+    var filtered = ALL_JOBS.filter(function(j) {
+      return j.posted === filterDate && j.category.toLowerCase() === filterCategory.toLowerCase();
+    });
+    
+    // Temporarily replace ALL_JOBS and trigger render
+    window._histogramFilterActive = true;
+    window._histogramOrigJobs = origJobs;
+    window._histogramFiltered = filtered;
+    
+    // Put filtered results into ALL_JOBS and re-render
+    ALL_JOBS.length = 0;
+    filtered.forEach(function(j) { ALL_JOBS.push(j); });
+    if (typeof renderJobs === 'function') renderJobs();
+    
+    // Restore ALL_JOBS but keep display
+    // Actually let us use a different approach - just set search
+    ALL_JOBS.length = 0;
+    origJobs.forEach(function(j) { ALL_JOBS.push(j); });
+
+    // Use the search bar with category name + date to narrow results
+    var searchEl = document.getElementById('searchInput');
+    if (searchEl) {
+      searchEl.value = filterCategory;
+      searchEl.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Add info banner
+    var banner = document.createElement('div');
+    banner.id = 'histogramBanner';
+    banner.style.cssText = 'background:#1a3a5c;border:1px solid #58a6ff;border-radius:8px;padding:10px 16px;margin:8px 270px 12px 0;display:flex;align-items:center;gap:6px;color:#c9d1d9;font-size:0.9em;';
+    var catLabel = catMap[filterCategory] || filterCategory;
+    banner.innerHTML = 'Filtered: <b style=color:#58a6ff>' + catLabel + '</b> listings from <b style=color:#58a6ff>' + filterDate + '</b> (' + filtered.length + ' results)' +
+      '<span onclick="document.getElementById(\'histogramBanner\').remove();document.getElementById(\'searchInput\').value=\'\';document.getElementById(\'searchInput\').dispatchEvent(new Event(\'input\',{bubbles:true}));history.replaceState(null,\'\',location.pathname)" style="cursor:pointer;margin-left:auto;color:#8b949e;font-size:1.1em">✕</span>';
+    var searchBar = document.querySelector('.search-bar') || document.querySelector('[class*=search]');
+    if (searchBar) searchBar.parentNode.insertBefore(banner, searchBar.nextSibling);
+    else document.querySelector('.main-content').prepend(banner);
+  }
+  applyDrilldown();
+})();
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
