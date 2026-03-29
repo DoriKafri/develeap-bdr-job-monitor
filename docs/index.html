@@ -18847,6 +18847,27 @@ function renderAnalyticsView() {
 <div class="source-dropdown-panel" id="sourceDropdownPanel" style="position:fixed;z-index:9999;"></div>
 
 <div class="share-toast" id="shareToast"></div>
+
+<script>
+// Force mobile layout when opened from histogram with mobile=1 param
+(function(){
+  var p = new URLSearchParams(window.location.search);
+  if (p.get('mobile') === '1') {
+    var sb = document.querySelector('.sidebar-nav');
+    var bd = document.querySelector('.sidebar-backdrop');
+    var mc = document.querySelector('.main-content');
+    var tb = document.querySelector('.top-bar');
+    if (sb) { sb.style.transform = 'translateX(-100%)'; sb.classList.remove('open'); }
+    if (bd) { bd.classList.remove('open'); bd.style.display = 'none'; }
+    if (mc) { mc.style.marginLeft = '0'; mc.style.marginTop = '48px'; mc.style.padding = '0 16px'; mc.style.height = 'calc(100vh - 48px)'; }
+    if (tb) { tb.style.display = 'flex'; tb.style.left = '0'; }
+    // Also apply card layout to table
+    var style = document.createElement('style');
+    style.textContent = 'table,thead,tbody,th,tr,td{display:block!important}thead{display:none!important}tr{margin-bottom:8px;border-bottom:2px solid var(--border);padding:12px 14px;position:relative;cursor:pointer}.stat-card{padding:8px 10px}.stat-number{font-size:18px}.stat-label{font-size:10px}.filters-bar{padding:8px 16px;gap:6px;margin:0 -16px;overflow-x:auto}.search-box{width:180px;flex:0 0 auto}.filter-chip{padding:6px 12px;font-size:12px}';
+    document.head.appendChild(style);
+  }
+})();
+</script>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
