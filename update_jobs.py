@@ -199,6 +199,7 @@ _INDEED_JK_SEED: dict = {
     "1911add4ce480a7d": "Red River",
     "c004fd7a3d1c6772": "IAI - Israel Aerospace Industries",
     "e1b2a00bae6cc58e": "Citi",
+    "b78a704958230b98": "Redis",
 }
 
 _INDEED_JK_CACHE: dict = {}   # {jk: {"company": str, "updated": "YYYY-MM-DD"}}
