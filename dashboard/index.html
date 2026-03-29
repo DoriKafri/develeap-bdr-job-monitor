@@ -19018,6 +19018,38 @@ function renderAnalyticsView() {
 <div class="source-dropdown-panel" id="sourceDropdownPanel" style="position:fixed;z-index:9999;"></div>
 
 <div class="share-toast" id="shareToast"></div>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const filterDate = params.get('filterDate');
+  const filterCategory = params.get('filterCategory');
+  if (filterDate && filterCategory) {
+    function applyHistogramFilter() {
+      if (typeof ALL_JOBS === 'undefined' || !document.getElementById('searchInput')) {
+        return setTimeout(applyHistogramFilter, 200);
+      }
+      const catMap = {
+        devops: 'DevOps', ai: 'AI/ML', cloud: 'Cloud', security: 'Security',
+        sre: 'SRE', data: 'Data', platform: 'Platform', finops: 'FinOps', agentic: 'Agentic'
+      };
+      const searchEl = document.getElementById('searchInput');
+      if (searchEl) {
+        searchEl.value = filterDate;
+        searchEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:#1a3a5c;border:1px solid #58a6ff;border-radius:8px;padding:10px 16px;margin:8px 0 12px;display:flex;align-items:center;justify-content:space-between;color:#c9d1d9;font-size:0.9em;';
+      banner.innerHTML = 'Showing <b style="color:#58a6ff;margin:0 4px">' + (catMap[filterCategory] || filterCategory) + '</b> listings from <b style="color:#58a6ff;margin:0 4px">' + filterDate + '</b>' +
+        '<span onclick="this.parentElement.remove();document.getElementById(\'searchInput\').value=\'\';document.getElementById(\'searchInput\').dispatchEvent(new Event(\'input\',{bubbles:true}))" style="cursor:pointer;margin-left:12px;color:#8b949e">✕ Clear filter</span>';
+      const main = document.querySelector('.main-content') || document.querySelector('main') || document.body;
+      const firstChild = main.querySelector('h2, .search-bar, [class*=search]') || main.firstChild;
+      if (firstChild) firstChild.parentNode.insertBefore(banner, firstChild);
+    }
+    applyHistogramFilter();
+  }
+})();
+</script>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
