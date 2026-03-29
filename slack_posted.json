@@ -182,7 +182,9 @@
     "unknown|||staff product manager, data platform",
     "unknown|||sr staff site reliability engineer",
     "unknown|||sr staff devops engineer",
+    "unknown|||sr principal engineer (cortex cloud)",
     "unknown|||spclst, engineering",
+    "unknown|||software engineer, gen ai",
     "unknown|||software engineer iii, cloud security",
     "unknown|||software engineer - analytics platform",
     "unknown|||software ai engineer",
@@ -200,6 +202,7 @@
     "unknown|||senior embedded linux engineer cc++ infrastructure",
     "unknown|||senior devops platform engineer",
     "unknown|||senior devops engineer hod hasharon, center district, israel",
+    "unknown|||senior devops engineer (cortex research)",
     "unknown|||senior devops engineer",
     "unknown|||senior devops core engineer",
     "unknown|||senior dataops engineer",
@@ -217,6 +220,7 @@
     "unknown|||npi/production engineer (onsite in israel)",
     "unknown|||mlops engineer|2026-03-06",
     "unknown|||mlops engineer",
+    "unknown|||manager, cloud operations",
     "unknown|||machine learning platform engineer - \u05e0\u05ea\u05e0\u05d9\u05d4, \u05de\u05d7\u05d5\u05d6 \u05d4\u05de\u05e8\u05db\u05d6",
     "unknown|||machine learning engineer",
     "unknown|||l3 support engineer",
@@ -845,6 +849,7 @@
     "in 2026|||site reliability engineer at in 2026",
     "imagen|||backend engineer | center district",
     "iltelhq petach tikva hq ...|||cloud engineer - iltelhq petach tikva hq",
+    "if your team|||ai/agentic engineer at if your team",
     "if you need additional capacity the first thing business owners typically look to|||ai/agentic engineer at if you need additional capacity the first thing business owners typically look to",
     "ibm|||devops sales engineer",
     "ibm|||agentic ai - student position-research lab",
@@ -2293,7 +2298,12 @@
     "blockaid|||50+ cloud support specialist \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 26 \u05de\u05e8\u05e5, 2026": "2026-03-27T08:04:49.435859+00:00",
     "almost everyone|||almost everyone is hiring via ai now at almost everyone": "2026-03-27T14:08:52.649230+00:00",
     "unknown|||enterprise account executives right now": "2026-03-27T14:08:52.649230+00:00",
-    "unknown|||devops engineer (israel)": "2026-03-27T17:48:28.050292+00:00"
+    "unknown|||devops engineer (israel)": "2026-03-27T17:48:28.050292+00:00",
+    "unknown|||senior devops engineer (cortex research)": "2026-03-29T07:41:01.311881+00:00",
+    "unknown|||software engineer, gen ai": "2026-03-29T07:41:01.311881+00:00",
+    "unknown|||manager, cloud operations": "2026-03-29T07:41:01.311881+00:00",
+    "unknown|||sr principal engineer (cortex cloud)": "2026-03-29T07:41:01.311881+00:00",
+    "if your team|||ai/agentic engineer at if your team": "2026-03-29T07:41:01.311881+00:00"
   },
-  "updated": "2026-03-27T17:48:28.077683+00:00"
+  "updated": "2026-03-29T07:41:01.338744+00:00"
 }
