@@ -6367,6 +6367,47 @@ def notify_slack(new_jobs: list[dict]) -> bool:
 
 # ── Main───────────────────────────────────────────────────────────────────
 
+
+
+# ── Analytics Histogram ──────────────────────────────────────────────────
+def update_analytics_histogram(jobs):
+    """Update analytics-histogram.html with current listing data grouped by date and category."""
+    hist_path = "analytics-histogram.html"
+    if not os.path.exists(hist_path):
+        log.info("analytics-histogram.html not found, skipping histogram update")
+        return
+    # Build histogram data
+    from collections import defaultdict
+    histogram = defaultdict(lambda: defaultdict(int))
+    for j in jobs:
+        posted = j.get("posted", "")
+        category = j.get("category", "")
+        if posted and category and posted != "N/A":
+            histogram[posted][category] += 1
+    # Sort by date
+    sorted_dates = sorted(histogram.keys())
+    categories = sorted(set(c for d in histogram.values() for c in d.keys()))
+    data_rows = []
+    for date in sorted_dates:
+        row = {"date": date}
+        for cat in categories:
+            row[cat] = histogram[date].get(cat, 0)
+        data_rows.append(row)
+    # Read and update the HTML file
+    with open(hist_path, "r", encoding="utf-8") as f:
+        html = f.read()
+    import json as json_mod
+    now_iso = datetime.now(timezone.utc).isoformat()
+    new_data_block = f"const HISTOGRAM_DATA = {json_mod.dumps(data_rows)};\nconst LAST_UPDATED = \"{now_iso}\";"
+    updated = re.sub(
+        r'const HISTOGRAM_DATA = \[.*?\];\s*const LAST_UPDATED = ".*?";',
+        new_data_block,
+        html,
+        flags=re.DOTALL,
+    )
+    with open(hist_path, "w", encoding="utf-8") as f:
+        f.write(updated)
+    log.info(f"Analytics histogram updated ({len(data_rows)} dates, {len(categories)} categories)")
 def main():
     global _auto_discover_count
     _auto_discover_count = 0  # Reset per run
@@ -6740,6 +6781,9 @@ def main():
     with open(docs_path, "w", encoding="utf-8") as f:
         f.write(updated_html)
     log.info("Dashboard HTML updated (dashboard/ + docs/)")
+
+    # 5b. Update analytics histogram
+    update_analytics_histogram(merged)
 
     # 6. Deploy to Netlify
     if deploy_to_netlify(updated_html):
