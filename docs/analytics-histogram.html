@@ -35,6 +35,8 @@
   td { padding: 6px 8px; border-bottom: 1px solid rgba(48,54,61,0.5); font-size: 0.85em; text-align: center; }
   td:first-child { text-align: left; font-weight: 600; }
   .table-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; overflow-x: auto; }
+  td[onclick] { cursor: pointer; }
+  td[onclick]:hover { text-decoration: underline; opacity: 0.8; }
 </style>
 </head>
 <body>
@@ -274,7 +276,9 @@ function updateTable() {
     html += `<tr><td>${row.date}</td>`;
     CATEGORIES.forEach(c => {
       const v = row[c] || 0;
-      html += `<td style="color:${v > 0 ? CATEGORY_COLORS[c].border : '#30363d'}">${v}</td>`;
+      html += v > 0
+          ? `<td style="color:${CATEGORY_COLORS[c].border};cursor:pointer;text-decoration:underline" onclick="openListings('${row.date}','${c}')">${v}</td>`
+          : `<td style="color:#30363d">${v}</td>`;
     });
     html += `<td style="font-weight:700">${total}</td></tr>`;
   });
