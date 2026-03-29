@@ -1238,6 +1238,7 @@ MANUAL_JOBS = [
         "company": "Natural Intelligence",
         "location": "Tel Aviv, Israel",
         "source": "linkedin",
+        "posted": "2026-03-15",  # LinkedIn says "Reposted 2 weeks ago" as of 2026-03-29
     },
     {
         "url": "https://www.linkedin.com/jobs/view/4384850189/",
@@ -1245,6 +1246,7 @@ MANUAL_JOBS = [
         "company": "Unilink Ltd.",
         "location": "Holon, Israel",
         "source": "linkedin",
+        "posted": "2026-03-12",  # Shared by Roni Nir on 2026-03-12
     },
     {
         "url": "https://www.linkedin.com/jobs/view/4379860956/",
@@ -1252,6 +1254,7 @@ MANUAL_JOBS = [
         "company": "AppCard",
         "location": "Hod HaSharon, Israel",
         "source": "linkedin",
+        "posted": "2026-03-12",  # Shared by Roni Nir on 2026-03-12
     },
 ]
 
@@ -6627,6 +6630,7 @@ def main():
             location = mj.get("location", "Israel")
             source = mj.get("source", "linkedin")
             title = mj["title"]
+            posted_str = mj.get("posted", today_str)  # Use explicit date if provided
             job_id = hashlib.md5(url.encode()).hexdigest()[:8]
             job = {
                 "id": job_id,
@@ -6639,7 +6643,7 @@ def main():
                 "source": source,
                 "sourceUrl": url,
                 "category": detect_category(title, "") or "devops",
-                "posted": today_str,
+                "posted": posted_str,
                 "isNew": True,
                 "isDeveleapCustomer": is_develeap_customer(company),
                 "isPastCustomer": is_develeap_past_customer(company),
