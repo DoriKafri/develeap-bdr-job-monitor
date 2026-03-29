@@ -6372,8 +6372,10 @@ def notify_slack(new_jobs: list[dict]) -> bool:
 # ── Analytics Histogram ──────────────────────────────────────────────────
 def update_analytics_histogram(jobs):
     """Update analytics-histogram.html with current listing data grouped by date and category."""
-    hist_path = "analytics-histogram.html"
-    if not os.path.exists(hist_path):
+    hist_paths = ["analytics-histogram.html", "docs/analytics-histogram.html"]
+    # Need at least one histogram file to update
+    existing = [p for p in hist_paths if os.path.exists(p)]
+    if not existing:
         log.info("analytics-histogram.html not found, skipping histogram update")
         return
     # Build histogram data
