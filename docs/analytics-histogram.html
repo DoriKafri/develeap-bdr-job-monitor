@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BDR Analytics â Listings by Category Over Time</title>
+<title>BDR Analytics  - Listings by Category Over Time</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --dim: #8b949e; --accent: #58a6ff; }
@@ -39,7 +39,7 @@
 </head>
 <body>
 
-<h1>BDR Analytics â Listings by Category Over Time</h1>
+<h1>BDR Analytics  - Listings by Category Over Time</h1>
 <p class="subtitle">Histogram of job listings grouped by date and category. Auto-updated on each pipeline run.</p>
 
 <div class="controls">
@@ -82,7 +82,7 @@
 <p class="updated" id="updatedAt"></p>
 
 <script>
-// â DATA (replaced on each pipeline run) â
+//  - DATA (replaced on each pipeline run)  -
 // BEGIN_HISTOGRAM_DATA
 const HISTOGRAM_DATA = [{"date":"2026-03-16","agentic":0,"ai":1,"cloud":0,"data":0,"devops":0,"finops":0,"platform":0,"security":0,"sre":0},{"date":"2026-03-18","agentic":1,"ai":0,"cloud":0,"data":0,"devops":0,"finops":0,"platform":0,"security":1,"sre":0},{"date":"2026-03-19","agentic":1,"ai":15,"cloud":0,"data":0,"devops":8,"finops":2,"platform":4,"security":3,"sre":2},{"date":"2026-03-20","agentic":0,"ai":1,"cloud":0,"data":5,"devops":3,"finops":1,"platform":2,"security":1,"sre":2},{"date":"2026-03-22","agentic":0,"ai":0,"cloud":0,"data":2,"devops":5,"finops":0,"platform":1,"security":1,"sre":2},{"date":"2026-03-23","agentic":0,"ai":0,"cloud":0,"data":1,"devops":2,"finops":0,"platform":0,"security":0,"sre":0},{"date":"2026-03-24","agentic":0,"ai":2,"cloud":3,"data":0,"devops":0,"finops":0,"platform":0,"security":0,"sre":2},{"date":"2026-03-25","agentic":1,"ai":4,"cloud":1,"data":5,"devops":4,"finops":0,"platform":2,"security":3,"sre":2},{"date":"2026-03-26","agentic":0,"ai":5,"cloud":0,"data":5,"devops":4,"finops":2,"platform":1,"security":2,"sre":0},{"date":"2026-03-27","agentic":1,"ai":0,"cloud":1,"data":0,"devops":2,"finops":0,"platform":1,"security":1,"sre":0},{"date":"2026-03-29","agentic":0,"ai":1,"cloud":0,"data":0,"devops":1,"finops":0,"platform":1,"security":1,"sre":1}];
 const LAST_UPDATED = "2026-03-29T09:30:00Z";
