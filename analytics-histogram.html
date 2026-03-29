@@ -225,9 +225,9 @@ function renderStats() {
 
 function openListings(date, category) {
   var url = 'index.html?filterDate=' + encodeURIComponent(date) + '&filterCategory=' + encodeURIComponent(category);
-  var isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  var isMobile = window.innerWidth <= 1024 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   if (isMobile) {
-    window.location.href = url;
+    window.location.href = url + '&mobile=1';
   } else {
     window.open(url, '_blank');
   }
