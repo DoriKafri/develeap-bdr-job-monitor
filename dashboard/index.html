@@ -32,6 +32,7 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tweetnacl-sealedbox-js@1.2.0/sealedbox.web.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
@@ -613,6 +614,30 @@
   .queue-card-actions button.btn-delete:hover { border-color:var(--danger); color:var(--danger); }
   .queue-empty { text-align:center; padding:60px 20px; color:var(--text-light); }
   .queue-empty h3 { font-size:18px; margin-bottom:8px; color:var(--text); }
+  /* Statistics Dashboard */
+  #statisticsView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; }
+  #statisticsView.active { display:flex; flex-direction:column; }
+  .stats-dashboard { padding:24px 32px; max-width:1400px; }
+  .stats-dashboard h2 { margin:0 0 4px; font-size:22px; }
+  .stats-dashboard .stats-subtitle { font-size:13px; color:var(--text-light); margin-bottom:24px; }
+  .stats-kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:28px; }
+  .stats-kpi { background:white; border-radius:12px; box-shadow:var(--shadow); padding:18px 16px; text-align:center; border-top:4px solid var(--primary); }
+  .stats-kpi-value { font-size:28px; font-weight:800; color:var(--primary); }
+  .stats-kpi-label { font-size:12px; color:var(--text-light); margin-top:4px; font-weight:500; }
+  .stats-kpi.accent { border-top-color:var(--accent); }
+  .stats-kpi.accent .stats-kpi-value { color:var(--accent-dark); }
+  .stats-kpi.teal { border-top-color:var(--teal); }
+  .stats-kpi.teal .stats-kpi-value { color:var(--teal); }
+  .stats-kpi.success { border-top-color:var(--success); }
+  .stats-kpi.success .stats-kpi-value { color:var(--success); }
+  .stats-chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .stats-chart-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px; }
+  .stats-chart-card h3 { font-size:15px; font-weight:700; margin:0 0 16px; color:var(--text); }
+  .stats-chart-card.full-width { grid-column:1/-1; }
+  .stats-chart-card canvas { max-height:320px; }
+  @media(max-width:900px) { .stats-chart-grid { grid-template-columns:1fr; } }
+  @media(max-width:768px) { .stats-dashboard { padding:16px; } .stats-kpi-row { grid-template-columns:repeat(2,1fr); } }
+
   /* Conversion Analytics */
   #analyticsView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; }
   #analyticsView.active { display:flex; flex-direction:column; }
@@ -1606,6 +1631,12 @@
         <span>Existing Customer</span>
         <span class="nav-filter-count count-existing" id="sidebarExistingCount">0</span>
       </div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" data-view="statistics" onclick="setView('statistics')">
+        <span>📈</span>
+        <span>Statistics</span>
+      </div>
+
       <div class="nav-section">Outreach</div>
       <div class="nav-item" data-view="wolfpack" onclick="setView('wolfpack')">
         <span>🐺</span>
@@ -1777,6 +1808,42 @@
   </div>
 
   <!-- Analytics View -->
+  <div id="statisticsView">
+    <div class="stats-dashboard">
+      <h2>📈 Job Market Statistics</h2>
+      <div class="stats-subtitle">Insights from all tracked job listings based on actual posting dates</div>
+
+      <div class="stats-kpi-row" id="statsKpiRow"></div>
+
+      <div class="stats-chart-grid">
+        <div class="stats-chart-card full-width">
+          <h3>Jobs Posted by Category Over Time</h3>
+          <canvas id="chartCategoryTimeline"></canvas>
+        </div>
+        <div class="stats-chart-card">
+          <h3>Jobs by Source</h3>
+          <canvas id="chartSourcePie"></canvas>
+        </div>
+        <div class="stats-chart-card">
+          <h3>Jobs by Category</h3>
+          <canvas id="chartCategoryBar"></canvas>
+        </div>
+        <div class="stats-chart-card">
+          <h3>New Listings Trend (Daily)</h3>
+          <canvas id="chartDailyTrend"></canvas>
+        </div>
+        <div class="stats-chart-card">
+          <h3>Top Hiring Companies</h3>
+          <canvas id="chartTopCompanies"></canvas>
+        </div>
+        <div class="stats-chart-card full-width">
+          <h3>Jobs by Location</h3>
+          <canvas id="chartLocationBar"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="analyticsView">
     <div class="analytics-view">
       <div class="analytics-header">
@@ -13691,6 +13758,7 @@ var setView = function(v) {
   const workflowView = document.getElementById('workflowView');
   const wolfPackView = document.getElementById('wolfPackView');
   const analyticsView = document.getElementById('analyticsView');
+  const statisticsView = document.getElementById('statisticsView');
   const statsBar = document.querySelector('.stats-bar');
   const filtersBar = document.querySelector('.filters-bar');
 
@@ -13700,6 +13768,7 @@ var setView = function(v) {
   if (workflowView) workflowView.classList.remove('active');
   if (wolfPackView) wolfPackView.classList.remove('active');
   if (analyticsView) analyticsView.classList.remove('active');
+  if (statisticsView) statisticsView.classList.remove('active');
 
   if (v === 'queue') {
     if (tableContainer) tableContainer.style.display = 'none';
@@ -13730,6 +13799,12 @@ var setView = function(v) {
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     _loadCampaignsFromGitHub().then(function() { _wpRenderCurrentView(); });
+  } else if (v === 'statistics') {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (statisticsView) { statisticsView.classList.add('active'); statisticsView.style.overflowY = 'auto'; statisticsView.style.flex = '1'; statisticsView.style.minHeight = '0'; }
+    if (statsBar) statsBar.style.display = 'none';
+    if (filtersBar) filtersBar.style.display = 'none';
+    renderStatisticsView();
   } else if (v === 'analytics') {
     if (tableContainer) tableContainer.style.display = 'none';
     if (analyticsView) { analyticsView.classList.add('active'); analyticsView.style.overflowY = 'auto'; analyticsView.style.flex = '1'; analyticsView.style.minHeight = '0'; }
@@ -18777,6 +18852,182 @@ var convTracker = (function() {
   }
   return { track: track, trackStatus: trackStatus, getWeekStats: getWeekStats, resetWeek: resetWeek };
 })();
+
+// ── Statistics Dashboard ──────────────────────────────────────────────────
+var _statsCharts = {};
+function renderStatisticsView() {
+  // Destroy previous chart instances
+  Object.values(_statsCharts).forEach(function(c) { if (c && c.destroy) c.destroy(); });
+  _statsCharts = {};
+
+  var jobs = ALL_JOBS || [];
+  if (!jobs.length) return;
+
+  // ── KPI row ──
+  var totalJobs = jobs.length;
+  var companies = {};
+  var sources = {};
+  var categories = {};
+  var locations = {};
+  var dailyCounts = {};
+  var catByDate = {};
+  var today = new Date().toISOString().slice(0,10);
+  var thirtyDaysAgo = new Date(Date.now() - 30*86400000).toISOString().slice(0,10);
+  var newLast7 = 0, newLast30 = 0;
+  var sevenDaysAgo = new Date(Date.now() - 7*86400000).toISOString().slice(0,10);
+
+  jobs.forEach(function(j) {
+    var co = (j.company||'Unknown').trim();
+    companies[co] = (companies[co]||0) + 1;
+    var src = (j.source||'unknown').toLowerCase();
+    if (src === 'linkedin_fts') src = 'LinkedIn FTS';
+    else if (src === 'linkedin') src = 'LinkedIn';
+    else if (src === 'indeed') src = 'Indeed';
+    else if (src === 'greenhouse') src = 'Greenhouse';
+    else if (src === 'lever') src = 'Lever';
+    else if (src === 'comeet') src = 'Comeet';
+    else src = src.charAt(0).toUpperCase() + src.slice(1);
+    sources[src] = (sources[src]||0) + 1;
+    var cat = j.category || 'other';
+    categories[cat] = (categories[cat]||0) + 1;
+    var loc = (j.location||'Israel').split(',')[0].trim();
+    if (loc.length > 25) loc = loc.substring(0,22) + '...';
+    locations[loc] = (locations[loc]||0) + 1;
+    var posted = j.posted || j._first_seen || '';
+    if (posted) {
+      dailyCounts[posted] = (dailyCounts[posted]||0) + 1;
+      if (!catByDate[posted]) catByDate[posted] = {};
+      catByDate[posted][cat] = (catByDate[posted][cat]||0) + 1;
+      if (posted >= sevenDaysAgo) newLast7++;
+      if (posted >= thirtyDaysAgo) newLast30++;
+    }
+  });
+
+  var uniqueCompanies = Object.keys(companies).length;
+  var kpiRow = document.getElementById('statsKpiRow');
+  if (kpiRow) {
+    kpiRow.innerHTML =
+      '<div class="stats-kpi"><div class="stats-kpi-value">' + totalJobs + '</div><div class="stats-kpi-label">Total Listings</div></div>' +
+      '<div class="stats-kpi accent"><div class="stats-kpi-value">' + uniqueCompanies + '</div><div class="stats-kpi-label">Companies Hiring</div></div>' +
+      '<div class="stats-kpi teal"><div class="stats-kpi-value">' + newLast7 + '</div><div class="stats-kpi-label">New (Last 7 Days)</div></div>' +
+      '<div class="stats-kpi success"><div class="stats-kpi-value">' + newLast30 + '</div><div class="stats-kpi-label">New (Last 30 Days)</div></div>' +
+      '<div class="stats-kpi"><div class="stats-kpi-value">' + Object.keys(sources).length + '</div><div class="stats-kpi-label">Active Sources</div></div>';
+  }
+
+  // ── Chart defaults ──
+  var catLabelsMap = typeof CAT_LABELS !== 'undefined' ? CAT_LABELS : {};
+  var catColorsMap = typeof CAT_COLORS !== 'undefined' ? CAT_COLORS : {};
+  Chart.defaults.font.family = "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+  Chart.defaults.font.size = 12;
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)';
+  var textColor = isDark ? 'rgba(255,255,255,0.7)' : '#676879';
+
+  // ── 1. Category Timeline (stacked bar) ──
+  var allDates = Object.keys(catByDate).filter(function(d) { return d >= thirtyDaysAgo; }).sort();
+  var allCats = Object.keys(categories).sort();
+  var datasets = allCats.map(function(cat) {
+    return {
+      label: catLabelsMap[cat] || cat,
+      data: allDates.map(function(d) { return (catByDate[d] && catByDate[d][cat]) || 0; }),
+      backgroundColor: (catColorsMap[cat] || '#999') + 'CC',
+      borderColor: catColorsMap[cat] || '#999',
+      borderWidth: 1,
+      borderRadius: 3
+    };
+  });
+  var ctx1 = document.getElementById('chartCategoryTimeline');
+  if (ctx1) {
+    _statsCharts.catTimeline = new Chart(ctx1, {
+      type: 'bar',
+      data: { labels: allDates.map(function(d) { var p = d.split('-'); return p[1]+'/'+p[2]; }), datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position:'bottom', labels: { boxWidth:12, padding:12, color:textColor } }, tooltip: { mode:'index', intersect:false } },
+        scales: {
+          x: { stacked:true, grid:{ display:false }, ticks:{ color:textColor, maxRotation:45 } },
+          y: { stacked:true, beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }
+        }
+      }
+    });
+  }
+
+  // ── 2. Source Pie ──
+  var srcKeys = Object.keys(sources).sort(function(a,b) { return sources[b]-sources[a]; });
+  var srcColors = ['#0A66C2','#6366F1','#FF6B35','#00CA72','#E44258','#FFB100','#8B5CF6','#06B6D4','#F43F5E','#84CC16'];
+  var ctx2 = document.getElementById('chartSourcePie');
+  if (ctx2) {
+    _statsCharts.sourcePie = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: srcKeys,
+        datasets: [{ data: srcKeys.map(function(k) { return sources[k]; }), backgroundColor: srcColors.slice(0, srcKeys.length), borderWidth:2, borderColor: isDark ? '#1a1a2e' : '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:12, padding:10, color:textColor } } } }
+    });
+  }
+
+  // ── 3. Category Bar ──
+  var catKeys = Object.keys(categories).sort(function(a,b) { return categories[b]-categories[a]; });
+  var ctx3 = document.getElementById('chartCategoryBar');
+  if (ctx3) {
+    _statsCharts.catBar = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: catKeys.map(function(k) { return catLabelsMap[k]||k; }),
+        datasets: [{ data: catKeys.map(function(k) { return categories[k]; }), backgroundColor: catKeys.map(function(k) { return (catColorsMap[k]||'#999')+'CC'; }), borderColor: catKeys.map(function(k) { return catColorsMap[k]||'#999'; }), borderWidth:1, borderRadius:4 }]
+      },
+      options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }, y:{ grid:{ display:false }, ticks:{ color:textColor } } } }
+    });
+  }
+
+  // ── 4. Daily Trend ──
+  var trendDates = Object.keys(dailyCounts).filter(function(d) { return d >= thirtyDaysAgo; }).sort();
+  var ctx4 = document.getElementById('chartDailyTrend');
+  if (ctx4) {
+    _statsCharts.dailyTrend = new Chart(ctx4, {
+      type: 'line',
+      data: {
+        labels: trendDates.map(function(d) { var p=d.split('-'); return p[1]+'/'+p[2]; }),
+        datasets: [{
+          label: 'New Listings',
+          data: trendDates.map(function(d) { return dailyCounts[d]||0; }),
+          borderColor: '#579BFC', backgroundColor: 'rgba(87,155,252,0.15)',
+          fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#579BFC', borderWidth: 2
+        }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ color:textColor, maxRotation:45 } }, y:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } } } }
+    });
+  }
+
+  // ── 5. Top Companies ──
+  var companyArr = Object.entries(companies).sort(function(a,b) { return b[1]-a[1]; }).slice(0,15);
+  var ctx5 = document.getElementById('chartTopCompanies');
+  if (ctx5) {
+    _statsCharts.topCo = new Chart(ctx5, {
+      type: 'bar',
+      data: {
+        labels: companyArr.map(function(c) { return c[0]; }),
+        datasets: [{ data: companyArr.map(function(c) { return c[1]; }), backgroundColor: '#05323Ccc', borderColor: '#05323C', borderWidth:1, borderRadius:4 }]
+      },
+      options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }, y:{ grid:{ display:false }, ticks:{ color:textColor, font:{ size:11 } } } } }
+    });
+  }
+
+  // ── 6. Location Bar ──
+  var locArr = Object.entries(locations).sort(function(a,b) { return b[1]-a[1]; }).slice(0,12);
+  var ctx6 = document.getElementById('chartLocationBar');
+  if (ctx6) {
+    _statsCharts.locBar = new Chart(ctx6, {
+      type: 'bar',
+      data: {
+        labels: locArr.map(function(l) { return l[0]; }),
+        datasets: [{ data: locArr.map(function(l) { return l[1]; }), backgroundColor: '#32BBD7cc', borderColor: '#32BBD7', borderWidth:1, borderRadius:4 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ color:textColor } }, y:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } } } }
+    });
+  }
+}
 
 function renderAnalyticsView() {
   var stats = convTracker.getWeekStats();
