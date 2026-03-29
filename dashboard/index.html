@@ -32,7 +32,6 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tweetnacl-sealedbox-js@1.2.0/sealedbox.web.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --primary: #05323C; --primary-dark: #032229; --primary-light: #E0F2F5;
@@ -614,29 +613,6 @@
   .queue-card-actions button.btn-delete:hover { border-color:var(--danger); color:var(--danger); }
   .queue-empty { text-align:center; padding:60px 20px; color:var(--text-light); }
   .queue-empty h3 { font-size:18px; margin-bottom:8px; color:var(--text); }
-  /* Statistics Dashboard */
-  #statisticsView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; }
-  #statisticsView.active { display:flex; flex-direction:column; }
-  .stats-dashboard { padding:24px 32px; max-width:1400px; }
-  .stats-dashboard h2 { margin:0 0 4px; font-size:22px; }
-  .stats-dashboard .stats-subtitle { font-size:13px; color:var(--text-light); margin-bottom:24px; }
-  .stats-kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:28px; }
-  .stats-kpi { background:white; border-radius:12px; box-shadow:var(--shadow); padding:18px 16px; text-align:center; border-top:4px solid var(--primary); }
-  .stats-kpi-value { font-size:28px; font-weight:800; color:var(--primary); }
-  .stats-kpi-label { font-size:12px; color:var(--text-light); margin-top:4px; font-weight:500; }
-  .stats-kpi.accent { border-top-color:var(--accent); }
-  .stats-kpi.accent .stats-kpi-value { color:var(--accent-dark); }
-  .stats-kpi.teal { border-top-color:var(--teal); }
-  .stats-kpi.teal .stats-kpi-value { color:var(--teal); }
-  .stats-kpi.success { border-top-color:var(--success); }
-  .stats-kpi.success .stats-kpi-value { color:var(--success); }
-  .stats-chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
-  .stats-chart-card { background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px; }
-  .stats-chart-card h3 { font-size:15px; font-weight:700; margin:0 0 16px; color:var(--text); }
-  .stats-chart-card.full-width { grid-column:1/-1; }
-  .stats-chart-card canvas { max-height:320px; }
-  @media(max-width:900px) { .stats-chart-grid { grid-template-columns:1fr; } }
-  @media(max-width:768px) { .stats-dashboard { padding:16px; } .stats-kpi-row { grid-template-columns:repeat(2,1fr); } }
   /* Conversion Analytics */
   #analyticsView { display:none; margin:0; overflow-y:auto; flex:1; min-height:0; }
   #analyticsView.active { display:flex; flex-direction:column; }
@@ -1630,12 +1606,6 @@
         <span>Existing Customer</span>
         <span class="nav-filter-count count-existing" id="sidebarExistingCount">0</span>
       </div>
-      <div class="nav-divider"></div>
-      <div class="nav-item" data-view="statistics" onclick="setView('statistics')">
-        <span>📈</span>
-        <span>Statistics</span>
-      </div>
-
       <div class="nav-section">Outreach</div>
       <div class="nav-item" data-view="wolfpack" onclick="setView('wolfpack')">
         <span>🐺</span>
@@ -1651,10 +1621,6 @@
         <span>📊</span>
         <span>Analytics</span>
       </div>
-      <a class="nav-item" href="analytics-histogram.html" style="text-decoration:none;color:inherit">
-        <span>📈</span>
-        <span>Histogram</span>
-      </a>
       <div class="nav-item" data-view="workflow" onclick="setView('workflow')">
         <span>⚡</span>
         <span>Workflow Editor</span>
@@ -1808,43 +1774,6 @@
       <button onclick="clearBulkSelection()" style="background:var(--bg);color:var(--text-light);border-color:var(--border)">✕ Clear</button>
     </div>
     <div class="queue-list" id="queueList"></div>
-  </div>
-
-  <!-- Statistics View -->
-  <div id="statisticsView">
-    <div class="stats-dashboard">
-      <h2>📈 Job Market Statistics</h2>
-      <div class="stats-subtitle">Insights from all tracked job listings based on actual posting dates</div>
-
-      <div class="stats-kpi-row" id="statsKpiRow"></div>
-
-      <div class="stats-chart-grid">
-        <div class="stats-chart-card full-width">
-          <h3>Jobs Posted by Category Over Time</h3>
-          <canvas id="chartCategoryTimeline"></canvas>
-        </div>
-        <div class="stats-chart-card">
-          <h3>Jobs by Source</h3>
-          <canvas id="chartSourcePie"></canvas>
-        </div>
-        <div class="stats-chart-card">
-          <h3>Jobs by Category</h3>
-          <canvas id="chartCategoryBar"></canvas>
-        </div>
-        <div class="stats-chart-card">
-          <h3>New Listings Trend (Daily)</h3>
-          <canvas id="chartDailyTrend"></canvas>
-        </div>
-        <div class="stats-chart-card">
-          <h3>Top Hiring Companies</h3>
-          <canvas id="chartTopCompanies"></canvas>
-        </div>
-        <div class="stats-chart-card full-width">
-          <h3>Jobs by Location</h3>
-          <canvas id="chartLocationBar"></canvas>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Analytics View -->
@@ -2889,8 +2818,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-03-29T14:41:29Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 226, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 14330, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 85, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 6105, "error": ""}];
+let LAST_UPDATED = "2026-03-29T16:55:19Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15058, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 204, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 57, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2601, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2943,7 +2872,7 @@ let ALL_JOBS = [
     "id": "2979e267",
     "title": "Manager, Cloud Operations",
     "subtitle": "Lead and develop a CloudOps team in Israel as part of the global Cloud ... 5+ years of experience in Cloud Operations, SRE, Production Engineering, or ...",
-    "company": "Redis",
+    "company": "What you'll need to have",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -2957,7 +2886,7 @@ let ALL_JOBS = [
     "description": "Lead and develop a CloudOps team in Israel as part of the global Cloud ... 5+ years of experience in Cloud Operations, SRE, Production Engineering, or ...",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=redis.io&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=whatyoullneedtohave.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-29"
   },
@@ -2980,6 +2909,50 @@ let ALL_JOBS = [
     "skills": [],
     "stakeholders": [],
     "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-29"
+  },
+  {
+    "id": "943e005d",
+    "title": "Elastic Platform Engineer",
+    "subtitle": "תיאור משרה מלא · must * Familiarity with Ansible and Git. * Experience with or knowledge of Kafka · a significant advantage. * Familiarity with OCP (OpenShift ...",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=69c099fc730ec62a",
+    "category": "platform",
+    "posted": "2026-03-29",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "תיאור משרה מלא · must * Familiarity with Ansible and Git. * Experience with or knowledge of Kafka · a significant advantage. * Familiarity with OCP (OpenShift ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-03-29"
+  },
+  {
+    "id": "41d26932",
+    "title": "Sr. Data Engineer - Cloud Security",
+    "subtitle": "Experience with cloud platforms (AWS, GCP, Azure). Background in cybersecurity or security analytics. Location: This position is based in our Tel Aviv, Israel ...",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=d8d19d69ecfef8b3",
+    "category": "security",
+    "posted": "2026-03-29",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Experience with cloud platforms (AWS, GCP, Azure). Background in cybersecurity or security analytics. Location: This position is based in our Tel Aviv, Israel ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=cloudsecurity.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-03-29"
   },
@@ -5028,6 +5001,11 @@ let ALL_JOBS = [
       {
         "source": "indeed",
         "sourceUrl": "https://il.indeed.com/viewjob?jk=23fcadfaba349af6",
+        "title": "Senior DevOps Engineer"
+      },
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=68e81451fe5a0894",
         "title": "Senior DevOps Engineer"
       }
     ]
@@ -13702,7 +13680,6 @@ var setView = function(v) {
     toggleSidebar(false);
   }
 
-  const statisticsView = document.getElementById('statisticsView');
   const tableContainer = document.querySelector('.table-container');
   const queueView = document.getElementById('queueView');
   const settingsView = document.getElementById('settingsView');
@@ -13717,7 +13694,6 @@ var setView = function(v) {
   if (settingsView) settingsView.classList.remove('active');
   if (workflowView) workflowView.classList.remove('active');
   if (wolfPackView) wolfPackView.classList.remove('active');
-  if (statisticsView) statisticsView.classList.remove('active');
   if (analyticsView) analyticsView.classList.remove('active');
 
   if (v === 'queue') {
@@ -13749,12 +13725,6 @@ var setView = function(v) {
     if (statsBar) statsBar.style.display = 'none';
     if (filtersBar) filtersBar.style.display = 'none';
     _loadCampaignsFromGitHub().then(function() { _wpRenderCurrentView(); });
-  } else if (v === 'statistics') {
-    if (tableContainer) tableContainer.style.display = 'none';
-    if (statisticsView) { statisticsView.classList.add('active'); statisticsView.style.overflowY = 'auto'; statisticsView.style.flex = '1'; statisticsView.style.minHeight = '0'; }
-    if (statsBar) statsBar.style.display = 'none';
-    if (filtersBar) filtersBar.style.display = 'none';
-    renderStatisticsView();
   } else if (v === 'analytics') {
     if (tableContainer) tableContainer.style.display = 'none';
     if (analyticsView) { analyticsView.classList.add('active'); analyticsView.style.overflowY = 'auto'; analyticsView.style.flex = '1'; analyticsView.style.minHeight = '0'; }
@@ -18803,173 +18773,6 @@ var convTracker = (function() {
   return { track: track, trackStatus: trackStatus, getWeekStats: getWeekStats, resetWeek: resetWeek };
 })();
 
-// ── Statistics Dashboard ──────────────────────────────────────────────────
-var _statsCharts = {};
-function renderStatisticsView() {
-  Object.values(_statsCharts).forEach(function(c) { if (c && c.destroy) c.destroy(); });
-  _statsCharts = {};
-
-  var jobs = ALL_JOBS || [];
-  if (!jobs.length) return;
-
-  var totalJobs = jobs.length;
-  var companies = {};
-  var sources = {};
-  var categories = {};
-  var locations = {};
-  var dailyCounts = {};
-  var catByDate = {};
-  var today = new Date().toISOString().slice(0,10);
-  var thirtyDaysAgo = new Date(Date.now() - 30*86400000).toISOString().slice(0,10);
-  var newLast7 = 0, newLast30 = 0;
-  var sevenDaysAgo = new Date(Date.now() - 7*86400000).toISOString().slice(0,10);
-
-  jobs.forEach(function(j) {
-    var co = (j.company||'Unknown').trim();
-    companies[co] = (companies[co]||0) + 1;
-    var src = (j.source||'unknown').toLowerCase();
-    if (src === 'linkedin_fts') src = 'LinkedIn FTS';
-    else if (src === 'linkedin') src = 'LinkedIn';
-    else if (src === 'indeed') src = 'Indeed';
-    else if (src === 'greenhouse') src = 'Greenhouse';
-    else if (src === 'lever') src = 'Lever';
-    else if (src === 'comeet') src = 'Comeet';
-    else src = src.charAt(0).toUpperCase() + src.slice(1);
-    sources[src] = (sources[src]||0) + 1;
-    var cat = j.category || 'other';
-    categories[cat] = (categories[cat]||0) + 1;
-    var loc = (j.location||'Israel').split(',')[0].trim();
-    if (loc.length > 25) loc = loc.substring(0,22) + '...';
-    locations[loc] = (locations[loc]||0) + 1;
-    var posted = j.posted || j._first_seen || '';
-    if (posted) {
-      dailyCounts[posted] = (dailyCounts[posted]||0) + 1;
-      if (!catByDate[posted]) catByDate[posted] = {};
-      catByDate[posted][cat] = (catByDate[posted][cat]||0) + 1;
-      if (posted >= sevenDaysAgo) newLast7++;
-      if (posted >= thirtyDaysAgo) newLast30++;
-    }
-  });
-
-  var uniqueCompanies = Object.keys(companies).length;
-  var kpiRow = document.getElementById('statsKpiRow');
-  if (kpiRow) {
-    kpiRow.innerHTML =
-      '<div class="stats-kpi"><div class="stats-kpi-value">' + totalJobs + '</div><div class="stats-kpi-label">Total Listings</div></div>' +
-      '<div class="stats-kpi accent"><div class="stats-kpi-value">' + uniqueCompanies + '</div><div class="stats-kpi-label">Companies Hiring</div></div>' +
-      '<div class="stats-kpi teal"><div class="stats-kpi-value">' + newLast7 + '</div><div class="stats-kpi-label">New (Last 7 Days)</div></div>' +
-      '<div class="stats-kpi success"><div class="stats-kpi-value">' + newLast30 + '</div><div class="stats-kpi-label">New (Last 30 Days)</div></div>' +
-      '<div class="stats-kpi"><div class="stats-kpi-value">' + Object.keys(sources).length + '</div><div class="stats-kpi-label">Active Sources</div></div>';
-  }
-
-  var catLabelsMap = typeof CAT_LABELS !== 'undefined' ? CAT_LABELS : {};
-  var catColorsMap = typeof CAT_COLORS !== 'undefined' ? CAT_COLORS : {};
-  Chart.defaults.font.family = "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
-  Chart.defaults.font.size = 12;
-  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  var gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)';
-  var textColor = isDark ? 'rgba(255,255,255,0.7)' : '#676879';
-
-  var allDates = Object.keys(catByDate).filter(function(d) { return d >= thirtyDaysAgo; }).sort();
-  var allCats = Object.keys(categories).sort();
-  var datasets = allCats.map(function(cat) {
-    return {
-      label: catLabelsMap[cat] || cat,
-      data: allDates.map(function(d) { return (catByDate[d] && catByDate[d][cat]) || 0; }),
-      backgroundColor: (catColorsMap[cat] || '#999') + 'CC',
-      borderColor: catColorsMap[cat] || '#999',
-      borderWidth: 1,
-      borderRadius: 3
-    };
-  });
-  var ctx1 = document.getElementById('chartCategoryTimeline');
-  if (ctx1) {
-    _statsCharts.catTimeline = new Chart(ctx1, {
-      type: 'bar',
-      data: { labels: allDates.map(function(d) { var p = d.split('-'); return p[1]+'/'+p[2]; }), datasets: datasets },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position:'bottom', labels: { boxWidth:12, padding:12, color:textColor } }, tooltip: { mode:'index', intersect:false } },
-        scales: {
-          x: { stacked:true, grid:{ display:false }, ticks:{ color:textColor, maxRotation:45 } },
-          y: { stacked:true, beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }
-        }
-      }
-    });
-  }
-
-  var srcKeys = Object.keys(sources).sort(function(a,b) { return sources[b]-sources[a]; });
-  var srcColors = ['#0A66C2','#6366F1','#FF6B35','#00CA72','#E44258','#FFB100','#8B5CF6','#06B6D4','#F43F5E','#84CC16'];
-  var ctx2 = document.getElementById('chartSourcePie');
-  if (ctx2) {
-    _statsCharts.sourcePie = new Chart(ctx2, {
-      type: 'doughnut',
-      data: {
-        labels: srcKeys,
-        datasets: [{ data: srcKeys.map(function(k) { return sources[k]; }), backgroundColor: srcColors.slice(0, srcKeys.length), borderWidth:2, borderColor: isDark ? '#1a1a2e' : '#fff' }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:12, padding:10, color:textColor } } } }
-    });
-  }
-
-  var catKeys = Object.keys(categories).sort(function(a,b) { return categories[b]-categories[a]; });
-  var ctx3 = document.getElementById('chartCategoryBar');
-  if (ctx3) {
-    _statsCharts.catBar = new Chart(ctx3, {
-      type: 'bar',
-      data: {
-        labels: catKeys.map(function(k) { return catLabelsMap[k]||k; }),
-        datasets: [{ data: catKeys.map(function(k) { return categories[k]; }), backgroundColor: catKeys.map(function(k) { return (catColorsMap[k]||'#999')+'CC'; }), borderColor: catKeys.map(function(k) { return catColorsMap[k]||'#999'; }), borderWidth:1, borderRadius:4 }]
-      },
-      options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }, y:{ grid:{ display:false }, ticks:{ color:textColor } } } }
-    });
-  }
-
-  var trendDates = Object.keys(dailyCounts).filter(function(d) { return d >= thirtyDaysAgo; }).sort();
-  var ctx4 = document.getElementById('chartDailyTrend');
-  if (ctx4) {
-    _statsCharts.dailyTrend = new Chart(ctx4, {
-      type: 'line',
-      data: {
-        labels: trendDates.map(function(d) { var p=d.split('-'); return p[1]+'/'+p[2]; }),
-        datasets: [{
-          label: 'New Listings',
-          data: trendDates.map(function(d) { return dailyCounts[d]||0; }),
-          borderColor: '#579BFC', backgroundColor: 'rgba(87,155,252,0.15)',
-          fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#579BFC', borderWidth: 2
-        }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ color:textColor, maxRotation:45 } }, y:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } } } }
-    });
-  }
-
-  var companyArr = Object.entries(companies).sort(function(a,b) { return b[1]-a[1]; }).slice(0,15);
-  var ctx5 = document.getElementById('chartTopCompanies');
-  if (ctx5) {
-    _statsCharts.topCo = new Chart(ctx5, {
-      type: 'bar',
-      data: {
-        labels: companyArr.map(function(c) { return c[0]; }),
-        datasets: [{ data: companyArr.map(function(c) { return c[1]; }), backgroundColor: '#05323Ccc', borderColor: '#05323C', borderWidth:1, borderRadius:4 }]
-      },
-      options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } }, y:{ grid:{ display:false }, ticks:{ color:textColor, font:{ size:11 } } } } }
-    });
-  }
-
-  var locArr = Object.entries(locations).sort(function(a,b) { return b[1]-a[1]; }).slice(0,12);
-  var ctx6 = document.getElementById('chartLocationBar');
-  if (ctx6) {
-    _statsCharts.locBar = new Chart(ctx6, {
-      type: 'bar',
-      data: {
-        labels: locArr.map(function(l) { return l[0]; }),
-        datasets: [{ data: locArr.map(function(l) { return l[1]; }), backgroundColor: '#32BBD7cc', borderColor: '#32BBD7', borderWidth:1, borderRadius:4 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ color:textColor } }, y:{ beginAtZero:true, grid:{ color:gridColor }, ticks:{ color:textColor, stepSize:1 } } } }
-    });
-  }
-}
-
 function renderAnalyticsView() {
   var stats = convTracker.getWeekStats();
   var sent = stats.outreach_sent, conn = stats.connection_accepted, replied = stats.reply_received, meeting = stats.meeting_booked;
@@ -19018,38 +18821,6 @@ function renderAnalyticsView() {
 <div class="source-dropdown-panel" id="sourceDropdownPanel" style="position:fixed;z-index:9999;"></div>
 
 <div class="share-toast" id="shareToast"></div>
-
-<script>
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const filterDate = params.get('filterDate');
-  const filterCategory = params.get('filterCategory');
-  if (filterDate && filterCategory) {
-    function applyHistogramFilter() {
-      if (typeof ALL_JOBS === 'undefined' || !document.getElementById('searchInput')) {
-        return setTimeout(applyHistogramFilter, 200);
-      }
-      const catMap = {
-        devops: 'DevOps', ai: 'AI/ML', cloud: 'Cloud', security: 'Security',
-        sre: 'SRE', data: 'Data', platform: 'Platform', finops: 'FinOps', agentic: 'Agentic'
-      };
-      const searchEl = document.getElementById('searchInput');
-      if (searchEl) {
-        searchEl.value = filterDate;
-        searchEl.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-      const banner = document.createElement('div');
-      banner.style.cssText = 'background:#1a3a5c;border:1px solid #58a6ff;border-radius:8px;padding:10px 16px;margin:8px 0 12px;display:flex;align-items:center;justify-content:space-between;color:#c9d1d9;font-size:0.9em;';
-      banner.innerHTML = 'Showing <b style="color:#58a6ff;margin:0 4px">' + (catMap[filterCategory] || filterCategory) + '</b> listings from <b style="color:#58a6ff;margin:0 4px">' + filterDate + '</b>' +
-        '<span onclick="this.parentElement.remove();document.getElementById(\'searchInput\').value=\'\';document.getElementById(\'searchInput\').dispatchEvent(new Event(\'input\',{bubbles:true}))" style="cursor:pointer;margin-left:12px;color:#8b949e">✕ Clear filter</span>';
-      const main = document.querySelector('.main-content') || document.querySelector('main') || document.body;
-      const firstChild = main.querySelector('h2, .search-bar, [class*=search]') || main.firstChild;
-      if (firstChild) firstChild.parentNode.insertBefore(banner, firstChild);
-    }
-    applyHistogramFilter();
-  }
-})();
-</script>
 </body>
 </html>
 <!-- deployed Thu Mar  5 16:38:56 UTC 2026 -->
