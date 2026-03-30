@@ -6612,15 +6612,6 @@ def main():
             # ATS platform names that occasionally appear as company on Indeed
             _ats_platforms = {"workday", "greenhouse", "lever", "ashby", "jobvite",
                               "smartrecruiters", "bamboohr", "icims", "comeet"}
-            # Common Indeed description section headers that get mis-parsed as company names
-            _desc_headers = {
-                "what you'll need to have", "what you'll bring", "what we offer",
-                "what you'll do", "what we're looking for", "about the role",
-                "about us", "about the team", "about the position",
-                "your responsibilities", "key responsibilities", "job description",
-                "who you are", "who we are", "why join us", "the opportunity",
-                "the role", "your mission", "your impact", "our ideal candidate",
-            }
             _is_garbled = (
                 ":" in old_company                                           # "Requirements: B"
                 or len(old_company) > 45                                     # description snippets
@@ -6634,7 +6625,6 @@ def main():
                                   r'ramat gan|beer.?sheva)\b', old_company,
                                   re.IGNORECASE))                            # "(Raanana Office)"
                 or old_company.lower() in _ats_platforms                     # ATS name as company
-                or old_company.lower() in _desc_headers                      # description section headers
             )
             if _is_garbled:
                 # Try JK cache/seed before falling back to Unknown
