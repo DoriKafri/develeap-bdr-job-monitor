@@ -6625,14 +6625,6 @@ def main():
                                   r'ramat gan|beer.?sheva)\b', old_company,
                                   re.IGNORECASE))                            # "(Raanana Office)"
                 or old_company.lower() in _ats_platforms                     # ATS name as company
-                or old_company.lower() in {                                  # description section headers
-                    "what you'll need to have", "what you'll bring", "what we offer",
-                    "what you'll do", "what we're looking for", "about the role",
-                    "about us", "about the team", "about the position",
-                    "your responsibilities", "key responsibilities", "job description",
-                    "who you are", "who we are", "why join us", "the opportunity",
-                    "the role", "your mission", "your impact", "our ideal candidate",
-                }
             )
             if _is_garbled:
                 # Try JK cache/seed before falling back to Unknown
