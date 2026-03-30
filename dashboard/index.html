@@ -1564,14 +1564,7 @@
   [data-theme="dark"] .settings-tab:hover { color:var(--text); }
 
   /* system preference */
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) {
-      --bg: #0c2329; --text: #e2e8f0; --text-light: #8baab0;
-      --text-lighter: #4a6268; --border: #1e4a52;
-      --shadow: 0 2px 16px rgba(0,0,0,0.5);
-      --primary-light: #0a4550; --accent-light: #2d2200; --teal-light: #0a3640;
-    }
-  }
+  /* Auto-dark disabled — light mode forced. Use toggle in Settings for dark mode. */
 @media (max-width: 768px){body{overflow-y:auto !important;height:auto !important}.main-content{height:auto !important;overflow:visible !important}}
 </style>
 </head>
