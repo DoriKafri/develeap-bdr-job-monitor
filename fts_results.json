@@ -1126,5 +1126,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-03-31T16:49:23Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... Agentic AI talk was all about. Vibe coded an Agent through natural language ... is hiring via AI now. Companies ofte",
+    "url": "https://www.linkedin.com/posts/cardinal-ai_executivesearch-headhunter-airecruiting-activity-7441661250054467584-7iz_",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Cardinal Ai",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/cardinal-ai/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-31T17:49:05Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We need to finalize the job description for the open role. HR: The ... And in 2026 — with agentic AI, RAG, guardrails, s",
+    "url": "https://www.linkedin.com/posts/anastasiia-sabelnikova-7816b3211_team-lead-who-are-they-and-why-does-activity-7442197453212303360-leyf",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Anastasiia Sabelnikova",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/anastasiia-sabelnikova-7816b3211/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-03-31T17:49:05Z"
   }
 ]
