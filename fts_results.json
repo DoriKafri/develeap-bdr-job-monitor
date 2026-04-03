@@ -1282,5 +1282,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-02T18:42:59Z"
+  },
+  {
+    "title": "Site Reliability Engineer at Tel Aviv Stock Exchange",
+    "snippet": "We're #hiring a new Site Reliability Engineer in Tel Aviv District. Apply today or share this post with your network.",
+    "url": "https://www.linkedin.com/posts/tel-aviv-stock-exchange_hiring-activity-7442899882622771200-1WVU",
+    "company": "Tel Aviv Stock Exchange",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Tel Aviv Stock",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/tel-aviv-stock-exchange/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-03T05:54:56Z"
+  },
+  {
+    "title": "Site Reliability Engineer",
+    "snippet": "Pratiksha R. Senior Site Reliability Engineer at Servicenow. 1d. Report this ... hiring more of them. And most important",
+    "url": "https://www.linkedin.com/posts/techkraftinc_mousigning-techkraft-talentconnect-activity-7442448595112398848-oqyq",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/techkraftinc/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-03T05:54:56Z"
   }
 ]
