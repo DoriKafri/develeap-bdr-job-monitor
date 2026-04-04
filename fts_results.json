@@ -1366,5 +1366,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-04T17:35:05Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "ScaleOps just raised a $130M Series C at an $800M+ valuation. We're building something big, and we're hiring. Join us.",
+    "url": "https://www.linkedin.com/posts/modicohen_scaleops-just-raised-a-130m-series-c-at-activity-7444381608544980993-LE-X",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/modicohen/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-04T19:07:51Z"
   }
 ]
