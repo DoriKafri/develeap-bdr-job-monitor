@@ -1330,5 +1330,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-03T15:58:11Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... agentic workflows to securing AI operating systems on the endpoint, we're defining a new category: AIDR. We're looki",
+    "url": "https://www.linkedin.com/posts/eyal-harpaz_were-hiring-sales-engineer-crowdstrike-activity-7444314989890371584-wxXQ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eyal-harpaz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-04T13:45:47Z"
   }
 ]
