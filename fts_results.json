@@ -1342,5 +1342,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-04T13:45:47Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Everyone's talking about AI taking jobs. Nobody's talking about what's actually happening. Oracle is cutting 30,000 peop",
+    "url": "https://www.linkedin.com/posts/maxgro_ai-futureofwork-wellbeing-activity-7442217587255488513-WI_i",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/maxgro/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-04T15:32:24Z"
   }
 ]
