@@ -20,12 +20,12 @@ jobs:
 
     env:
       HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
-      APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+      HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
 
     steps:
       - name: Check if any integration is configured
         run: |
-          if [ -z "$HUBSPOT_TOKEN" ] && [ -z "$APOLLO_API_KEY" ]; then
+          if [ -z "$HUBSPOT_TOKEN" ] && [ -z "$HUNTER_API_KEY" ]; then
             echo "No integration secrets set, skipping"
             exit 0
           fi
@@ -49,11 +49,9 @@ jobs:
           HUBSPOT_PORTAL_ID: ${{ secrets.HUBSPOT_PORTAL_ID }}
         run: python sync_hubspot.py
 
-      - name: Run Apollo.io enrichment
-        if: env.APOLLO_API_KEY != ''
-        env:
-          APOLLO_WEBHOOK_URL: ${{ secrets.APOLLO_WEBHOOK_URL }}
-        run: python enrich_apollo.py
+      - name: Run Hunter.io enrichment
+        if: env.HUNTER_API_KEY != ''
+        run: python enrich_hunter.py
 
       - name: Process outreach queue
         if: env.HUBSPOT_TOKEN != ''
