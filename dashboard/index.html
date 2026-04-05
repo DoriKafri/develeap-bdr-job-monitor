@@ -1761,7 +1761,7 @@
           <th style="min-width:70px" data-col="category"><div class="th-wrap"><div class="th-inner" onclick="sortBy('category')"><span>Category</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('category',this)">&#9776;</span></div></th>
           <th style="min-width:60px" data-col="posted"><div class="th-wrap"><div class="th-inner" onclick="sortBy('posted')"><span>Posted</span><span class="sort-icon">&#9650;&#9660;</span></div></div></th>
           <th style="min-width:90px" data-col="status"><div class="th-wrap"><div class="th-inner" onclick="sortBy('status')"><span>Status</span><span class="sort-icon">&#9650;&#9660;</span></div><span class="filter-icon" onclick="event.stopPropagation();toggleColFilter('status',this)">&#9776;</span></div></th>
-          <th style="width:36px;text-align:center;padding:0 4px" title="Manually enrich contacts via Apollo">🧬</th>
+          <th style="width:36px;text-align:center;padding:0 4px" title="Manually enrich contacts via Hunter.io">🧬</th>
         </tr></thead>
         <tbody id="jobsTable"></tbody>
       </table>
@@ -1993,10 +1993,10 @@
                 <div class="intg-nav-label"><span>HubSpot</span><span>CRM & deals</span></div>
                 <div class="intg-status-dot inactive" id="hubspotStatusDot"></div>
               </button>
-              <button class="intg-nav-btn" onclick="switchIntgTab('apollo')">
-                <div class="intg-nav-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
-                <div class="intg-nav-label"><span>Apollo.io</span><span>Enrichment</span></div>
-                <div class="intg-status-dot inactive" id="apolloStatusDot"></div>
+              <button class="intg-nav-btn" onclick="switchIntgTab('hunter')">
+                <div class="intg-nav-icon" style="background:#FFF3E0;color:#E65100">🚀</div>
+                <div class="intg-nav-label"><span>Hunter.io</span><span>Enrichment</span></div>
+                <div class="intg-status-dot inactive" id="hunterStatusDot"></div>
               </button>
               <button class="intg-nav-btn" onclick="switchIntgTab('whatsapp')">
                 <div class="intg-nav-icon" style="background:#E8F8F0;color:#128C7E"><svg width="18" height="18" viewBox="0 0 24 24" fill="#128C7E"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
@@ -2022,12 +2022,12 @@
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
-              <!-- Apollo Status Card -->
-              <div id="apolloStatusBanner" style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('apollo')">
+              <!-- Hunter Status Card -->
+              <div id="hunterStatusBanner" style="border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;font-size:13px;background:#FFF3E0;color:#E65100;border:1px solid #FFB74D;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onclick="switchIntgTab('hunter')">
                 <span style="font-size:26px">🔮</span>
                 <div style="flex:1">
-                  <div style="font-weight:700;font-size:14px" id="apolloStatusTitle">Apollo.io</div>
-                  <div style="font-size:12px;opacity:0.8" id="apolloStatusDetail">Not configured</div>
+                  <div style="font-weight:700;font-size:14px" id="hunterStatusTitle">Hunter.io</div>
+                  <div style="font-size:12px;opacity:0.8" id="hunterStatusDetail">Not configured</div>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
@@ -2191,12 +2191,12 @@
             </div>
           </div>
 
-          <!-- APOLLO PANEL -->
-          <div class="intg-panel" id="intgPanel_apollo">
+          <!-- HUNTER PANEL -->
+          <div class="intg-panel" id="intgPanel_hunter">
             <div class="intg-header">
-              <div class="intg-header-icon" style="background:#F3E5F5;color:#7B1FA2">🚀</div>
+              <div class="intg-header-icon" style="background:#FFF3E0;color:#E65100">🚀</div>
               <div class="intg-header-text">
-                <h4>Apollo.io Enrichment</h4>
+                <h4>Hunter.io Enrichment</h4>
                 <p>Enrich stakeholders with verified emails, phone numbers, LinkedIn URLs, and company intel</p>
               </div>
             </div>
@@ -2204,38 +2204,38 @@
             <!-- Step 1: API Key -->
             <div class="intg-step">
               <div class="intg-step-header">
-                <div class="intg-step-num" style="background:#7B1FA2">1</div>
-                <div class="intg-step-title" style="color:#7B1FA2">Connect Apollo.io</div>
+                <div class="intg-step-num" style="background:#FF6D00">1</div>
+                <div class="intg-step-title" style="color:#FF6D00">Connect Hunter.io</div>
               </div>
               <div class="intg-step-body">
-                <p>Go to <a href="https://app.apollo.io/#/settings/integrations/api-keys" target="_blank" style="color:#7B1FA2;font-weight:500">Apollo &gt; Settings &gt; API Keys</a>, create a key and paste it below.</p>
+                <p>Go to <a href="https://hunter.io/api-keys" target="_blank" style="color:#FF6D00;font-weight:500">Hunter &gt; API Keys</a>, create a key and paste it below.</p>
                 <p class="hint">Encrypted as a GitHub Secret — never visible in the browser.</p>
                 <div style="margin-top:10px">
-                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Apollo API Key</label>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:5px">Hunter API Key</label>
                   <div class="intg-input-row">
-                    <input type="password" id="apolloApiKeyInput" placeholder="Your Apollo.io API key" class="intg-input" />
-                    <button type="button" onclick="document.getElementById('apolloApiKeyInput').type = document.getElementById('apolloApiKeyInput').type === 'password' ? 'text' : 'password'" class="intg-toggle-vis" title="Toggle visibility">👁</button>
+                    <input type="password" id="hunterApiKeyInput" placeholder="Your Hunter.io API key" class="intg-input" />
+                    <button type="button" onclick="document.getElementById('hunterApiKeyInput').type = document.getElementById('hunterApiKeyInput').type === 'password' ? 'text' : 'password'" class="intg-toggle-vis" title="Toggle visibility">👁</button>
                   </div>
                 </div>
                 <!-- Key stored indicator -->
-                <div id="apolloKeyStoredBadge" style="display:none;margin-top:8px;padding:8px 12px;border-radius:10px;background:#E8F5E9;border:1px solid #A5D6A7;font-size:12px;color:#2E7D32;display:none;align-items:center;gap:6px">
+                <div id="hunterKeyStoredBadge" style="display:none;margin-top:8px;padding:8px 12px;border-radius:10px;background:#E8F5E9;border:1px solid #A5D6A7;font-size:12px;color:#2E7D32;display:none;align-items:center;gap:6px">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                   <span>API key is stored as a GitHub Secret</span>
-                  <span style="margin-left:auto;font-size:10px;opacity:0.7" id="apolloKeyStoredTime"></span>
+                  <span style="margin-left:auto;font-size:10px;opacity:0.7" id="hunterKeyStoredTime"></span>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px">
-                  <button class="intg-save-btn" onclick="_saveApolloKeyFromUI()" id="saveApolloBtn" style="background:#7B1FA2">
+                  <button class="intg-save-btn" onclick="_saveHunterKeyFromUI()" id="saveHunterBtn" style="background:#FF6D00">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                     Save Key Securely
                   </button>
-                  <button class="intg-save-btn" onclick="_testApolloConnection()" id="testApolloBtn" style="background:#4CAF50">
+                  <button class="intg-save-btn" onclick="_testHunterConnection()" id="testHunterBtn" style="background:#4CAF50">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     Test Connection
                   </button>
-                  <span id="saveApolloResult" style="font-size:12px;color:var(--text-light)"></span>
+                  <span id="saveHunterResult" style="font-size:12px;color:var(--text-light)"></span>
                 </div>
                 <!-- Test result area -->
-                <div id="apolloTestResult" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:12px"></div>
+                <div id="hunterTestResult" style="display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:12px"></div>
               </div>
             </div>
 
@@ -2247,21 +2247,21 @@
               </div>
               <div class="intg-step-body">
                 <div class="intg-checkbox-row" style="margin-bottom:10px">
-                  <label><input type="checkbox" id="apolloEnrichContacts" checked> Enrich contacts (email, phone, title)</label>
-                  <label><input type="checkbox" id="apolloEnrichOrgs" checked> Enrich companies (tech stack, size)</label>
-                  <label><input type="checkbox" id="apolloShowBadges" checked> Show Apollo badges on cards</label>
+                  <label><input type="checkbox" id="hunterEnrichContacts" checked> Enrich contacts (email, phone, title)</label>
+                  <label><input type="checkbox" id="hunterEnrichOrgs" checked> Enrich companies (tech stack, size)</label>
+                  <label><input type="checkbox" id="hunterShowBadges" checked> Show Hunter badges on cards</label>
                 </div>
               </div>
             </div>
 
             <!-- Sync Stats -->
-            <div class="intg-step" id="apolloSyncStats" style="display:none">
+            <div class="intg-step" id="hunterSyncStats" style="display:none">
               <div class="intg-step-header">
                 <span style="font-size:16px">📈</span>
                 <div class="intg-step-title">Sync Statistics</div>
               </div>
               <div class="intg-step-body">
-                <div id="apolloStatsContent" style="font-size:12px;color:var(--text-light)"></div>
+                <div id="hunterStatsContent" style="font-size:12px;color:var(--text-light)"></div>
               </div>
             </div>
           </div>
@@ -2305,13 +2305,13 @@
             <div class="intg-step">
               <div class="intg-step-number">1</div>
               <div class="intg-step-body">
-                <div class="intg-step-title">Phone numbers from Apollo</div>
+                <div class="intg-step-title">Phone numbers from Hunter.io</div>
                 <p style="font-size:13px;color:var(--text-light);margin:8px 0;line-height:1.6">
                   WhatsApp buttons appear automatically on stakeholder cards when a phone number is available.
-                  Phone numbers come from <strong>Apollo.io enrichment</strong> — configure your Apollo API key in the Apollo.io tab to start enriching contacts.
+                  Phone numbers come from <strong>Hunter.io enrichment</strong> — configure your Hunter API key in the Hunter.io tab to start enriching contacts.
                 </p>
                 <div style="margin-top:8px">
-                  <button class="intg-save-btn" onclick="switchIntgTab('apollo')" style="background:#7B1FA2">🚀 Configure Apollo</button>
+                  <button class="intg-save-btn" onclick="switchIntgTab('hunter')" style="background:#FF6D00">🚀 Configure Hunter.io</button>
                 </div>
               </div>
             </div>
@@ -2357,14 +2357,14 @@
                 <div class="intg-step-title">Run Sync</div>
               </div>
               <div class="intg-step-body">
-                <p>Triggers the GitHub Actions workflow that syncs HubSpot CRM data and Apollo enrichment. Runs automatically every 2 hours.</p>
+                <p>Triggers the GitHub Actions workflow that syncs HubSpot CRM data and Hunter enrichment. Runs automatically every 2 hours.</p>
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
                   <button class="intg-save-btn" onclick="_triggerHubSpotSync()" style="background:var(--success)">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     Trigger Sync Now
                   </button>
                   <button class="btn btn-outline" onclick="testCrmConnection()" style="font-size:12px;padding:7px 14px;border-radius:10px">Reload CRM Data</button>
-                  <button class="btn btn-outline" onclick="_loadApolloData().then(()=>renderJobs())" style="font-size:12px;padding:7px 14px;border-radius:10px">Reload Apollo Data</button>
+                  <button class="btn btn-outline" onclick="_loadHunterData().then(()=>renderJobs())" style="font-size:12px;padding:7px 14px;border-radius:10px">Reload Hunter Data</button>
                 </div>
                 <div style="margin-top:8px;font-size:12px;color:var(--text-lighter)">
                   <span id="syncTriggerResult2"></span>
@@ -2385,7 +2385,7 @@
                   </div>
                   <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
                     <span style="background:#7B1FA2;color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
-                    <span>If Apollo is configured, runs <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">enrich_apollo.py</code> &rarr; writes <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">apollo_data.json</code></span>
+                    <span>If Hunter is configured, runs <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">enrich_hunter.py</code> &rarr; writes <code style="background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px;font-size:11px">apollo_data.json</code></span>
                   </div>
                   <div style="display:flex;align-items:flex-start;gap:8px">
                     <span style="background:var(--teal);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
@@ -8542,47 +8542,47 @@ function _mergeStakeholdersWithCrm(job) {
     }
   });
 
-  // 4. Enrich with Apollo data if available
-  _enrichWithApollo(stakeholders, job);
+  // 4. Enrich with Hunter data if available
+  _enrichWithHunter(stakeholders, job);
 
   return stakeholders;
 }
 
-function _enrichWithApollo(stakeholders, job) {
-  if (!_apolloCache || !_apolloCache.contacts) return;
+function _enrichWithHunter(stakeholders, job) {
+  if (!_hunterCache || !_hunterCache.contacts) return;
   const companyKey = (job.company || '').toLowerCase().trim();
 
   // Enrich individual contacts
   stakeholders.forEach(s => {
     const contactKey = ((s.name || '').toLowerCase().trim() + '|' + companyKey);
-    const apollo = _apolloCache.contacts[contactKey];
-    if (apollo && apollo.apolloId) {
-      if (!s.email && apollo.email) s.email = apollo.email;
-      if (!s.title && apollo.title) s.title = apollo.title;
-      if (!s.linkedin && apollo.linkedin_url) s.linkedin = apollo.linkedin_url;
-      s._apolloEnriched = true;
-      s._apolloData = {
-        email: apollo.email || '',
-        emailStatus: apollo.emailStatus || '',
-        phone: apollo.phone || '',
-        seniority: apollo.seniority || '',
-        departments: apollo.departments || [],
-        headline: apollo.headline || '',
-        city: apollo.city || '',
-        country: apollo.country || '',
-        photoUrl: apollo.photoUrl || '',
-        photoData: apollo.photoData || ''
+    const hunter = _hunterCache.contacts[contactKey];
+    if (hunter && hunter.hunterApi) {
+      if (!s.email && hunter.email) s.email = hunter.email;
+      if (!s.title && hunter.title) s.title = hunter.title;
+      if (!s.linkedin && hunter.linkedin_url) s.linkedin = hunter.linkedin_url;
+      s._hunterEnriched = true;
+      s._hunterData = {
+        email: hunter.email || '',
+        emailStatus: hunter.emailStatus || '',
+        phone: hunter.phone || '',
+        seniority: hunter.seniority || '',
+        departments: hunter.departments || [],
+        headline: hunter.headline || '',
+        city: hunter.city || '',
+        country: hunter.country || '',
+        photoUrl: hunter.photoUrl || '',
+        photoData: hunter.photoData || ''
       };
-      // Use Apollo photo if we don't have one — prefer base64 (self-hosted) over URL
-      if (!s.photo) s.photo = apollo.photoData || apollo.photoUrl || '';
+      // Use Hunter photo if we don't have one — prefer base64 (self-hosted) over URL
+      if (!s.photo) s.photo = hunter.photoData || hunter.photoUrl || '';
     }
   });
 
-  // Attach org-level Apollo data to each stakeholder
-  const orgData = (_apolloCache.organizations || {})[companyKey];
-  if (orgData && orgData.apolloId) {
+  // Attach org-level Hunter data to each stakeholder
+  const orgData = (_hunterCache.organizations || {})[companyKey];
+  if (orgData && orgData.hunterApi) {
     stakeholders.forEach(s => {
-      s._apolloOrg = {
+      s._hunterOrg = {
         domain: orgData.domain || '',
         industry: orgData.industry || '',
         employeeCount: orgData.employeeCount,
@@ -8623,7 +8623,7 @@ function buildOutreachSection(job) {
 
       // Action buttons — pill with template dropdown
       let actionBtns = '';
-      const hasPhone = (s._apolloData && s._apolloData.phone) || s.phone;
+      const hasPhone = (s._hunterData && s._hunterData.phone) || s.phone;
       const liTplEmoji = _getChannelTemplateEmoji('linkedin');
       const emailTplEmoji = _getChannelTemplateEmoji('email');
       const waTplEmoji = _getChannelTemplateEmoji('whatsapp');
@@ -8643,8 +8643,8 @@ function buildOutreachSection(job) {
       const badges = [];
       if (s._crmContactUrl) badges.push(`<a href="${s._crmContactUrl}" target="_blank" onclick="event.stopPropagation()" class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32;text-decoration:none" title="View in HubSpot">HubSpot ↗</a>`);
       else if (s._crmEnriched || s._crmOnly) badges.push('<span class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32">HubSpot</span>');
-      if (s._apolloEnriched) badges.push('<span class="stakeholder-badge" style="background:#F3E5F5;color:#7B1FA2">Apollo</span>');
-      if ((s._apolloEnriched && s._apolloData && s._apolloData.email && s._apolloData.emailStatus === 'verified')) badges.push('<span class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32">✓ Email</span>');
+      if (s._hunterEnriched) badges.push('<span class="stakeholder-badge" style="background:#FFF3E0;color:#E65100">Hunter</span>');
+      if ((s._hunterEnriched && s._hunterData && s._hunterData.email && s._hunterData.emailStatus === 'verified')) badges.push('<span class="stakeholder-badge" style="background:#E8F5E9;color:#2E7D32">✓ Email</span>');
       if (s.source === 'Post Publisher') badges.push('<span class="stakeholder-badge-publisher">📢 Published the hiring post</span>');
       const badgeHtml = badges.length ? `<div class="stakeholder-badges">${badges.join('')}</div>` : '';
 
@@ -9247,10 +9247,10 @@ function sendWhatsApp(stakeholderIdx) {
   const s = stakeholders[_activeStakeholderIdx || 0];
   if (!s) return;
 
-  // Get phone number from Apollo data or direct
-  const phone = (s._apolloData && s._apolloData.phone) || s.phone || '';
+  // Get phone number from Hunter data or direct
+  const phone = (s._hunterData && s._hunterData.phone) || s.phone || '';
   if (!phone) {
-    _showToast('📱 No phone number found for ' + s.name + '. Enrich via Apollo first.');
+    _showToast('📱 No phone number found for ' + s.name + '. Enrich via Hunter first.');
     return;
   }
 
@@ -9305,7 +9305,7 @@ function queueWhatsApp(stakeholderIdx) {
   const s = stakeholders[stakeholderIdx];
   if (!s) return;
 
-  const phone = (s._apolloData && s._apolloData.phone) || s.phone || '';
+  const phone = (s._hunterData && s._hunterData.phone) || s.phone || '';
   if (!phone) {
     _showToast('📱 No phone number found for ' + s.name);
     return;
@@ -9332,7 +9332,7 @@ function queueWhatsApp(stakeholderIdx) {
     status: 'pending',
     createdAt: new Date().toISOString(),
     completedAt: null,
-    contactPhoto: s.photo || (s._apolloData && s._apolloData.photoUrl) || '',
+    contactPhoto: s.photo || (s._hunterData && s._hunterData.photoUrl) || '',
     companyLogo: job.logo || ''
   }).then(() => {
     _showToast('📱 ' + s.name + ' added to WhatsApp queue');
@@ -10073,7 +10073,7 @@ function showShareToast(msg) {
 }
 
 function renderJobs() {
-  // Pre-merge CRM+Apollo stakeholders for all jobs (ensures WhatsApp buttons show)
+  // Pre-merge CRM+Hunter stakeholders for all jobs (ensures WhatsApp buttons show)
   _preloadAllStakeholders();
   const jobs = getFilteredJobs();
   const tbody = document.getElementById('jobsTable');
@@ -10330,7 +10330,7 @@ function openDetail(id){
     <div class="detail-section"><div class="detail-label">Description</div><div class="detail-value">${j.description && j.description.length > 120 ? '<span id="_descShort">' + j.description.slice(0,120).replace(/\s+\S*$/,'') + '… <a href="#" onclick="event.preventDefault();document.getElementById(\'_descShort\').style.display=\'none\';document.getElementById(\'_descFull\').style.display=\'inline\'" style="color:var(--primary);font-size:12px">more</a></span><span id="_descFull" style="display:none">' + j.description + '</span>' : (j.description||'')}</div></div>
     <div class="detail-section"><div class="detail-label">Key Skills</div><div class="detail-value" style="display:flex;flex-wrap:wrap;gap:6px">${(j.skills||[]).map(s=>'<span class="badge" style="background:var(--bg);color:var(--text)">'+s+'</span>').join('')}</div></div>
     ${_buildCrmDetailHtml(j.company)}
-    ${_buildApolloDetailHtml(j.company)}
+    ${_buildHunterDetailHtml(j.company)}
     <div style="margin-top:24px"><a href="${j.sourceUrl}" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center">View Original Listing</a></div>
     <button class="share-detail-btn" onclick="shareListing('${j.id}',event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share Listing</button>
     ${j.ftsJobUrl?'<div style="margin-top:8px"><a href="'+j.ftsJobUrl+'" target="_blank" class="fts-job-link" style="display:flex;width:100%;justify-content:center;padding:8px;border-radius:8px;font-size:12px">📋 View Job Application Page</a></div>':''}
@@ -11243,8 +11243,8 @@ function renderIntegrationsSection() {
   _renderDealStageMapping();
   _updateCrmStatusBanner();
 
-  // Show Apollo key stored badge if applicable
-  _showApolloKeyStoredBadge();
+  // Show Hunter key stored badge if applicable
+  _showHunterKeyStoredBadge();
 
   // Setup sticky shadow detection for integration nav
   _setupIntgNavSticky();
@@ -11270,7 +11270,7 @@ function _setupIntgNavSticky() {
 
 function switchIntgTab(tabId) {
   document.querySelectorAll('.intg-nav-btn').forEach((btn, i) => {
-    const panels = ['overview','hubspot','apollo','whatsapp','sync'];
+    const panels = ['overview','hubspot','hunter','whatsapp','sync'];
     btn.classList.toggle('active', panels[i] === tabId);
   });
   document.querySelectorAll('.intg-panel').forEach(p => p.classList.remove('active'));
@@ -11280,13 +11280,13 @@ function switchIntgTab(tabId) {
 
 function _updateIntgStatusDots() {
   const hsDot = document.getElementById('hubspotStatusDot');
-  const apDot = document.getElementById('apolloStatusDot');
+  const hunterDot = document.getElementById('hunterStatusDot');
   if (hsDot) {
     hsDot.className = 'intg-status-dot ' + (_crmCacheBuilt ? 'active' : 'inactive');
   }
-  if (apDot) {
-    const apolloKeyStored = localStorage.getItem('_apolloKeyStored') === 'true';
-    apDot.className = 'intg-status-dot ' + (_apolloCache && _apolloCache.syncedAt ? 'active' : (apolloKeyStored || _apolloCache ? 'pending' : 'inactive'));
+  if (hunterDot) {
+    const hunterKeyStored = localStorage.getItem('_hunterKeyStored') === 'true';
+    hunterDot.className = 'intg-status-dot ' + (_hunterCache && _hunterCache.syncedAt ? 'active' : (hunterKeyStored || _hunterCache ? 'pending' : 'inactive'));
   }
 }
 
@@ -11476,18 +11476,18 @@ async function _saveHubSpotSecretsFromUI() {
   setTimeout(() => { btn.disabled = false; }, 3000);
 }
 
-// ── Apollo.io Save Key & Data Loading ────────────────────────────────
-var _apolloCache = null;
-var _apolloDataUrl = 'https://raw.githubusercontent.com/DoriKafri/develeap-bdr-job-monitor/main/apollo_data.json';
+// ── Hunter.io Save Key & Data Loading ────────────────────────────────
+var _hunterCache = null;
+var _hunterDataUrl = 'https://raw.githubusercontent.com/DoriKafri/develeap-bdr-job-monitor/main/apollo_data.json';
 
-async function _saveApolloKeyFromUI() {
-  const input = document.getElementById('apolloApiKeyInput');
-  const resultEl = document.getElementById('saveApolloResult');
-  const btn = document.getElementById('saveApolloBtn');
+async function _saveHunterKeyFromUI() {
+  const input = document.getElementById('hunterApiKeyInput');
+  const resultEl = document.getElementById('saveHunterResult');
+  const btn = document.getElementById('saveHunterBtn');
   const key = (input.value || '').trim();
 
   if (!key) {
-    resultEl.textContent = 'Please paste your Apollo API key first.';
+    resultEl.textContent = 'Please paste your Hunter API key first.';
     resultEl.style.color = 'var(--danger)';
     return;
   }
@@ -11497,16 +11497,16 @@ async function _saveApolloKeyFromUI() {
   resultEl.style.color = 'var(--text-light)';
 
   try {
-    await _saveGitHubSecret('APOLLO_API_KEY', key);
+    await _saveGitHubSecret('HUNTER_API_KEY', key);
     // Store locally that key exists (not the key itself)
-    localStorage.setItem('_apolloKeyStored', 'true');
-    localStorage.setItem('_apolloKeyStoredAt', new Date().toISOString());
+    localStorage.setItem('_hunterKeyStored', 'true');
+    localStorage.setItem('_hunterKeyStoredAt', new Date().toISOString());
     input.value = '';
-    resultEl.innerHTML = '&#10003; Apollo key saved! It will be used on the next sync run.';
+    resultEl.innerHTML = '&#10003; Hunter key saved! It will be used on the next sync run.';
     resultEl.style.color = 'var(--success)';
-    _showToast('Apollo API key saved to GitHub');
-    _updateApolloStatusBanner(true);
-    _showApolloKeyStoredBadge();
+    _showToast('Hunter.io API key saved to GitHub');
+    _updateHunterStatusBanner(true);
+    _showHunterKeyStoredBadge();
   } catch (e) {
     resultEl.textContent = 'Failed: ' + e.message;
     resultEl.style.color = 'var(--danger)';
@@ -11514,72 +11514,71 @@ async function _saveApolloKeyFromUI() {
   setTimeout(() => { btn.disabled = false; }, 3000);
 }
 
-function _showApolloKeyStoredBadge() {
-  const badge = document.getElementById('apolloKeyStoredBadge');
+function _showHunterKeyStoredBadge() {
+  const badge = document.getElementById('hunterKeyStoredBadge');
   if (!badge) return;
-  const stored = localStorage.getItem('_apolloKeyStored') === 'true';
+  const stored = localStorage.getItem('_hunterKeyStored') === 'true';
   if (stored) {
     badge.style.display = 'flex';
-    const at = localStorage.getItem('_apolloKeyStoredAt');
-    const timeEl = document.getElementById('apolloKeyStoredTime');
+    const at = localStorage.getItem('_hunterKeyStoredAt');
+    const timeEl = document.getElementById('hunterKeyStoredTime');
     if (timeEl && at) {
       const d = new Date(at);
       timeEl.textContent = 'Saved ' + d.toLocaleDateString('en-IL', {month:'short', day:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL', {hour:'2-digit', minute:'2-digit'});
     }
   } else {
     // Check GitHub secrets API to see if key exists (may have been saved from another browser)
-    _checkApolloSecretExists();
+    _checkHunterSecretExists();
   }
 }
 
-async function _checkApolloSecretExists() {
+async function _checkHunterSecretExists() {
   try {
-    const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/APOLLO_API_KEY', {
+    const resp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/HUNTER_API_KEY', {
       headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
     });
     if (resp.ok) {
       const data = await resp.json();
       // Secret exists on GitHub — sync localStorage
-      localStorage.setItem('_apolloKeyStored', 'true');
-      if (data.updated_at) localStorage.setItem('_apolloKeyStoredAt', data.updated_at);
-      const badge = document.getElementById('apolloKeyStoredBadge');
+      localStorage.setItem('_hunterKeyStored', 'true');
+      if (data.updated_at) localStorage.setItem('_hunterKeyStoredAt', data.updated_at);
+      const badge = document.getElementById('hunterKeyStoredBadge');
       if (badge) {
         badge.style.display = 'flex';
-        const timeEl = document.getElementById('apolloKeyStoredTime');
+        const timeEl = document.getElementById('hunterKeyStoredTime');
         if (timeEl && data.updated_at) {
           const d = new Date(data.updated_at);
           timeEl.textContent = 'Saved ' + d.toLocaleDateString('en-IL', {month:'short', day:'numeric'}) + ' ' + d.toLocaleTimeString('en-IL', {hour:'2-digit', minute:'2-digit'});
         }
       }
       // Also update overview banner & status dots
-      _updateApolloStatusBanner(true);
+      _updateHunterStatusBanner(true);
     }
   } catch (e) {
     // Silently fail — just means we can't verify
-    console.warn('Could not check Apollo secret:', e);
+    console.warn('Could not check Hunter secret:', e);
   }
 }
 
-async function _testApolloConnection() {
-  const btn = document.getElementById('testApolloBtn');
-  const resultEl = document.getElementById('apolloTestResult');
+async function _testHunterConnection() {
+  const btn = document.getElementById('testHunterBtn');
+  const resultEl = document.getElementById('hunterTestResult');
   btn.disabled = true;
   resultEl.style.display = 'block';
   resultEl.style.background = '#F5F5F5';
   resultEl.style.color = 'var(--text-light)';
   resultEl.style.border = '1px solid var(--border)';
-  resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px"><span style="animation:spin 1s linear infinite;display:inline-block">⏳</span> Testing Apollo connection...</div>';
+  resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px"><span style="animation:spin 1s linear infinite;display:inline-block">⏳</span> Testing Hunter connection...</div>';
 
   try {
     // Check if we have the key in the input (just entered) or need to use stored secret
-    const inputKey = (document.getElementById('apolloApiKeyInput').value || '').trim();
+    const inputKey = (document.getElementById('hunterApiKeyInput').value || '').trim();
 
     if (inputKey) {
       // Test with the key from input
-      const resp = await fetch('https://api.apollo.io/v1/auth/health', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
-        body: JSON.stringify({ api_key: inputKey })
+      const resp = await fetch('https://api.hunter.io/v2/account?api_key=' + encodeURIComponent(inputKey), {
+        method: 'GET',
+        headers: { 'Cache-Control': 'no-cache' }
       });
       if (resp.ok) {
         const data = await resp.json();
@@ -11587,8 +11586,8 @@ async function _testApolloConnection() {
         resultEl.style.color = '#2E7D32';
         resultEl.style.border = '1px solid #A5D6A7';
         resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Connection successful!</strong></div>' +
-          '<div style="margin-top:6px;font-size:11px;opacity:0.8">Apollo API is reachable and the key is valid.</div>';
-        _showToast('Apollo connection verified');
+          '<div style="margin-top:6px;font-size:11px;opacity:0.8">Hunter.io API is reachable and the key is valid.</div>';
+        _showToast('Hunter.io connection verified');
       } else {
         const errText = await resp.text().catch(() => '');
         resultEl.style.background = '#FFEBEE';
@@ -11597,17 +11596,17 @@ async function _testApolloConnection() {
         resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">❌ <strong>Connection failed</strong> (HTTP ' + resp.status + ')</div>' +
           '<div style="margin-top:6px;font-size:11px;opacity:0.8">' + (errText ? errText.substring(0, 200) : 'Check that your API key is correct.') + '</div>';
       }
-    } else if (localStorage.getItem('_apolloKeyStored') === 'true') {
+    } else if (localStorage.getItem('_hunterKeyStored') === 'true') {
       // Key is stored as GitHub secret — we can't test it directly from the browser
-      // Instead, check if Apollo data exists (indicating a successful past run)
-      const dataResp = await fetch(_apolloDataUrl, { cache: 'no-store' });
+      // Instead, check if Hunter data exists (indicating a successful past run)
+      const dataResp = await fetch(_hunterDataUrl, { cache: 'no-store' });
       if (dataResp.ok) {
         const data = await dataResp.json();
         resultEl.style.background = '#E8F5E9';
         resultEl.style.color = '#2E7D32';
         resultEl.style.border = '1px solid #A5D6A7';
         const stats = data.stats || {};
-        resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Apollo is working!</strong></div>' +
+        resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Hunter.io is working!</strong></div>' +
           '<div style="margin-top:6px;font-size:11px;opacity:0.8">Last sync: ' + (data.syncedAt ? new Date(data.syncedAt).toLocaleString() : 'unknown') +
           ' · Contacts: ' + (stats.contactsEnriched || 0) + ' · Companies: ' + (stats.orgsEnriched || 0) + '</div>';
       } else {
@@ -11621,29 +11620,29 @@ async function _testApolloConnection() {
       // No localStorage flag — check GitHub secrets API directly
       let secretExists = false;
       try {
-        const secResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/APOLLO_API_KEY', {
+        const secResp = await fetch('https://api.github.com/repos/' + _GH_REPO + '/actions/secrets/HUNTER_API_KEY', {
           headers: { 'Authorization': 'token ' + _GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
         });
         if (secResp.ok) {
           secretExists = true;
           const secData = await secResp.json();
-          localStorage.setItem('_apolloKeyStored', 'true');
-          if (secData.updated_at) localStorage.setItem('_apolloKeyStoredAt', secData.updated_at);
-          _showApolloKeyStoredBadge();
-          _updateApolloStatusBanner(true);
+          localStorage.setItem('_hunterKeyStored', 'true');
+          if (secData.updated_at) localStorage.setItem('_hunterKeyStoredAt', secData.updated_at);
+          _showHunterKeyStoredBadge();
+          _updateHunterStatusBanner(true);
         }
       } catch (e2) { /* ignore */ }
 
       if (secretExists) {
         // Key exists on GitHub — check for enrichment data
-        const dataResp = await fetch(_apolloDataUrl, { cache: 'no-store' });
+        const dataResp = await fetch(_hunterDataUrl, { cache: 'no-store' });
         if (dataResp.ok) {
           const data = await dataResp.json();
           resultEl.style.background = '#E8F5E9';
           resultEl.style.color = '#2E7D32';
           resultEl.style.border = '1px solid #A5D6A7';
           const stats = data.stats || {};
-          resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Apollo is working!</strong></div>' +
+          resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">✅ <strong>Hunter.io is working!</strong></div>' +
             '<div style="margin-top:6px;font-size:11px;opacity:0.8">Last sync: ' + (data.syncedAt ? new Date(data.syncedAt).toLocaleString() : 'unknown') +
             ' · Contacts: ' + (stats.contactsEnriched || 0) + ' · Companies: ' + (stats.orgsEnriched || 0) + '</div>';
         } else {
@@ -11658,7 +11657,7 @@ async function _testApolloConnection() {
         resultEl.style.color = '#E65100';
         resultEl.style.border = '1px solid #FFB74D';
         resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">⚠️ <strong>No API key found</strong></div>' +
-          '<div style="margin-top:6px;font-size:11px;opacity:0.8">Enter your Apollo API key above and save it first, then test the connection.</div>';
+          '<div style="margin-top:6px;font-size:11px;opacity:0.8">Enter your Hunter API key above and save it first, then test the connection.</div>';
       }
     }
   } catch (e) {
@@ -11666,41 +11665,41 @@ async function _testApolloConnection() {
     resultEl.style.color = '#C62828';
     resultEl.style.border = '1px solid #EF9A9A';
     resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px">❌ <strong>Error:</strong> ' + e.message + '</div>' +
-      '<div style="margin-top:6px;font-size:11px;opacity:0.8">This may be a CORS issue. Apollo\'s API may need to be called server-side. The key will work during the GitHub Actions sync workflow.</div>';
+      '<div style="margin-top:6px;font-size:11px;opacity:0.8">This may be a CORS issue. Hunter.io\'s API may need to be called server-side. The key will work during the GitHub Actions sync workflow.</div>';
   }
   setTimeout(() => { btn.disabled = false; }, 2000);
 }
 
-async function _loadApolloData() {
+async function _loadHunterData() {
   try {
-    const resp = await fetch(_apolloDataUrl + '?t=' + Date.now(), { cache: 'no-store' });
+    const resp = await fetch(_hunterDataUrl + '?t=' + Date.now(), { cache: 'no-store' });
     if (!resp.ok) {
-      console.warn('Apollo data not available (HTTP ' + resp.status + '). Run the sync workflow with APOLLO_API_KEY configured.');
+      console.warn('Hunter data not available (HTTP ' + resp.status + '). Run the sync workflow with HUNTER_API_KEY configured.');
       return null;
     }
     const data = await resp.json();
-    _apolloCache = data;
-    console.log('Apollo data loaded: ' + Object.keys(data.contacts || {}).length + ' contacts, ' + Object.keys(data.organizations || {}).length + ' orgs, synced ' + data.syncedAt);
-    _updateApolloStatusBanner(true);
-    _updateApolloSyncStats(data);
+    _hunterCache = data;
+    console.log('Hunter data loaded: ' + Object.keys(data.contacts || {}).length + ' contacts, ' + Object.keys(data.organizations || {}).length + ' orgs, synced ' + data.syncedAt);
+    _updateHunterStatusBanner(true);
+    _updateHunterSyncStats(data);
     return data;
   } catch (e) {
-    console.warn('Failed to load Apollo data:', e);
+    console.warn('Failed to load Hunter data:', e);
     return null;
   }
 }
 
-// ── Manual Apollo Enrichment ─────────────────────────────────────────────────
+// ── Manual Hunter Enrichment ─────────────────────────────────────────────────
 function _getEnrichBtn(j) {
   const companyKey = (j.company || '').toLowerCase().trim();
   const companyEscaped = j.company.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-  const hasData = _apolloCache && (
-    ((_apolloCache.organizations || {})[companyKey] || {}).apolloId ||
-    Object.keys(_apolloCache.contacts || {}).some(k => k.endsWith('|' + companyKey))
+  const hasData = _hunterCache && (
+    ((_hunterCache.organizations || {})[companyKey] || {}).apolloId ||
+    Object.keys(_hunterCache.contacts || {}).some(k => k.endsWith('|' + companyKey))
   );
   const cls = 'enrich-btn' + (hasData ? ' has-data' : '');
   const label = hasData ? '🔄' : '🧬';
-  const title = (hasData ? 'Re-enrich ' : 'Enrich ') + j.company + ' contacts via Apollo';
+  const title = (hasData ? 'Re-enrich ' : 'Enrich ') + j.company + ' contacts via Hunter.io';
   return `<button class="${cls}" onclick="manualEnrichListing('${j.id}','${companyEscaped}',this)" title="${title}">${label}</button>`;
 }
 
@@ -11719,10 +11718,10 @@ async function manualEnrichListing(jobId, company, btn) {
     if (!resp.ok) { const t = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (t ? ': ' + t.slice(0, 80) : '')); }
     _showToast('🧬 Enriching ' + company + ' — results ready in ~2 min');
     btn.innerHTML = '⏳';
-    // After ~2 min, reload Apollo data and refresh UI
+    // After ~2 min, reload Hunter data and refresh UI
     setTimeout(async () => {
       try {
-        await _loadApolloData();
+        await _loadHunterData();
         renderJobs();
         if (_activeJobForOutreach && _activeJobForOutreach.id === jobId) {
           delete _activeJobForOutreach._mergedStakeholders;
@@ -11739,31 +11738,31 @@ async function manualEnrichListing(jobId, company, btn) {
   }
 }
 
-function _updateApolloStatusBanner(configured) {
-  const banner = document.getElementById('apolloStatusBanner');
-  const title = document.getElementById('apolloStatusTitle');
-  const detail = document.getElementById('apolloStatusDetail');
+function _updateHunterStatusBanner(configured) {
+  const banner = document.getElementById('hunterStatusBanner');
+  const title = document.getElementById('hunterStatusTitle');
+  const detail = document.getElementById('hunterStatusDetail');
   if (!title || !detail) return;
-  const apolloKeyStored = localStorage.getItem('_apolloKeyStored') === 'true';
-  if (_apolloCache && _apolloCache.syncedAt) {
+  const hunterKeyStored = localStorage.getItem('_hunterKeyStored') === 'true';
+  if (_hunterCache && _hunterCache.syncedAt) {
     if (banner) { banner.style.background = '#E8F5E9'; banner.style.color = '#2E7D32'; banner.style.borderColor = '#A5D6A7'; }
     const iconSpan = banner ? banner.querySelector('span:first-child') : null;
     if (iconSpan) iconSpan.textContent = '✅';
-    title.textContent = 'Apollo.io';
-    detail.textContent = (_apolloCache.stats?.contactsEnriched || 0) + ' contacts, ' + (_apolloCache.stats?.orgsEnriched || 0) + ' orgs enriched';
-  } else if (configured || apolloKeyStored) {
+    title.textContent = 'Hunter.io';
+    detail.textContent = (_hunterCache.stats?.contactsEnriched || 0) + ' contacts, ' + (_hunterCache.stats?.orgsEnriched || 0) + ' orgs enriched';
+  } else if (configured || hunterKeyStored) {
     if (banner) { banner.style.background = '#FFF3D6'; banner.style.color = '#9A7B00'; banner.style.borderColor = '#FFE08A'; }
     const iconSpan = banner ? banner.querySelector('span:first-child') : null;
     if (iconSpan) iconSpan.textContent = '🔑';
-    title.textContent = 'Apollo.io';
+    title.textContent = 'Hunter.io';
     detail.textContent = 'Key saved — waiting for first sync';
   }
   _updateIntgStatusDots();
 }
 
-function _updateApolloSyncStats(data) {
-  const container = document.getElementById('apolloSyncStats');
-  const content = document.getElementById('apolloStatsContent');
+function _updateHunterSyncStats(data) {
+  const container = document.getElementById('hunterSyncStats');
+  const content = document.getElementById('hunterStatsContent');
   if (!container || !content || !data || !data.stats) return;
   container.style.display = 'block';
   const s = data.stats;
@@ -12094,7 +12093,7 @@ function _toggleCrmDeals(uid, total) {
   }
 }
 
-function _toggleApolloDetails(uid) {
+function _toggleHunterDetails(uid) {
   var details = document.getElementById(uid + '_details');
   var toggle = document.getElementById(uid + '_toggle');
   var expanded = toggle.dataset.expanded === '1';
@@ -12109,15 +12108,15 @@ function _toggleApolloDetails(uid) {
   }
 }
 
-function _buildApolloDetailHtml(companyName) {
-  if (!_apolloCache) return '';
+function _buildHunterDetailHtml(companyName) {
+  if (!_hunterCache) return '';
   const key = (companyName || '').toLowerCase().trim();
-  const org = (_apolloCache.organizations || {})[key];
-  if (!org || !org.apolloId) return '';
+  const org = (_hunterCache.organizations || {})[key];
+  if (!org || !org.hunterApi) return '';
 
-  const apolloUid = 'apollo_' + key.replace(/[^a-z0-9]/g, '_');
+  const hunterId = 'hunter_' + key.replace(/[^a-z0-9]/g, '_');
   let html = '<div class="detail-section" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">';
-  html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:14px">🚀</span> Apollo Intel</div>';
+  html += '<div class="detail-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:14px">🚀</span> Hunter Intel</div>';
 
   // Key metrics (always visible as summary)
   const metrics = [];
@@ -12130,7 +12129,7 @@ function _buildApolloDetailHtml(companyName) {
   }
 
   // Collapsible details
-  html += '<div id="' + apolloUid + '_details" style="display:none">';
+  html += '<div id="' + hunterId + '_details" style="display:none">';
 
   // Company summary
   if (org.shortDescription) {
@@ -12142,19 +12141,19 @@ function _buildApolloDetailHtml(companyName) {
     html += '<div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--text-light)">Tech Stack</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">';
     org.technologies.forEach(t => {
-      html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#F3E5F5;color:#7B1FA2">' + t + '</span>';
+      html += '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:#FFF3E0;color:#E65100">' + t + '</span>';
     });
     html += '</div>';
   }
 
-  // Apollo link
+  // Hunter link
   if (org.linkedinUrl) {
-    html += '<a href="' + org.linkedinUrl + '" target="_blank" style="font-size:11px;color:#7B1FA2;text-decoration:none">Company LinkedIn &rarr;</a>';
+    html += '<a href="' + org.linkedinUrl + '" target="_blank" style="font-size:11px;color:#FF6D00;text-decoration:none">Company LinkedIn &rarr;</a>';
   }
 
   html += '</div>'; // end collapsible details
 
-  html += '<a href="#" id="' + apolloUid + '_toggle" onclick="event.preventDefault();_toggleApolloDetails(\'' + apolloUid + '\')" style="font-size:11px;color:#7B1FA2;text-decoration:none;display:inline-block;margin-top:4px">Show more ▾</a>';
+  html += '<a href="#" id="' + hunterId + '_toggle" onclick="event.preventDefault();_toggleHunterDetails(\'' + hunterId + '\')" style="font-size:11px;color:#FF6D00;text-decoration:none;display:inline-block;margin-top:4px">Show more ▾</a>';
 
   html += '</div>';
   return html;
@@ -12169,8 +12168,8 @@ function _initCrmIntegration() {
   }
   // Auto-load CRM data from file if enabled
   _crmAutoLoadFromFile();
-  // Auto-load Apollo enrichment data (non-blocking)
-  _apolloAutoLoad();
+  // Auto-load Hunter enrichment data (non-blocking)
+  _hunterAutoLoad();
 }
 
 // Also save CRM config to localStorage when saving settings
@@ -12201,37 +12200,37 @@ async function _crmAutoLoadFromFile() {
   }, 1500);
 }
 
-async function _apolloAutoLoad() {
-  if (_apolloCache) return;
+async function _hunterAutoLoad() {
+  if (_hunterCache) return;
   setTimeout(async () => {
     try {
-      const data = await _loadApolloData();
+      const data = await _loadHunterData();
       if (data) {
         renderJobs(); // Re-render — _preloadAllStakeholders() called inside renderJobs()
-        // Refresh detail panel if already open (Apollo data arrived after user clicked a job)
+        // Refresh detail panel if already open (Hunter data arrived after user clicked a job)
         if (_activeJobForOutreach && _activeJobForOutreach.id) {
           openDetail(_activeJobForOutreach.id);
         }
       }
     } catch (e) {
-      console.warn('Apollo auto-load skipped:', e);
+      console.warn('Hunter auto-load skipped:', e);
     }
   }, 2500); // Slightly after CRM load
 }
 
-// Pre-compute merged stakeholders (CRM + Apollo) for ALL jobs at once,
+// Pre-compute merged stakeholders (CRM + Hunter) for ALL jobs at once,
 // so WhatsApp buttons and enrichment data are ready before opening detail.
 var _preloadVersion = 0; // tracks data changes to avoid redundant re-merges
 function _preloadAllStakeholders() {
   if (!ALL_JOBS || !ALL_JOBS.length) return;
   // Compute a version key from data sources to avoid redundant work
-  var v = ((_crmCacheBuilt ? 1 : 0) + (_apolloCache ? 2 : 0)) * 1000 + ALL_JOBS.length;
+  var v = ((_crmCacheBuilt ? 1 : 0) + (_hunterCache ? 2 : 0)) * 1000 + ALL_JOBS.length;
   if (v === _preloadVersion) return; // already done with same data
   _preloadVersion = v;
   let enriched = 0;
   ALL_JOBS.forEach(j => {
     j._mergedStakeholders = _mergeStakeholdersWithCrm(j);
-    if (j._mergedStakeholders.some(s => (s._apolloData && s._apolloData.phone) || s.phone)) enriched++;
+    if (j._mergedStakeholders.some(s => (s._hunterData && s._hunterData.phone) || s.phone)) enriched++;
   });
   console.log('Pre-loaded stakeholders for ' + ALL_JOBS.length + ' jobs (' + enriched + ' with phone contacts)');
 }
@@ -15224,7 +15223,7 @@ var _WF_NODES = {
   discovery:        { icon:'🔍', label:'Job Discovery',        type:'auto',      desc:'Scrapes 50+ queries across LinkedIn, Lever, Greenhouse, Comeet, Ashby.' },
   dedup:            { icon:'🔄', label:'Dedup & Categorize',   type:'auto',      desc:'Removes duplicate listings, categorizes by DevOps, AI/ML, FinOps, etc.' },
   customerMatch:    { icon:'⭐', label:'Customer Match',       type:'auto',      desc:'Matches companies against 123 Develeap customers and 32 past customers.' },
-  enrichment:       { icon:'🧬', label:'Enrichment',           type:'auto',      desc:'Enriches contacts with emails, phones, titles via Apollo.io.' },
+  enrichment:       { icon:'🧬', label:'Enrichment',           type:'auto',      desc:'Enriches contacts with emails, phones, titles via Hunter.io.' },
   crmSync:          { icon:'🔗', label:'CRM Sync',             type:'auto',      desc:'Syncs company/deal/contact data from HubSpot every 2h.' },
   review:           { icon:'👤', label:'Review & Select',      type:'human',     desc:'User reviews new listings, selects contacts, picks templates.' },
   crmCreate:        { icon:'🏢', label:'CRM Create',           type:'auto',      desc:'Auto-create company + contacts in HubSpot when selected for outreach.' },
@@ -15243,7 +15242,7 @@ var _WF_DEFAULTS = {
   discovery:        { enabled:true, schedule:'every_15m_daytime', sources:['linkedin','linkedin_fts','lever','greenhouse','comeet','ashby','workday'] },
   dedup:            { enabled:true },
   customerMatch:    { enabled:true },
-  enrichment:       { enabled:true, provider:'apollo', rateLimit:600 },
+  enrichment:       { enabled:true, provider:'hunter', rateLimit:600 },
   crmSync:          { enabled:true, provider:'hubspot', schedule:'every_2h_business' },
   review:           { enabled:true, mode:'manual', autoApproveCustomers:false, autoApproveCategories:false },
   crmCreate:        { enabled:true, autoCreateOnOutreach:true, createDeal:false, dealPipeline:'default' },
@@ -15792,7 +15791,7 @@ function _wfStatus(id) {
   if(!cfg.enabled) return 'Disabled';
   switch(id){
     case 'discovery': return cfg.schedule==='every_15m_daytime'?'Every 15m (daytime)':'Custom';
-    case 'enrichment': return 'Apollo.io';
+    case 'enrichment': return 'Hunter.io';
     case 'throttle': return (cfg.preset||'smart').charAt(0).toUpperCase()+(cfg.preset||'smart').slice(1)+' mode';
     case 'review': return cfg.mode==='manual'?'Human-in-loop':'Auto';
     case 'outreach': return cfg.requireReview?'Requires review':'Auto-send';
@@ -15910,7 +15909,7 @@ function _wfDiscoveryCfg(c) {
 function _wfEnrichCfg(c) {
   return '<div class="wf-section"><div class="wf-section-title">Provider</div>'+
     '<div class="wf-form-group"><select class="wf-select" onchange="_wfSet(\'enrichment\',\'provider\',this.value)">'+
-    '<option value="apollo"'+(c.provider==='apollo'?' selected':'')+'>Apollo.io</option>'+
+    '<option value="hunter"'+(c.provider==='hunter'?' selected':'')+'>Hunter.io</option>'+
     '<option value="clearbit"'+(c.provider==='clearbit'?' selected':'')+'>Clearbit</option></select></div></div>'+
     '<div class="wf-section"><div class="wf-section-title">Rate Limit</div>'+
     _wfSlider('Calls per hour','rateLimit',c.rateLimit||600,100,2000,'enrichment')+
@@ -18489,7 +18488,7 @@ var _HELP_DOCS = {
       icon: '💼',
       title: 'Job Listings',
       keywords: ['job', 'listing', 'card', 'company', 'title', 'source', 'category', 'customer', 'status'],
-      content: 'Each job listing shows the company name with logo, job title, source icon, category badge, and customer type indicator. Listings from Develeap customers are highlighted. Each listing can have enriched stakeholders (contacts found via LinkedIn/Apollo) with connection messages and follow-up templates.',
+      content: 'Each job listing shows the company name with logo, job title, source icon, category badge, and customer type indicator. Listings from Develeap customers are highlighted. Each listing can have enriched stakeholders (contacts found via LinkedIn/Hunter.io) with connection messages and follow-up templates.',
       subsections: [
         {
           id: 'categories',
@@ -18513,7 +18512,7 @@ var _HELP_DOCS = {
           id: 'stakeholders',
           title: 'Stakeholders & Contacts',
           keywords: ['stakeholder', 'contact', 'linkedin', 'email', 'photo', 'outreach', 'connect', 'message'],
-          content: 'Each listing can have enriched stakeholders: hiring managers, VPs, CTOs found via LinkedIn/Apollo auto-discovery. Stakeholder data includes: name, job title, LinkedIn URL, email (if found), profile photo, personalized connection message, and follow-up message. Stakeholders are auto-discovered when jobs are first scraped and can be refreshed.'
+          content: 'Each listing can have enriched stakeholders: hiring managers, VPs, CTOs found via LinkedIn/Hunter.io auto-discovery. Stakeholder data includes: name, job title, LinkedIn URL, email (if found), profile photo, personalized connection message, and follow-up message. Stakeholders are auto-discovered when jobs are first scraped and can be refreshed.'
         }
       ]
     },
@@ -18638,7 +18637,7 @@ var _HELP_DOCS = {
           id: 'dm-stakeholder',
           title: 'Stakeholder Object',
           keywords: ['stakeholder', 'contact', 'fields', 'schema'],
-          content: 'Fields: name (string), title (string, job title), linkedin (string, URL), source (string: Manual|Apollo|Auto-discovered), email (string, optional), phone (string, optional), connectMsg (string, personalized LinkedIn connection message), followUpMsg (string, follow-up message), photo (string, URL or base64 data URI), _apolloData (object, raw Apollo enrichment data).'
+          content: 'Fields: name (string), title (string, job title), linkedin (string, URL), source (string: Manual|Hunter|Auto-discovered), email (string, optional), phone (string, optional), connectMsg (string, personalized LinkedIn connection message), followUpMsg (string, follow-up message), photo (string, URL or base64 data URI), _hunterData (object, raw Hunter enrichment data).'
         },
         {
           id: 'dm-campaign',
