@@ -6395,21 +6395,22 @@ def update_analytics_histogram(jobs):
         for cat in categories:
             row[cat] = histogram[date].get(cat, 0)
         data_rows.append(row)
-    # Read and update the HTML file
-    with open(hist_path, "r", encoding="utf-8") as f:
-        html = f.read()
+    # Read and update all existing histogram files
     import json as json_mod
     now_iso = datetime.now(timezone.utc).isoformat()
     new_data_block = f"const HISTOGRAM_DATA = {json_mod.dumps(data_rows)};\nconst LAST_UPDATED = \"{now_iso}\";"
-    updated = re.sub(
-        r'const HISTOGRAM_DATA = \[.*?\];\s*const LAST_UPDATED = ".*?";',
-        new_data_block,
-        html,
-        flags=re.DOTALL,
-    )
-    with open(hist_path, "w", encoding="utf-8") as f:
-        f.write(updated)
-    log.info(f"Analytics histogram updated ({len(data_rows)} dates, {len(categories)} categories)")
+    for hist_path in existing:
+        with open(hist_path, "r", encoding="utf-8") as f:
+            html = f.read()
+        updated = re.sub(
+            r'const HISTOGRAM_DATA = \[.*?\];\s*const LAST_UPDATED = ".*?";',
+            new_data_block,
+            html,
+            flags=re.DOTALL,
+        )
+        with open(hist_path, "w", encoding="utf-8") as f:
+            f.write(updated)
+        log.info(f"Analytics histogram updated: {hist_path} ({len(data_rows)} dates, {len(categories)} categories)")
 def main():
     global _auto_discover_count
     _auto_discover_count = 0  # Reset per run
