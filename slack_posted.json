@@ -248,6 +248,7 @@
     "unknown|||devex team lead",
     "unknown|||data group tech lead, staff engineer",
     "unknown|||data engineer",
+    "unknown|||cloud security engineer",
     "unknown|||cloud engineer",
     "unknown|||cloud & cyber security engineer",
     "unknown|||automation & cloud systems engineer",
@@ -427,6 +428,7 @@
     "silverfort|security|infrastructure security engineer at silverfort - comeet|2026-03-03",
     "silverfort|security|infrastructure security engineer at silverfort - comeet",
     "silverfort|security|infrastructure security engineer",
+    "siemens|||ai and genai software engineer student \u2013 airport city",
     "shi||||finops consultant - careers - myworkdayjobs.com",
     "shi||||finops consultant - careers",
     "shi||||finops analyst - myworkdayjobs.com",
@@ -502,6 +504,7 @@
     "qualitest|||21412 - devops engineer (sre)",
     "qualitest israel|||20257 - devops engineer",
     "post|||cloud engineer at post europe",
+    "post if it|||cloud engineer at post if it",
     "port||||director of it at port - comeet",
     "port||||director of it",
     "port||||cloud security engineer at port - comeet",
@@ -877,6 +880,7 @@
     "imagen|||backend engineer | center district",
     "iltelhq petach tikva hq ...|||cloud engineer - iltelhq petach tikva hq",
     "if your team|||ai/agentic engineer at if your team",
+    "if your building|||cloud engineer at if your building",
     "if you need additional capacity the first thing business owners typically look to|||ai/agentic engineer at if you need additional capacity the first thing business owners typically look to",
     "ibm|||devops sales engineer",
     "ibm|||agentic ai - student position-research lab",
@@ -1067,6 +1071,7 @@
     "cygnostic|||devsecops",
     "cyera|||mlops engineer",
     "crawljobs|||principal cloud engineer israel jobs, 3 job offers",
+    "corporate finance strategy team|||finops engineer at corporate finance strategy team",
     "coralogix||||job opportunity: software engineer (coralogix ai)",
     "coralogix|||senior infrastructure engineer",
     "coralogix|||job opportunity: software engineer (coralogix ai)|2026-03-03",
@@ -1292,6 +1297,7 @@
     "astrazeneca|||cloudops engineer",
     "astrazeneca|finops|cloudops engineer|2026-03-07",
     "astrazeneca|finops|cloudops engineer",
+    "armo|||senior cloud security software engineer",
     "armis|||senior data platform engineer @ armis",
     "armissecurity||||streaming infrastructure devops engineer",
     "armissecurity|||streaming infrastructure devops engineer|2026-03-04",
@@ -2371,7 +2377,13 @@
     "glassbox|||devops team lead": "2026-04-05T17:32:10.425392+00:00",
     "workday|||senior ai engineer": "2026-04-05T17:32:10.425392+00:00",
     "shield|||senior devops core engineer": "2026-04-05T17:32:10.425392+00:00",
-    "google|||software engineer iii, cloud security": "2026-04-05T17:32:10.425392+00:00"
+    "google|||software engineer iii, cloud security": "2026-04-05T17:32:10.425392+00:00",
+    "siemens|||ai and genai software engineer student \u2013 airport city": "2026-04-06T08:43:41.082907+00:00",
+    "unknown|||cloud security engineer": "2026-04-06T08:43:41.082907+00:00",
+    "armo|||senior cloud security software engineer": "2026-04-06T08:43:41.082907+00:00",
+    "if your building|||cloud engineer at if your building": "2026-04-06T08:43:41.082907+00:00",
+    "post if it|||cloud engineer at post if it": "2026-04-06T08:43:41.082907+00:00",
+    "corporate finance strategy team|||finops engineer at corporate finance strategy team": "2026-04-06T08:43:41.082907+00:00"
   },
-  "updated": "2026-04-05T17:32:10.453567+00:00"
+  "updated": "2026-04-06T08:43:41.112071+00:00"
 }
