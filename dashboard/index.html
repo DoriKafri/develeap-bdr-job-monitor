@@ -2873,12 +2873,71 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-04-07T08:31:42Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15077, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 91, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 119, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2409, "error": ""}];
+let LAST_UPDATED = "2026-04-07T10:00:50Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15039, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 66, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 51, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2770, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
+  {
+    "id": "d2902b7e",
+    "title": "DevOps Team Leader, Israel",
+    "subtitle": "Bachelor's degree in computer science or equivalent \\ or army service with proven experience in leading DevOps domain; Minimum of 5 years of hands-on experience ...",
+    "company": "Algosec",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=85e8eb065b33e5ab",
+    "category": "devops",
+    "posted": "2026-04-07",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Bachelor's degree in computer science or equivalent \\ or army service with proven experience in leading DevOps domain; Minimum of 5 years of hands-on experience ...",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Avishai Wool",
+        "title": "Co-Founder & CTO",
+        "linkedin": "https://www.linkedin.com/in/avishaiw/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Yuval Baron",
+        "title": "CEO",
+        "linkedin": "https://www.linkedin.com/in/yuval-baron-b08b04/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=algosec.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-07"
+  },
+  {
+    "id": "6f7bca32",
+    "title": "Senior Data Engineer - Platform Team",
+    "subtitle": "Preferred qualifications: Architecting, building, and maintaining end-to-end, high-throughput data systems and their supporting services. Designing efficient ...",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=7b06e4e4bb3f1149",
+    "category": "platform",
+    "posted": "2026-04-07",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Preferred qualifications: Architecting, building, and maintaining end-to-end, high-throughput data systems and their supporting services. Designing efficient ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=platformteam.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-07"
+  },
   {
     "id": "52f6553a",
     "title": "Site Reliability Engineer",
@@ -2909,50 +2968,13 @@ let ALL_JOBS = [
     ]
   },
   {
-    "id": "d2902b7e",
-    "title": "DevOps Team Leader, Israel",
-    "subtitle": "Bachelor's degree in computer science or equivalent \\ or army service with proven experience in leading DevOps domain; Minimum of 5 years of hands-on experience ...",
-    "company": "Algosec",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=85e8eb065b33e5ab",
-    "category": "devops",
-    "posted": "2026-04-07",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Bachelor's degree in computer science or equivalent \\ or army service with proven experience in leading DevOps domain; Minimum of 5 years of hands-on experience ...",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Avishai Wool",
-        "title": "Co-Founder & CTO",
-        "linkedin": "https://www.linkedin.com/in/avishaiw/",
-        "source": "LinkedIn",
-        "email": ""
-      },
-      {
-        "name": "Yuval Baron",
-        "title": "CEO",
-        "linkedin": "https://www.linkedin.com/in/yuval-baron-b08b04/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=algosec.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-04-07"
-  },
-  {
     "id": "a0960d1d",
     "title": "Senior Android Platform Engineer",
-    "subtitle": "We are looking for a Senior Android Platform Engineer to join our team! What will YOU do? Design, implement, and maintain Android system services using Kotlin/ ...",
+    "subtitle": "Senior Android Platform Engineer. General Motors. הרצליה, מחוז תל אביב. מיקום. הרצליה, מחוז תל אביב. תיאור משרה מלא. Job Description. GM Israel (Herzliya) ...",
     "company": "Unknown",
     "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
+    "location": "Herzliya",
+    "locationSlug": "herzliya",
     "source": "indeed",
     "sourceUrl": "https://il.indeed.com/viewjob?jk=c8790a01aa7a5d43",
     "category": "platform",
@@ -2960,32 +2982,10 @@ let ALL_JOBS = [
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "We are looking for a Senior Android Platform Engineer to join our team! What will YOU do? Design, implement, and maintain Android system services using Kotlin/ ...",
+    "description": "Senior Android Platform Engineer. General Motors. הרצליה, מחוז תל אביב. מיקום. הרצליה, מחוז תל אביב. תיאור משרה מלא. Job Description. GM Israel (Herzliya) ...",
     "skills": [],
     "stakeholders": [],
     "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-04-07"
-  },
-  {
-    "id": "6f7bca32",
-    "title": "Senior Data Engineer - Platform Team",
-    "subtitle": "Preferred qualifications: Architecting, building, and maintaining end-to-end, high-throughput data systems and their supporting services. Designing efficient ...",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=7b06e4e4bb3f1149",
-    "category": "platform",
-    "posted": "2026-04-07",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Preferred qualifications: Architecting, building, and maintaining end-to-end, high-throughput data systems and their supporting services. Designing efficient ...",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=platformteam.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-04-07"
   },
