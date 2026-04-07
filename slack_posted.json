@@ -197,6 +197,7 @@
     "unknown|||site reliability engineer",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
+    "unknown|||senior software backend engineer - redis cloud",
     "unknown|||senior security engineer",
     "unknown|||senior platform engineer (interface & insights devex)",
     "unknown|||senior platform engineer",
@@ -265,6 +266,7 @@
     "unknown|||600+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 12 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ cloud security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 7 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
+    "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026",
     "unknown|||25+ \u05d9\u05d9\u05e2\u05d5\u05e5 \u05e4\u05d9\u05e0\u05e0\u05e1\u05d9 \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 2 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||21936 - devops engineer",
     "unknown|||21412 - devops engineer (sre)",
@@ -2387,7 +2389,9 @@
     "post if it|||cloud engineer at post if it": "2026-04-06T08:43:41.082907+00:00",
     "corporate finance strategy team|||finops engineer at corporate finance strategy team": "2026-04-06T08:43:41.082907+00:00",
     "unknown|||senior backend engineer - ai & cloud platform": "2026-04-06T10:05:35.589928+00:00",
-    "algosec|||devops team leader, israel": "2026-04-07T08:30:13.472422+00:00"
+    "algosec|||devops team leader, israel": "2026-04-07T08:30:13.472422+00:00",
+    "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026": "2026-04-07T11:52:41.024063+00:00",
+    "unknown|||senior software backend engineer - redis cloud": "2026-04-07T11:52:41.024063+00:00"
   },
-  "updated": "2026-04-07T08:30:13.501640+00:00"
+  "updated": "2026-04-07T11:52:41.053303+00:00"
 }
