@@ -507,6 +507,7 @@
     "qualitest|||21936 - devops engineer",
     "qualitest|||21412 - devops engineer (sre)",
     "qualitest israel|||20257 - devops engineer",
+    "qualcomm|||dsp & ai development engineer",
     "post|||cloud engineer at post europe",
     "post if it|||cloud engineer at post if it",
     "port||||director of it at port - comeet",
@@ -971,6 +972,7 @@
     "elbit systems israel|||devsecops engineer",
     "elbit systems israel|||dataops \\ mlops engineer - elbit systems israel",
     "elad software systems|||\u05d0\u05e8\u05db\u05d9\u05d8\u05e7\u05d8/\u05d9\u05ea agentic ai - elad software systems",
+    "elad ben meir|||data engineer at elad ben meir",
     "efinancialcareers norway||||senior ai ops / mlops engineer | tel aviv yaffo il",
     "efinancialcareers norway||||senior ai ops / mlops engineer",
     "efinancialcareers norway|||senior ai ops / mlops engineer | tel aviv yaffo il|2026-02-28",
@@ -2395,7 +2397,9 @@
     "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026": "2026-04-07T11:52:41.024063+00:00",
     "unknown|||senior software backend engineer - redis cloud": "2026-04-07T11:52:41.024063+00:00",
     "aws|||cloud engineer at aws israel": "2026-04-07T14:36:12.936329+00:00",
-    "upstream security|||ai engineer at upstream security": "2026-04-07T14:36:12.936329+00:00"
+    "upstream security|||ai engineer at upstream security": "2026-04-07T14:36:12.936329+00:00",
+    "qualcomm|||dsp & ai development engineer": "2026-04-08T08:32:53.461640+00:00",
+    "elad ben meir|||data engineer at elad ben meir": "2026-04-08T08:32:53.461640+00:00"
   },
-  "updated": "2026-04-07T14:36:12.964416+00:00"
+  "updated": "2026-04-08T08:32:53.503245+00:00"
 }
