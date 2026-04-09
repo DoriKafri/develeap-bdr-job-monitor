@@ -2873,8 +2873,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-04-09T08:36:58Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15049, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 56, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 79, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 867, "error": ""}];
+let LAST_UPDATED = "2026-04-09T10:06:43Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15037, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 230, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 36, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 568, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2891,7 +2891,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=4593dd3f68efdd97",
     "category": "ai",
     "posted": "2026-04-09",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "5 years industry experience in software/ML systems (or equivalent), which includes building deep learning training pipelines in Python/PyTorch . Demonstrated ...",
@@ -2913,7 +2913,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://careers.appsflyer.com/jobs/position/8454717002?gh_jid=8454717002",
     "category": "data",
     "posted": "2026-04-09",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": true,
     "description": "Appsflyer - Herzliya. 0 days ago via Greenhouse API (active listing).",
@@ -2921,7 +2921,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=appsflyer.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-04-09"
+    "_first_seen": "2026-04-09",
+    "altSources": [
+      {
+        "source": "other",
+        "sourceUrl": "https://careers.appsflyer.com/jobs/position/8379966002?gh_jid=8379966002",
+        "title": "Data Engineer @ Appsflyer"
+      }
+    ]
   },
   {
     "id": "1a871ded",
@@ -2935,7 +2942,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://job-boards.greenhouse.io/forter/jobs/8486825002",
     "category": "ai",
     "posted": "2026-04-09",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Forter - Israel - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
@@ -2971,6 +2978,630 @@ let ALL_JOBS = [
       }
     ],
     "logo": "https://www.google.com/s2/favicons?domain=forter.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "de5737d2",
+    "title": "Team Lead (VP) - Citi Integrated Digital Assets Platform",
+    "subtitle": "Job Overview. The Citi Integrated Digital Assets Platform Engineering Team Lead must be a highly motivated and proactive hands-on software team ...",
+    "company": "Team Lead (VP)",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=e1b2a00bae6cc58e",
+    "category": "platform",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Job Overview. The Citi Integrated Digital Assets Platform Engineering Team Lead must be a highly motivated and proactive hands-on software team ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=teamleadvp.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "122e25d1",
+    "title": "Senior Data Engineer",
+    "subtitle": "Our employees work at the cutting edge of AI cloud infrastructure alongside some of the most experienced and innovative leaders and engineers in the field.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=99ce8345c3ad0ef4",
+    "category": "data",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Our employees work at the cutting edge of AI cloud infrastructure alongside some of the most experienced and innovative leaders and engineers in the field.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "ecdb4c5e",
+    "title": "Senior Software Engineer- Data Engineering @ Axonius",
+    "subtitle": "Axonius - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Axonius",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.axonius.com/company/careers/open-jobs?gh_jid=7633981003",
+    "category": "data",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Axonius - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Ofri Shur",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/ofri-shur-3683a13b/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Dean Sysman",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/deansysman/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=axonius.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "39ac1fce",
+    "title": "Senior DevOps Engineer @ Riskified",
+    "subtitle": "Riskified - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "company": "Riskified",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.riskified.com/careers/job-description/?gh_jid=8323401002",
+    "category": "devops",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Riskified - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=riskified.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "95b4e7bd",
+    "title": "Site Reliability Engineering (SRE) @ Riskified",
+    "subtitle": "Riskified - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "company": "Riskified",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.riskified.com/careers/job-description/?gh_jid=8432893002",
+    "category": "sre",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Riskified - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=riskified.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "d585c048",
+    "title": "AI Security - AI Engineer @ Cato Networks",
+    "subtitle": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Catonetworks",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.catonetworks.com/careers/careers-post/4739830101?gh_jid=4739830101",
+    "category": "ai",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Shlomo Kramer",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/shlomokramer/",
+        "source": "Globes",
+        "email": ""
+      },
+      {
+        "name": "Eyal Heiman",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/eyal-heiman-99233a98/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=catonetworks.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "d2da5bfe",
+    "title": "DevOps Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/7497833?gh_jid=7497833",
+    "category": "devops",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "4b9d4093",
+    "title": "DevSecOps Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/7095531?gh_jid=7095531",
+    "category": "security",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "5b68d89e",
+    "title": "Security DevOps Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/7418346?gh_jid=7418346",
+    "category": "devops",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "52c08591",
+    "title": "Senior Algo Data Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/6240694?gh_jid=6240694",
+    "category": "data",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "02ca5dfc",
+    "title": "Senior Machine Learning Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/6717221?gh_jid=6717221",
+    "category": "ai",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "a02135e3",
+    "title": "Senior MLOps Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/6240691?gh_jid=6240691",
+    "category": "ai",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "2eeec631",
+    "title": "SRE Security @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/7418347?gh_jid=7418347",
+    "category": "sre",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "b7cdb69c",
+    "title": "Staff Algo Data Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/6070990?gh_jid=6070990",
+    "category": "data",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "a83ff68e",
+    "title": "Staff MLOps Engineer @ Taboola",
+    "subtitle": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Taboola",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.taboola.com/careers/job/6070992?gh_jid=6070992",
+    "category": "ai",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Taboola - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Sliwowicz",
+        "title": "Senior VP R&D - Infrastructure",
+        "linkedin": "https://www.linkedin.com/in/talsliwowicz/",
+        "source": "LinkedIn",
+        "email": "tal@taboola.com"
+      },
+      {
+        "name": "Lior Golan",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/liorgolan/",
+        "source": "LinkedIn",
+        "email": "lior.golan@taboola.com"
+      },
+      {
+        "name": "Anjali Oldfield",
+        "title": "Head of HR, EMEA & APAC",
+        "linkedin": "https://www.linkedin.com/in/anjalioldfield/",
+        "source": "LinkedIn",
+        "email": "anjali@taboola.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "c810b4da",
+    "title": "Cloud Architect @ Appsflyer",
+    "subtitle": "Appsflyer - Herzliya. 0 days ago via Greenhouse API (active listing).",
+    "company": "Appsflyer",
+    "companyIndustry": "",
+    "location": "Herzliya",
+    "locationSlug": "herzliya",
+    "source": "other",
+    "sourceUrl": "https://careers.appsflyer.com/jobs/position/8426614002?gh_jid=8426614002",
+    "category": "cloud",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Appsflyer - Herzliya. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=appsflyer.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "4e69886e",
+    "title": "Senior Application Security Engineer @ Appsflyer",
+    "subtitle": "Appsflyer - Herzliya. 0 days ago via Greenhouse API (active listing).",
+    "company": "Appsflyer",
+    "companyIndustry": "",
+    "location": "Herzliya",
+    "locationSlug": "herzliya",
+    "source": "other",
+    "sourceUrl": "https://careers.appsflyer.com/jobs/position/8394076002?gh_jid=8394076002",
+    "category": "security",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Appsflyer - Herzliya. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=appsflyer.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-04-09"
+  },
+  {
+    "id": "71e01763",
+    "title": "DevSecOps Engineer",
+    "subtitle": "",
+    "company": "Walkme",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/walkme/2698c9aa-1445-4407-9d58-66aa2d260dc2",
+    "category": "security",
+    "posted": "2026-04-09",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "DevSecOps Engineer",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=walkme.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-04-09"
   },
@@ -4769,6 +5400,38 @@ let ALL_JOBS = [
     "_first_seen": "2026-04-05"
   },
   {
+    "id": "fe24c159",
+    "title": "Cloud security researcher",
+    "subtitle": "WE ARE HIRING! In Israel! Do you like researching the cloud and SaaS applications and find issues? Better more, do you a",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/gavriel-fried-92a132ab_varonis-is-looking-for-cloud-security-researcher-activity-7446558643455414272-dVDg",
+    "category": "security",
+    "posted": "2026-04-05",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "WE ARE HIRING! In Israel! Do you like researching the cloud and SaaS applications and find issues? Better more, do you a",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Gavriel Fried",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/gavriel-fried-92a132ab/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi Gavriel, I noticed Unknown is hiring a Cloud security researcher — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Gavriel! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "",
+    "ftsJobUrl": ""
+  },
+  {
     "id": "cb9c488a",
     "title": "Cloud Engineer at Post If it",
     "subtitle": "If it needs a tune, I can shape and structure it. it lives on a screen, I ... Cloud Engineer (Az 900 , Ms 900 ) | WordPr",
@@ -4827,7 +5490,8 @@ let ALL_JOBS = [
         "sourceUrl": "https://www.linkedin.com/posts/laurence-morris-1925294_lee-ann-and-i-have-decided-to-follow-our-activity-7443101929632583680-u9xQ",
         "title": "Cloud Engineer"
       }
-    ]
+    ],
+    "_first_seen": "2026-04-03"
   },
   {
     "id": "1de1707e",
