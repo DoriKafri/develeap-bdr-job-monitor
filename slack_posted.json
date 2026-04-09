@@ -196,6 +196,7 @@
     "unknown|||soc test automation and infrastructure engineer, platforms",
     "unknown|||site reliability engineer | ai infrastructure",
     "unknown|||site reliability engineer",
+    "unknown|||senior staff site reliability engineer",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
     "unknown|||senior software backend engineer - redis cloud",
@@ -952,6 +953,7 @@
     "flexerasoftware|devops|careers - myworkdayjobs.com|2026-03-05",
     "flexerasoftware|devops|careers - myworkdayjobs.com",
     "flexerasoftware|devops|careers",
+    "fireblocks|||senior devops engineer @ fireblocks",
     "fireblocks|||information security engineer @ fireblocks",
     "fireblocks|||application security engineer @ fireblocks",
     "finubit|||site reliability engineer (sre)",
@@ -1386,6 +1388,7 @@
     "abra|||data engineer | center district, israel ...|2026-03-05",
     "abra|||data engineer | center district, israel ...",
     "abra|||data engineer | center district, israel",
+    "abra|||cloud & cyber security engineer",
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...|2026-03-05",
     "abra|||abra \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd data engineer | center district, israel ...",
     "abra|||abra data engineer | center district, israel",
@@ -2411,7 +2414,10 @@
     "ars team|||senior cloud engineer - ars team": "2026-04-08T14:36:36.201387+00:00",
     "unknown|||qualcomm, hod hasharon, israel": "2026-04-09T08:35:35.391528+00:00",
     "forter|||applied ai engineer @ forter": "2026-04-09T08:35:35.391528+00:00",
-    "unknown|||cloud security researcher": "2026-04-09T10:05:36.743213+00:00"
+    "unknown|||cloud security researcher": "2026-04-09T10:05:36.743213+00:00",
+    "unknown|||senior staff site reliability engineer": "2026-04-09T11:54:16.843666+00:00",
+    "abra|||cloud & cyber security engineer": "2026-04-09T11:54:16.843666+00:00",
+    "fireblocks|||senior devops engineer @ fireblocks": "2026-04-09T11:54:16.843666+00:00"
   },
-  "updated": "2026-04-09T10:05:36.771437+00:00"
+  "updated": "2026-04-09T11:54:16.872889+00:00"
 }
