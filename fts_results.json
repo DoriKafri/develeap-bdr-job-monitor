@@ -1642,5 +1642,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-10T01:27:43Z"
+  },
+  {
+    "title": "Almost everyone is hiring via AI now at Almost everyone",
+    "snippet": "Why Headhunters are (still) smarter than AI for hiring: Almost everyone is hiring via AI now. ... ” It's: “Who designs t",
+    "url": "https://www.linkedin.com/posts/apt-match_ai-hiring-tools-are-now-standard-across-dach-activity-7444031753352237057-3Nx-",
+    "company": "Almost everyone",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Apt Match",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/apt-match/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-10T11:40:20Z"
+  },
+  {
+    "title": "Cloud Engineer at More from this author. AWS Israel",
+    "snippet": "✓ Agentic \"Muscle Memory\": Skills allow you to bake procedural ... More from this author. AWS Israel is Hiring: Shape th",
+    "url": "https://www.linkedin.com/posts/yarivhaelyon_using-kiro-sub-agents-to-improve-testcoverage-activity-7445431706054164480-j8EG",
+    "company": "More from this author. AWS Israel",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/yarivhaelyon/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-10T11:40:20Z"
   }
 ]
