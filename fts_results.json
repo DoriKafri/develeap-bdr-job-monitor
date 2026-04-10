@@ -1666,5 +1666,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-10T11:40:20Z"
+  },
+  {
+    "title": "AI Engineer at every data technology and every aspect of data analytics",
+    "snippet": "Cloud-based architectures, APIs, and modern data platforms make this ... In truth, every data technology and every aspec",
+    "url": "https://www.linkedin.com/posts/jayneskyrme_theres-a-difference-between-building-in-activity-7445243613128761345-UQLg",
+    "company": "every data technology and every aspect of data analytics",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/jayneskyrme/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-10T23:01:28Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... Israel, once Oracle bought NetSuite and it had become the leading cloud ERP. ... Great company, best team and best m",
+    "url": "https://www.linkedin.com/posts/limor-bar-on-pariente-76b674_in-2-weeks-i-will-be-celebrating-8-years-activity-7444379012661067777-cw13",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Limor Bar On",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/limor-bar-on-pariente-76b674/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-10T23:01:28Z"
+  },
+  {
+    "title": "AI Engineer at AI",
+    "snippet": "... Cloud #Semiconductors #Energy #Geopolitics #MiddleEast #Innovation ... AI needs a foundation that allows it to scale",
+    "url": "https://www.linkedin.com/posts/anirban-chatterjee-4b8198179_ai-artificialintelligence-datacenters-activity-7445717092860895232-igdI",
+    "company": "AI",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Anirban Chatterjee",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/anirban-chatterjee-4b8198179/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-10T23:01:28Z"
   }
 ]
