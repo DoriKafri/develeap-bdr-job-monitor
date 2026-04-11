@@ -1702,5 +1702,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-10T23:01:28Z"
+  },
+  {
+    "title": "Cloud Engineer at Every dollar spent on tech now",
+    "snippet": "Cloud platforms, global teams, multinational companies, they feel permanent ... Every dollar spent on tech now needs a c",
+    "url": "https://www.linkedin.com/posts/shanu-rana_careers-globalimpact-adaptability-activity-7445368500107292672-2HjZ",
+    "company": "Every dollar spent on tech now",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Shanu Rana",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/shanu-rana/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-11T15:03:12Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "Reports of attacks affecting infrastructure supporting cloud operations during the Iran–Israel ... needs a Disaster Reco",
+    "url": "https://www.linkedin.com/posts/gautam-sharma-593296289_cloudcomputing-disasterrecovery-draas-activity-7446401169721290752-LWtt",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Gautam Sharma",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/gautam-sharma-593296289/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-11T15:03:12Z"
   }
 ]
