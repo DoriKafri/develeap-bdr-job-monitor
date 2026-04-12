@@ -1762,5 +1762,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-12T06:51:43Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "Companies stop hiring for 'potential' and start hiring for 'proven reliability'. ... cloud cost-optimization hasn't slow",
+    "url": "https://www.linkedin.com/posts/ian-charles-robertson_a-subtle-shift-in-dubais-hiring-market-activity-7446124339483275264-PRP6",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ian Charles",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ian-charles-robertson/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-12T11:27:15Z"
   }
 ]
