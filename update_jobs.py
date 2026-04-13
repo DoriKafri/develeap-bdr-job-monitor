@@ -506,6 +506,7 @@ COMPANY_DOMAINS = {
     "vertex ventures": "vertexventures.com",
     "wix": "wix.com",
     "xsolla": "xsolla.com",
+    "workday": "workday.com",
     # ── Audit 2026-04-13: Companies flagged missing by weekly audits ──
     "red hat": "redhat.com",
     "redhat": "redhat.com",
@@ -5656,10 +5657,14 @@ def merge_jobs(existing: list[dict], new_jobs: list[dict]) -> tuple[list[dict], 
         # Title/subtitle patterns: "X jobs in Israel", "jobs (N)", "Archives", "jobs wanted"
         if re.search(r'(?:^\d+\s+)?(?:.*?\bjobs?\b.*?\bin\b|.*?\bjobs?\b\s*\(\d+\))', t):
             return True
+        # Indeed aggregate pages: "900+ Devops משרות, תעסוקה בישראל"
+        if re.search(r'^\d+\+?\s+\w+\s+משרות', t):
+            return True
         if any(kw in combined for kw in ["jobs in israel", "apply now", "remote jobs in",
                                    "archives", "משרות דרושים", "jobs wanted",
                                    "as a service for startups", "open positions",
                                    "see our list", "career opportunities",
+                                   "תעסוקה בישראל", "משרות, תעסוקה",
                                    "we're hiring", "join our team", "jobs at "]):
             return True
         # URL patterns for known aggregators
