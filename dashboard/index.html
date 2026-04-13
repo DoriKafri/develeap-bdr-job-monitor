@@ -384,7 +384,7 @@
   .job-title { font-weight:600; color:var(--text); }
   .job-title a { color:inherit; text-decoration:none; }
   .job-title a:hover { color:var(--primary); text-decoration:underline; }
-  .job-subtitle { font-size:12px; color:var(--text-light); }
+  .job-subtitle { font-size:12px; color:var(--text-light); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-height:2.8em; }
   .company-cell { display:flex; align-items:center; gap:10px; }
   .company-logo { width:36px; height:36px; border-radius:8px; background:var(--teal-light); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--primary); flex-shrink:0; overflow:hidden; }
   .company-logo img { width:100%; height:100%; object-fit:contain; }
@@ -9675,12 +9675,120 @@ window.addEventListener('hashchange', function() {
 });
 
 function _tryFixUnknownCompany(j) {
-  if (j.company && j.company !== 'Unknown') return;
+  // Known company name overrides: map of known domain/brand hints found in
+  // subtitles/descriptions to their correct company name + domain for logo.
+  var KNOWN_HINTS = {
+    'crowdstrike': {n:'CrowdStrike',d:'crowdstrike.com'}, 'falcon': {n:'CrowdStrike',d:'crowdstrike.com'},
+    'apple israel': {n:'Apple',d:'apple.com'}, 'apple is looking': {n:'Apple',d:'apple.com'},
+    'cyberark': {n:'CyberArk',d:'cyberark.com'}, 'palo alto networks': {n:'Palo Alto Networks',d:'paloaltonetworks.com'},
+    'cortex xdr': {n:'Palo Alto Networks',d:'paloaltonetworks.com'}, 'payoneer': {n:'Payoneer',d:'payoneer.com'},
+    'citi ': {n:'Citi',d:'citi.com'}, 'citigroup': {n:'Citi',d:'citi.com'},
+    'google': {n:'Google',d:'google.com'}, 'meta ': {n:'Meta',d:'meta.com'},
+    'microsoft': {n:'Microsoft',d:'microsoft.com'}, 'amazon': {n:'Amazon',d:'amazon.com'},
+    'nvidia': {n:'NVIDIA',d:'nvidia.com'}, 'intel ': {n:'Intel',d:'intel.com'},
+    'qualcomm': {n:'Qualcomm',d:'qualcomm.com'}, 'oracle': {n:'Oracle',d:'oracle.com'},
+    'salesforce': {n:'Salesforce',d:'salesforce.com'}, 'wix': {n:'Wix',d:'wix.com'},
+    'monday.com': {n:'monday.com',d:'monday.com'}, 'mobileye': {n:'Mobileye',d:'mobileye.com'},
+    'check point': {n:'Check Point',d:'checkpoint.com'}, 'checkpoint': {n:'Check Point',d:'checkpoint.com'},
+    'wiz ': {n:'Wiz',d:'wiz.io'}, 'fiverr': {n:'Fiverr',d:'fiverr.com'},
+    'jfrog': {n:'JFrog',d:'jfrog.com'}, 'taboola': {n:'Taboola',d:'taboola.com'},
+    'outbrain': {n:'Outbrain',d:'outbrain.com'}, 'similarweb': {n:'SimilarWeb',d:'similarweb.com'},
+    'intuit': {n:'Intuit',d:'intuit.com'}, 'dell ': {n:'Dell',d:'dell.com'},
+    'dell technologies': {n:'Dell',d:'dell.com'}, 'ibm ': {n:'IBM',d:'ibm.com'},
+    'booking.com': {n:'Booking.com',d:'booking.com'}, 'redis': {n:'Redis',d:'redis.io'},
+    'elastic': {n:'Elastic',d:'elastic.co'}, 'datadog': {n:'Datadog',d:'datadoghq.com'},
+    'cloudinary': {n:'Cloudinary',d:'cloudinary.com'}, 'armis': {n:'Armis',d:'armis.com'},
+    'snyk': {n:'Snyk',d:'snyk.io'}, 'rapid7': {n:'Rapid7',d:'rapid7.com'},
+    'zscaler': {n:'Zscaler',d:'zscaler.com'}, 'amdocs': {n:'Amdocs',d:'amdocs.com'},
+    'elbit': {n:'Elbit Systems',d:'elbitsystems.com'}, 'rafael': {n:'Rafael',d:'rafael.co.il'},
+    'applied materials': {n:'Applied Materials',d:'appliedmaterials.com'},
+    'house channelops': {n:'Palo Alto Networks',d:'paloaltonetworks.com'},
+  };
+
+  // Legit companies that contain "trigger" words — never flag these
+  var SAFE_COMPANIES = {'cloudinary':1,'transmitsecurity':1,'transmit security':1,
+    'check point':1,'checkpoint':1,'palo alto networks':1,'cloud on':1,'team8':1,
+    'platform.sh':1,'security scorecard':1,'securityscorecard':1,'cloud lock':1};
+
+  // Helper: check if a "company" looks like a job-title fragment
+  function _looksLikeTitle(c) {
+    if (!c) return false;
+    if (SAFE_COMPANIES[c.toLowerCase().trim()]) return false;
+    var cl = c.toLowerCase();
+    var titleWords = ['engineer','manager','developer','architect','lead','senior','junior',
+      'staff','principal','director','analyst','specialist','scientist','administrator',
+      'consultant','coordinator','team ','platform ','devops','sre ',
+      'full stack','front end','back end','backend','frontend',' vp','agent','intern',
+      'new college','cortex'];
+    return titleWords.some(function(w){ return cl.indexOf(w) !== -1; });
+  }
+
+  // Helper: check if company looks like a sentence fragment (LinkedIn FTS garbage)
+  function _looksLikeGarbage(c) {
+    if (!c) return false;
+    if (SAFE_COMPANIES[c.toLowerCase().trim()]) return false;
+    var cl = c.toLowerCase();
+    // Sentence words that should never appear in a real company name
+    var garbageWords = ['every ','the ','a ','this ','that ','still','dollar','spent',
+      'problem','bigger','faster','repo.','post if','from this author','github',
+      'data technology and','aspect of','needs a','because','economy','now needs',
+      'looking for','we find','who can','muscle memory'];
+    if (garbageWords.some(function(w){ return cl.indexOf(w) !== -1; })) return true;
+    // Too many words = probably a sentence fragment
+    if (c.split(/\s+/).length > 4) return true;
+    // Starts with lowercase = not a proper name
+    if (/^[a-z]/.test(c)) return true;
+    return false;
+  }
+
+  // Helper: try to find company from subtitle/description using known hints
+  function _findFromText(text) {
+    if (!text) return null;
+    var tl = text.toLowerCase();
+    for (var hint in KNOWN_HINTS) {
+      if (tl.indexOf(hint) !== -1) return KNOWN_HINTS[hint];
+    }
+    // Try "Company Name." or "Company Name -" at start of subtitle
+    var m = text.match(/^([A-Z][A-Za-z0-9\.\-& ]{1,30}?)[\.\-–,]\s/);
+    if (m && !_looksLikeTitle(m[1])) {
+      return {n: m[1].trim(), d: m[1].trim().toLowerCase().replace(/[^a-z0-9]/g,'') + '.com'};
+    }
+    return null;
+  }
+
+  var needsFix = false;
+
+  // Case 1: Company is "Unknown"
+  if (!j.company || j.company === 'Unknown') {
+    needsFix = true;
+  }
+  // Case 2: Company looks like a job title fragment (Indeed dash-split bug)
+  else if (_looksLikeTitle(j.company)) {
+    needsFix = true;
+  }
+  // Case 3: Company looks like a sentence fragment (LinkedIn FTS garbage)
+  else if (_looksLikeGarbage(j.company)) {
+    needsFix = true;
+  }
+
+  if (!needsFix) return;
+
+  // Try known hints from subtitle, description, and title
+  var hint = _findFromText(j.subtitle) || _findFromText(j.description) || _findFromText(j.title);
+  if (hint) {
+    j.company = hint.n;
+    if (!j.logo) j.logo = 'https://www.google.com/s2/favicons?domain=' + hint.d + '&sz=128';
+    return;
+  }
+
   // Try "Title at Company" pattern from title
   var m = j.title.match(/\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35})(?:\s*[-–|,]|\s+in\s+|\s*$)/);
-  if (m) { j.company = m[1].trim(); }
+  if (m && !_looksLikeTitle(m[1])) {
+    j.company = m[1].trim();
+  }
+
   // Try extracting from sourceUrl domain (careers.X.com, X.com/careers)
-  if (j.company === 'Unknown' && j.sourceUrl) {
+  if ((!j.company || j.company === 'Unknown') && j.sourceUrl) {
     var dm = j.sourceUrl.match(/https?:\/\/(?:careers|jobs)\.([a-z0-9\-]+)\./i);
     if (dm) {
       var dn = dm[1].replace(/-/g,' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
@@ -9688,6 +9796,7 @@ function _tryFixUnknownCompany(j) {
       if (boards.indexOf(dn.toLowerCase()) === -1) j.company = dn;
     }
   }
+
   // If company was fixed, try to get a logo
   if (j.company && j.company !== 'Unknown' && !j.logo) {
     var slug = j.company.toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'');
@@ -9696,7 +9805,14 @@ function _tryFixUnknownCompany(j) {
 }
 
 function initApp() {
+  // Fix company name casing for known companies
+  var COMPANY_RENAMES = {'transmitsecurity':'Transmit Security'};
   ALL_JOBS.forEach(j => {
+    var clower = (j.company||'').toLowerCase().trim();
+    if (COMPANY_RENAMES[clower]) {
+      j.company = COMPANY_RENAMES[clower];
+      if (!j.logo) j.logo = 'https://www.google.com/s2/favicons?domain=transmitsecurity.com&sz=128';
+    }
     _tryFixUnknownCompany(j);
     j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
     j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);

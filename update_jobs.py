@@ -2284,6 +2284,24 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         # Reject overly long company names (>40 chars = likely a sentence fragment)
         if company and len(company) > 40:
             company = ""
+        # Reject company names with >4 words (likely sentence fragments)
+        if company and len(company.split()) > 4:
+            company = ""
+        # Reject company names starting with lowercase (not a proper noun)
+        if company and re.match(r'^[a-z]', company):
+            company = ""
+        # Reject common sentence fragment patterns mistakenly captured
+        _GARBAGE_PATTERNS = [
+            r'\bstill\b', r'\bnow\b', r'\bjust\b', r'\bevery\b', r'\bneeds?\b',
+            r'\brepo\b', r'\bgithub\b', r'\bdollar\b', r'\bspent\b', r'\bproblem\b',
+            r'\bbigger\b', r'\bfaster\b', r'\baspect\b', r'\bauthor\b', r'\bengine\b',
+            r'\bpost\s+if\b', r'\bdata\s+technology\b',
+        ]
+        if company:
+            for pat in _GARBAGE_PATTERNS:
+                if re.search(pat, company, re.IGNORECASE):
+                    company = ""
+                    break
 
     # Extract job title from the post content
     job_title = ""
@@ -4544,7 +4562,15 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
             candidate = parts[-1].strip()
             # Reject candidates that look like locations (e.g. "Tel Aviv-Yafo ...")
             if not _is_job_title(candidate) and not _is_location_fragment(candidate):
-                return candidate
+                # Reject candidates with parenthetical qualifiers (team/product names)
+                # e.g. "Falcon Cloud Security (Hybrid, ISR)", "Cross Platform Agent (Cortex XDR)"
+                if re.search(r'\(.*(?:hybrid|remote|isr|xdr|cortex|k8s|kafka|team)\b', candidate, re.IGNORECASE):
+                    pass  # skip — this is a project/team name, not a company
+                # Reject candidates ending in "Team" or "Group" (internal team names)
+                elif re.search(r'\b(?:Team|Group|Division|Unit|Squad)\s*$', candidate):
+                    pass  # skip — internal team name
+                else:
+                    return candidate
 
     # 4. "Company is hiring" pattern
     m = re.search(r"([A-Z][A-Za-z0-9\.\-&]{1,25})\s+(?:is hiring|careers|jobs)", title + " " + snippet)
