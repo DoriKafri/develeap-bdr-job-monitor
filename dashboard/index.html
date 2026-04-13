@@ -9773,22 +9773,27 @@ function _tryFixUnknownCompany(j) {
 
   if (!needsFix) return;
 
+  // Clear the bad company name — we'll try to find a real one
+  var origCompany = j.company;
+  j.company = 'Unknown';
+  j.logo = '';
+
   // Try known hints from subtitle, description, and title
   var hint = _findFromText(j.subtitle) || _findFromText(j.description) || _findFromText(j.title);
   if (hint) {
     j.company = hint.n;
-    if (!j.logo) j.logo = 'https://www.google.com/s2/favicons?domain=' + hint.d + '&sz=128';
+    j.logo = 'https://www.google.com/s2/favicons?domain=' + hint.d + '&sz=128';
     return;
   }
 
-  // Try "Title at Company" pattern from title
+  // Try "Title at Company" pattern from title — but validate the result
   var m = j.title.match(/\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35})(?:\s*[-–|,]|\s+in\s+|\s*$)/);
-  if (m && !_looksLikeTitle(m[1])) {
+  if (m && !_looksLikeTitle(m[1]) && !_looksLikeGarbage(m[1])) {
     j.company = m[1].trim();
   }
 
   // Try extracting from sourceUrl domain (careers.X.com, X.com/careers)
-  if ((!j.company || j.company === 'Unknown') && j.sourceUrl) {
+  if (j.company === 'Unknown' && j.sourceUrl) {
     var dm = j.sourceUrl.match(/https?:\/\/(?:careers|jobs)\.([a-z0-9\-]+)\./i);
     if (dm) {
       var dn = dm[1].replace(/-/g,' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
