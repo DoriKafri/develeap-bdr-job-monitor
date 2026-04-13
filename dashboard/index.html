@@ -1567,6 +1567,9 @@
   /* Auto-dark disabled — light mode forced. Use toggle in Settings for dark mode. */
 @media (max-width: 768px){body{overflow-y:auto !important;height:auto !important}.main-content{height:auto !important;overflow:visible !important}}
 </style>
+<meta property="og:title" content="Develeap BDR Job Monitor">
+<meta property="og:description" content="Live DevOps & Cloud job listings in Israel">
+<meta property="og:image" content="">
 </head>
 <body>
 
@@ -9649,8 +9652,30 @@ window.addEventListener('hashchange', function() {
   restoreFromHash();
 });
 
+function _tryFixUnknownCompany(j) {
+  if (j.company && j.company !== 'Unknown') return;
+  // Try "Title at Company" pattern from title
+  var m = j.title.match(/\bat\s+([A-Z][A-Za-z0-9\.\-\s&]{1,35})(?:\s*[-–|,]|\s+in\s+|\s*$)/);
+  if (m) { j.company = m[1].trim(); }
+  // Try extracting from sourceUrl domain (careers.X.com, X.com/careers)
+  if (j.company === 'Unknown' && j.sourceUrl) {
+    var dm = j.sourceUrl.match(/https?:\/\/(?:careers|jobs)\.([a-z0-9\-]+)\./i);
+    if (dm) {
+      var dn = dm[1].replace(/-/g,' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
+      var boards = ['indeed','linkedin','glassdoor','monster','ziprecruiter','google','facebook'];
+      if (boards.indexOf(dn.toLowerCase()) === -1) j.company = dn;
+    }
+  }
+  // If company was fixed, try to get a logo
+  if (j.company && j.company !== 'Unknown' && !j.logo) {
+    var slug = j.company.toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'');
+    j.logo = 'https://www.google.com/s2/favicons?domain=' + slug + '.com&sz=128';
+  }
+}
+
 function initApp() {
   ALL_JOBS.forEach(j => {
+    _tryFixUnknownCompany(j);
     j.isDeveleapCustomer = _companyMatches(j.company, DEVELEAP_CUSTOMERS);
     j.isPastCustomer = !j.isDeveleapCustomer && _companyMatches(j.company, DEVELEAP_PAST_CUSTOMERS);
   });
@@ -10338,13 +10363,18 @@ document.addEventListener('click', function(e) {
 
 function _updateOgTags(j) {
   if (!j) return;
-  const baseUrl = window.location.origin + window.location.pathname;
-  const url = baseUrl + '#view=all&job=' + j.id;
-  const cat = (CAT_LABELS[j.category] || j.category || '').trim();
-  const loc = j.location || 'Israel';
-  document.querySelector('meta[property="og:title"]').setAttribute('content', j.title + ' at ' + j.company);
-  document.querySelector('meta[property="og:description"]').setAttribute('content', loc + ' \u00B7 ' + cat + ' \u2014 ' + (j.description || '').substring(0, 200));
-  if (j.logo) document.querySelector('meta[property="og:image"]').setAttribute('content', j.logo);
+  try {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const url = baseUrl + '#view=all&job=' + j.id;
+    const cat = (CAT_LABELS[j.category] || j.category || '').trim();
+    const loc = j.location || 'Israel';
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    const ogDesc  = document.querySelector('meta[property="og:description"]');
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogTitle) ogTitle.setAttribute('content', j.title + ' at ' + j.company);
+    if (ogDesc)  ogDesc.setAttribute('content', loc + ' \u00B7 ' + cat + ' \u2014 ' + (j.description || '').substring(0, 200));
+    if (ogImage && j.logo) ogImage.setAttribute('content', j.logo);
+  } catch(e) { /* non-critical – don't block sidebar */ }
 }
 
 function openDetail(id){

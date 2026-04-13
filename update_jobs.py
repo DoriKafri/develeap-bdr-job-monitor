@@ -420,6 +420,7 @@ COMPANY_DOMAINS = {
     "voyantis": "voyantis.ai",
     "wavelbl": "wavelbl.com",
     "wiz": "wiz.io",
+    "workday": "workday.com",
     "yael group": "yaelgroup.com",
     "zenity": "zenity.io",
     "zscaler": "zscaler.com",
