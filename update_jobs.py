@@ -199,7 +199,6 @@ _INDEED_JK_SEED: dict = {
     "1911add4ce480a7d": "Red River",
     "c004fd7a3d1c6772": "IAI - Israel Aerospace Industries",
     "e1b2a00bae6cc58e": "Citi",
-    "b78a704958230b98": "Redis",
 }
 
 _INDEED_JK_CACHE: dict = {}   # {jk: {"company": str, "updated": "YYYY-MM-DD"}}
@@ -263,6 +262,12 @@ COMPANY_LOGO_OVERRIDES = {
     "nice": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
     "nice systems": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
     "nice ltd": "https://companieslogo.com/img/orig/NICE-9f46e818.png?t=1720244493",
+    # ── Audit 2026-04-13: Added 5 logo overrides for improved logo display ──
+    "dialog": "https://companieslogo.com/img/orig/DLGS-4649a7ba.png",
+    "axonius": "https://companieslogo.com/img/orig/AXON-b9d32d86.png",
+    "linearb": "https://companieslogo.com/img/orig/LNRB-fcc83d72.png",
+    "bitsight": "https://companieslogo.com/img/orig/BITSIGHTTECH-9e0ba635.png",
+    "cloudera": "https://companieslogo.com/img/orig/CLDR-5ded1f10.png",
 }
 
 # ── Company Domains for Logo Lookup ───────────────────────────────────────
@@ -420,7 +425,6 @@ COMPANY_DOMAINS = {
     "voyantis": "voyantis.ai",
     "wavelbl": "wavelbl.com",
     "wiz": "wiz.io",
-    "workday": "workday.com",
     "yael group": "yaelgroup.com",
     "zenity": "zenity.io",
     "zscaler": "zscaler.com",
@@ -445,6 +449,82 @@ COMPANY_DOMAINS = {
     "google deepmind": "deepmind.google",
     "lemonade": "lemonade.com",
     "coralogix": "coralogix.com",
+    # ── Audit 2026-03-29: added missing companies ──
+    "crowdstrike": "crowdstrike.com",
+    "hibob": "hibob.com",
+    "hi bob": "hibob.com",
+    "anaplan": "anaplan.com",
+    "bottomline technologies": "bottomline.com",
+    "bottomline": "bottomline.com",
+    # ── Audit 2026-04-12: Added 7 missed companies ──
+    "novee security": "novee.io",
+    "novee": "novee.io",
+    "etoro": "etoro.com",
+    "go7": "go7.com",
+    "singular": "singular.live",
+    "perion": "perion.com",
+    "nebius group": "nebius.com",
+    "nebius": "nebius.com",
+    "corsa": "corsasecurity.com",
+    "corsa security": "corsasecurity.com",
+    # ── Audit 2026-04-13: Added 33 CRM companies that were missing ──
+    "accenture": "accenture.com",
+    "adaptive6": "adaptive6.com",
+    "applied materials": "appliedmaterials.com",
+    "ashdod port": "ashdod-port.co.il",
+    "astrazeneca": "astrazeneca.com",
+    "axonius": "axonius.com",
+    "bitsight": "bitsighttech.com",
+    "campbellsoup": "campbells.com",
+    "campbell soup": "campbells.com",
+    "carrier": "carrier.com",
+    "cloudera": "cloudera.com",
+    "commit.it": "commit.co.pl",
+    "commit.it sp. z o.o.": "commit.co.pl",
+    "deloitte": "deloitte.com",
+    "dialog": "dialog.co.il",
+    "doit international": "doit.com",
+    "drivecapital": "drivecapital.com",
+    "flexerasoftware": "flexerasoftware.com",
+    "flexera software": "flexerasoftware.com",
+    "gsk": "gsk.com",
+    "intel": "intel.com",
+    "intel corporation": "intel.com",
+    "kpmg israel": "kpmg.com",
+    "linearb": "linearb.com",
+    "medtronic": "medtronic.com",
+    "mksinst": "mksinstruments.com",
+    "mks instruments": "mksinstruments.com",
+    "motorolasolutions": "motorolasolutions.com",
+    "motorola solutions": "motorolasolutions.com",
+    "play'n go": "playngo.com",
+    "remoterockethub": "remoterockethub.com",
+    "shi": "shi.com",
+    "sqlink group": "sqlink.com",
+    "vastdata": "vastdata.com",
+    "vertexventures": "vertexventures.com",
+    "vertex ventures": "vertexventures.com",
+    "wix": "wix.com",
+    "xsolla": "xsolla.com",
+    # ── Audit 2026-04-13: Companies flagged missing by weekly audits ──
+    "red hat": "redhat.com",
+    "redhat": "redhat.com",
+    "okta": "okta.com",
+    "nielseniq": "nielseniq.com",
+    "nielsen iq": "nielseniq.com",
+    "ey": "ey.com",
+    "ernst & young": "ey.com",
+    "ernst young": "ey.com",
+    "sentinelone": "sentinelone.com",
+    "sentinel one": "sentinelone.com",
+    "placer.ai": "placer.ai",
+    "placer": "placer.ai",
+    "ai21 labs": "ai21.com",
+    "ai21": "ai21.com",
+    "aidoc": "aidoc.com",
+    "semperis": "semperis.com",
+    "seemplicity": "seemplicity.io",
+    "palantir": "palantir.com",
 }
 
 def _get_company_logo(company: str, source_url: str = "", title: str = "") -> str:
@@ -1240,7 +1320,6 @@ MANUAL_JOBS = [
         "company": "Natural Intelligence",
         "location": "Tel Aviv, Israel",
         "source": "linkedin",
-        "posted": "2026-03-15",  # LinkedIn says "Reposted 2 weeks ago" as of 2026-03-29
     },
     {
         "url": "https://www.linkedin.com/jobs/view/4384850189/",
@@ -1248,7 +1327,6 @@ MANUAL_JOBS = [
         "company": "Unilink Ltd.",
         "location": "Holon, Israel",
         "source": "linkedin",
-        "posted": "2026-03-12",  # Shared by Roni Nir on 2026-03-12
     },
     {
         "url": "https://www.linkedin.com/jobs/view/4379860956/",
@@ -1256,7 +1334,6 @@ MANUAL_JOBS = [
         "company": "AppCard",
         "location": "Hod HaSharon, Israel",
         "source": "linkedin",
-        "posted": "2026-03-12",  # Shared by Roni Nir on 2026-03-12
     },
 ]
 
@@ -1481,6 +1558,61 @@ SEARCH_QUERIES = [
     "Datadog DevOps Israel",
     "Palantir DevOps Israel",
     "CrowdStrike DevOps Israel",
+    # ── Audit 2026-03-29: added missing company queries ──
+    "CrowdStrike Israel security OR cloud OR SRE engineer",
+    "site:crowdstrike.wd5.myworkdayjobs.com Israel engineer",
+    "HiBob Israel DevOps OR cloud OR finops engineer",
+    "site:hibob.com/careers Israel engineer",
+    "HiBob FinOps Israel site:linkedin.com/jobs",
+    "site:boards.greenhouse.io/anaplan Israel",
+    "Anaplan Israel DevOps OR infrastructure engineer",
+    "site:boards.greenhouse.io/bottomlinetechnologies Israel",
+    "Bottomline Technologies Israel DevOps engineer",
+    "site:careers.checkpoint.com DevOps OR Cloud OR Security OR SRE engineer",
+    "Check Point Israel DevOps OR cloud OR security engineer hiring",
+    "site:join.jfrog.com Israel DevOps OR cloud engineer",
+    # ── Audit 2026-04-12: Added searches for 7 missed companies ──
+    "Novee Security Israel DevOps OR cloud OR infrastructure engineer",
+    "site:novee.io/careers Israel engineer",
+    "eToro Israel DevOps OR cloud OR infrastructure engineer hiring",
+    "site:etoro.com/careers Israel DevOps",
+    "GO7 Israel DevOps OR platform OR infrastructure engineer",
+    "site:go7.com/careers Israel engineer",
+    "Singular DevOps OR platform engineer Israel",
+    "site:singular.live/careers Israel engineer",
+    "Perion Israel DevOps OR cloud OR infrastructure engineer",
+    "site:perion.com/careers Israel DevOps",
+    "Nebius Group Israel DevOps OR SRE OR cloud engineer",
+    "Nebius Israel site:boards.greenhouse.io",
+    "Corsa Security Israel DevOps OR infrastructure engineer",
+    "site:corsasecurity.com/careers Israel engineer",
+    "site:jobs.lever.co/corsa Israel",
+    # ── Audit 2026-04-13: Companies flagged missing by weekly audits ──
+    "Red Hat Israel DevOps OR SRE OR cloud engineer",
+    "site:redhat.com/jobs Israel DevOps",
+    "site:boards.greenhouse.io/redhat Israel",
+    "Okta Israel DevOps OR SRE OR platform engineer",
+    "site:okta.com/careers Israel",
+    "NielsenIQ Israel DevOps OR data OR cloud engineer",
+    "site:nielseniq.com/careers Israel",
+    "EY Israel DevOps OR cloud OR infrastructure engineer",
+    "Ernst Young Israel technology careers DevOps OR cloud",
+    "site:ey.com/careers Israel technology",
+    "SentinelOne Israel DevOps OR SRE OR cloud engineer",
+    "site:sentinelone.com/careers Israel",
+    "site:boards.greenhouse.io/sentinelone Israel",
+    "Placer.ai Israel DevOps OR data OR platform engineer",
+    "site:placer.ai/careers Israel",
+    "AI21 Labs Israel DevOps OR MLOps OR platform engineer",
+    "site:ai21.com/careers Israel",
+    "Aidoc Israel DevOps OR cloud OR infrastructure engineer",
+    "site:aidoc.com/careers Israel",
+    "Semperis Israel DevOps OR security OR cloud engineer",
+    "site:semperis.com/careers Israel",
+    "Seemplicity Israel DevOps OR security OR cloud engineer",
+    "site:seemplicity.io/careers Israel",
+    "Palantir Israel DevOps OR platform OR infrastructure engineer",
+    "site:palantir.com/careers Israel",
 ]
 
 _DEFAULT_CATEGORY_KEYWORDS = {
@@ -2284,24 +2416,6 @@ def _extract_fts_job_info(title: str, snippet: str, url: str) -> dict | None:
         # Reject overly long company names (>40 chars = likely a sentence fragment)
         if company and len(company) > 40:
             company = ""
-        # Reject company names with >4 words (likely sentence fragments)
-        if company and len(company.split()) > 4:
-            company = ""
-        # Reject company names starting with lowercase (not a proper noun)
-        if company and re.match(r'^[a-z]', company):
-            company = ""
-        # Reject common sentence fragment patterns mistakenly captured
-        _GARBAGE_PATTERNS = [
-            r'\bstill\b', r'\bnow\b', r'\bjust\b', r'\bevery\b', r'\bneeds?\b',
-            r'\brepo\b', r'\bgithub\b', r'\bdollar\b', r'\bspent\b', r'\bproblem\b',
-            r'\bbigger\b', r'\bfaster\b', r'\baspect\b', r'\bauthor\b', r'\bengine\b',
-            r'\bpost\s+if\b', r'\bdata\s+technology\b',
-        ]
-        if company:
-            for pat in _GARBAGE_PATTERNS:
-                if re.search(pat, company, re.IGNORECASE):
-                    company = ""
-                    break
 
     # Extract job title from the post content
     job_title = ""
@@ -4562,15 +4676,7 @@ def _extract_company_inner(title: str, snippet: str, url: str = "") -> str:
             candidate = parts[-1].strip()
             # Reject candidates that look like locations (e.g. "Tel Aviv-Yafo ...")
             if not _is_job_title(candidate) and not _is_location_fragment(candidate):
-                # Reject candidates with parenthetical qualifiers (team/product names)
-                # e.g. "Falcon Cloud Security (Hybrid, ISR)", "Cross Platform Agent (Cortex XDR)"
-                if re.search(r'\(.*(?:hybrid|remote|isr|xdr|cortex|k8s|kafka|team)\b', candidate, re.IGNORECASE):
-                    pass  # skip — this is a project/team name, not a company
-                # Reject candidates ending in "Team" or "Group" (internal team names)
-                elif re.search(r'\b(?:Team|Group|Division|Unit|Squad)\s*$', candidate):
-                    pass  # skip — internal team name
-                else:
-                    return candidate
+                return candidate
 
     # 4. "Company is hiring" pattern
     m = re.search(r"([A-Z][A-Za-z0-9\.\-&]{1,25})\s+(?:is hiring|careers|jobs)", title + " " + snippet)
@@ -5311,6 +5417,13 @@ COMPANY_ALIASES = {
     "tel aviv ...":         "Unknown",
     "tel aviv district ...": "Unknown",
     "tel aviv district":    "Unknown",
+    # ── Audit 2026-03-29: added missing company aliases ──
+    "crowdstrike":              "CrowdStrike",
+    "hibob":                    "HiBob",
+    "hi bob":                   "HiBob",
+    "anaplan":                  "Anaplan",
+    "bottomline":               "Bottomline Technologies",
+    "bottomline technologies":  "Bottomline Technologies",
 }
 
 # Companies where the geo-suffix should be KEPT (e.g., "KPMG Israel" is the actual entity name)
@@ -6394,50 +6507,6 @@ def notify_slack(new_jobs: list[dict]) -> bool:
 
 # ── Main───────────────────────────────────────────────────────────────────
 
-
-
-# ── Analytics Histogram ──────────────────────────────────────────────────
-def update_analytics_histogram(jobs):
-    """Update analytics-histogram.html with current listing data grouped by date and category."""
-    hist_paths = ["analytics-histogram.html", "docs/analytics-histogram.html"]
-    # Need at least one histogram file to update
-    existing = [p for p in hist_paths if os.path.exists(p)]
-    if not existing:
-        log.info("analytics-histogram.html not found, skipping histogram update")
-        return
-    # Build histogram data
-    from collections import defaultdict
-    histogram = defaultdict(lambda: defaultdict(int))
-    for j in jobs:
-        posted = j.get("posted", "")
-        category = j.get("category", "")
-        if posted and category and posted != "N/A":
-            histogram[posted][category] += 1
-    # Sort by date
-    sorted_dates = sorted(histogram.keys())
-    categories = sorted(set(c for d in histogram.values() for c in d.keys()))
-    data_rows = []
-    for date in sorted_dates:
-        row = {"date": date}
-        for cat in categories:
-            row[cat] = histogram[date].get(cat, 0)
-        data_rows.append(row)
-    # Read and update all existing histogram files
-    import json as json_mod
-    now_iso = datetime.now(timezone.utc).isoformat()
-    new_data_block = f"const HISTOGRAM_DATA = {json_mod.dumps(data_rows)};\nconst LAST_UPDATED = \"{now_iso}\";"
-    for hist_path in existing:
-        with open(hist_path, "r", encoding="utf-8") as f:
-            html = f.read()
-        updated = re.sub(
-            r'const HISTOGRAM_DATA = \[.*?\];\s*const LAST_UPDATED = ".*?";',
-            new_data_block,
-            html,
-            flags=re.DOTALL,
-        )
-        with open(hist_path, "w", encoding="utf-8") as f:
-            f.write(updated)
-        log.info(f"Analytics histogram updated: {hist_path} ({len(data_rows)} dates, {len(categories)} categories)")
 def main():
     global _auto_discover_count
     _auto_discover_count = 0  # Reset per run
@@ -6653,14 +6722,6 @@ def main():
                                   r'ramat gan|beer.?sheva)\b', old_company,
                                   re.IGNORECASE))                            # "(Raanana Office)"
                 or old_company.lower() in _ats_platforms                     # ATS name as company
-                or old_company.lower() in {                                  # description section headers
-                    "what you'll need to have", "what you'll bring", "what we offer",
-                    "what you'll do", "what we're looking for", "about the role",
-                    "about us", "about the team", "about the position",
-                    "your responsibilities", "key responsibilities", "job description",
-                    "who you are", "who we are", "why join us", "the opportunity",
-                    "the role", "your mission", "your impact", "our ideal candidate",
-                }
             )
             if _is_garbled:
                 # Try JK cache/seed before falling back to Unknown
@@ -6710,7 +6771,6 @@ def main():
             location = mj.get("location", "Israel")
             source = mj.get("source", "linkedin")
             title = mj["title"]
-            posted_str = mj.get("posted", today_str)  # Use explicit date if provided
             job_id = hashlib.md5(url.encode()).hexdigest()[:8]
             job = {
                 "id": job_id,
@@ -6723,7 +6783,7 @@ def main():
                 "source": source,
                 "sourceUrl": url,
                 "category": detect_category(title, "") or "devops",
-                "posted": posted_str,
+                "posted": today_str,
                 "isNew": True,
                 "isDeveleapCustomer": is_develeap_customer(company),
                 "isPastCustomer": is_develeap_past_customer(company),
@@ -6819,9 +6879,6 @@ def main():
     with open(docs_path, "w", encoding="utf-8") as f:
         f.write(updated_html)
     log.info("Dashboard HTML updated (dashboard/ + docs/)")
-
-    # 5b. Update analytics histogram
-    update_analytics_histogram(merged)
 
     # 6. Deploy to Netlify
     if deploy_to_netlify(updated_html):

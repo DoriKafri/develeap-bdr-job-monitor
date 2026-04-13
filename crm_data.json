@@ -376,7 +376,7 @@
         },
         {
           "id": "547251",
-          "name": "Patrycja Kozłowska",
+          "name": "Patrycja Koz\u0142owska",
           "email": null,
           "title": "Junior IT Recruiter"
         },
@@ -425,7 +425,7 @@
         },
         {
           "id": "537401",
-          "name": "Wacław Wilczewski",
+          "name": "Wac\u0142aw Wilczewski",
           "email": null,
           "title": "MLOps / Advanced Analytics Manager"
         },
@@ -472,7 +472,7 @@
     },
     "applied materials": {
       "companyId": "6128369387",
-      "companyName": "Applied Materials,",
+      "companyName": "Applied Materials",
       "domain": "amat.com",
       "industry": "SEMICONDUCTORS",
       "lifecyclestage": "opportunity",
@@ -1140,7 +1140,7 @@
     },
     "campbellsoup": {
       "companyId": null,
-      "companyName": "Campbellsoup",
+      "companyName": "Campbell Soup",
       "deals": [],
       "contacts": []
     },
@@ -1727,7 +1727,7 @@
     },
     "commit": {
       "companyId": "6409638881",
-      "companyName": "Commit.IT Sp. z o.o.",
+      "companyName": "Commit.IT",
       "domain": "commit-it.pl",
       "industry": "INFORMATION_SERVICES",
       "lifecyclestage": "opportunity",
@@ -1988,7 +1988,7 @@
         },
         {
           "id": "215401",
-          "name": "Małgorzata Parszewska",
+          "name": "Ma\u0142gorzata Parszewska",
           "email": "mparszewska@deloitte.com",
           "title": "Leading Sourcing Specialist (via AMS)"
         },
@@ -2008,7 +2008,7 @@
         },
         {
           "id": "607601",
-          "name": "Rafał Kamler",
+          "name": "Rafa\u0142 Kamler",
           "email": null,
           "title": "Head of Business Intelligence and Data Warehouse Team | IT Manager at Deloitte Central Europe",
           "phone": "518247632"
@@ -2235,7 +2235,7 @@
     },
     "flexerasoftware": {
       "companyId": null,
-      "companyName": "Flexerasoftware",
+      "companyName": "Flexera Software",
       "deals": [],
       "contacts": []
     },
@@ -2319,7 +2319,7 @@
         },
         {
           "id": "998201",
-          "name": "Aleksandra Kołodziej",
+          "name": "Aleksandra Ko\u0142odziej",
           "email": "aleksandra.kolodziej@globallogic.com",
           "title": "Associate Specialist"
         },
@@ -2409,7 +2409,7 @@
         },
         {
           "id": "505051",
-          "name": "Marcin Usiński",
+          "name": "Marcin Usi\u0144ski",
           "email": null,
           "title": "Global Tech Product Owner - Payroll"
         },
@@ -2479,7 +2479,7 @@
         },
         {
           "id": "3067651",
-          "name": "Alexis Rodríguez",
+          "name": "Alexis Rodr\u00edguez",
           "email": null,
           "title": "Chief Technology Officer"
         }
@@ -2627,7 +2627,7 @@
         },
         {
           "id": "2078101",
-          "name": "Carlé Liddell",
+          "name": "Carl\u00e9 Liddell",
           "email": "carle.liddell@leidos.com",
           "title": "Talent Acquisition Resourcer",
           "phone": "+1 571-526-6517"
@@ -2970,13 +2970,13 @@
     },
     "mksinst": {
       "companyId": null,
-      "companyName": "Mksinst",
+      "companyName": "MKS Instruments",
       "deals": [],
       "contacts": []
     },
     "motorolasolutions": {
       "companyId": null,
-      "companyName": "Motorolasolutions",
+      "companyName": "Motorola Solutions",
       "deals": [],
       "contacts": []
     },
@@ -3041,9 +3041,9 @@
       "contacts": [
         {
           "id": "399847325905",
-          "name": "צפורה שפיאצקי",
+          "name": "\u05e6\u05e4\u05d5\u05e8\u05d4 \u05e9\u05e4\u05d9\u05d0\u05e6\u05e7\u05d9",
           "email": "tshpiatzky@nvidia.com",
-          "title": "פיתוח תוכנה - Backend",
+          "title": "\u05e4\u05d9\u05ea\u05d5\u05d7 \u05ea\u05d5\u05db\u05e0\u05d4 - Backend",
           "phone": "0556790728"
         },
         {
@@ -3079,7 +3079,7 @@
         },
         {
           "id": "99743284466",
-          "name": "ענבל אבוזלף",
+          "name": "\u05e2\u05e0\u05d1\u05dc \u05d0\u05d1\u05d5\u05d6\u05dc\u05e3",
           "email": "eabuzalaf@nvidia.com",
           "title": null,
           "phone": "0525273032"
@@ -3142,14 +3142,14 @@
         },
         {
           "id": "399847325887",
-          "name": "ציפורה קאופמן",
+          "name": "\u05e6\u05d9\u05e4\u05d5\u05e8\u05d4 \u05e7\u05d0\u05d5\u05e4\u05de\u05df",
           "email": "tkaufman@nvidia.com",
-          "title": "אוטומציה לחומרה / לפיתוח (לא אוטומציה עסקית)",
+          "title": "\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05dc\u05d7\u05d5\u05de\u05e8\u05d4 / \u05dc\u05e4\u05d9\u05ea\u05d5\u05d7 (\u05dc\u05d0 \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05e2\u05e1\u05e7\u05d9\u05ea)",
           "phone": "0527667634"
         },
         {
           "id": "2948351",
-          "name": "Katya Taershmidt - ★Always Hiring",
+          "name": "Katya Taershmidt - \u2605Always Hiring",
           "email": null,
           "title": "Talent Acquisition Specialist"
         },
@@ -3361,7 +3361,7 @@
     },
     "remedio": {
       "companyId": "326363207883",
-      "companyName": "Remedio (formerly GYTPOL)",
+      "companyName": "Remedio",
       "domain": "remedio.io",
       "industry": "COMPUTER_NETWORKING",
       "lifecyclestage": "lead",
@@ -3919,7 +3919,7 @@
     },
     "vast data": {
       "companyId": "7124960212",
-      "companyName": "vast data",
+      "companyName": "Vastdata",
       "domain": "vastdata.com",
       "industry": "LOGISTICS_AND_SUPPLY_CHAIN",
       "lifecyclestage": "lead",
@@ -4008,7 +4008,7 @@
     },
     "vertexventures": {
       "companyId": null,
-      "companyName": "Vertexventures",
+      "companyName": "Vertex Ventures",
       "deals": [],
       "contacts": []
     },
