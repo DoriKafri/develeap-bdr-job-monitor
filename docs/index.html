@@ -9717,9 +9717,9 @@ function _tryFixUnknownCompany(j) {
     var cl = c.toLowerCase();
     var titleWords = ['engineer','manager','developer','architect','lead','senior','junior',
       'staff','principal','director','analyst','specialist','scientist','administrator',
-      'consultant','coordinator','team ','platform ','devops','sre ',
+      'consultant','coordinator',' team','team ','platform ','devops','sre ',
       'full stack','front end','back end','backend','frontend',' vp','agent','intern',
-      'new college','cortex'];
+      'new college','cortex','application','channelops'];
     return titleWords.some(function(w){ return cl.indexOf(w) !== -1; });
   }
 
