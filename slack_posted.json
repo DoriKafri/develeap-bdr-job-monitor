@@ -246,6 +246,7 @@
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown|||gen ai engineer (backend, genai)",
+    "unknown|||fullstack ai engineer",
     "unknown|||finops engineer",
     "unknown|||field deploy engineer",
     "unknown|||enterprise account executives right now",
@@ -256,6 +257,7 @@
     "unknown|||devops team lead",
     "unknown|||devops engineer (israel)",
     "unknown|||devops engineer",
+    "unknown|||devops core team leader",
     "unknown|||devex team lead",
     "unknown|||data group tech lead, staff engineer",
     "unknown|||data engineer",
@@ -600,7 +602,6 @@
     "pango|||devex platform engineer",
     "palo alto networks|||sr staff cross-platform c++ engineer (cortex xdr)",
     "palo alto networks|||senior sre (it infrastructure)",
-    "palo alto networks|||senior sre (cortex)",
     "palantir|||palantir technologies - administrative business partner",
     "palantir|||forward deployed security engineer - us government",
     "orchid|||senior ai engineer",
@@ -2466,10 +2467,11 @@
     "unknown|||300+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 10 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-13T14:45:31.458304+00:00",
     "unknown|||cloud platform engineer, runtime platform team (k8s & kafka)": "2026-04-13T14:45:31.458304+00:00",
     "unknown|||support analyst, financial operations": "2026-04-13T18:01:36.859744+00:00",
-    "palo alto networks|||senior sre (cortex)": "2026-04-14T08:43:59.890697+00:00",
-    "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-14T08:43:59.890697+00:00",
-    "nice|||tech lead devops engineer @ nice": "2026-04-14T08:43:59.890697+00:00",
-    "forter|||senior applied ai engineer @ forter": "2026-04-14T08:43:59.890697+00:00"
+    "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-14T09:45:52.476838+00:00",
+    "unknown|||devops core team leader": "2026-04-14T09:45:52.476838+00:00",
+    "unknown|||fullstack ai engineer": "2026-04-14T09:45:52.476838+00:00",
+    "nice|||tech lead devops engineer @ nice": "2026-04-14T09:45:52.476838+00:00",
+    "forter|||senior applied ai engineer @ forter": "2026-04-14T09:45:52.476838+00:00"
   },
-  "updated": "2026-04-14T08:43:59.920697+00:00"
+  "updated": "2026-04-14T09:45:52.506349+00:00"
 }
