@@ -279,6 +279,7 @@
     "unknown|||600+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 12 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ cloud security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 7 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
+    "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026",
     "unknown|||300+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 10 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||25+ \u05d9\u05d9\u05e2\u05d5\u05e5 \u05e4\u05d9\u05e0\u05e0\u05e1\u05d9 \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 2 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
@@ -599,6 +600,7 @@
     "pango|||devex platform engineer",
     "palo alto networks|||sr staff cross-platform c++ engineer (cortex xdr)",
     "palo alto networks|||senior sre (it infrastructure)",
+    "palo alto networks|||senior sre (cortex)",
     "palantir|||palantir technologies - administrative business partner",
     "palantir|||forward deployed security engineer - us government",
     "orchid|||senior ai engineer",
@@ -652,6 +654,7 @@
     "nvidia|devops|devops engineer",
     "noname|||machine learning engineer",
     "nogamy|||cloud engineer",
+    "nice|||tech lead devops engineer @ nice",
     "nice|||lead devops engineer @ nice",
     "nice|||cloud engineer",
     "nextta|||senior wireless core engineer (3gpp / cnf / telecom core) at",
@@ -950,6 +953,7 @@
     "freelance|||backend engineer",
     "forter||||job application for senior ai engineer at forter",
     "forter|||senior big data engineer @ forter",
+    "forter|||senior applied ai engineer @ forter",
     "forter|||senior ai engineer @ forter",
     "forter|||job application for senior ai engineer at forter|2026-03-04",
     "forter|||job application for senior ai engineer at forter",
@@ -2461,7 +2465,11 @@
     "unknown|||staff devops engineer (cortex research)": "2026-04-13T12:10:52.317247+00:00",
     "unknown|||300+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 10 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-13T14:45:31.458304+00:00",
     "unknown|||cloud platform engineer, runtime platform team (k8s & kafka)": "2026-04-13T14:45:31.458304+00:00",
-    "unknown|||support analyst, financial operations": "2026-04-13T18:01:36.859744+00:00"
+    "unknown|||support analyst, financial operations": "2026-04-13T18:01:36.859744+00:00",
+    "palo alto networks|||senior sre (cortex)": "2026-04-14T08:43:59.890697+00:00",
+    "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-14T08:43:59.890697+00:00",
+    "nice|||tech lead devops engineer @ nice": "2026-04-14T08:43:59.890697+00:00",
+    "forter|||senior applied ai engineer @ forter": "2026-04-14T08:43:59.890697+00:00"
   },
-  "updated": "2026-04-13T18:01:36.888146+00:00"
+  "updated": "2026-04-14T08:43:59.920697+00:00"
 }
