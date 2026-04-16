@@ -286,6 +286,7 @@
     "unknown|||900+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 9 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 12 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ cloud security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 7 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
+    "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 15 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 13 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
     "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
@@ -615,6 +616,7 @@
     "orchid|||senior ai engineer",
     "openshift services (raanana office ...|||site reliability engineer \u2013 openshift services (raanana office",
     "one zero digital bank|||ai engineer",
+    "one project|||ai engineer at one project",
     "oligo security||||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
     "oligo security|||senior fullstack engineer \u2013 tel aviv, israel | oligo careers|2026-02-26",
     "oligo security|||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
@@ -2489,7 +2491,9 @@
     "unknown|||principal software engineer data platform (cortex)": "2026-04-15T09:00:20.970925+00:00",
     "full|||full-stack engineer (mid-level) \u2014 ai platform engineering": "2026-04-15T09:00:20.970925+00:00",
     "unknown|||senior ai prompt engineer": "2026-04-15T10:47:35.407796+00:00",
-    "unknown|||principal/senior automation engineer (cloud security)": "2026-04-15T14:56:44.559216+00:00"
+    "unknown|||principal/senior automation engineer (cloud security)": "2026-04-15T14:56:44.559216+00:00",
+    "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 15 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-16T09:00:03.021379+00:00",
+    "one project|||ai engineer at one project": "2026-04-16T09:00:03.021379+00:00"
   },
-  "updated": "2026-04-15T18:17:05.585239+00:00"
+  "updated": "2026-04-16T09:00:03.051227+00:00"
 }
