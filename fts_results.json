@@ -1978,5 +1978,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-17T16:44:22Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "Igor Nikitin. Senior DevOps / SRE Engineer | AWS, Kubernetes (EKS) ... We need to support millions of steps and instantl",
+    "url": "https://www.linkedin.com/posts/israel-durotoye-18a6b1236_matlab-mechatronics-engineering-activity-7447546303066140672-5iwf",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Durotoye",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-durotoye-18a6b1236/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-18T07:54:22Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "... we need those 99 teams involved to fix the issue. This is exactly what we're solving at ApexData. Observability tool",
+    "url": "https://www.linkedin.com/posts/eapotapov_with-all-the-sre-team-tesla-assist-has-been-activity-7448036929729613824-4t2P",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eapotapov/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-18T07:54:22Z"
   }
 ]
