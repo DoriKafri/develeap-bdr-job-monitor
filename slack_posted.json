@@ -183,6 +183,7 @@
     "unknown||||soc test automation and infrastructure engineer, platforms",
     "unknown||||mlops engineer",
     "unknown||||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
+    "unknown|||window infrastructure & devops student",
     "unknown|||technical lead - core ai",
     "unknown|||support analyst, financial operations",
     "unknown|||staff software engineer (data & ai platform)",
@@ -204,6 +205,7 @@
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
+    "unknown|||senior software engineer, ai assisted engineering support",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
     "unknown|||senior software backend engineer - redis cloud",
@@ -593,6 +595,7 @@
     "plainid|sre|qa tech lead- devops/sre orientation at plainid - comeet",
     "plainid|sre|qa tech lead- devops/sre orientation",
     "pixellot|||team lead - infrastructure & core services",
+    "perfectscale by doit|||technical product owner, kubernetes - perfectscale by doit",
     "pentera||||job opportunity: devops engineer",
     "pentera||||ctf infrastructure engineer at pentera - comeet",
     "pentera||||ctf infrastructure engineer",
@@ -2503,7 +2506,10 @@
     "post not every task|||devops engineer at post not every task": "2026-04-16T18:23:52.657394+00:00",
     "why cybersecurity in fsi|||ai engineer at why cybersecurity in fsi": "2026-04-16T18:23:52.657394+00:00",
     "safety governance nobody said that|||ai engineer at safety governance nobody said that": "2026-04-17T09:19:13.741491+00:00",
-    "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 17 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-18T08:19:13.359318+00:00"
+    "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 17 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-04-18T08:19:13.359318+00:00",
+    "unknown|||senior software engineer, ai assisted engineering support": "2026-04-19T08:40:57.134242+00:00",
+    "perfectscale by doit|||technical product owner, kubernetes - perfectscale by doit": "2026-04-19T08:40:57.134242+00:00",
+    "unknown|||window infrastructure & devops student": "2026-04-19T08:40:57.134242+00:00"
   },
-  "updated": "2026-04-18T17:52:29.359031+00:00"
+  "updated": "2026-04-19T08:40:57.165979+00:00"
 }
