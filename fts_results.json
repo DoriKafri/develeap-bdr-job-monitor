@@ -2110,5 +2110,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-20T11:12:40Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "- Recruitment software: We consolidated job listings across sources, identified companies hiring ... cloud cost optimiza",
+    "url": "https://www.linkedin.com/posts/leandroklauck_buying-intent-data-feels-like-buying-a-megaphone-activity-7450098320041025536-hNBA",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/leandroklauck/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-20T17:51:19Z"
   }
 ]
