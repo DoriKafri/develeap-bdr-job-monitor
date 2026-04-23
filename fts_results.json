@@ -2290,5 +2290,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-23T03:50:56Z"
+  },
+  {
+    "title": "Cloud Engineer at Site",
+    "snippet": "... cloud and kind of, you know, the, the start of. Movement around a I kind of ... Site needs a kind of a relationship ",
+    "url": "https://www.linkedin.com/posts/james-spiro_before-there-was-fundguard-there-were-three-activity-7452234850629140480-qCwy",
+    "company": "Site",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "James Spiro",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/james-spiro/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-23T11:01:00Z"
   }
 ]
