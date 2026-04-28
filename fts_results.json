@@ -2590,5 +2590,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-04-27T22:40:49Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": ". Come work with interdisciplinary researchers like Alex! We are currently opening PhD positions across five research ..",
+    "url": "https://www.linkedin.com/posts/santa-clara-university_how-ai-will-offer-diagnoses-and-treatment-activity-7450712308885979136-czco",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Santa Clara",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/santa-clara-university/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-04-28T05:42:22Z"
   }
 ]
