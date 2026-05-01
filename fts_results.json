@@ -2674,5 +2674,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-01T05:51:54Z"
+  },
+  {
+    "title": "Data Analyst / Data Engineer position",
+    "snippet": "I'm looking for Data Analyst / Data Engineer position. I have experience with Oracle, SQL Server, SAS and Snowflake. As ",
+    "url": "https://www.linkedin.com/posts/davidovichilya_dataanalyst-sql-opentowork-activity-7455132945289199616-0J8T",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/davidovichilya/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-01T22:09:36Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... Interview Coach for Tech Candidates from Hiring Manager Perspective. 1d ... | Certified GCP Data Engineer. 1d. Repor",
+    "url": "https://www.linkedin.com/posts/adir-azur-859013284_%D7%90%D7%94%D7%99%D7%94-%D7%99%D7%A9%D7%99%D7%A8-%D7%95%D7%9E%D7%93%D7%95%D7%99%D7%A7-%D7%90%D7%A0%D7%99-%D7%9E%D7%97%D7%A4%D7%A9-%D7%90%D7%AA-%D7%94%D7%92%D7%95%D7%91-%D7%94%D7%A8%D7%90%D7%A9%D7%95%D7%9F-activity-7455012720715792384-JDYs",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Adir Azur",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/adir-azur-859013284/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-01T22:09:36Z"
   }
 ]
