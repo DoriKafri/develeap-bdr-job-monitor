@@ -2698,5 +2698,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-01T22:09:36Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Machine Learning Interview Assistance · How AI Will Change Talent Acquisition · Emotion Recognition in Interviews. Show ",
+    "url": "https://www.linkedin.com/posts/sarabudeen-abdul-fathah-2b2a6673_ai-hiring-hrtech-activity-7454615941046280192-jBBA",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Sarabudeen Abdul Fathah",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/sarabudeen-abdul-fathah-2b2a6673/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-02T08:03:30Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... Hiring #FullStackDeveloper #React #Angular #NodeJS #Java ... Software Engineer | AI Engineer | Machine Learning Engi",
+    "url": "https://www.linkedin.com/posts/nouran-moussa-47959316b_hiring-fullstackdeveloper-react-activity-7454497735090606080-QZNK",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Nouran Moussa",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/nouran-moussa-47959316b/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-02T08:03:30Z"
   }
 ]
