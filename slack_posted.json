@@ -287,6 +287,7 @@
     "unknown|||data group tech lead, staff engineer",
     "unknown|||data engineer",
     "unknown|||data center it technician - project tasks",
+    "unknown|||data analyst / data engineer position",
     "unknown|||cloud security researcher",
     "unknown|||cloud security engineer",
     "unknown|||cloud platform engineer, runtime platform team (k8s & kafka)",
@@ -294,6 +295,7 @@
     "unknown|||cloud engineer",
     "unknown|||cloud application developer student",
     "unknown|||cloud & cyber security engineer",
+    "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
     "unknown|||applied ai engineer",
@@ -1044,6 +1046,7 @@
     "factored|devops|job application for devops engineer at factored",
     "ey|||finops analyst \u05dc\u05de\u05d7\u05dc\u05e7\u05ea \u05d4\u05de\u05d2\u05d6\u05e8 \u05d4\u05e6\u05d9\u05d1\u05d5\u05e8\u05d9 - ey",
     "experience with llm evaluations|||llm engineer",
+    "experience with cloud cost management|||25+ vision bi \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05de\u05d0\u05d9, 2026",
     "exodigo|||senior software engineer - data acquistion (field team)",
     "every dollar spent on tech now|||cloud engineer at every dollar spent on tech now",
     "every data technology and every aspect of data analytics|||ai engineer at every data technology and every aspect of data analytics",
@@ -2589,7 +2592,10 @@
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 30 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-05-01T09:20:16.861435+00:00",
     "model that thinks longer. it|||ai engineer at model that thinks longer. it": "2026-05-01T09:20:16.861435+00:00",
     "more from this author. aws|||ai engineer at more from this author. aws israel": "2026-05-01T09:20:16.861435+00:00",
-    "unknown|||senior application security engineer": "2026-05-01T12:12:24.782425+00:00"
+    "unknown|||senior application security engineer": "2026-05-01T12:12:24.782425+00:00",
+    "unknown|||azure red hat openshift (raanana office, israel)": "2026-05-02T08:52:06.412468+00:00",
+    "experience with cloud cost management|||25+ vision bi \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05de\u05d0\u05d9, 2026": "2026-05-02T08:52:06.412468+00:00",
+    "unknown|||data analyst / data engineer position": "2026-05-02T08:52:06.412468+00:00"
   },
-  "updated": "2026-05-01T18:03:12.848717+00:00"
+  "updated": "2026-05-02T08:52:06.445992+00:00"
 }
