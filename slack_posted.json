@@ -283,6 +283,7 @@
     "unknown|||devops engineer (israel)",
     "unknown|||devops engineer (bigbrain)",
     "unknown|||devops engineer",
+    "unknown|||devops delivery engineer",
     "unknown|||devops core team leader",
     "unknown|||devex team lead",
     "unknown|||dev ops team leader",
@@ -1301,6 +1302,7 @@
     "catonetworks|||corporate security engineer",
     "catonetworks|||ai security - field ai engineer",
     "catonetworks|||ai security - ai engineer",
+    "catonetworks|||ai engineer",
     "catonetworks|||agentic automation engineer (information systems)",
     "cato networks||||ai security - senior software engineer",
     "cato networks|||finops cloud engineer",
@@ -2605,7 +2607,9 @@
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 1 \u05de\u05d0\u05d9, 2026": "2026-05-03T09:09:20.994392+00:00",
     "secure agentic ai|||senior devops engineer - secure agentic ai": "2026-05-03T09:09:20.994392+00:00",
     "unknown|||senior ai backend engineer": "2026-05-03T09:09:20.994392+00:00",
-    "catonetworks|||ai security - field ai engineer": "2026-05-03T09:09:20.994392+00:00"
+    "catonetworks|||ai security - field ai engineer": "2026-05-03T09:09:20.994392+00:00",
+    "unknown|||devops delivery engineer": "2026-05-03T17:59:41.353678+00:00",
+    "catonetworks|||ai engineer": "2026-05-03T17:59:41.353678+00:00"
   },
-  "updated": "2026-05-03T14:11:54.126269+00:00"
+  "updated": "2026-05-03T17:59:41.386074+00:00"
 }
