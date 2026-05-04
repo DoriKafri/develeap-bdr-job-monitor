@@ -2806,5 +2806,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-04T17:57:35Z"
+  },
+  {
+    "title": "AI Engineer at Anthropic",
+    "snippet": "Anthropic is hiring event marketers. The company literally building AI ... Cloud, B2A, AI data centers, CX, GSI, Cyberse",
+    "url": "https://www.linkedin.com/posts/alonalroy_anthropic-is-hiring-event-marketers-the-activity-7454557344694177792-gkdA",
+    "company": "Anthropic",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/alonalroy/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-04T20:44:48Z"
   }
 ]
