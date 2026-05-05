@@ -229,6 +229,7 @@
     "unknown|||senior infrastructure engineer",
     "unknown|||senior embedded linux engineer cc++ infrastructure",
     "unknown|||senior devops platform engineer",
+    "unknown|||senior devops engineer our infrastructure is the nervous system of a smart airsp",
     "unknown|||senior devops engineer hod hasharon, center district, israel",
     "unknown|||senior devops engineer (cortex research)",
     "unknown|||senior devops engineer",
@@ -263,6 +264,7 @@
     "unknown|||machine learning platform engineer - \u05e0\u05ea\u05e0\u05d9\u05d4, \u05de\u05d7\u05d5\u05d6 \u05d4\u05de\u05e8\u05db\u05d6",
     "unknown|||machine learning engineer student for ai solutions group",
     "unknown|||machine learning engineer",
+    "unknown|||lendbuzz",
     "unknown|||l3 support engineer",
     "unknown|||junior cloud finops engineer",
     "unknown|||it infrastructure engineer",
@@ -715,6 +717,7 @@
     "nice|||lead devops engineer @ nice",
     "nice|||devops student @ nice",
     "nice|||cloud engineer",
+    "nice|||cloud architect @ nice",
     "nice|||bi data engineer @ nice",
     "nextta|||senior wireless core engineer (3gpp / cnf / telecom core) at",
     "nextta|||senior full\u2011stack & cloud/sre engineer (java/go + aws + devops",
@@ -738,6 +741,7 @@
     "nayax|||senior devops engineer",
     "navina|||machine learning engineer",
     "natural intelligence|||devops engineer",
+    "m|||ai algorithms engineer - qualcomm, hod hasharon, israel",
     "myops by yael group|||senior cloud solutions architect",
     "my team|||security researcher at my team",
     "my team|||cloud engineer at my team",
@@ -1064,6 +1068,7 @@
     "essence group|||cloud engineer",
     "entry level career ...|||ai and machine learning engineer \u2013 entry level career",
     "ensil|||ai engineer at ensil",
+    "elementor|||senior ai engineer",
     "elbit systems israel|||elbit systems israel devsecops engineer",
     "elbit systems israel|||devsecops engineer",
     "elbit systems israel|||dataops \\ mlops engineer - elbit systems israel",
@@ -2621,7 +2626,12 @@
     "what is devops?|||what is devops? | ibm": "2026-05-04T12:56:26.630017+00:00",
     "unknown|||site reliability team leader": "2026-05-05T09:22:05.283885+00:00",
     "unknown|||senior software engineer - sovereign cloud": "2026-05-05T09:22:05.283885+00:00",
-    "anthropic|||ai engineer at anthropic": "2026-05-05T09:22:05.283885+00:00"
+    "anthropic|||ai engineer at anthropic": "2026-05-05T09:22:05.283885+00:00",
+    "elementor|||senior ai engineer": "2026-05-05T12:21:42.929724+00:00",
+    "m|||ai algorithms engineer - qualcomm, hod hasharon, israel": "2026-05-05T12:21:42.929724+00:00",
+    "unknown|||senior devops engineer our infrastructure is the nervous system of a smart airsp": "2026-05-05T12:21:42.929724+00:00",
+    "unknown|||lendbuzz": "2026-05-05T12:21:42.929724+00:00",
+    "nice|||cloud architect @ nice": "2026-05-05T12:21:42.929724+00:00"
   },
-  "updated": "2026-05-05T09:22:05.318510+00:00"
+  "updated": "2026-05-05T12:21:42.963354+00:00"
 }
