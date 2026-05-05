@@ -208,12 +208,14 @@
     "unknown|||software ai engineer",
     "unknown|||soc test automation and infrastructure engineer, platforms|2026-03-06",
     "unknown|||soc test automation and infrastructure engineer, platforms",
+    "unknown|||site reliability team leader",
     "unknown|||site reliability engineer | ai infrastructure",
     "unknown|||site reliability engineer",
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
     "unknown|||senior software engineer, ai assisted engineering support",
+    "unknown|||senior software engineer - sovereign cloud",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
     "unknown|||senior software backend engineer - redis cloud",
@@ -1450,6 +1452,7 @@
     "appcard|||senior devops engineer",
     "apiiro|||job application for senior devops engineer at apiiro",
     "apheris|||ai engineer at apheris",
+    "anthropic|||ai engineer at anthropic",
     "amazon web services aws|||software development engineer, aws agentic ai",
     "amazon web services aws|||applied scientist, aws agentic ai",
     "almost everyone|||almost everyone is hiring via ai now at almost everyone",
@@ -2615,7 +2618,10 @@
     "catonetworks|||ai engineer": "2026-05-03T17:59:41.353678+00:00",
     "happy to share that doit|||cloud engineer at happy to share that doit": "2026-05-04T09:38:54.039703+00:00",
     "nice|||lead platform engineer @ nice": "2026-05-04T09:38:54.039703+00:00",
-    "what is devops?|||what is devops? | ibm": "2026-05-04T12:56:26.630017+00:00"
+    "what is devops?|||what is devops? | ibm": "2026-05-04T12:56:26.630017+00:00",
+    "unknown|||site reliability team leader": "2026-05-05T09:22:05.283885+00:00",
+    "unknown|||senior software engineer - sovereign cloud": "2026-05-05T09:22:05.283885+00:00",
+    "anthropic|||ai engineer at anthropic": "2026-05-05T09:22:05.283885+00:00"
   },
-  "updated": "2026-05-04T18:47:03.948991+00:00"
+  "updated": "2026-05-05T09:22:05.318510+00:00"
 }
