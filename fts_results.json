@@ -2854,5 +2854,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-05T09:27:23Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "There are usually only three things that convert security from \"we'll get to it\" into \"we need ... Oracle Service Cloud ",
+    "url": "https://www.linkedin.com/posts/government-of-israel-economic-mission_israeli-cybersecurity-a-snapshot-of-recent-activity-7455001930562469888-h5zU",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Government Of Israel",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/government-of-israel-economic-mission/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-06T16:58:00Z"
   }
 ]
