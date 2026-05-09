@@ -2974,5 +2974,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-09T10:30:25Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We're #hiring a new Full Stack Engineer in Ramat Gan, Tel Aviv District. Apply today or share this post with your networ",
+    "url": "https://www.linkedin.com/posts/leoai_hiring-activity-7455945209479061504-cVwP",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/leoai/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-09T11:41:30Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We're #hiring a new Senior Software Engineer in Tel Aviv-Yafo, Tel Aviv District. Apply today or share this post with yo",
+    "url": "https://www.linkedin.com/posts/five-sigma_hiring-activity-7454856752526929920-5MMn",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Five Sigma",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/five-sigma/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-09T11:41:30Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... AI לתפקיד הכולל עבודה ישירה מול משתמשים בארגון. מה עושים בתפקיד ... Hiring Inbar Israel ☆ ענבר ישראל Mila Ovadia Emi",
+    "url": "https://www.linkedin.com/posts/maya-goder-6880b7315_%D7%9E%D7%97%D7%A4%D7%A9%D7%99%D7%9D-%D7%9C%D7%A7%D7%97%D7%AA-%D7%90%D7%AA-%D7%94%D7%99%D7%93%D7%A2-%D7%A9%D7%9C%D7%9B%D7%9D-%D7%91-ai-%D7%9C%D7%A9%D7%9C%D7%91-%D7%94%D7%91%D7%90-activity-7457353323575218176-oZFu",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Maya Goder",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/maya-goder-6880b7315/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-09T11:41:30Z"
   }
 ]
