@@ -214,11 +214,13 @@
     "unknown|||site reliability engineer | ai infrastructure",
     "unknown|||site reliability engineer",
     "unknown|||site relaibility engineer",
+    "unknown|||senior strategic fp&a",
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
     "unknown|||senior software engineer, core ai software",
     "unknown|||senior software engineer, ai assisted engineering support",
+    "unknown|||senior software engineer in test (distributed systems & ai)",
     "unknown|||senior software engineer - sovereign cloud",
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
@@ -2683,7 +2685,9 @@
     "unknown|||cloud security engineer (azure & ai focus)": "2026-05-12T13:21:37.916413+00:00",
     "unknown|||senior site reliability engineer (cortex)": "2026-05-12T13:21:37.916413+00:00",
     "cortex|||ai analyst (support agent)- cortex": "2026-05-12T13:21:37.916413+00:00",
-    "unknown|||platform infrastructure & ai team leader": "2026-05-12T13:21:37.916413+00:00"
+    "unknown|||platform infrastructure & ai team leader": "2026-05-12T13:21:37.916413+00:00",
+    "unknown|||senior strategic fp&a": "2026-05-12T17:28:12.339100+00:00",
+    "unknown|||senior software engineer in test (distributed systems & ai)": "2026-05-12T17:28:12.339100+00:00"
   },
-  "updated": "2026-05-12T13:21:37.950518+00:00"
+  "updated": "2026-05-12T17:28:12.374368+00:00"
 }
