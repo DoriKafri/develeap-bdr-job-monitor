@@ -213,6 +213,7 @@
     "unknown|||site reliability team leader",
     "unknown|||site reliability engineer | ai infrastructure",
     "unknown|||site reliability engineer",
+    "unknown|||site relaibility engineer",
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
@@ -274,6 +275,7 @@
     "unknown|||it infrastructure engineer",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
+    "unknown|||infrastructure and devops engineer student",
     "unknown|||hands on tech lead \u2013 generative ai",
     "unknown|||generative ai team lead",
     "unknown|||genai backend engineer",
@@ -466,6 +468,7 @@
     "sqlink group|||cloud solution architect - sqlink group",
     "sqlink group|finops|senior cloud operations engineer (finops)|2026-03-03",
     "sqlink group|finops|senior cloud operations engineer (finops)",
+    "speechify|||software engineer, data infrastructure & acquisition",
     "somekhchaikin||||generative ai engineer",
     "somekhchaikin||||cloud security engineer at kpmg - comeet",
     "somekhchaikin||||cloud security engineer",
@@ -549,6 +552,7 @@
     "riskified|||riskified site reliability engineering (sre)",
     "riskified|||data engineer @ riskified",
     "rise|||data engineer",
+    "requirements|||cloud devops engineer (azure)",
     "requirements: b|||ai engineer",
     "remoterockethub||||mlops engineer, usa israel | remoterockethub",
     "remoterockethub||||mlops engineer, usa israel",
@@ -2665,7 +2669,11 @@
     "walkme|||devops engineer cloud engineering team": "2026-05-11T10:54:23.769842+00:00",
     "unknown|||generative ai team lead": "2026-05-11T13:45:06.282987+00:00",
     "nice|||senior bi data engineer @ nice": "2026-05-11T13:45:06.282987+00:00",
-    "unknown|||devops engineer \u2013 automation infrastructure": "2026-05-11T17:37:24.884978+00:00"
+    "unknown|||devops engineer \u2013 automation infrastructure": "2026-05-11T17:37:24.884978+00:00",
+    "unknown|||site relaibility engineer": "2026-05-12T09:50:03.948771+00:00",
+    "speechify|||software engineer, data infrastructure & acquisition": "2026-05-12T09:50:03.948771+00:00",
+    "requirements|||cloud devops engineer (azure)": "2026-05-12T09:50:03.948771+00:00",
+    "unknown|||infrastructure and devops engineer student": "2026-05-12T09:50:03.948771+00:00"
   },
-  "updated": "2026-05-11T17:37:24.919329+00:00"
+  "updated": "2026-05-12T09:50:03.983949+00:00"
 }
