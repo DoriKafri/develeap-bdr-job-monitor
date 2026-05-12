@@ -223,6 +223,7 @@
     "unknown|||senior software engineer - data platform",
     "unknown|||senior software engineer (cortex cloud)",
     "unknown|||senior software backend engineer - redis cloud",
+    "unknown|||senior site reliability engineer (cortex)",
     "unknown|||senior security engineer",
     "unknown|||senior platform engineer (interface & insights devex)",
     "unknown|||senior platform engineer (compute runtime)",
@@ -260,6 +261,7 @@
     "unknown|||product operations analyst - product analytics",
     "unknown|||principal/senior automation engineer (cloud security)",
     "unknown|||principal software engineer data platform (cortex)",
+    "unknown|||platform infrastructure & ai team leader",
     "unknown|||platform engineering manager, data security team",
     "unknown|||platform engineer",
     "unknown|||npi/production engineer (onsite in israel)",
@@ -305,12 +307,14 @@
     "unknown|||data center it technician - project tasks",
     "unknown|||data analyst / data engineer position",
     "unknown|||cloud security researcher",
+    "unknown|||cloud security engineer (azure & ai focus)",
     "unknown|||cloud security engineer",
     "unknown|||cloud platform engineer, runtime platform team (k8s & kafka)",
     "unknown|||cloud platform engineer, cloud foundation team (networking &",
     "unknown|||cloud engineer",
     "unknown|||cloud application developer student",
     "unknown|||cloud & cyber security engineer",
+    "unknown|||biotechnology \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc - 3 \u05de\u05d0\u05d9, 2026",
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
@@ -1198,6 +1202,7 @@
     "cyberark|||senior devops platform engineer",
     "cross platform agent (cortex xdr)|||engineering manager - cross platform agent (cortex xdr)",
     "crawljobs|||principal cloud engineer israel jobs, 3 job offers",
+    "cortex|||ai analyst (support agent)- cortex",
     "corporate finance strategy team|||finops engineer at corporate finance strategy team",
     "coralogix||||job opportunity: software engineer (coralogix ai)",
     "coralogix|||senior infrastructure engineer",
@@ -2673,7 +2678,12 @@
     "unknown|||site relaibility engineer": "2026-05-12T09:50:03.948771+00:00",
     "speechify|||software engineer, data infrastructure & acquisition": "2026-05-12T09:50:03.948771+00:00",
     "requirements|||cloud devops engineer (azure)": "2026-05-12T09:50:03.948771+00:00",
-    "unknown|||infrastructure and devops engineer student": "2026-05-12T09:50:03.948771+00:00"
+    "unknown|||infrastructure and devops engineer student": "2026-05-12T09:50:03.948771+00:00",
+    "unknown|||biotechnology \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc - 3 \u05de\u05d0\u05d9, 2026": "2026-05-12T13:21:37.916413+00:00",
+    "unknown|||cloud security engineer (azure & ai focus)": "2026-05-12T13:21:37.916413+00:00",
+    "unknown|||senior site reliability engineer (cortex)": "2026-05-12T13:21:37.916413+00:00",
+    "cortex|||ai analyst (support agent)- cortex": "2026-05-12T13:21:37.916413+00:00",
+    "unknown|||platform infrastructure & ai team leader": "2026-05-12T13:21:37.916413+00:00"
   },
-  "updated": "2026-05-12T09:50:03.983949+00:00"
+  "updated": "2026-05-12T13:21:37.950518+00:00"
 }
