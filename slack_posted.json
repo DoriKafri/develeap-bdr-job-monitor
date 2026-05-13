@@ -203,6 +203,7 @@
     "unknown|||sr staff devops engineer",
     "unknown|||sr principal engineer (cortex cloud)",
     "unknown|||spclst, engineering",
+    "unknown|||solutions architects team lead",
     "unknown|||software engineer, gen ai",
     "unknown|||software engineer, data infrastructure & acquisition",
     "unknown|||software engineer iii, cloud security",
@@ -283,6 +284,7 @@
     "unknown|||infrastructure and devops engineer student",
     "unknown|||hands on tech lead \u2013 generative ai",
     "unknown|||generative ai team lead",
+    "unknown|||generative ai engineer",
     "unknown|||genai backend engineer",
     "unknown|||gen ai engineer (backend, genai)",
     "unknown|||fullstack ai engineer",
@@ -1338,6 +1340,7 @@
     "chaos labs|ai|ai engineer",
     "cellwize|||sre engineer (site reliability engineering) - cellwize",
     "catonetworks|||software developer, infrastructure - developer experience",
+    "catonetworks|||site reliability engineer",
     "catonetworks|||corporate security engineer",
     "catonetworks|||ai security - field ai engineer",
     "catonetworks|||ai security - ai engineer",
@@ -2695,7 +2698,10 @@
     "unknown|||big data engineer (java/scala)": "2026-05-13T09:56:21.948254+00:00",
     "unknown|||devsecops engineer": "2026-05-13T09:56:21.948254+00:00",
     "unknown|||staff backend engineer- core platform": "2026-05-13T09:56:21.948254+00:00",
-    "torq|||product manager - agentic ai @ torq": "2026-05-13T09:56:21.948254+00:00"
+    "torq|||product manager - agentic ai @ torq": "2026-05-13T09:56:21.948254+00:00",
+    "unknown|||generative ai engineer": "2026-05-13T13:14:44.947355+00:00",
+    "unknown|||solutions architects team lead": "2026-05-13T13:14:44.947355+00:00",
+    "catonetworks|||site reliability engineer": "2026-05-13T13:14:44.947355+00:00"
   },
-  "updated": "2026-05-13T09:56:21.982664+00:00"
+  "updated": "2026-05-13T13:14:44.982081+00:00"
 }
