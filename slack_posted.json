@@ -196,6 +196,7 @@
     "unknown|||staff software engineer (data & ai platform)",
     "unknown|||staff product manager, data platform",
     "unknown|||staff devops engineer (cortex research)",
+    "unknown|||staff backend engineer- core platform",
     "unknown|||sr. data engineer - cloud security (hybrid, isr)",
     "unknown|||sr. data engineer - cloud security",
     "unknown|||sr staff site reliability engineer",
@@ -294,6 +295,7 @@
     "unknown|||engineering manager - analytics platform",
     "unknown|||elastic platform engineer",
     "unknown|||dsp & ai development engineer",
+    "unknown|||devsecops engineer",
     "unknown|||devops team leader, israel",
     "unknown|||devops team lead",
     "unknown|||devops engineer \u2013 automation infrastructure",
@@ -317,6 +319,7 @@
     "unknown|||cloud application developer student",
     "unknown|||cloud & cyber security engineer",
     "unknown|||biotechnology \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc - 3 \u05de\u05d0\u05d9, 2026",
+    "unknown|||big data engineer (java/scala)",
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
@@ -386,6 +389,7 @@
     "torq|||torq \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd cloud finops engineer | tel aviv district ...|2026-03-01",
     "torq|||torq \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd cloud finops engineer | tel aviv district ...",
     "torq|||torq cloud finops engineer",
+    "torq|||product manager - agentic ai @ torq",
     "torq|||devops engineer @ torq",
     "torq|||cloud finops engineer | tel aviv district|2026-03-01",
     "torq|||cloud finops engineer | tel aviv district ...|2026-03-01",
@@ -2687,7 +2691,11 @@
     "cortex|||ai analyst (support agent)- cortex": "2026-05-12T13:21:37.916413+00:00",
     "unknown|||platform infrastructure & ai team leader": "2026-05-12T13:21:37.916413+00:00",
     "unknown|||senior strategic fp&a": "2026-05-12T17:28:12.339100+00:00",
-    "unknown|||senior software engineer in test (distributed systems & ai)": "2026-05-12T17:28:12.339100+00:00"
+    "unknown|||senior software engineer in test (distributed systems & ai)": "2026-05-12T17:28:12.339100+00:00",
+    "unknown|||big data engineer (java/scala)": "2026-05-13T09:56:21.948254+00:00",
+    "unknown|||devsecops engineer": "2026-05-13T09:56:21.948254+00:00",
+    "unknown|||staff backend engineer- core platform": "2026-05-13T09:56:21.948254+00:00",
+    "torq|||product manager - agentic ai @ torq": "2026-05-13T09:56:21.948254+00:00"
   },
-  "updated": "2026-05-12T17:28:12.374368+00:00"
+  "updated": "2026-05-13T09:56:21.982664+00:00"
 }
