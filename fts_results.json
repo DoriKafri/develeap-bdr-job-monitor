@@ -3154,5 +3154,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-13T08:49:22Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "This isn't necessarily \"shameful\" and people certainly shouldn't be bullied into action, but it also isn't genuine commu",
+    "url": "https://www.linkedin.com/posts/amirsatvat_nmp-means-not-my-problem-ethan-evans-activity-7460370447558344704-oMh3",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/amirsatvat/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-14T17:42:02Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "The idea of agents having 'amnesia' between sessions is the biggest hurdle for production-grade tools. Great breakdown o",
+    "url": "https://www.linkedin.com/posts/addyosmani_ai-programming-softwareengineering-activity-7456228486534414336-Kfd8",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/addyosmani/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-14T17:42:02Z"
   }
 ]
