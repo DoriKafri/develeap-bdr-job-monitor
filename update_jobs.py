@@ -342,6 +342,7 @@ COMPANY_DOMAINS = {
     "intuit": "intuit.com",
     "intuit israel": "intuit.com",
     "jfrog": "jfrog.com",
+    "doubleverify": "doubleverify.com",
     "kpmg": "kpmg.com",
     "leidos": "leidos.com",
     "legit security": "legitsecurity.com",
@@ -1572,6 +1573,11 @@ SEARCH_QUERIES = [
     "site:careers.checkpoint.com DevOps OR Cloud OR Security OR SRE engineer",
     "Check Point Israel DevOps OR cloud OR security engineer hiring",
     "site:join.jfrog.com Israel DevOps OR cloud engineer",
+    # -- Audit 2026-05-15: Added DoubleVerify coverage + JFrog LinkedIn queries --
+    "DoubleVerify Israel DevOps OR SRE OR cloud OR platform engineer",
+    "site:job-boards.greenhouse.io/doubleverify",
+    "site:linkedin.com/jobs/view JFrog DevOps Israel",
+    "site:linkedin.com/jobs/view JFrog SRE OR Platform Engineer Israel",
     # ── Audit 2026-04-12: Added searches for 7 missed companies ──
     "Novee Security Israel DevOps OR cloud OR infrastructure engineer",
     "site:novee.io/careers Israel engineer",
