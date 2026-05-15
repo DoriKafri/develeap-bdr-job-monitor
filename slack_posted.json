@@ -229,6 +229,7 @@
     "unknown|||senior software backend engineer - redis cloud",
     "unknown|||senior site reliability engineer (cortex)",
     "unknown|||senior security engineer",
+    "unknown|||senior principal cloud finops analyst",
     "unknown|||senior platform engineer (interface & insights devex)",
     "unknown|||senior platform engineer (compute runtime)",
     "unknown|||senior platform engineer",
@@ -245,6 +246,7 @@
     "unknown|||senior devops core engineer",
     "unknown|||senior dataops engineer",
     "unknown|||senior data engineer - platform team",
+    "unknown|||senior data engineer - data platform",
     "unknown|||senior data engineer - core data platform team",
     "unknown|||senior data engineer",
     "unknown|||senior cloud security software engineer",
@@ -867,6 +869,7 @@
     "mantis tech|||senior devsecops",
     "lumen|||senior devops engineer",
     "lot of the assumptions around ai|||ai engineer at lot of the assumptions around ai",
+    "lot of hardening that|||cloud engineer at lot of hardening that",
     "loris|||senior backend engineer",
     "logica-it|||infrastructure engineer",
     "linearb||||site reliability engineer (sre) at linearb - expertini.work",
@@ -1278,6 +1281,7 @@
     "cloudera|devops|cloudera careers",
     "cloud team ai&ml (cortex)|||principal/senior data scientist - cloud team ai&ml (cortex)",
     "close menu. bluegreen water technologies|||machine learning & signal processing scientist at close menu. bluegreen water te",
+    "client oriented|||cloud security engineer - client oriented",
     "classiq||||devops engineer - israel at classiq - comeet",
     "classiq||||devops engineer - israel",
     "classiq||||devops engineer",
@@ -1424,6 +1428,7 @@
     "axonius|devops|axonius careers",
     "axon pulse|||infrastructure engineer",
     "aws|||cloud engineer at aws israel",
+    "aws subject matter expert|||cloud ai api integrations \u2013 aws subject matter expert",
     "automatit||||jobs at automat-it - careers - comeet",
     "automatit||||jobs at automat-it - careers",
     "automatit|||jobs at automat-it - careers|2026-03-05",
@@ -1451,6 +1456,7 @@
     "astrazeneca|||cloudops engineer",
     "astrazeneca|finops|cloudops engineer|2026-03-07",
     "astrazeneca|finops|cloudops engineer",
+    "assurance|||ai engineer at assurance",
     "ars team|||senior cloud engineer - ars team",
     "armo|||senior cloud security software engineer",
     "armis|||senior data platform engineer @ armis",
@@ -2707,7 +2713,13 @@
     "catonetworks|||site reliability engineer": "2026-05-13T13:14:44.947355+00:00",
     "riskified|||applied ai engineer @ riskified": "2026-05-13T16:49:00.388769+00:00",
     "unknown|||data infrastructure team leader": "2026-05-14T09:48:10.406007+00:00",
-    "required skills & qualifications|||devops engineer (israel)": "2026-05-14T12:57:23.175817+00:00"
+    "required skills & qualifications|||devops engineer (israel)": "2026-05-14T12:57:23.175817+00:00",
+    "aws subject matter expert|||cloud ai api integrations \u2013 aws subject matter expert": "2026-05-15T09:57:27.678974+00:00",
+    "unknown|||senior data engineer - data platform": "2026-05-15T09:57:27.678974+00:00",
+    "client oriented|||cloud security engineer - client oriented": "2026-05-15T09:57:27.678974+00:00",
+    "unknown|||senior principal cloud finops analyst": "2026-05-15T09:57:27.678974+00:00",
+    "assurance|||ai engineer at assurance": "2026-05-15T09:57:27.678974+00:00",
+    "lot of hardening that|||cloud engineer at lot of hardening that": "2026-05-15T09:57:27.678974+00:00"
   },
-  "updated": "2026-05-14T18:58:57.567157+00:00"
+  "updated": "2026-05-15T09:57:27.731598+00:00"
 }
