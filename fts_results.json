@@ -3250,5 +3250,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-15T19:57:56Z"
+  },
+  {
+    "title": "AI/Agentic Engineer",
+    "snippet": "Andrej Karpathy: \"If agentic engineering is the new professional skill, hiring should test it directly. Traditional codi",
+    "url": "https://www.linkedin.com/posts/eapotapov_andrej-karpathy-if-agentic-engineering-activity-7461119003810394112-mUIU",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eapotapov/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-16T15:32:33Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "stage agentic AI startup, where he built the first version of the platform ... BTW, we are also hiring great backend dev",
+    "url": "https://www.linkedin.com/posts/martyn-bassett-associates_built-an-ai-agent-platform-from-scratch-activity-7458217047840153600-pzf3",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Martyn Bassett",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/martyn-bassett-associates/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-16T15:32:33Z"
   }
 ]
