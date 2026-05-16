@@ -3274,5 +3274,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-16T15:32:33Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "i keep track of tech companies hiring in Israel + open positions over at en.goozali.com ... Senior Cloud Architect. 1w. ",
+    "url": "https://www.linkedin.com/posts/avi-lewis_startups-and-tech-companies-in-israel-now-activity-7458070807844458496-WmBQ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Avi Lewis",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/avi-lewis/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-16T16:45:34Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "I'm Hiring ‏HR & Talent Acquisition Lead at Hyp. 1h. Report this comment ... Cloud Architect, Professional Services at R",
+    "url": "https://www.linkedin.com/posts/shon-paz-b53091159_opensource-innovation-activity-7460660661375815680-xXRC",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Shon Paz",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/shon-paz-b53091159/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-16T16:45:34Z"
   }
 ]
