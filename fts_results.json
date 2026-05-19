@@ -3454,5 +3454,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-19T18:53:07Z"
+  },
+  {
+    "title": "CRM at The landscaping company that",
+    "snippet": "DevOps Engineering | Focus on reliability, agility, security, cost control ... The landscaping company that needs a CRM.",
+    "url": "https://www.linkedin.com/posts/diari_a-strong-shekel-signals-a-strong-israel-activity-7458132650503929856-guyB",
+    "company": "The landscaping company that",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/diari/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T23:58:50Z"
+  },
+  {
+    "title": "DevOps Engineer at Infrastructure as Code Best Practices Developer",
+    "snippet": "Developer needs a database? Raise a ticket. Need a new environment? Another ticket. Deploy to staging? Wait for DevOps. ",
+    "url": "https://www.linkedin.com/posts/srinivas-karnati_my-first-terraform-iac-deployment-felt-magical-activity-7457470483651801088-IsP7",
+    "company": "Infrastructure as Code Best Practices Developer",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/srinivas-karnati/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T23:58:50Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "... DevOps stepping into bigger mandates → Engineering Managers being challenged ... What a tragic chapter for a once gr",
+    "url": "https://www.linkedin.com/posts/danny-tipple-devops_coming-off-the-back-of-early-may-bank-holiday-activity-7457319344788746241-IhtI",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Danny Tipple",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/danny-tipple-devops/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T23:58:50Z"
+  },
+  {
+    "title": "AI Engineer at it",
+    "snippet": "The most dangerous hallucinations are the ones that sound completely reasonable. AI is genuinely useful but right now, i",
+    "url": "https://www.linkedin.com/posts/dennestorres_its-very-simple-if-you-need-always-the-activity-7457850804251598848-if2Q",
+    "company": "it",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/dennestorres/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T23:58:50Z"
   }
 ]
