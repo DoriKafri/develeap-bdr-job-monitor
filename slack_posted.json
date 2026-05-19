@@ -274,6 +274,7 @@
     "unknown|||platform infrastructure & ai team leader",
     "unknown|||platform engineering manager, data security team",
     "unknown|||platform engineer",
+    "unknown|||openshift virtualization (infra) team (ra'anana, israel)",
     "unknown|||npi/production engineer (onsite in israel)",
     "unknown|||mlops engineer|2026-03-06",
     "unknown|||mlops engineer",
@@ -333,6 +334,7 @@
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
+    "unknown|||aro hcp (ra'anana office, israel)",
     "unknown|||applied ai engineer",
     "unknown|||ai/ml engineer",
     "unknown|||ai/agentic engineer",
@@ -699,6 +701,7 @@
     "palantir|||forward deployed security engineer - us government",
     "orchid|||senior ai engineer",
     "openshift services (raanana office ...|||site reliability engineer \u2013 openshift services (raanana office",
+    "openshift (raanana office, israel)|||software engineer - openshift (raanana office, israel)",
     "one zero digital bank|||ai engineer",
     "one project|||ai engineer at one project",
     "oligo security||||senior fullstack engineer \u2013 tel aviv, israel | oligo careers",
@@ -1003,6 +1006,7 @@
     "intel corporation|ai|ai/ml engineer @ intel corporation | lhh job board|2026-02-23",
     "intel corporation|ai|ai/ml engineer @ intel corporation | lhh job board",
     "ingima|||ai developer - agentic ai solutions 5305",
+    "infrastructure validation ...|||software engineer intern - infrastructure validation",
     "incredibuild|||devops sales engineer",
     "in 2026|||site reliability engineer at in 2026",
     "immunai|||senior ai engineer",
@@ -2731,7 +2735,11 @@
     "unknown|||senior principal consultant, devops engineer!": "2026-05-18T16:48:36.552917+00:00",
     "unknown|||principal consultant, ai engineer!": "2026-05-18T16:48:36.552917+00:00",
     "unknown|||senior principal consultant, ai engineer!": "2026-05-18T16:48:36.552917+00:00",
-    "catonetworks|||agentic ai engineer": "2026-05-18T19:08:20.298414+00:00"
+    "catonetworks|||agentic ai engineer": "2026-05-18T19:08:20.298414+00:00",
+    "openshift (raanana office, israel)|||software engineer - openshift (raanana office, israel)": "2026-05-19T11:00:36.766257+00:00",
+    "unknown|||aro hcp (ra'anana office, israel)": "2026-05-19T11:00:36.766257+00:00",
+    "infrastructure validation ...|||software engineer intern - infrastructure validation": "2026-05-19T11:00:36.766257+00:00",
+    "unknown|||openshift virtualization (infra) team (ra'anana, israel)": "2026-05-19T11:00:36.766257+00:00"
   },
-  "updated": "2026-05-18T19:08:20.333101+00:00"
+  "updated": "2026-05-19T11:00:36.801449+00:00"
 }
