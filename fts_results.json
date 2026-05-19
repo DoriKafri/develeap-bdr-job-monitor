@@ -3430,5 +3430,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-19T10:32:56Z"
+  },
+  {
+    "title": "Account Managers/CSMs",
+    "snippet": "And I hate the AI agent's suggestions so far. But now… I'm hiring Account Managers/CSMs in Tel Aviv and New York! If you",
+    "url": "https://www.linkedin.com/posts/galimichaeli_im-terrible-at-linkedin-seriously-i-scroll-activity-7462196928102027264-cMMz",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/galimichaeli/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T18:53:07Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "A few of the fastest-growing startups currently hiring (2/3): • Profound ... AI agent (Israel / LATAM) • Cloover - renew",
+    "url": "https://www.linkedin.com/posts/nextplayso_a-few-of-the-fastest-growing-startups-currently-activity-7460798188363628544-8DFK",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/nextplayso/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-19T18:53:07Z"
   }
 ]
