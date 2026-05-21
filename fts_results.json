@@ -3658,5 +3658,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-21T04:50:25Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "We're #hiring a new Senior DevOps / Site Reliability Engineer (SRE) in Tel Aviv-Yafo, Tel Aviv District. Apply today or ",
+    "url": "https://www.linkedin.com/posts/lendbuzz_hiring-activity-7462468456878178304-heUM",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/lendbuzz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-21T21:07:49Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... Site Reliability Engineering (SRE), Vulnerability Assessment and Penetration ... hiring only developers. They are hi",
+    "url": "https://www.linkedin.com/posts/cncg-pune_cloudnativeday-cncf-kubernetes-activity-7461981444244996096-N0s0",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Cncg Pune",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/cncg-pune/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-21T21:07:49Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "... hiring requirement. If you're a DevOps or Cloud engineer not investing in ... Site Reliability Engineering Questions",
+    "url": "https://www.linkedin.com/posts/mdomer529_devsecops-kubernetes-cloudsecurity-activity-7457995132320133121-OrFM",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/mdomer529/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-21T21:07:49Z"
   }
 ]
