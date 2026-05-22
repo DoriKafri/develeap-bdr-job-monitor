@@ -3730,5 +3730,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-22T06:31:26Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Who wants to come work with me at Arpeely? If you're into data, massive scale, AI, real production challenges, and build",
+    "url": "https://www.linkedin.com/posts/gil-elkabetz-0b300850_job-opportunities-at-arpeely-activity-7462150658826059776-HNwR",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Gil Elkabetz",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/gil-elkabetz-0b300850/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-22T21:58:55Z"
+  },
+  {
+    "title": "AI/Agentic Engineer",
+    "snippet": "Come work with me to build the future of Bob Studio — empowering customers to create apps and automations with an agenti",
+    "url": "https://www.linkedin.com/posts/anush-gershman-8046411b_come-work-with-me-to-build-the-future-of-activity-7460410324249149441-ShMd",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Anush Gershman",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/anush-gershman-8046411b/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-22T21:58:55Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Salesforce Israel User Group Meeting - August 2018 - August 07, 2018. Idan Bliech 7y. Come work with me (2). Idan Bliech",
+    "url": "https://www.linkedin.com/posts/idanbliech_your-apex-tests-can-be-perfect-and-still-activity-7460567718552039424-vfoe",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/idanbliech/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-22T21:58:55Z"
   }
 ]
