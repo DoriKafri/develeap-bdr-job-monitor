@@ -269,6 +269,7 @@
     "unknown|||senior ai backend engineer",
     "unknown|||security engineer",
     "unknown|||secops engineer",
+    "unknown|||saas site reliability engineer",
     "unknown|||qualcomm, hod hasharon, israel",
     "unknown|||production engineer",
     "unknown|||product operations analyst - product analytics",
@@ -276,6 +277,7 @@
     "unknown|||principal software engineer data platform (cortex)",
     "unknown|||principal devops engineer (enterprise browser)",
     "unknown|||principal consultant, ai engineer!",
+    "unknown|||principal backend & cloud engineer agentless (cortex",
     "unknown|||platform infrastructure & ai team leader",
     "unknown|||platform engineering manager, data security team",
     "unknown|||platform engineer",
@@ -315,6 +317,7 @@
     "unknown|||dsp & ai development engineer",
     "unknown|||devsecops engineer",
     "unknown|||devops team leader, israel",
+    "unknown|||devops team leader",
     "unknown|||devops team lead",
     "unknown|||devops engineer \u2013 automation infrastructure",
     "unknown|||devops engineer (israel)",
@@ -343,6 +346,7 @@
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
     "unknown|||aro hcp (ra'anana office, israel)",
+    "unknown|||applied ai engineer (cortex product enablement)",
     "unknown|||applied ai engineer",
     "unknown|||ai/ml engineer",
     "unknown|||ai/agentic engineer",
@@ -2773,7 +2777,11 @@
     "unknown|||head of ai": "2026-05-24T09:40:48.280322+00:00",
     "unknown|||enterprise cloud architect": "2026-05-24T09:40:48.280322+00:00",
     "what is finops?|||what is finops? - cloud computing": "2026-05-24T18:13:32.759884+00:00",
-    "what is finops?|||what is finops? | glossary": "2026-05-24T18:13:32.759884+00:00"
+    "what is finops?|||what is finops? | glossary": "2026-05-24T18:13:32.759884+00:00",
+    "unknown|||saas site reliability engineer": "2026-05-25T16:23:22.634715+00:00",
+    "unknown|||applied ai engineer (cortex product enablement)": "2026-05-25T16:23:22.634715+00:00",
+    "unknown|||principal backend & cloud engineer agentless (cortex": "2026-05-25T16:23:22.634715+00:00",
+    "unknown|||devops team leader": "2026-05-25T16:23:22.634715+00:00"
   },
-  "updated": "2026-05-24T18:13:32.787505+00:00"
+  "updated": "2026-05-25T16:23:22.672000+00:00"
 }
