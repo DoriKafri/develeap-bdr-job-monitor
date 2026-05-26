@@ -301,6 +301,7 @@
     "unknown|||head of ai",
     "unknown|||hands on tech lead \u2013 generative ai",
     "unknown|||gtm engineer, israel",
+    "unknown|||generative ai tech lead",
     "unknown|||generative ai team lead",
     "unknown|||generative ai engineer",
     "unknown|||genai backend engineer",
@@ -1546,6 +1547,7 @@
     "ai-generated code slows down delivery with complex prs not every ai problem|||ai engineer at ai-generated code slows down delivery with complex prs not every ai problem",
     "ai still|||ai engineer at ai still",
     "ai operations & ai native workflows|||associate",
+    "agents platform)|||ai engineer (prisma browser - agents platform)",
     "agentix ai (cortex xsiam)|||principal software engineer - agentix ai (cortex xsiam)",
     "adgeai|||senior devops engineer",
     "adecco israel %d7%90%d7%93%d7%a7%d7%95 %d7%99%d7%a9%d7%a8%d7%90%d7%9c|||cloud engineer",
@@ -2787,7 +2789,9 @@
     "unknown|||devops team leader": "2026-05-25T16:23:22.634715+00:00",
     "unknown|||senior cloud architect, field engineering (genai focus)": "2026-05-26T16:57:49.420814+00:00",
     "catonetworks|||ai security - ai platform engineer": "2026-05-26T16:57:49.420814+00:00",
-    "bluevine|||senior machine learning engineer @ bluevine": "2026-05-26T16:57:49.420814+00:00"
+    "bluevine|||senior machine learning engineer @ bluevine": "2026-05-26T16:57:49.420814+00:00",
+    "agents platform)|||ai engineer (prisma browser - agents platform)": "2026-05-26T19:36:12.017083+00:00",
+    "unknown|||generative ai tech lead": "2026-05-26T19:36:12.017083+00:00"
   },
-  "updated": "2026-05-26T16:57:49.456842+00:00"
+  "updated": "2026-05-26T19:36:12.054348+00:00"
 }
