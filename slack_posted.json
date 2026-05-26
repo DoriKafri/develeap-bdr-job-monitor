@@ -259,6 +259,7 @@
     "unknown|||senior cloud security software engineer",
     "unknown|||senior cloud finops engineer - \u05ea\u05dc \u05d0\u05d1\u05d9\u05d1 -\u05d9\u05e4\u05d5, \u05de\u05d7\u05d5\u05d6",
     "unknown|||senior cloud finops engineer",
+    "unknown|||senior cloud architect, field engineering (genai focus)",
     "unknown|||senior backend engineer - platform",
     "unknown|||senior backend engineer - ai & cloud platform",
     "unknown|||senior application security engineer",
@@ -1378,6 +1379,7 @@
     "catonetworks|||site reliability engineer",
     "catonetworks|||corporate security engineer",
     "catonetworks|||ai security - field ai engineer",
+    "catonetworks|||ai security - ai platform engineer",
     "catonetworks|||ai security - ai engineer",
     "catonetworks|||ai engineer",
     "catonetworks|||agentic automation engineer (information systems)",
@@ -1422,6 +1424,7 @@
     "bmc|agentic|senior backend developer - (agentic ai, data innovation team)|2026-03-06",
     "bmc|agentic|senior backend developer - (agentic ai, data innovation team)",
     "bluevine|||senior security engineer @ bluevine",
+    "bluevine|||senior machine learning engineer @ bluevine",
     "blockaid|||50+ cloud support specialist \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 26 \u05de\u05e8\u05e5, 2026",
     "bleader|||data engineer",
     "bitsight||||senior devops engineer - careers - myworkdayjobs.com",
@@ -2781,7 +2784,10 @@
     "unknown|||saas site reliability engineer": "2026-05-25T16:23:22.634715+00:00",
     "unknown|||applied ai engineer (cortex product enablement)": "2026-05-25T16:23:22.634715+00:00",
     "unknown|||principal backend & cloud engineer agentless (cortex": "2026-05-25T16:23:22.634715+00:00",
-    "unknown|||devops team leader": "2026-05-25T16:23:22.634715+00:00"
+    "unknown|||devops team leader": "2026-05-25T16:23:22.634715+00:00",
+    "unknown|||senior cloud architect, field engineering (genai focus)": "2026-05-26T16:57:49.420814+00:00",
+    "catonetworks|||ai security - ai platform engineer": "2026-05-26T16:57:49.420814+00:00",
+    "bluevine|||senior machine learning engineer @ bluevine": "2026-05-26T16:57:49.420814+00:00"
   },
-  "updated": "2026-05-25T18:51:56.884592+00:00"
+  "updated": "2026-05-26T16:57:49.456842+00:00"
 }
