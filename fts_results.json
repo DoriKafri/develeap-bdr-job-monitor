@@ -3910,5 +3910,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-27T21:59:48Z"
+  },
+  {
+    "title": "Cloud Engineer at The market",
+    "snippet": "The market is hiring. The problem is that most engineers are competing for the wrong slice of it. Here is what the data ",
+    "url": "https://www.linkedin.com/posts/levelupwithbroadus_last-year-you-said-you-were-transitioning-activity-7462116759559458817-MvwX",
+    "company": "The market",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/levelupwithbroadus/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-28T09:45:08Z"
+  },
+  {
+    "title": "AI Engineer at As senior engineers",
+    "snippet": "As senior engineers, we need to build self-service platforms that empower developers. It changes the culture from \"us vs",
+    "url": "https://www.linkedin.com/posts/tal-peretz_want-to-make-sdrs-40-more-effective-stop-activity-7461660646414282752-AOrN",
+    "company": "As senior engineers",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/tal-peretz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-28T09:45:08Z"
   }
 ]
