@@ -3970,5 +3970,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-05-28T22:14:37Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We're Hiring Solutions Architects! Are you passionate about GenAI and cutting-edge cloud technologies? Do you love solvi",
+    "url": "https://www.linkedin.com/posts/osherove_solutions-architect-aws-startups-israel-activity-7464973091006431233-pFC8",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/osherove/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-29T23:04:10Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "We're #hiring a new Cloud Engineer in Tel Aviv-Yafo, Tel Aviv District. Apply today or share this post with your network",
+    "url": "https://www.linkedin.com/posts/lendbuzz_hiring-activity-7463913250406162433-T0u0",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/lendbuzz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-29T23:04:10Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "Security can't afford to stay theoretical. That's why we're growing our Cyber & Cloud Security team at KPMG Israel suppo",
+    "url": "https://www.linkedin.com/posts/effi-mor-b5943191_cloudsecurity-cybersecurity-hiring-activity-7462454597517811712-zqdW",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Effi Mor",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/effi-mor-b5943191/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-29T23:04:10Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "I'm #hiring for a Senior Cloud Architect to strengthen our AWS-focused AI Field Engineering practice in EMEA. This is mo",
+    "url": "https://www.linkedin.com/posts/alexgkiouros_hiring-hiring-genai-activity-7465051836853518336-4tp7",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/alexgkiouros/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-05-29T23:04:10Z"
   }
 ]
