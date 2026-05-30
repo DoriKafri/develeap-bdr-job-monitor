@@ -270,6 +270,7 @@
     "unknown|||senior ai prompt engineer",
     "unknown|||senior ai engineer",
     "unknown|||senior ai backend engineer",
+    "unknown|||security engineer, endpoint and device security",
     "unknown|||security engineer",
     "unknown|||secops engineer",
     "unknown|||saas site reliability engineer",
@@ -333,6 +334,7 @@
     "unknown|||dev ops team leader",
     "unknown|||data infrastructure team leader",
     "unknown|||data group tech lead, staff engineer",
+    "unknown|||data engineer - big data",
     "unknown|||data engineer",
     "unknown|||data center it technician - project tasks",
     "unknown|||data analyst / data engineer position",
@@ -2805,7 +2807,9 @@
     "as senior engineers|||ai engineer at as senior engineers": "2026-05-28T17:14:46.430106+00:00",
     "fireblocks|||senior application security engineer @ fireblocks": "2026-05-29T19:44:16.341041+00:00",
     "unknown|||senior software engineer - data platform group": "2026-05-30T09:35:56.188091+00:00",
-    "unknown|||senior secops engineer": "2026-05-30T09:35:56.188091+00:00"
+    "unknown|||senior secops engineer": "2026-05-30T09:35:56.188091+00:00",
+    "unknown|||data engineer - big data": "2026-05-30T14:56:38.225362+00:00",
+    "unknown|||security engineer, endpoint and device security": "2026-05-30T14:56:38.225362+00:00"
   },
-  "updated": "2026-05-30T12:27:35.011924+00:00"
+  "updated": "2026-05-30T14:56:38.262606+00:00"
 }
