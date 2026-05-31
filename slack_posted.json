@@ -269,6 +269,8 @@
     "unknown|||senior android prototyping engineer",
     "unknown|||senior android platform engineer",
     "unknown|||senior ai prompt engineer",
+    "unknown|||senior ai engineer, genai",
+    "unknown|||senior ai engineer (genai)",
     "unknown|||senior ai engineer",
     "unknown|||senior ai backend engineer",
     "unknown|||security engineer, endpoint and device security",
@@ -316,6 +318,7 @@
     "unknown|||finops engineer",
     "unknown|||field deploy engineer",
     "unknown|||experienced devops engineer (cortex cloud)",
+    "unknown|||experienced backend & ai engineer (cortex xsiam)",
     "unknown|||enterprise cloud architect",
     "unknown|||enterprise account executives right now",
     "unknown|||engineering manager - analytics platform",
@@ -1526,6 +1529,7 @@
     "appsflyer|||data engineer @ appsflyer",
     "appsflyer|||data engineer - web attribution @ appsflyer",
     "appsflyer|||cloud architect @ appsflyer",
+    "applied models|||senior ai researcher - applied models",
     "applied materials||||senior devops engineer - careers - myworkdayjobs.com",
     "applied materials||||senior devops engineer - careers",
     "applied materials|||senior devops engineer - careers|2026-03-01",
@@ -2813,7 +2817,11 @@
     "unknown|||data engineer - big data": "2026-05-30T14:56:38.225362+00:00",
     "unknown|||security engineer, endpoint and device security": "2026-05-30T14:56:38.225362+00:00",
     "unknown|||vp of r&d": "2026-05-30T16:15:32.296789+00:00",
-    "every day we ingest and analyze 4|||principal architect": "2026-05-30T18:18:00.505168+00:00"
+    "every day we ingest and analyze 4|||principal architect": "2026-05-30T18:18:00.505168+00:00",
+    "unknown|||senior ai engineer (genai)": "2026-05-31T09:56:50.156353+00:00",
+    "unknown|||experienced backend & ai engineer (cortex xsiam)": "2026-05-31T09:56:50.156353+00:00",
+    "unknown|||senior ai engineer, genai": "2026-05-31T09:56:50.156353+00:00",
+    "applied models|||senior ai researcher - applied models": "2026-05-31T09:56:50.156353+00:00"
   },
-  "updated": "2026-05-30T18:18:00.541457+00:00"
+  "updated": "2026-05-31T09:56:50.194404+00:00"
 }
