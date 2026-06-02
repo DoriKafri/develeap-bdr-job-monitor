@@ -378,6 +378,7 @@
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 13 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 1 \u05de\u05d0\u05d9, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
+    "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05d9\u05d5\u05e0\u05d9, 2026",
     "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 23 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026",
@@ -1508,6 +1509,7 @@
     "assurance|||ai engineer at assurance",
     "as senior engineers|||ai engineer at as senior engineers",
     "ars team|||senior cloud engineer - ars team",
+    "ars team (idira)|||senior staff cloud engineer - ars team (idira)",
     "armo|||senior cloud security software engineer",
     "armis|||streaming infrastructure devops engineer @ armis",
     "armis|||senior data platform engineer @ armis",
@@ -2827,7 +2829,9 @@
     "applied models|||senior ai researcher - applied models": "2026-05-31T09:56:50.156353+00:00",
     "augury|||ai engineer at augury": "2026-05-31T18:17:42.814399+00:00",
     "similarweb|||core data - big data engineer @ similarweb": "2026-06-01T12:50:02.601823+00:00",
-    "riskified|||senior ai engineer @ riskified": "2026-06-01T18:56:14.297291+00:00"
+    "riskified|||senior ai engineer @ riskified": "2026-06-01T18:56:14.297291+00:00",
+    "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05d9\u05d5\u05e0\u05d9, 2026": "2026-06-02T17:47:36.509821+00:00",
+    "ars team (idira)|||senior staff cloud engineer - ars team (idira)": "2026-06-02T17:47:36.509821+00:00"
   },
-  "updated": "2026-06-01T18:56:14.354184+00:00"
+  "updated": "2026-06-02T17:47:36.548480+00:00"
 }
