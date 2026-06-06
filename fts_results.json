@@ -4222,5 +4222,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-06T00:05:32Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "i keep track of tech companies hiring in Israel + open positions over at en.goozali.com ... Bar Michaeli. Senior Securit",
+    "url": "https://www.linkedin.com/posts/avi-lewis_tech-companies-startups-in-israel-actively-activity-7467861260152479744-cXat",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Avi Lewis",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/avi-lewis/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-06T18:07:20Z"
+  },
+  {
+    "title": "Security Engineer",
+    "snippet": "If you're looking for a new opportunity, we're growing our teams in Prague, Frankfurt, Vienna, and Raanana (Israel) ... ",
+    "url": "https://www.linkedin.com/posts/jantegze_if-youre-looking-for-a-new-opportunity-activity-7467527756067758081-jIb-",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/jantegze/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-06T18:07:20Z"
   }
 ]
