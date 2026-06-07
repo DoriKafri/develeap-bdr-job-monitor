@@ -4282,5 +4282,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-07T11:00:56Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "New open position in my team at IBM Haifa. Leonid Bolshinsky 10y · Looking for Senior DevOps engineer for IBM cloud serv",
+    "url": "https://www.linkedin.com/posts/leonid-bolshinsky-47524b1_proud-moment-amazon-israel-made-it-to-the-activity-7465086703221878784-ycS4",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Leonid Bolshinsky",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/leonid-bolshinsky-47524b1/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-07T14:47:42Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "NeoJob - Headhunting Company in Israel ☆ Software Engineers ☆ QA engineers ☆ DevOps ... Hi, check out our open position ",
+    "url": "https://www.linkedin.com/posts/%E2%98%AE%EF%B8%8F-jordie-bell-%F0%9F%A7%9E%E2%80%8D%E2%99%80%EF%B8%8F-791a4717a_wishing-you-great-success-yinon-zehira-activity-7464675518865551360-MsZi",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-07T14:47:42Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Feel free to reach out for any open role. P.S. I'm not the hiring manager. #SarvamAI #Hiring #Intern #Engineering #AI #D",
+    "url": "https://www.linkedin.com/posts/gursimarsm_referral-sarvamai-hiring-activity-7468011493750534144-9D7X",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/gursimarsm/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-07T14:47:42Z"
   }
 ]
