@@ -4318,5 +4318,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-07T14:47:42Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Data Engineer. AWS | GCP | Airflow | Dagster | SQL | Python | Snowflake | Redshift | BigQuerry | ClickHouse. 5h. Report ",
+    "url": "https://www.linkedin.com/posts/fetcherr-ltd_hiring-activity-7465035690909687809-t0sD",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Fetcherr Ltd",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/fetcherr-ltd/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-07T16:06:27Z"
   }
 ]
