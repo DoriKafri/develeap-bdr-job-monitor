@@ -199,6 +199,7 @@
     "unknown|||staff vulnerability researcher",
     "unknown|||staff software engineer, core ai software",
     "unknown|||staff software engineer (data & ai platform)",
+    "unknown|||staff researcher, security infra developer",
     "unknown|||staff product manager, data platform",
     "unknown|||staff devops engineer (cortex research)",
     "unknown|||staff backend engineer- core platform",
@@ -206,6 +207,7 @@
     "unknown|||sr. data engineer - cloud security",
     "unknown|||sr staff site reliability engineer",
     "unknown|||sr staff devops platform engineer",
+    "unknown|||sr staff devops engineer (secrets manager)",
     "unknown|||sr staff devops engineer",
     "unknown|||sr senior devops engineer (devops platform))",
     "unknown|||sr principal engineer (cortex cloud)",
@@ -2853,7 +2855,9 @@
     "fireblocks|||data analytics ai engineer @ fireblocks": "2026-06-03T18:04:30.569822+00:00",
     "danet communications|||cloud engineer at danet communications": "2026-06-04T16:30:10.401324+00:00",
     "unknown|||devops & cloud infrastructure engineer": "2026-06-05T16:18:11.547465+00:00",
-    "finops|||finops | aws cloud financial management": "2026-06-06T18:20:40.445501+00:00"
+    "finops|||finops | aws cloud financial management": "2026-06-06T18:20:40.445501+00:00",
+    "unknown|||sr staff devops engineer (secrets manager)": "2026-06-07T10:26:37.526027+00:00",
+    "unknown|||staff researcher, security infra developer": "2026-06-07T10:26:37.526027+00:00"
   },
-  "updated": "2026-06-06T18:20:40.482857+00:00"
+  "updated": "2026-06-07T10:26:37.563415+00:00"
 }
