@@ -195,6 +195,7 @@
     "unknown|||vp of r&d",
     "unknown|||tel aviv-yafo, tel aviv district, israel ai engineer",
     "unknown|||technical lead - core ai",
+    "unknown|||tech program manager",
     "unknown|||support analyst, financial operations",
     "unknown|||staff vulnerability researcher",
     "unknown|||staff software engineer, core ai software",
@@ -1323,6 +1324,7 @@
     "cloudinary|||staff data engineer \u2013 data modeling",
     "cloudinary|||senior devops engineer",
     "cloudinary|||senior data engineer - platform",
+    "cloudinary|||senior ai engineer",
     "cloudinary|||cloudinary - staff backend engineer - ai algorithm platform|2026-03-04",
     "cloudinary|||cloudinary - staff backend engineer - ai algorithm platform",
     "cloudinary|devops|cloudinary - staff backend engineer - ai algorithm platform|2026-03-04",
@@ -2861,7 +2863,9 @@
     "unknown|||sr staff devops engineer (secrets manager)": "2026-06-07T10:26:37.526027+00:00",
     "unknown|||staff researcher, security infra developer": "2026-06-07T10:26:37.526027+00:00",
     "unknown|||principal backend engineer - data security (cortex cloud)": "2026-06-07T12:56:01.270570+00:00",
-    "nice|||senior cloud architect @ nice": "2026-06-07T18:27:09.004388+00:00"
+    "nice|||senior cloud architect @ nice": "2026-06-07T18:27:09.004388+00:00",
+    "unknown|||tech program manager": "2026-06-09T10:57:44.602958+00:00",
+    "cloudinary|||senior ai engineer": "2026-06-09T10:57:44.602958+00:00"
   },
-  "updated": "2026-06-08T17:08:46.321721+00:00"
+  "updated": "2026-06-09T10:57:44.642638+00:00"
 }
