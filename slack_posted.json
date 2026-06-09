@@ -182,6 +182,7 @@
     "upstream|devops|devops engineer",
     "upstream security|||ai engineer at upstream security",
     "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea security operation center \u05d1",
+    "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea ebay \u05d1",
     "unknown|||\u05de\u05e0\u05d4\u05dc/\u05ea \u05de\u05d5\u05e6\u05e8 \u05d1\u05db\u05d9\u05e8/\u05d4, \u05e4\u05dc\u05d8\u05e4\u05d5\u05e8\u05de\u05ea \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd \u2013 senior product",
     "unknown|||\u05de\u05d4\u05e0\u05d3\u05e1 \u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea \u05d9\u05d5\u05e6\u05e8\u05ea \u2013 associate generative ai engineer",
     "unknown|||\u05de\u05d3\u05e2\u05df/\u05d9\u05ea \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd \u2013 data scientist",
@@ -272,6 +273,7 @@
     "unknown|||senior cloud architect, field engineering (genai focus)",
     "unknown|||senior backend engineer - platform",
     "unknown|||senior backend engineer - ai & cloud platform",
+    "unknown|||senior backend & cloud engineer agentless (cortex cloud)",
     "unknown|||senior application security engineer",
     "unknown|||senior android prototyping engineer",
     "unknown|||senior android platform engineer",
@@ -1092,6 +1094,7 @@
     "global payments inc.|||cloud engineer",
     "glassbox|||devops team lead",
     "gett|||staff devops engineer",
+    "general information|||platform engineer",
     "genai productivity applications|||full stack engineer - genai productivity applications",
     "g2|||vulnerability management engineer @ g2",
     "full|||full-stack engineer (mid-level) \u2014 ai platform engineering",
@@ -2865,7 +2868,10 @@
     "unknown|||principal backend engineer - data security (cortex cloud)": "2026-06-07T12:56:01.270570+00:00",
     "nice|||senior cloud architect @ nice": "2026-06-07T18:27:09.004388+00:00",
     "unknown|||tech program manager": "2026-06-09T10:57:44.602958+00:00",
-    "cloudinary|||senior ai engineer": "2026-06-09T10:57:44.602958+00:00"
+    "cloudinary|||senior ai engineer": "2026-06-09T10:57:44.602958+00:00",
+    "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea ebay \u05d1": "2026-06-09T13:46:00.886031+00:00",
+    "general information|||platform engineer": "2026-06-09T13:46:00.886031+00:00",
+    "unknown|||senior backend & cloud engineer agentless (cortex cloud)": "2026-06-09T13:46:00.886031+00:00"
   },
-  "updated": "2026-06-09T10:57:44.642638+00:00"
+  "updated": "2026-06-09T13:46:00.925366+00:00"
 }
