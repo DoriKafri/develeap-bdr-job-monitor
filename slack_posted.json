@@ -374,6 +374,7 @@
     "unknown|||applied ai engineer",
     "unknown|||ai/ml engineer",
     "unknown|||ai/agentic engineer",
+    "unknown|||ai tech lead",
     "unknown|||ai security engineer",
     "unknown|||ai platform engineer",
     "unknown|||ai engineer (backend, genai)",
@@ -651,6 +652,7 @@
     "remedio|devops|jobs at remedio - comeet",
     "remedio|devops|jobs",
     "remedio formerly gytpol|||senior platform engineer",
+    "reliability engineer (sre)|||22765 - reliability engineer (sre)",
     "redis|||manager, cloud operations @ redis",
     "radware|||architect lead,agentic ai security \u2013 emea - radware",
     "quantum machines|||cloud security engineer - microsoft 365 at quantum machines",
@@ -2877,7 +2879,9 @@
     "unknown|||senior backend & cloud engineer agentless (cortex cloud)": "2026-06-09T13:46:00.886031+00:00",
     "similarweb|||senior cybersecurity engineer @ similarweb": "2026-06-09T17:35:46.608059+00:00",
     "unknown|||staff architect, data & ai infra": "2026-06-10T16:53:58.516858+00:00",
-    "unknown|||principal devops engineer (prisma browser)": "2026-06-10T16:53:58.516858+00:00"
+    "unknown|||principal devops engineer (prisma browser)": "2026-06-10T16:53:58.516858+00:00",
+    "reliability engineer (sre)|||22765 - reliability engineer (sre)": "2026-06-10T19:36:11.748884+00:00",
+    "unknown|||ai tech lead": "2026-06-10T19:36:11.748884+00:00"
   },
-  "updated": "2026-06-10T16:53:58.556266+00:00"
+  "updated": "2026-06-10T19:36:11.787662+00:00"
 }
