@@ -4426,5 +4426,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-12T01:42:28Z"
+  },
+  {
+    "title": "Cloud Engineer at Amazon Web Services",
+    "snippet": "Seeing our cloud community in Israel come together—innovating, collaborating ... Amazon Web Services is hiring! Arik Zie",
+    "url": "https://www.linkedin.com/posts/arik-ziegler_cloudcomputing-googlecloud-summittelaviv-activity-7469747017762897920-ZpdK",
+    "company": "Amazon Web Services",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/arik-ziegler/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-12T21:01:44Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... cloud architectures, and security solutions. These are the foundations of ... we need to be honest: investments of t",
+    "url": "https://www.linkedin.com/posts/timh%C3%B6ttges_tech2026-digitalsovereignty-ai-activity-7467493974103117824-PO5M",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-12T21:01:44Z"
   }
 ]
