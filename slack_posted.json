@@ -616,6 +616,7 @@
     "riskified|||senior devops engineer @ riskified",
     "riskified|||senior ai engineer @ riskified",
     "riskified|||riskified site reliability engineering (sre)",
+    "riskified|||devsecops engineer @ riskified",
     "riskified|||data engineer @ riskified",
     "riskified|||applied ai engineer @ riskified",
     "rise|||data engineer",
@@ -745,6 +746,7 @@
     "palo alto networks|||sr staff cross-platform c++ engineer (cortex xdr)",
     "palo alto networks|||senior sre (it infrastructure)",
     "palo alto networks|||senior sre (cortex)",
+    "palo alto networks|||senior site reliability engineer (cortex)",
     "palantir|||palantir technologies - administrative business partner",
     "palantir|||forward deployed security engineer - us government",
     "orchid|||senior ai engineer",
@@ -2881,7 +2883,9 @@
     "unknown|||staff architect, data & ai infra": "2026-06-10T16:53:58.516858+00:00",
     "unknown|||principal devops engineer (prisma browser)": "2026-06-10T16:53:58.516858+00:00",
     "reliability engineer (sre)|||22765 - reliability engineer (sre)": "2026-06-10T19:36:11.748884+00:00",
-    "unknown|||ai tech lead": "2026-06-10T19:36:11.748884+00:00"
+    "unknown|||ai tech lead": "2026-06-10T19:36:11.748884+00:00",
+    "palo alto networks|||senior site reliability engineer (cortex)": "2026-06-12T16:29:26.846535+00:00",
+    "riskified|||devsecops engineer @ riskified": "2026-06-12T16:29:26.846535+00:00"
   },
-  "updated": "2026-06-11T17:13:52.520080+00:00"
+  "updated": "2026-06-12T16:29:26.884972+00:00"
 }
