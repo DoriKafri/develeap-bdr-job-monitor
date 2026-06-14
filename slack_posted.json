@@ -305,11 +305,13 @@
     "unknown|||npi/production engineer (onsite in israel)",
     "unknown|||mlops engineer|2026-03-06",
     "unknown|||mlops engineer",
+    "unknown|||ml research engineer - physics - informed ai",
     "unknown|||microsoft security - platform team",
     "unknown|||manager, cloud operations",
     "unknown|||machine learning platform engineer - \u05e0\u05ea\u05e0\u05d9\u05d4, \u05de\u05d7\u05d5\u05d6 \u05d4\u05de\u05e8\u05db\u05d6",
     "unknown|||machine learning engineer student for ai solutions group",
     "unknown|||machine learning engineer",
+    "unknown|||llm engineer",
     "unknown|||lendbuzz",
     "unknown|||l3 support engineer",
     "unknown|||junior cloud finops engineer",
@@ -342,6 +344,7 @@
     "unknown|||devops team leader",
     "unknown|||devops team lead",
     "unknown|||devops engineer \u2013 automation infrastructure",
+    "unknown|||devops engineer kfar netter, israel",
     "unknown|||devops engineer (israel)",
     "unknown|||devops engineer (bigbrain)",
     "unknown|||devops engineer",
@@ -381,6 +384,7 @@
     "unknown|||ai engineer",
     "unknown|||ai and genai software engineer student \u2013 airport city",
     "unknown|||account managers/csms",
+    "unknown|||account manager",
     "unknown|||account executive",
     "unknown|||900+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 9 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 12 \u05de\u05e8\u05e5, 2026",
@@ -2887,7 +2891,11 @@
     "unknown|||ai tech lead": "2026-06-10T19:36:11.748884+00:00",
     "palo alto networks|||senior site reliability engineer (cortex)": "2026-06-12T16:29:26.846535+00:00",
     "riskified|||devsecops engineer @ riskified": "2026-06-12T16:29:26.846535+00:00",
-    "amazon web services|||cloud engineer at amazon web services": "2026-06-13T10:26:08.212678+00:00"
+    "amazon web services|||cloud engineer at amazon web services": "2026-06-13T10:26:08.212678+00:00",
+    "unknown|||devops engineer kfar netter, israel": "2026-06-14T10:48:31.634597+00:00",
+    "unknown|||ml research engineer - physics - informed ai": "2026-06-14T10:48:31.634597+00:00",
+    "unknown|||llm engineer": "2026-06-14T10:48:31.634597+00:00",
+    "unknown|||account manager": "2026-06-14T10:48:31.634597+00:00"
   },
-  "updated": "2026-06-13T12:57:33.240324+00:00"
+  "updated": "2026-06-14T10:48:31.674406+00:00"
 }
