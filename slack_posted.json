@@ -345,6 +345,7 @@
     "unknown|||devops team lead",
     "unknown|||devops engineer \u2013 automation infrastructure",
     "unknown|||devops engineer kfar netter, israel",
+    "unknown|||devops engineer (u.s citizen)",
     "unknown|||devops engineer (israel)",
     "unknown|||devops engineer (bigbrain)",
     "unknown|||devops engineer",
@@ -1049,6 +1050,7 @@
     "jobgether|ai|jobgether - senior ai engineer (remote from israel)",
     "jit|||ai engineer",
     "israel|||cloud engineer at israel",
+    "israel job type full time|||cloud devops engineer (azure)",
     "iscar israel|||iscar israel artificial intelligence engineer",
     "ironalgo|||mlops engineer",
     "intuit israel|||staff data engineer at intuit israel",
@@ -2895,7 +2897,9 @@
     "unknown|||devops engineer kfar netter, israel": "2026-06-14T10:48:31.634597+00:00",
     "unknown|||ml research engineer - physics - informed ai": "2026-06-14T10:48:31.634597+00:00",
     "unknown|||llm engineer": "2026-06-14T10:48:31.634597+00:00",
-    "unknown|||account manager": "2026-06-14T10:48:31.634597+00:00"
+    "unknown|||account manager": "2026-06-14T10:48:31.634597+00:00",
+    "israel job type full time|||cloud devops engineer (azure)": "2026-06-15T19:44:33.084317+00:00",
+    "unknown|||devops engineer (u.s citizen)": "2026-06-15T19:44:33.084317+00:00"
   },
-  "updated": "2026-06-15T13:31:54.189284+00:00"
+  "updated": "2026-06-15T19:44:33.122017+00:00"
 }
