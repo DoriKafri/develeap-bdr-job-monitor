@@ -518,6 +518,7 @@
     "taboola|||devsecops engineer @ taboola",
     "taboola|||devops engineer @ taboola",
     "taboola|||devops engineer",
+    "taboola|||data platform engineering team leader @ taboola",
     "taboola|devops|security devops engineer|2026-03-04",
     "taboola|devops|security devops engineer",
     "taboola|ai|senior mlops engineer|2026-03-05",
@@ -1434,6 +1435,7 @@
     "cellwize|||sre engineer (site reliability engineering) - cellwize",
     "catonetworks|||software developer, infrastructure - developer experience",
     "catonetworks|||site reliability engineer",
+    "catonetworks|||devops engineer",
     "catonetworks|||corporate security engineer",
     "catonetworks|||ai security - field ai engineer",
     "catonetworks|||ai security - ai platform engineer",
@@ -2917,7 +2919,9 @@
     "unknown|||lead software engineer": "2026-06-17T16:53:06.947362+00:00",
     "prosperity ai|||ai engineer at prosperity ai": "2026-06-17T19:27:34.515576+00:00",
     "the world|||ai engineer at the world": "2026-06-17T19:27:34.515576+00:00",
-    "the other|||ai engineer at the other": "2026-06-17T19:27:34.515576+00:00"
+    "the other|||ai engineer at the other": "2026-06-17T19:27:34.515576+00:00",
+    "catonetworks|||devops engineer": "2026-06-18T16:42:09.726499+00:00",
+    "taboola|||data platform engineering team leader @ taboola": "2026-06-18T16:42:09.726499+00:00"
   },
-  "updated": "2026-06-17T19:27:34.556437+00:00"
+  "updated": "2026-06-18T16:42:09.767146+00:00"
 }
