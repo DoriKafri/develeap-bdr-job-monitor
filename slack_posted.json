@@ -205,6 +205,7 @@
     "unknown|||staff researcher, security infra developer",
     "unknown|||staff product manager, data platform",
     "unknown|||staff devops engineer (cortex research)",
+    "unknown|||staff data platform engineer",
     "unknown|||staff backend engineer- core platform",
     "unknown|||staff architect, data & ai infra",
     "unknown|||sr. data engineer - cloud security (hybrid, isr)",
@@ -406,6 +407,7 @@
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 1 \u05de\u05d0\u05d9, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
     "unknown|||50+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 1 \u05d9\u05d5\u05e0\u05d9, 2026",
+    "unknown|||50+ cloud administrator \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 25 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 23 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 11 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||300+ network security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05de\u05e8\u05e5, 2026",
@@ -2931,7 +2933,9 @@
     "unknown|||\u05d7\u05d9\u05e4\u05d5\u05e9 \u05de\u05e9\u05e8\u05d4 \u05dc\u05e4\u05d9 \u05ea\u05e4\u05e7\u05d9\u05d3: f": "2026-06-19T16:33:12.076877+00:00",
     "unknown|||senior cloud architect": "2026-06-19T19:03:56.009569+00:00",
     "unknown|||partner solutions engineer, israel": "2026-06-21T11:01:08.573254+00:00",
-    "unknown|||it & secops specialist": "2026-06-21T11:01:08.573254+00:00"
+    "unknown|||it & secops specialist": "2026-06-21T11:01:08.573254+00:00",
+    "unknown|||50+ cloud administrator \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 25 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026": "2026-06-21T13:18:52.531067+00:00",
+    "unknown|||staff data platform engineer": "2026-06-21T13:18:52.531067+00:00"
   },
-  "updated": "2026-06-21T11:01:08.613552+00:00"
+  "updated": "2026-06-21T13:18:52.571424+00:00"
 }
