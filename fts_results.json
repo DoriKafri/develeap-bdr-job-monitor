@@ -4702,5 +4702,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-22T01:44:37Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "A year ago, when we didn't even have an open role, he reached out to our CEO. This week, after we published a relevant p",
+    "url": "https://www.linkedin.com/posts/jessica-staron-6a577041_ai-jobsearch-resumetips-activity-7471193636035174402-uwX5",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Jessica Staron",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/jessica-staron-6a577041/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-22T13:08:16Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Hot job alert! DoiT has a Remote Senior Cloud Architect, Field Engineering (GenAI Focus) opening. Employment type: Full-",
+    "url": "https://www.linkedin.com/posts/remoteyeah_remote-senior-cloud-architect-field-engineering-activity-7472023565190537216-vyzj",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/remoteyeah/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-22T13:08:16Z"
   }
 ]
