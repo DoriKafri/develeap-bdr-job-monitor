@@ -2823,8 +2823,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-06-24T10:44:11Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15092, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 0, "latency_ms": 15076, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 82, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 6997, "error": ""}];
+let LAST_UPDATED = "2026-06-24T13:27:34Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15086, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 8, "latency_ms": 1601, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 78, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 3982, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2841,7 +2841,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=832261d10d1ff7b1",
     "category": "devops",
     "posted": "2026-06-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "תיאור משרה מלא · At least 4+ years of DevOps experience · Experience using at least one of the following: Docker & Kubernetes/OpenShift · Deep understanding and ...",
@@ -2885,7 +2885,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=103aaff239f990a6",
     "category": "security",
     "posted": "2026-06-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "תיאור משרה מלא · Lead threat modeling and secure design (SxD) activities · Define and enforce secure coding standards (e.g., OWASP Top 10) · Partner with ...",
@@ -2907,7 +2907,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=d4b91474bebff555",
     "category": "ai",
     "posted": "2026-06-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Software Development Engineer, ML Systems Integration, Machine Learning Israel (MLIL) — Integration Validation. Annapurna Labs Ltd. תל אביב -יפו, מחוז תל ...",
@@ -2929,7 +2929,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=5fed6666310c58fe&from=vjs&tk=1jjn8lot224sn08g&viewtype=embedded&xkcb=SoC667M3m3ZYxDxUMR0FbzkdCdPP&continueUrl=%2Fjobs%3Fq%3Disrael%2Bqa%2Btester",
     "category": "security",
     "posted": "2026-06-24",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "We are looking for a Technical Lead or Senior Engineer with experiences of leading and mentoring UI engineering team and front-end engineers. You will work with ...",
@@ -2940,89 +2940,203 @@ let ALL_JOBS = [
     "_first_seen": "2026-06-24"
   },
   {
-    "id": "ae7f5f0f",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Natural Intelligence",
+    "id": "4bd2fbd5",
+    "title": "SaaS Site Reliability Engineer",
+    "subtitle": "We're looking for a SaaS Site Reliability Engineer (SRE) for our production team in Tel Aviv, to operate and ensure our SaaS service ...",
+    "company": "Unknown",
     "companyIndustry": "",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
-    "category": "devops",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=c99c81ac7a5f24a5",
+    "category": "sre",
     "posted": "2026-06-24",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Greg Lavender",
-        "title": "CTO & SVP",
-        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=intel.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-06-24",
-    "_manual": true
-  },
-  {
-    "id": "491196c3",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Unilink Ltd.",
-    "companyIndustry": "",
-    "location": "Holon, Israel",
-    "locationSlug": "holon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
-    "category": "devops",
-    "posted": "2026-06-24",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
+    "description": "We're looking for a SaaS Site Reliability Engineer (SRE) for our production team in Tel Aviv, to operate and ensure our SaaS service ...",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=unilink.co.il&sz=128",
+    "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-06-24",
-    "_manual": true
+    "_first_seen": "2026-06-24"
   },
   {
-    "id": "790d603d",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "",
-    "company": "AppCard",
+    "id": "38f8417f",
+    "title": "Senior Backend & Cloud Engineer Agentless (Cortex Cloud)",
+    "subtitle": "תיאור משרה מלא · Proven experience as a backend engineer with at least 5 years of experience - must! · Computer science or an equivalent degree or equivalent ...",
+    "company": "Unknown",
     "companyIndustry": "",
-    "location": "Hod HaSharon, Israel",
-    "locationSlug": "hod-hasharon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=85b93b964200699e",
+    "category": "agentic",
     "posted": "2026-06-24",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
+    "description": "תיאור משרה מלא · Proven experience as a backend engineer with at least 5 years of experience - must! · Computer science or an equivalent degree or equivalent ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-06-24"
+  },
+  {
+    "id": "de8d1228",
+    "title": "Senior Cybersecurity Engineer @ Similarweb",
+    "subtitle": "Similarweb - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "company": "SimilarWeb",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/similarweb/jobs/7992665",
+    "category": "security",
+    "posted": "2026-06-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Similarweb - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
     "skills": [],
     "stakeholders": [
       {
-        "name": "Yair Goldfinger",
-        "title": "CEO & Founder",
-        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
+        "name": "Ron Asher",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/ronasher/",
+        "source": "LinkedIn",
+        "email": "ron.asher@similarweb.com"
+      },
+      {
+        "name": "Or Offer",
+        "title": "CEO",
+        "linkedin": "https://www.linkedin.com/in/oroffer/",
+        "source": "LinkedIn",
+        "email": "or.offer@similarweb.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=similarweb.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-06-24"
+  },
+  {
+    "id": "def032dd",
+    "title": "Senior Data Engineer ( Data Collection) @ Similarweb",
+    "subtitle": "Similarweb - Tel Aviv-Yafo. 0 days ago via Greenhouse API (active listing).",
+    "company": "SimilarWeb",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/similarweb/jobs/7911963",
+    "category": "data",
+    "posted": "2026-06-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Similarweb - Tel Aviv-Yafo. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Ron Asher",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/ronasher/",
+        "source": "LinkedIn",
+        "email": "ron.asher@similarweb.com"
+      },
+      {
+        "name": "Or Offer",
+        "title": "CEO",
+        "linkedin": "https://www.linkedin.com/in/oroffer/",
+        "source": "LinkedIn",
+        "email": "or.offer@similarweb.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=similarweb.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-06-24"
+  },
+  {
+    "id": "acc24d50",
+    "title": "Agentic AI Engineer (IS Team) @ Cato Networks",
+    "subtitle": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Catonetworks",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.catonetworks.com/careers/careers-post/4863034101?gh_jid=4863034101",
+    "category": "agentic",
+    "posted": "2026-06-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Shlomo Kramer",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/shlomokramer/",
+        "source": "Globes",
+        "email": ""
+      },
+      {
+        "name": "Eyal Heiman",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/eyal-heiman-99233a98/",
         "source": "LinkedIn",
         "email": ""
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=catonetworks.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-06-24",
-    "_manual": true
+    "_first_seen": "2026-06-24"
+  },
+  {
+    "id": "9ffa62eb",
+    "title": "Senior AI Engineer",
+    "subtitle": "",
+    "company": "Cloudinary",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/cloudinary/cb36e787-44af-4b02-b9f3-a6e3a5dfe1df",
+    "category": "ai",
+    "posted": "2026-06-24",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Senior AI Engineer",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Lev-Ami",
+        "title": "Co-Founder & CTO",
+        "linkedin": "https://il.linkedin.com/in/tallevami",
+        "source": "LinkedIn",
+        "email": "tal.levami@cloudinary.com"
+      },
+      {
+        "name": "Itai Lahan",
+        "title": "Co-Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/itail/",
+        "source": "LinkedIn",
+        "email": "itai.lahan@cloudinary.com"
+      },
+      {
+        "name": "Nadav Soferman",
+        "title": "Co-Founder & CPO",
+        "linkedin": "https://www.linkedin.com/in/nadavsoferman/",
+        "source": "LinkedIn",
+        "email": "nadav.soferman@cloudinary.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-06-24"
   },
   {
     "id": "ea763dbb",
@@ -3161,7 +3275,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-06-22"
+    "_first_seen": "2026-06-22",
+    "altSources": [
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=585f55009ead8662",
+        "title": "Lead AI Engineer 4D"
+      }
+    ]
   },
   {
     "id": "77b7c8b8",
@@ -3189,7 +3310,7 @@ let ALL_JOBS = [
     "id": "af23ab32",
     "title": "Cloud DevOps Engineer (Azure)",
     "subtitle": "Requirements. Experience: At least 4 years of experience as a Cloud DevOps Engineer. Cloud Expertise: Deep, specialized experience with Azure technologies.",
-    "company": "Unknown",
+    "company": "Requirements",
     "companyIndustry": "",
     "location": "Israel",
     "locationSlug": "israel",
@@ -3203,7 +3324,7 @@ let ALL_JOBS = [
     "description": "Requirements. Experience: At least 4 years of experience as a Cloud DevOps Engineer. Cloud Expertise: Deep, specialized experience with Azure technologies.",
     "skills": [],
     "stakeholders": [],
-    "logo": "",
+    "logo": "https://www.google.com/s2/favicons?domain=requirements.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-06-22"
   },
@@ -5815,7 +5936,15 @@ let ALL_JOBS = [
       }
     ],
     "logo": "",
-    "ftsJobUrl": ""
+    "ftsJobUrl": "",
+    "_first_seen": "2026-06-11",
+    "altSources": [
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=7fc72a560135fb6c",
+        "title": "FinOps Engineer"
+      }
+    ]
   },
   {
     "id": "08a5c6f2",
