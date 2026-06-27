@@ -4870,5 +4870,65 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-27T06:06:16Z"
+  },
+  {
+    "title": "Data Engineer on my team",
+    "snippet": "We're hiring a Data Engineer on my team at Trigo. The honest version: real ... Data Engineer. Trigo, Ramat Gan, Tel Aviv",
+    "url": "https://www.linkedin.com/posts/ruth-adler-3100_were-hiring-a-data-engineer-on-my-team-at-activity-7473630753063591936-WeO_",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ruth Adler",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ruth-adler-3100/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-27T11:08:47Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "Hiring Data Engineer, Working as an Azure Data Engineer, | LinkedIn Top Voice|51K+ @LinkedIn| 10M+ Impressions| 300+ Sol",
+    "url": "https://www.linkedin.com/posts/reuven-azar-0426a022_rj-ginnie-talks-india-israel-relations-with-activity-7473654585702735872-mI-H",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Reuven Azar",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/reuven-azar-0426a022/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-27T11:08:47Z"
+  },
+  {
+    "title": "Senior Data Engineer",
+    "snippet": "We're hiring a Senior Data Engineer at Caylent! Caylent is a fully remote, AWS-focused cloud consultancy. We help some o",
+    "url": "https://www.linkedin.com/posts/let%C3%ADcia-alves-silveira_senior-data-engineer-activity-7472060306631020544-dxZ2",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-27T11:08:47Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "It's hiring an AI team before you know what they should build. A credible internal AI capability - AI lead, backend engi",
+    "url": "https://www.linkedin.com/posts/olutoki-israel-79501619a_for-a-long-time-i-thought-getting-into-tech-activity-7473042113513984000-MCwA",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Olutoki Israel",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/olutoki-israel-79501619a/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-27T11:08:47Z"
+  },
+  {
+    "title": "Data Engineer",
+    "snippet": "Software Engineering Team Lead - Israel https://careers.riverside.com/careers ... Data Engineer - Argentina https://care",
+    "url": "https://www.linkedin.com/posts/serhii-kizenko_hiring-engineering-rnd-activity-7476158345867980800-5VqD",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/serhii-kizenko/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-27T11:08:47Z"
   }
 ]
