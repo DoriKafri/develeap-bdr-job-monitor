@@ -4942,5 +4942,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-06-28T02:34:56Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... needs a bulletproof manual diagnostic layer. I recently finalized the cloud-connected testing infrastructure for my ",
+    "url": "https://www.linkedin.com/posts/israel-efe-abb264288_robotics-embeddedsystems-iot-activity-7473797960393490432-OWTT",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Efe",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-efe-abb264288/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-06-28T06:55:05Z"
   }
 ]
