@@ -298,6 +298,7 @@
     "unknown|||qualcomm, hod hasharon, israel",
     "unknown|||production engineer",
     "unknown|||product operations analyst - product analytics",
+    "unknown|||principal/senior principal software engineer data platform",
     "unknown|||principal/senior automation engineer (cloud security)",
     "unknown|||principal/ senior backend engineer (kspm)",
     "unknown|||principal software engineer data platform (cortex)",
@@ -344,6 +345,7 @@
     "unknown|||forward deployed engineer, genai, google cloud",
     "unknown|||forward deployed engineer iii, genai, google cloud",
     "unknown|||finops engineer",
+    "unknown|||finops - 27 \u05d9\u05d5\u05e0\u05d9, 2026",
     "unknown|||field deploy engineer",
     "unknown|||experienced devops engineer (cortex cloud)",
     "unknown|||experienced backend & ai engineer (cortex xsiam)",
@@ -360,6 +362,7 @@
     "unknown|||devops engineer kfar netter, israel",
     "unknown|||devops engineer (u.s citizen)",
     "unknown|||devops engineer (israel)",
+    "unknown|||devops engineer (devops platform)",
     "unknown|||devops engineer (bigbrain)",
     "unknown|||devops engineer",
     "unknown|||devops delivery engineer",
@@ -2961,7 +2964,10 @@
     "unknown|||data engineer on my team": "2026-06-27T12:46:06.511490+00:00",
     "unknown|||300+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 27 \u05d9\u05d5\u05e0\u05d9, 2026": "2026-06-28T10:23:28.281694+00:00",
     "unknown|||principal ai engineering lead": "2026-06-28T10:23:28.281694+00:00",
-    "unknown|||senior software development engineer (aws ml)": "2026-06-28T18:22:18.912705+00:00"
+    "unknown|||senior software development engineer (aws ml)": "2026-06-28T18:22:18.912705+00:00",
+    "unknown|||finops - 27 \u05d9\u05d5\u05e0\u05d9, 2026": "2026-06-29T12:18:47.567315+00:00",
+    "unknown|||devops engineer (devops platform)": "2026-06-29T12:18:47.567315+00:00",
+    "unknown|||principal/senior principal software engineer data platform": "2026-06-29T12:18:47.567315+00:00"
   },
-  "updated": "2026-06-28T18:22:18.953932+00:00"
+  "updated": "2026-06-29T12:18:47.608608+00:00"
 }
