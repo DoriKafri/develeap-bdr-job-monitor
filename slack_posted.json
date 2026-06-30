@@ -271,6 +271,7 @@
     "unknown|||senior devops engineer",
     "unknown|||senior devops core engineer",
     "unknown|||senior dataops engineer",
+    "unknown|||senior data infrastructure engineer",
     "unknown|||senior data engineer - platform team",
     "unknown|||senior data engineer - data platform",
     "unknown|||senior data engineer - core data platform team",
@@ -586,6 +587,7 @@
     "similarweb|||senior cybersecurity engineer @ similarweb",
     "similarweb|||job application for applied research engineer at similarweb|2026-03-04",
     "similarweb|||job application for applied research engineer at similarweb",
+    "similarweb|||devops engineer @ similarweb",
     "similarweb|||data engineering team lead @ similarweb",
     "similarweb|||data engineer @ similarweb",
     "similarweb|||core data - big data engineer @ similarweb",
@@ -2967,7 +2969,9 @@
     "unknown|||senior software development engineer (aws ml)": "2026-06-28T18:22:18.912705+00:00",
     "unknown|||finops - 27 \u05d9\u05d5\u05e0\u05d9, 2026": "2026-06-29T12:18:47.567315+00:00",
     "unknown|||devops engineer (devops platform)": "2026-06-29T12:18:47.567315+00:00",
-    "unknown|||principal/senior principal software engineer data platform": "2026-06-29T12:18:47.567315+00:00"
+    "unknown|||principal/senior principal software engineer data platform": "2026-06-29T12:18:47.567315+00:00",
+    "unknown|||senior data infrastructure engineer": "2026-06-30T17:27:20.835824+00:00",
+    "similarweb|||devops engineer @ similarweb": "2026-06-30T17:27:20.835824+00:00"
   },
-  "updated": "2026-06-30T13:18:17.986623+00:00"
+  "updated": "2026-06-30T17:27:20.875280+00:00"
 }
