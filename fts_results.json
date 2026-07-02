@@ -5038,5 +5038,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-02T09:40:22Z"
+  },
+  {
+    "title": "Machine Learning Engineer at Langner's Post",
+    "snippet": "Apple's People Analytics Team is hiring a Machine Learning Engineer! We are hiring an MLE to employ predictive modeling,",
+    "url": "https://www.linkedin.com/posts/katlangner_machine-learning-engineer-people-analytics-activity-7477867378836451328-7WC5",
+    "company": "Langner's Post",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/katlangner/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-02T22:34:09Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Software developers face rising unemployment as Israel's tech sector evolves. Jobless rate hits 3.5% while AI and data j",
+    "url": "https://www.linkedin.com/posts/ctech-by-calcalist_software-developers-face-rising-unemployment-activity-7473317179136917505-y0EF",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ctech By",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ctech-by-calcalist/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-02T22:34:09Z"
   }
 ]
