@@ -5014,5 +5014,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-01T14:08:38Z"
+  },
+  {
+    "title": "Cloud Engineer at AWS",
+    "snippet": "Calling all talented #students — AWS is hiring! AWS looking for the next 8 students to join AWS / Annapurna Labs and wor",
+    "url": "https://www.linkedin.com/posts/mohammad-kabajah_students-aws-amazon-activity-7477752004455485443-lfl1",
+    "company": "AWS",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/mohammad-kabajah/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-02T09:40:22Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "... Israel and growing operations across Europe, our experts help organizations ... “Agents need boring infrastructure a",
+    "url": "https://www.linkedin.com/posts/softech-il_%3F%3F%3F%3F%3F-%3F%3F-%3F%3F%3F%3F%3F%3F%3F%3F%3F-%3F%3F%3F%3F-activity-7475536076452003840-557s",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Softech Il",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/softech-il/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-02T09:40:22Z"
   }
 ]
