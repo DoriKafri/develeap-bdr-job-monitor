@@ -411,6 +411,7 @@
     "unknown|||900+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 9 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 12 \u05de\u05e8\u05e5, 2026",
     "unknown|||600+ cloud security engineer \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 7 \u05e4\u05d1\u05e8\u05d5\u05d0\u05e8, 2026",
+    "unknown|||500+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 5 \u05d9\u05d5\u05dc\u05d9, 2026",
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 30 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 26 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "unknown|||500+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 22 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
@@ -1607,6 +1608,7 @@
     "appsflyer|||senior application security engineer @ appsflyer",
     "appsflyer|||data engineer @ appsflyer",
     "appsflyer|||data engineer - web attribution @ appsflyer",
+    "appsflyer|||data engineer - billing platform @ appsflyer",
     "appsflyer|||cloud architect @ appsflyer",
     "applied models|||senior ai researcher - applied models",
     "applied materials||||senior devops engineer - careers - myworkdayjobs.com",
@@ -2981,7 +2983,9 @@
     "unknown|||senior ai research engineer": "2026-07-01T17:32:20.599955+00:00",
     "aws|||cloud engineer at aws": "2026-07-02T13:14:19.846429+00:00",
     "team|||machine learning engineer at langner's post": "2026-07-03T10:28:41.620305+00:00",
-    "the rest still|||ai engineer at the rest still": "2026-07-03T16:56:23.409322+00:00"
+    "the rest still|||ai engineer at the rest still": "2026-07-03T16:56:23.409322+00:00",
+    "unknown|||500+ devops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 5 \u05d9\u05d5\u05dc\u05d9, 2026": "2026-07-05T10:14:30.477802+00:00",
+    "appsflyer|||data engineer - billing platform @ appsflyer": "2026-07-05T10:14:30.477802+00:00"
   },
-  "updated": "2026-07-04T18:13:54.635456+00:00"
+  "updated": "2026-07-05T10:14:30.508915+00:00"
 }
