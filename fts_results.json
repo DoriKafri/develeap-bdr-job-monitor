@@ -5230,5 +5230,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-07T12:41:22Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "If you understand the following syntax, come work with me! MERGE INTO ... data engineer%' AND size(array_except(array('A",
+    "url": "https://www.linkedin.com/posts/romik_if-you-understand-the-following-syntax-come-activity-7475857986738057216-J8K_",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/romik/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-07T17:51:44Z"
   }
 ]
