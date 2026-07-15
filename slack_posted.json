@@ -290,6 +290,7 @@
     "unknown|||senior backend engineer - ai & cloud platform",
     "unknown|||senior backend & cloud engineer agentless (cortex cloud)",
     "unknown|||senior application security engineer",
+    "unknown|||senior angular frontend engineer (cortex platform",
     "unknown|||senior android prototyping engineer",
     "unknown|||senior android platform engineer",
     "unknown|||senior ai research engineer",
@@ -358,6 +359,7 @@
     "unknown|||forward deployed engineer iii, genai, google cloud",
     "unknown|||finops engineer",
     "unknown|||finops - 27 \u05d9\u05d5\u05e0\u05d9, 2026",
+    "unknown|||finops - 13 \u05d9\u05d5\u05dc\u05d9, 2026",
     "unknown|||field deploy engineer",
     "unknown|||experienced devops engineer (cortex cloud)",
     "unknown|||experienced backend & ai engineer (cortex xsiam)",
@@ -383,6 +385,7 @@
     "unknown|||devex team lead",
     "unknown|||dev ops team leader",
     "unknown|||data infrastructure team leader",
+    "unknown|||data infrastructure engineer",
     "unknown|||data group tech lead, staff engineer",
     "unknown|||data engineer on my team",
     "unknown|||data engineer - big data",
@@ -601,6 +604,7 @@
     "snapland|||data engineer",
     "skyers|||artificial intelligence engineer",
     "similarweb||||job application for applied research engineer at similarweb",
+    "similarweb|||senior devops engineer @ similarweb",
     "similarweb|||senior data engineer ( data collection) @ similarweb",
     "similarweb|||senior cybersecurity engineer @ similarweb",
     "similarweb|||job application for applied research engineer at similarweb|2026-03-04",
@@ -3031,7 +3035,11 @@
     "unknown|||applied ai security engineer": "2026-07-13T17:40:26.210776+00:00",
     "nice|||senior agentic systems engineer @ nice": "2026-07-13T17:40:26.210776+00:00",
     "unknown|||25+ finops \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 10 \u05d9\u05d5\u05dc\u05d9, 2026": "2026-07-14T12:39:05.732407+00:00",
-    "ai platforms (cortex)|||principal devops engineer - ai platforms (cortex)": "2026-07-15T09:25:23.282882+00:00"
+    "ai platforms (cortex)|||principal devops engineer - ai platforms (cortex)": "2026-07-15T09:25:23.282882+00:00",
+    "unknown|||finops - 13 \u05d9\u05d5\u05dc\u05d9, 2026": "2026-07-15T12:41:20.787007+00:00",
+    "unknown|||senior angular frontend engineer (cortex platform": "2026-07-15T12:41:20.787007+00:00",
+    "unknown|||data infrastructure engineer": "2026-07-15T12:41:20.787007+00:00",
+    "similarweb|||senior devops engineer @ similarweb": "2026-07-15T12:41:20.787007+00:00"
   },
-  "updated": "2026-07-15T09:25:23.327583+00:00"
+  "updated": "2026-07-15T12:41:20.840805+00:00"
 }
