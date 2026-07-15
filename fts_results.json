@@ -5470,5 +5470,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-14T10:47:48Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "I'm hiring in Israel! I lead the Perception team at Google Research, working on ... AI #Perception #Hiring | 22 comments",
+    "url": "https://www.linkedin.com/posts/regev-cohen_google-research-ai-activity-7481788024201211904-AWyR",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Regev Cohen",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/regev-cohen/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-15T10:42:01Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "I am Hiring Ready to protect the emerging AI transformation? Palo Alto Networks Israel is growing, and we are looking fo",
+    "url": "https://www.linkedin.com/posts/golan_i-am-hiring-ready-to-protect-the-emerging-activity-7479764415756759041-FW1n",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/golan/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-15T10:42:01Z"
   }
 ]
