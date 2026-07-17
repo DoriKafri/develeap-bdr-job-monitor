@@ -5542,5 +5542,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-17T04:54:43Z"
+  },
+  {
+    "title": "Cloud Security Engineer at My colleague Omer Shliva",
+    "snippet": "My colleague Omer Shliva is hiring a Cloud Security Engineer at Teva. A great opportunity for someone with strong Azure ",
+    "url": "https://www.linkedin.com/posts/elad-rom_hiring-cloudsecurity-devsecops-activity-7482501509096574976-4SiT",
+    "company": "My colleague Omer Shliva",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Elad Rom",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/elad-rom/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-17T09:25:26Z"
+  },
+  {
+    "title": "Security Engineer",
+    "snippet": "Most founders think a DevSecOps search starts with posting a job. It doesn't. It starts with a conversation that has not",
+    "url": "https://www.linkedin.com/posts/ezuma-grace_most-founders-think-a-devsecops-search-starts-activity-7480546289865252864-21ME",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ezuma Grace",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ezuma-grace/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-17T09:25:26Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... Israel - thank you for hiring me & believing in me from day one and ... DevSecOps / MLOps | Enterprise Business Deve",
+    "url": "https://www.linkedin.com/posts/deny-elenport-b98763223_almost-two-years-ago-i-walked-into-jfrog-activity-7483128041200803842-d7Fh",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Deny Elenport",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/deny-elenport-b98763223/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-17T09:25:26Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "Hiring Data Engineer, Working as an Azure Data Engineer, | LinkedIn Top ... (DevSecOps) ✓ Reliable, scalable cloud infra",
+    "url": "https://www.linkedin.com/posts/kartikkathuria42_kodekloud-devopsengineer-platformengineering-activity-7479425400117309440-MBSX",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/kartikkathuria42/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-17T09:25:26Z"
   }
 ]
