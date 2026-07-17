@@ -5530,5 +5530,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-15T23:27:23Z"
+  },
+  {
+    "title": "Cloud Engineer at My team",
+    "snippet": "My team is hiring a Strategic Account Manager (100% Remote, Israel). Solid grasp of AWS, GCP, and the FinOps lifecycle.",
+    "url": "https://www.linkedin.com/posts/eliran-yamin_hot-job-alert-modern-cloud-management-activity-7483460475226169344-fxrd",
+    "company": "My team",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Eliran Yamin",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eliran-yamin/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-17T04:54:43Z"
   }
 ]
