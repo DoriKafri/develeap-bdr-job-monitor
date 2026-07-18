@@ -5686,5 +5686,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-17T20:43:03Z"
+  },
+  {
+    "title": "AI Engineer at The ML baseline",
+    "snippet": "Android & Mobile Platform Engineer | Kotlin · Jetpack Compose · Coroutines ... The ML baseline needs a little history be",
+    "url": "https://www.linkedin.com/posts/ellie-sion-395059b0_aws-grafana-observability-activity-7480204900531101696-4409",
+    "company": "The ML baseline",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ellie Sion",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ellie-sion-395059b0/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-18T16:25:24Z"
+  },
+  {
+    "title": "AI Engineer at every query",
+    "snippet": "Contract AI Product & Platform Engineer | Extreme Programming (XP), TDD, AWS ... Suddenly, every query needs a routing l",
+    "url": "https://www.linkedin.com/posts/andrew-sutcliffe-iowa_unpopular-opinion-i-think-all-databases-activity-7479003399896616960-Ai-q",
+    "company": "every query",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Andrew Sutcliffe Iowa",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/andrew-sutcliffe-iowa/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-18T16:25:24Z"
+  },
+  {
+    "title": "DevOps Engineer",
+    "snippet": "... needs a standard suite where free energies, phase transitions, and defect ... DevOps & Platform Engineer | AWS Solut",
+    "url": "https://www.linkedin.com/posts/aldo-romero-34740b2_materialsscience-dft-machinelearning-activity-7480637242500198400-M5TD",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Aldo Romero",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/aldo-romero-34740b2/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-18T16:25:24Z"
   }
 ]
