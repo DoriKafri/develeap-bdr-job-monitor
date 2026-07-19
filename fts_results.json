@@ -5782,5 +5782,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-19T17:49:51Z"
+  },
+  {
+    "title": "AI Engineer at Biology Initiative We believe BioAI",
+    "snippet": "We believe BioAI needs a new generation of AI-native biological data and shared foundations that the entire ecosystem ca",
+    "url": "https://www.linkedin.com/posts/john-cumbers-542220_israel-just-made-a-serious-move-to-become-activity-7483605221185605632-NBVp",
+    "company": "Biology Initiative We believe BioAI",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "John Cumbers",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/john-cumbers-542220/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-19T20:02:23Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Anduril Expands in Israel with AI-Driven Defense Push. View profile for ... Needs a Strategy for Its Turn to New Defense",
+    "url": "https://www.linkedin.com/posts/keith-king-03a172128_anduril-accelerates-israeli-expansion-as-activity-7481302726405156864-smIs",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Keith King",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/keith-king-03a172128/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-19T20:02:23Z"
   }
 ]
