@@ -2823,8 +2823,8 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-07-21T09:41:03Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15038, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 6664, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 43, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 735, "error": ""}];
+let LAST_UPDATED = "2026-07-21T12:54:59Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15264, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 10, "latency_ms": 1014, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 64, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 11602, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
@@ -2841,7 +2841,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=72850d58a5067b4b",
     "category": "sre",
     "posted": "2026-07-21",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Site Reliability Engineer. Coralogix. רמת גן, מחוז תל אביב. תיאור משרה מלא. Ramat Gan, Israel · Full-time · Intermediate. About The Position. Coralogix is a ...",
@@ -2863,13 +2863,50 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/browsejobs/Titles/F",
     "category": "finops",
     "posted": "2026-07-21",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Full Time Job in Israel · Full Stack, Student, סטודנט, React · Full Stack ... Finops · בחירת מיקום · Finonex Finonex · Financial Planning Analyst · בחירת מיקום.",
     "skills": [],
     "stakeholders": [],
     "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-07-21"
+  },
+  {
+    "id": "095f71e3",
+    "title": "AI Engineer @ Armis",
+    "subtitle": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Armis",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/armissecurity/jobs/5994462004",
+    "category": "ai",
+    "posted": "2026-07-21",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nadir Izrael",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/nadiriz/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Yevgeny Dibrov",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/yevgenydibrov/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=armis.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-07-21"
   },
@@ -3002,126 +3039,136 @@ let ALL_JOBS = [
     "_first_seen": "2026-07-21"
   },
   {
-    "id": "095f71e3",
-    "title": "AI Engineer @ Armis",
-    "subtitle": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
-    "company": "Armis",
+    "id": "0f30034b",
+    "title": "Principal/Senior ML Platform Engineer (Cortex)",
+    "subtitle": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv, Tel Aviv, Israel Product Engineering Ref ID: JR-018537.",
+    "company": "Unknown",
     "companyIndustry": "",
     "location": "Tel Aviv",
     "locationSlug": "tel-aviv",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/armissecurity/jobs/5994462004",
-    "category": "ai",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=41dbe56cf8b12f18",
+    "category": "platform",
     "posted": "2026-07-21",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "description": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv, Tel Aviv, Israel Product Engineering Ref ID: JR-018537.",
     "skills": [],
-    "stakeholders": [
-      {
-        "name": "Nadir Izrael",
-        "title": "CTO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/nadiriz/",
-        "source": "LinkedIn",
-        "email": ""
-      },
-      {
-        "name": "Yevgeny Dibrov",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/yevgenydibrov/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=armis.com&sz=128",
+    "stakeholders": [],
+    "logo": "",
     "ftsJobUrl": "",
     "_first_seen": "2026-07-21"
   },
   {
-    "id": "ae7f5f0f",
-    "title": "DevOps Engineer",
+    "id": "07c14f0b",
+    "title": "Staff Backend Engineer- Agent Experience (AX)",
     "subtitle": "",
-    "company": "Natural Intelligence",
+    "company": "Cloudinary",
     "companyIndustry": "",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/cloudinary/5cd7d5b3-2577-4c50-89dd-d11e0448a752",
+    "category": "agentic",
     "posted": "2026-07-21",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
+    "description": "Staff Backend Engineer- Agent Experience (AX)",
     "skills": [],
     "stakeholders": [
       {
-        "name": "Greg Lavender",
-        "title": "CTO & SVP",
-        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
+        "name": "Tal Lev-Ami",
+        "title": "Co-Founder & CTO",
+        "linkedin": "https://il.linkedin.com/in/tallevami",
         "source": "LinkedIn",
-        "email": ""
+        "email": "tal.levami@cloudinary.com"
+      },
+      {
+        "name": "Itai Lahan",
+        "title": "Co-Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/itail/",
+        "source": "LinkedIn",
+        "email": "itai.lahan@cloudinary.com"
+      },
+      {
+        "name": "Nadav Soferman",
+        "title": "Co-Founder & CPO",
+        "linkedin": "https://www.linkedin.com/in/nadavsoferman/",
+        "source": "LinkedIn",
+        "email": "nadav.soferman@cloudinary.com"
       }
     ],
-    "logo": "https://www.google.com/s2/favicons?domain=intel.com&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-07-21",
-    "_manual": true
+    "_first_seen": "2026-07-21"
   },
   {
-    "id": "491196c3",
-    "title": "DevOps Engineer",
+    "id": "321cbd18",
+    "title": "Staff Data Engineer – Data Modeling",
     "subtitle": "",
-    "company": "Unilink Ltd.",
+    "company": "Cloudinary",
     "companyIndustry": "",
-    "location": "Holon, Israel",
-    "locationSlug": "holon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/cloudinary/9c07c819-725b-4491-94b2-f5bacc9dc86a",
+    "category": "data",
     "posted": "2026-07-21",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
+    "description": "Staff Data Engineer – Data Modeling",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Tal Lev-Ami",
+        "title": "Co-Founder & CTO",
+        "linkedin": "https://il.linkedin.com/in/tallevami",
+        "source": "LinkedIn",
+        "email": "tal.levami@cloudinary.com"
+      },
+      {
+        "name": "Itai Lahan",
+        "title": "Co-Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/itail/",
+        "source": "LinkedIn",
+        "email": "itai.lahan@cloudinary.com"
+      },
+      {
+        "name": "Nadav Soferman",
+        "title": "Co-Founder & CPO",
+        "linkedin": "https://www.linkedin.com/in/nadavsoferman/",
+        "source": "LinkedIn",
+        "email": "nadav.soferman@cloudinary.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-07-21"
+  },
+  {
+    "id": "18ced2f0",
+    "title": "Full Stack Engineer - Big Data Platform",
+    "subtitle": "",
+    "company": "Walkme",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "lever",
+    "sourceUrl": "https://jobs.lever.co/walkme/78942015-2ffc-4cba-aab4-cfb51f1970ad",
+    "category": "data",
+    "posted": "2026-07-21",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Full Stack Engineer - Big Data Platform",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=unilink.co.il&sz=128",
+    "logo": "https://www.google.com/s2/favicons?domain=walkme.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-07-21",
-    "_manual": true
-  },
-  {
-    "id": "790d603d",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "",
-    "company": "AppCard",
-    "companyIndustry": "",
-    "location": "Hod HaSharon, Israel",
-    "locationSlug": "hod-hasharon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
-    "category": "devops",
-    "posted": "2026-07-21",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yair Goldfinger",
-        "title": "CEO & Founder",
-        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-07-21",
-    "_manual": true
+    "_first_seen": "2026-07-21"
   },
   {
     "id": "11ead7c1",
@@ -3406,7 +3453,7 @@ let ALL_JOBS = [
     "id": "207189e6",
     "title": "Principal Software Engineer - OpenShift (Raanana Office, Israel)",
     "subtitle": "Strong experience with Kubernetes, and Red Hat OpenShift. Linux virtualization knowledge including expertise in one or more of scheduling, fencing, storage, ...",
-    "company": "OpenShift (Raanana Office, Israel)",
+    "company": "Unknown",
     "companyIndustry": "",
     "location": "Ra'anana",
     "locationSlug": "ra'anana",
@@ -3420,7 +3467,7 @@ let ALL_JOBS = [
     "description": "Strong experience with Kubernetes, and Red Hat OpenShift. Linux virtualization knowledge including expertise in one or more of scheduling, fencing, storage, ...",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=shi.com&sz=128",
+    "logo": "",
     "ftsJobUrl": "",
     "_first_seen": "2026-07-19"
   },
@@ -4260,7 +4307,8 @@ let ALL_JOBS = [
       }
     ],
     "logo": "",
-    "ftsJobUrl": ""
+    "ftsJobUrl": "",
+    "_first_seen": "2026-07-14"
   },
   {
     "id": "c22f6349",
@@ -5101,7 +5149,7 @@ let ALL_JOBS = [
     "id": "b399e950",
     "title": "Software Engineer - OpenShift (Raanana Office, Israel)",
     "subtitle": "Strong experience with Kubernetes, and Red Hat OpenShift. Linux virtualization knowledge including expertise in one or more of scheduling, fencing, storage, ...",
-    "company": "OpenShift (Raanana Office, Israel)",
+    "company": "Unknown",
     "companyIndustry": "",
     "location": "Ra'anana",
     "locationSlug": "ra'anana",
@@ -5115,7 +5163,7 @@ let ALL_JOBS = [
     "description": "Strong experience with Kubernetes, and Red Hat OpenShift. Linux virtualization knowledge including expertise in one or more of scheduling, fencing, storage, ...",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=shi.com&sz=128",
+    "logo": "",
     "ftsJobUrl": "",
     "_first_seen": "2026-07-12",
     "altSources": [
@@ -5847,7 +5895,8 @@ let ALL_JOBS = [
         "sourceUrl": "https://www.linkedin.com/posts/dana-cohen-410914407_%D7%A4%D7%95%D7%A1%D7%98-%D7%97%D7%99%D7%A4%D7%95%D7%A9-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%94%D7%99%D7%99-%D7%9C%D7%9B%D7%95%D7%9C%D7%9D-%D7%90%D7%97%D7%A8%D7%99-6-activity-7480567781265154048-wP3d",
         "title": "Security Engineer"
       }
-    ]
+    ],
+    "_first_seen": "2026-07-08"
   },
   {
     "id": "ae60f01b",
