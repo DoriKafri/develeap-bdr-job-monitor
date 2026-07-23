@@ -409,6 +409,7 @@
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
+    "unknown|||associate forward-deployed ai engineer",
     "unknown|||aro hcp (ra'anana office, israel)",
     "unknown|||applied ai security engineer",
     "unknown|||applied ai engineer (cortex product enablement)",
@@ -568,6 +569,7 @@
     "taboola|devops|security devops engineer",
     "taboola|ai|senior mlops engineer|2026-03-05",
     "taboola|ai|senior mlops engineer",
+    "swipe through to see why every business|||devops engineer at swipe through to see why every business",
     "surecomp||||devops team lead",
     "surecomp||||ai engineer (mid) - rivo ai product & platform at surecomp",
     "surecomp|||senior ai engineer - rivo ai product & platform at surecomp",
@@ -864,6 +866,7 @@
     "nvidia|devops|devops engineer - careers at nvidia|2026-03-04",
     "nvidia|devops|devops engineer - careers at nvidia",
     "nvidia|devops|devops engineer",
+    "not every detection problem|||devops engineer at not every detection problem",
     "noname|||machine learning engineer",
     "nogamy|||cloud engineer",
     "nice|||tech lead devops engineer @ nice",
@@ -3067,7 +3070,10 @@
     "torq|||data engineer @ torq": "2026-07-20T16:58:22.304714+00:00",
     "armis|||ai engineer @ armis": "2026-07-21T09:40:13.204309+00:00",
     "unknown|||principal/senior ml platform engineer (cortex)": "2026-07-21T12:54:04.636089+00:00",
-    "unknown|||senior/principal sre engineer": "2026-07-22T12:54:15.981856+00:00"
+    "unknown|||senior/principal sre engineer": "2026-07-22T12:54:15.981856+00:00",
+    "unknown|||associate forward-deployed ai engineer": "2026-07-23T09:40:40.248454+00:00",
+    "not every detection problem|||devops engineer at not every detection problem": "2026-07-23T09:40:40.248454+00:00",
+    "swipe through to see why every business|||devops engineer at swipe through to see why every business": "2026-07-23T09:40:40.248454+00:00"
   },
-  "updated": "2026-07-22T18:30:54.204433+00:00"
+  "updated": "2026-07-23T09:40:40.291766+00:00"
 }
