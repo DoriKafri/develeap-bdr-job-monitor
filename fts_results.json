@@ -6250,5 +6250,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-26T22:26:57Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... AI Agent architectures with AgentCore, RAG pipelines, Cloud, and full ... Hiring #AIEngineer #GenAI #AI #MachineLear",
+    "url": "https://www.linkedin.com/posts/doron-israel-3985738_engineer-gen-ai-activity-7486457011816030209-v9FE",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Doron Israel",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/doron-israel-3985738/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-26T23:27:00Z"
   }
 ]
