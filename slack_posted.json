@@ -300,6 +300,7 @@
     "unknown|||senior ai prompt engineer",
     "unknown|||senior ai engineer, genai",
     "unknown|||senior ai engineer (genai)",
+    "unknown|||senior ai engineer (cortex xsoar/xsiam)",
     "unknown|||senior ai engineer",
     "unknown|||senior ai backend engineer",
     "unknown|||security engineer, endpoint and device security",
@@ -884,6 +885,7 @@
     "nice|||lead platform engineer @ nice",
     "nice|||lead devops engineer @ nice",
     "nice|||devops student @ nice",
+    "nice|||cloud finops business partner @ nice",
     "nice|||cloud engineer",
     "nice|||cloud architect @ nice",
     "nice|||bi data engineer @ nice",
@@ -1663,6 +1665,7 @@
     "appsflyer|||data engineer - web attribution @ appsflyer",
     "appsflyer|||data engineer - billing platform @ appsflyer",
     "appsflyer|||cloud architect @ appsflyer",
+    "appsflyer|||application security engineer @ appsflyer",
     "applied models|||senior ai researcher - applied models",
     "applied materials||||senior devops engineer - careers - myworkdayjobs.com",
     "applied materials||||senior devops engineer - careers",
@@ -3093,7 +3096,10 @@
     "why ai|||ai engineer at why ai": "2026-07-27T18:51:01.061206+00:00",
     "rabobank shifts digital resilience focus if your fintech consultancy or it agency has the client pipeline but|||devops engineer at rabobank shifts digital resilience focus if your fintech cons": "2026-07-27T18:51:01.061206+00:00",
     "ux placeholder best practices for static forms if your app|||cloud engineer at ux placeholder best practices for static forms if your app": "2026-07-27T18:51:01.061206+00:00",
-    "unknown|||applied data scientists": "2026-07-28T09:47:11.000628+00:00"
+    "unknown|||applied data scientists": "2026-07-28T09:47:11.000628+00:00",
+    "unknown|||senior ai engineer (cortex xsoar/xsiam)": "2026-07-28T13:04:57.172724+00:00",
+    "nice|||cloud finops business partner @ nice": "2026-07-28T13:04:57.172724+00:00",
+    "appsflyer|||application security engineer @ appsflyer": "2026-07-28T13:04:57.172724+00:00"
   },
-  "updated": "2026-07-28T09:47:11.042709+00:00"
+  "updated": "2026-07-28T13:04:57.217828+00:00"
 }
