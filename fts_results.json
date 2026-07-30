@@ -6370,5 +6370,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-30T15:29:06Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... Israel's startup ecosystem is when it comes to building AI-driven products ... machine learning products and edge AI",
+    "url": "https://www.linkedin.com/posts/ross-makhno-99727872_adaptiq-ai-analytics-activity-7486368343520686102-zjzy",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ross Makhno",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ross-makhno-99727872/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-30T23:53:37Z"
   }
 ]
