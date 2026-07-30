@@ -6346,5 +6346,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-29T22:26:51Z"
+  },
+  {
+    "title": "AI Engineer at WeWork",
+    "snippet": "Co-Founder & CEO @ Bazak | The operating system for agentic AI commerce. 1w ... WeWork is hiring!!! (Israel). Mike Silbe",
+    "url": "https://www.linkedin.com/posts/mikesilbergcommunitypro_%D7%90%D7%AA%D7%9E%D7%95%D7%9C-%D7%94%D7%99%D7%99%D7%AA%D7%94-%D7%94%D7%95%D7%A2%D7%99%D7%93%D7%94-%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99%D7%AA-%D7%9C%D7%9B%D7%9C%D7%9B%D7%9C%D7%94-%D7%A9%D7%9C-calcalist-activity-7483595150766624768-_ePr",
+    "company": "WeWork",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/mikesilbergcommunitypro/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-30T15:29:06Z"
+  },
+  {
+    "title": "AI Engineer at million and",
+    "snippet": "TYLsemi just raised $43 million and is hiring. The oversubscribed early-stage round was led by Matter Venture Partners, ",
+    "url": "https://www.linkedin.com/posts/grishinrobotics_tylsemi-just-raised-43-million-and-is-hiring-activity-7483428681168781312-uGkq",
+    "company": "million and",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/grishinrobotics/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-30T15:29:06Z"
   }
 ]
