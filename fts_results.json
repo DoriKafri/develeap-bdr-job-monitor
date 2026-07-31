@@ -6382,5 +6382,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-07-30T23:53:37Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... cloud-native IRIS platform on AWS. Key decisions made during this process ... These parts can grow wisely when we ne",
+    "url": "https://www.linkedin.com/posts/roy-leonov-0323417a_intersystems-ready26-aws-activity-7485769311987458049-oSqe",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Roy Leonov",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/roy-leonov-0323417a/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-07-31T11:03:34Z"
   }
 ]
