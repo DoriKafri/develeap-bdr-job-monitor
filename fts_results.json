@@ -6454,5 +6454,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-07T23:02:04Z"
+  },
+  {
+    "title": "Data Engineer",
+    "snippet": "We're #hiring a new Senior Data Engineer in Tel Aviv District. Apply today or share this post with your network. Prisma ",
+    "url": "https://www.linkedin.com/posts/prisma-photonics_hiring-activity-7490728048229658624-5F3W",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/prisma-photonics/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-08T16:20:36Z"
+  },
+  {
+    "title": "Data Engineer at My team",
+    "snippet": "My team is expanding! We're looking for a strong Data Engineer to join us and help build impactful data solutions. In ou",
+    "url": "https://www.linkedin.com/posts/gal-sagi-1946391ab_dataengineer-hiring-dataengineering-activity-7488197062887481344-STOx",
+    "company": "My team",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Gal Sagi",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/gal-sagi-1946391ab/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-08T16:20:36Z"
+  },
+  {
+    "title": "Data Engineer",
+    "snippet": "Data Engineer @ Similarweb | Reliability Through Understanding. 1h. Report this comment; Close menu. Add Similarweb , we",
+    "url": "https://www.linkedin.com/posts/shahar-polak_22-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%A9%D7%9E%D7%92%D7%99%D7%99%D7%A1%D7%95%D7%AA-%D7%A2%D7%9B%D7%A9%D7%99%D7%95-%D7%A0%D7%95%D7%A1%D7%A4%D7%95-%D7%9C%D7%A8%D7%A9%D7%99%D7%9E%D7%94-%D7%AA%D7%95%D7%9A-activity-7487198891357171712-jOi3",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Shahar Polak",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/shahar-polak/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-08T16:20:36Z"
   }
 ]
