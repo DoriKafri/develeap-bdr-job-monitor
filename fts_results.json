@@ -6658,5 +6658,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-09T15:30:36Z"
+  },
+  {
+    "title": "SaaS product built or at founder or product team that",
+    "snippet": "A platform engineer makes every team faster. That's the leverage almost ... If you're a founder or product team that nee",
+    "url": "https://www.linkedin.com/posts/sai-sanjeev-kolasani-1a5035b2_softwarearchitecture-mobileengineering-techdebt-activity-7488114885185306624-ro8X",
+    "company": "founder or product team that",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Sai Sanjeev Kolasani",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/sai-sanjeev-kolasani-1a5035b2/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-09T19:09:25Z"
+  },
+  {
+    "title": "DevOps Engineer at think it",
+    "snippet": "That is what makes the rule feel like keys under the streetlight to me, and I think it needs a ... DevOps & Platform Eng",
+    "url": "https://www.linkedin.com/posts/nathalie-giroud-605a005a_can-eeg-move-out-of-the-lab-and-into-everyday-activity-7490017637863870465-5dH4",
+    "company": "think it",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Nathalie Giroud",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/nathalie-giroud-605a005a/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-09T19:09:25Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... needs a human eye. Consequential actions stay consequential. Merges and ... Platform Engineer | Building Unideploy (",
+    "url": "https://www.linkedin.com/posts/walter-hieber_there-seems-to-be-no-end-to-the-digital-possibilities-activity-7487980527506092033-FfpZ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/walter-hieber/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-09T19:09:25Z"
   }
 ]
