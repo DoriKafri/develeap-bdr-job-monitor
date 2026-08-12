@@ -930,6 +930,7 @@
     "my team|||security researcher at my team",
     "my team|||data engineer at my team",
     "my team|||cloud engineer at my team",
+    "my team at cloudzone|||cloud finops engineer at my team at cloudzone",
     "my colleague omer shliva|||cloud security engineer at my colleague omer shliva",
     "motorolasolutions||||cloud finops analyst - myworkdayjobs.com",
     "motorolasolutions||||cloud finops analyst",
@@ -3147,7 +3148,8 @@
     "ai models are helping solve that challenge.. why regulatory ai|||ai engineer at ai models are helping solve that challenge.. why regulatory ai": "2026-08-11T08:33:35.911599+00:00",
     "unknown|||lead ai engineer tel aviv, israel": "2026-08-11T14:22:12.976059+00:00",
     "appsflyer|||devops platform engineer @ appsflyer": "2026-08-11T14:22:12.976059+00:00",
-    "unknown|||devops engineer (prisma access browser)": "2026-08-11T16:07:24.078601+00:00"
+    "unknown|||devops engineer (prisma access browser)": "2026-08-11T16:07:24.078601+00:00",
+    "my team at cloudzone|||cloud finops engineer at my team at cloudzone": "2026-08-12T08:42:24.403439+00:00"
   },
-  "updated": "2026-08-11T18:05:37.602113+00:00"
+  "updated": "2026-08-12T08:42:24.449448+00:00"
 }
