@@ -6910,5 +6910,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-13T18:14:03Z"
+  },
+  {
+    "title": "Cloud Engineer at h. My team",
+    "snippet": "Come work with me! View profile for Alex Aronsky · Alex Aronsky. Solution Architect Manager at Amazon Web Services (AWS)",
+    "url": "https://www.linkedin.com/posts/yoav-chernobroda-1b6854_senior-solutions-architect-public-sector-activity-7493301417152225280-rhR0",
+    "company": "h. My team",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Yoav Chernobroda",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/yoav-chernobroda-1b6854/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-13T20:30:50Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... cloud environments 2 — CyberArk × Palo Alto Networks — $25B — 19.2x — Jul-25 ... If we want that to change, we need ",
+    "url": "https://www.linkedin.com/posts/eitanbienstock_cybersecurity-activity-7489536351499894784-dC46",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/eitanbienstock/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-13T20:30:50Z"
   }
 ]
