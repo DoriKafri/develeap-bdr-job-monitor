@@ -6970,5 +6970,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-14T18:12:32Z"
+  },
+  {
+    "title": "AI Engineer at Qualcomm",
+    "snippet": "Qualcomm Israel is hiring! מחפש/ת את האתגר הבא? יש לנו מגוון משרות פתוחות בהוד השרון ובחיפה בתחומי: ✓ AI & DSP ✓ Firmwar",
+    "url": "https://www.linkedin.com/posts/ronen-slobinsky-b43bb737_qualcomm-careers-engineering-jobs-and-more-activity-7490802383879589888-j69Z",
+    "company": "Qualcomm",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Ronen Slobinsky",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ronen-slobinsky-b43bb737/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-15T03:09:47Z"
+  },
+  {
+    "title": "AI Engineer at Vi",
+    "snippet": "Vi is hiring in Tel Aviv — and I'd love to help great people find their next role. Vi is an enterprise AI platform for h",
+    "url": "https://www.linkedin.com/posts/shaked-eyal_hiring-telaviv-nowhiring-activity-7492259926753349633-5582",
+    "company": "Vi",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Shaked Eyal",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/shaked-eyal/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-15T03:09:47Z"
   }
 ]
