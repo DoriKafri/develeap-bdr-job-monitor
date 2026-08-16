@@ -246,6 +246,7 @@
     "unknown|||senior/principal sre engineer",
     "unknown|||senior strategic fp&a",
     "unknown|||senior staff site reliability engineer",
+    "unknown|||senior staff devops engineer - cloud security",
     "unknown|||senior staff devops engineer (secure cloud access)",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
@@ -263,6 +264,7 @@
     "unknown|||senior site reliability engineer (cortex)",
     "unknown|||senior security engineer",
     "unknown|||senior secops engineer",
+    "unknown|||senior principal devops engineer (cortex cloud)",
     "unknown|||senior principal consultant, devops engineer!",
     "unknown|||senior principal consultant, ai engineer!",
     "unknown|||senior principal cloud finops analyst",
@@ -3155,7 +3157,9 @@
     "my team at cloudzone|||cloud finops engineer at my team at cloudzone": "2026-08-12T08:42:24.403439+00:00",
     "h. my team|||cloud engineer at h. my team": "2026-08-14T08:40:48.790263+00:00",
     "qualcomm|||ai engineer at qualcomm": "2026-08-15T09:36:30.707717+00:00",
-    "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea senior devops engineer \u05d1": "2026-08-15T17:32:53.378523+00:00"
+    "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea senior devops engineer \u05d1": "2026-08-15T17:32:53.378523+00:00",
+    "unknown|||senior principal devops engineer (cortex cloud)": "2026-08-16T09:37:43.586172+00:00",
+    "unknown|||senior staff devops engineer - cloud security": "2026-08-16T09:37:43.586172+00:00"
   },
-  "updated": "2026-08-15T17:32:53.412009+00:00"
+  "updated": "2026-08-16T09:37:43.629929+00:00"
 }
