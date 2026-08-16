@@ -7114,5 +7114,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-16T13:06:50Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Palo Alto Networks and NVIDIA are hiring hundreds in Israel. senior MLOps and GPU Infrastructure Engineers. ML infrastru",
+    "url": "https://www.linkedin.com/posts/hirezapp_ai-futureofwork-talentacquisition-activity-7493526327472574464-JZen",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/hirezapp/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-16T15:11:21Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Israel Levkivker AI-driven Senior Developer & Tech Lead | … content about people, hiring, architecture, leadership & AI ",
+    "url": "https://www.linkedin.com/posts/israel-levkivker-4277b3153_%D7%9C%D7%90%D7%9F-%D7%A2%D7%95%D7%93-%D7%A0%D7%9E%D7%A9%D7%99%D7%9A-%D7%9C%D7%93%D7%A8%D7%93%D7%A8-%D7%90%D7%91%D7%9C-%D7%90%D7%97%D7%9C%D7%94-%D7%98%D7%99%D7%A4-%D7%AA%D7%A9%D7%9E%D7%A8%D7%95-activity-7490698798487474176-Qago",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Levkivker",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-levkivker-4277b3153/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-16T15:11:21Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Palo Alto Networks and NVIDIA are hiring hundreds in Israel. finding senior MLOps and GPU Infrastructure Engineers",
+    "url": "https://www.linkedin.com/posts/hirezapp_ai-infrastructure-techhiring-activity-7492077069552754688-b28s",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/hirezapp/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-16T15:11:21Z"
   }
 ]
