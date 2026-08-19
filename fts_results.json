@@ -7354,5 +7354,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-19T17:17:59Z"
+  },
+  {
+    "title": "AI Engineer at Akamai",
+    "snippet": "Akamai is hiring in Israel! There are quite a few exciting opportunities currently open ... Security Engineer Automation",
+    "url": "https://www.linkedin.com/posts/ozsarne_akamai-career-site-careers-activity-7495742960458887168-vabE",
+    "company": "Akamai",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ozsarne/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-19T18:59:44Z"
+  },
+  {
+    "title": "Security Engineer at If your team",
+    "snippet": "... Security Engineer, central Israel. How you can help: If your team is hiring, or you know someone who is, a quick mes",
+    "url": "https://www.linkedin.com/posts/omri-kaufman-88b560131_infosec-secops-cybersecurity-activity-7495734904941539328-5bjW",
+    "company": "If your team",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Omri Kaufman",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/omri-kaufman-88b560131/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-19T18:59:44Z"
   }
 ]
