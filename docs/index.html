@@ -2823,12 +2823,233 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-08-20T06:55:33Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 93, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 9, "latency_ms": 2503, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 91, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 12318, "error": ""}];
+let LAST_UPDATED = "2026-08-20T09:50:13Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15078, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 8, "latency_ms": 933, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 78, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 8849, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
+  {
+    "id": "5ee29b97",
+    "title": "DevOps Engineer",
+    "subtitle": "Leidos is looking for a hands-on DevOps Engineer to join our team in Jerusalem and work on advanced cloud and mission-critical infrastructure projects across ...",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Jerusalem",
+    "locationSlug": "jerusalem",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=f881c9a819ff9b07",
+    "category": "devops",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Leidos is looking for a hands-on DevOps Engineer to join our team in Jerusalem and work on advanced cloud and mission-critical infrastructure projects across ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20",
+    "altSources": [
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=832261d10d1ff7b1",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=00b7b1f8d2a74ce0",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/chiefscientist_shalom-khaverim-the-ai-graph-database-activity-7495301610680692736-2eg9",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/yashs9131_something-is-changing-in-how-european-companies-activity-7494634994506792960-Tw_t",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/falkordb_hiring-activity-7494716219510484993-B68W",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/tonkean_hiring-activity-7493993306557747201-zZa5",
+        "title": "DevOps Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/idan-bronz-787644307_%D7%90%D7%96-%D7%90%D7%97%D7%A8%D7%99-7-%D7%97%D7%95%D7%93%D7%A9%D7%99%D7%9D-%D7%97%D7%96%D7%A8%D7%AA%D7%99-%D7%9E%D7%98%D7%99%D7%95%D7%9C-%D7%9E%D7%93%D7%94%D7%99%D7%9D-%D7%A2%D7%9D-%D7%94%D7%A8%D7%91%D7%94-activity-7492150192390127616-Z22Z",
+        "title": "DevOps Engineer"
+      }
+    ]
+  },
+  {
+    "id": "d45a7096",
+    "title": "DevOps Engineer Kfar Netter, Israel",
+    "subtitle": "Qualcomm is looking for a DevOps engineer to join our team, where you would: Develop/support tools and processes to support our testing and development",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=2a3e464d8bb5474f",
+    "category": "devops",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Qualcomm is looking for a DevOps engineer to join our team, where you would: Develop/support tools and processes to support our testing and development",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
+  {
+    "id": "d3d29676",
+    "title": "Cloud DevOps Engineer (Azure)",
+    "subtitle": "we are looking for a lead Cloud DevOps Engineer to join our team in delivering high-impact solutions for the Banking and Financial sector.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=bcf5767614ca1057",
+    "category": "devops",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "we are looking for a lead Cloud DevOps Engineer to join our team in delivering high-impact solutions for the Banking and Financial sector.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
+  {
+    "id": "0f30034b",
+    "title": "Principal/Senior ML Platform Engineer (Cortex)",
+    "subtitle": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8. יפו ... תיאור משרה מלא. Tel Aviv-Yafo, Israel Product Engineering Ref ID: JR-018537.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=41dbe56cf8b12f18",
+    "category": "platform",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8. יפו ... תיאור משרה מלא. Tel Aviv-Yafo, Israel Product Engineering Ref ID: JR-018537.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
+  {
+    "id": "00613919",
+    "title": "Software Engineer Data Platform ( Cortex)",
+    "subtitle": "Principal Software Engineer Data Platform ( Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv-Yafo, Israel Product Engineering Ref ID: JR-020846.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "indeed",
+    "sourceUrl": "https://il.indeed.com/viewjob?jk=f71e15c1920ab8fa",
+    "category": "data",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Principal Software Engineer Data Platform ( Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv-Yafo, Israel Product Engineering Ref ID: JR-020846.",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
+  {
+    "id": "581d7a90",
+    "title": "Ops Data Engineer @ Similarweb",
+    "subtitle": "Similarweb - Tel Aviv-Yafo, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "SimilarWeb",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/similarweb/jobs/8143476",
+    "category": "data",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Similarweb - Tel Aviv-Yafo, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Ron Asher",
+        "title": "CTO",
+        "linkedin": "https://www.linkedin.com/in/ronasher/",
+        "source": "LinkedIn",
+        "email": "ron.asher@similarweb.com"
+      },
+      {
+        "name": "Or Offer",
+        "title": "CEO",
+        "linkedin": "https://www.linkedin.com/in/oroffer/",
+        "source": "LinkedIn",
+        "email": "or.offer@similarweb.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=similarweb.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
+  {
+    "id": "a0a27575",
+    "title": "Product Manager - Agentic AI @ Torq",
+    "subtitle": "Torq - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "company": "Torq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/torq/jobs/6147498004",
+    "category": "agentic",
+    "posted": "2026-08-20",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Torq - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Leonid Belkind",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/leonidbelkind/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Ofer Smadari",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/ofersmadari/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=torq.io&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-08-20"
+  },
   {
     "id": "0fa26c5c",
     "title": "Software Engineer, Data Infrastructure & Acquisition",
@@ -2854,6 +3075,11 @@ let ALL_JOBS = [
       {
         "source": "indeed",
         "sourceUrl": "https://il.indeed.com/viewjob?jk=9818f3efb0113367&from=vjs&tk=1jo3is0jgi8q2802&viewtype=embedded&xkcb=SoDu67M3jDt_zXwHXB0IbzkdCdPP&continueUrl=%2Fjobs%3Fq%3Dgoogle%2Bisrael",
+        "title": "Software Engineer, Data Infrastructure & Acquisition"
+      },
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk=fd711ee306f2412b",
         "title": "Software Engineer, Data Infrastructure & Acquisition"
       }
     ]
@@ -2929,7 +3155,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-08-19"
+    "_first_seen": "2026-08-19",
+    "altSources": [
+      {
+        "source": "indeed",
+        "sourceUrl": "https://il.indeed.com/viewjob?jk\\u003d29c498245b8834c2",
+        "title": "Senior Site Reliability Engineer (Cortex)"
+      }
+    ]
   },
   {
     "id": "84730ddf",
@@ -3153,109 +3386,6 @@ let ALL_JOBS = [
     "_first_seen": "2026-08-19"
   },
   {
-    "id": "5ee29b97",
-    "title": "DevOps Engineer",
-    "subtitle": "Leidos is looking for a hands-on DevOps Engineer to join our team in Jerusalem and work on advanced cloud and mission-critical infrastructure projects across ...",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Jerusalem",
-    "locationSlug": "jerusalem",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=f881c9a819ff9b07",
-    "category": "devops",
-    "posted": "2026-08-19",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Leidos is looking for a hands-on DevOps Engineer to join our team in Jerusalem and work on advanced cloud and mission-critical infrastructure projects across ...",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19",
-    "altSources": [
-      {
-        "source": "indeed",
-        "sourceUrl": "https://il.indeed.com/viewjob?jk=832261d10d1ff7b1",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "indeed",
-        "sourceUrl": "https://il.indeed.com/viewjob?jk=00b7b1f8d2a74ce0",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/chiefscientist_shalom-khaverim-the-ai-graph-database-activity-7495301610680692736-2eg9",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/yashs9131_something-is-changing-in-how-european-companies-activity-7494634994506792960-Tw_t",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/falkordb_hiring-activity-7494716219510484993-B68W",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/tonkean_hiring-activity-7493993306557747201-zZa5",
-        "title": "DevOps Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/idan-bronz-787644307_%D7%90%D7%96-%D7%90%D7%97%D7%A8%D7%99-7-%D7%97%D7%95%D7%93%D7%A9%D7%99%D7%9D-%D7%97%D7%96%D7%A8%D7%AA%D7%99-%D7%9E%D7%98%D7%99%D7%95%D7%9C-%D7%9E%D7%93%D7%94%D7%99%D7%9D-%D7%A2%D7%9D-%D7%94%D7%A8%D7%91%D7%94-activity-7492150192390127616-Z22Z",
-        "title": "DevOps Engineer"
-      }
-    ]
-  },
-  {
-    "id": "d45a7096",
-    "title": "DevOps Engineer Kfar Netter, Israel",
-    "subtitle": "Qualcomm is looking for a DevOps engineer to join our team, where you would: Develop/support tools and processes to support our testing and development",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=2a3e464d8bb5474f",
-    "category": "devops",
-    "posted": "2026-08-19",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Qualcomm is looking for a DevOps engineer to join our team, where you would: Develop/support tools and processes to support our testing and development",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19"
-  },
-  {
-    "id": "d3d29676",
-    "title": "Cloud DevOps Engineer (Azure)",
-    "subtitle": "we are looking for a lead Cloud DevOps Engineer to join our team in delivering high-impact solutions for the Banking and Financial sector.",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=bcf5767614ca1057",
-    "category": "devops",
-    "posted": "2026-08-19",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "we are looking for a lead Cloud DevOps Engineer to join our team in delivering high-impact solutions for the Banking and Financial sector.",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19"
-  },
-  {
     "id": "7bdbf438",
     "title": "DevOps Engineer",
     "subtitle": "DevOps Engineer. Sentrycs. ישראל. תיאור משרה מלא. TLV, israel. About The Position ... Review for Devops Engineer at Sentrycs, ישראל · קישור משכורות עבור ...",
@@ -3267,7 +3397,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=921796b3ac2792db",
     "category": "devops",
     "posted": "2026-08-19",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": true,
     "description": "DevOps Engineer. Sentrycs. ישראל. תיאור משרה מלא. TLV, israel. About The Position ... Review for Devops Engineer at Sentrycs, ישראל · קישור משכורות עבור ...",
@@ -3278,89 +3408,46 @@ let ALL_JOBS = [
     "_first_seen": "2026-08-19"
   },
   {
-    "id": "ae7f5f0f",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Natural Intelligence",
+    "id": "b877b80a",
+    "title": "AI Engineer at Akamai",
+    "subtitle": "Akamai is hiring in Israel! There are quite a few exciting opportunities currently open ... Security Engineer Automation",
+    "company": "Akamai",
     "companyIndustry": "",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/ozsarne_akamai-career-site-careers-activity-7495742960458887168-vabE",
+    "category": "ai",
     "posted": "2026-08-19",
     "isNew": true,
-    "isDeveleapCustomer": false,
+    "isDeveleapCustomer": true,
     "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Greg Lavender",
-        "title": "CTO & SVP",
-        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=intel.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19",
-    "_manual": true
-  },
-  {
-    "id": "491196c3",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Unilink Ltd.",
-    "companyIndustry": "",
-    "location": "Holon, Israel",
-    "locationSlug": "holon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
-    "category": "devops",
-    "posted": "2026-08-19",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
+    "description": "Akamai is hiring in Israel! There are quite a few exciting opportunities currently open ... Security Engineer Automation",
     "skills": [],
     "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=unilink.co.il&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19",
-    "_manual": true
+    "logo": "https://www.google.com/s2/favicons?domain=akamai.com&sz=128",
+    "ftsJobUrl": ""
   },
   {
-    "id": "790d603d",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "",
-    "company": "AppCard",
+    "id": "233d8e4c",
+    "title": "Security Engineer at If your team",
+    "subtitle": "... Security Engineer, central Israel. How you can help: If your team is hiring, or you know someone who is, a quick mes",
+    "company": "If your team",
     "companyIndustry": "",
-    "location": "Hod HaSharon, Israel",
-    "locationSlug": "hod-hasharon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
-    "category": "devops",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/omri-kaufman-88b560131_infosec-secops-cybersecurity-activity-7495734904941539328-5bjW",
+    "category": "security",
     "posted": "2026-08-19",
     "isNew": true,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
-    "description": "",
+    "description": "... Security Engineer, central Israel. How you can help: If your team is hiring, or you know someone who is, a quick mes",
     "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yair Goldfinger",
-        "title": "CEO & Founder",
-        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-19",
-    "_manual": true
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=ifyourteam.com&sz=128",
+    "ftsJobUrl": ""
   },
   {
     "id": "f1932849",
@@ -3463,6 +3550,56 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=fireblocks.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-08-18"
+  },
+  {
+    "id": "50bc608b",
+    "title": "AI Engineer at Check Point",
+    "subtitle": "Check Point is hiring! I joined because Nadav Zafrir ... Close menu. Building Senior AI PM, Cloud Firewall (Israel): htt",
+    "company": "Check Point Software",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/bradfein_%F0%9D%90%82%F0%9D%90%A1%F0%9D%90%9E%F0%9D%90%9C%F0%9D%90%A4-%F0%9D%90%8F%F0%9D%90%A8%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%AD-%F0%9D%90%A2%F0%9D%90%AC-%F0%9D%90%A1%F0%9D%90%A2%F0%9D%90%AB%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%A0-activity-7495460374536671233-ci2a",
+    "category": "ai",
+    "posted": "2026-08-18",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Check Point is hiring! I joined because Nadav Zafrir ... Close menu. Building Senior AI PM, Cloud Firewall (Israel): htt",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Nataly Kremer",
+        "title": "CPO & Head of R&D",
+        "linkedin": "https://www.linkedin.com/in/nataly-kremer-12744b29/",
+        "source": "Company Website",
+        "email": ""
+      },
+      {
+        "name": "Tomer Lev",
+        "title": "Engineering Director",
+        "linkedin": "https://www.linkedin.com/in/tomerlev/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Ofir Israel",
+        "title": "Engineering Director",
+        "linkedin": "https://www.linkedin.com/in/ofirisrael/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Alex Spokoiny",
+        "title": "Chief Information Officer",
+        "linkedin": "",
+        "source": "Company Website",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=checkpoint.com&sz=128",
+    "ftsJobUrl": ""
   },
   {
     "id": "31512d55",
@@ -4971,6 +5108,27 @@ let ALL_JOBS = [
     "_first_seen": "2026-08-12"
   },
   {
+    "id": "01128df1",
+    "title": "AI Engineer at The AI Bill Is Coming For You AI",
+    "subtitle": "The AI Bill Is Coming For You AI is hiring, not firing. But the compute behind that hiring is bleeding cash — and your i",
+    "company": "The AI Bill Is Coming For You AI",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/dylan-zawila-97a742125_mapping-the-ai-economy-activity-7493371812584722433-ZscR",
+    "category": "ai",
+    "posted": "2026-08-12",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "The AI Bill Is Coming For You AI is hiring, not firing. But the compute behind that hiring is bleeding cash — and your i",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=theaibilliscomingforyouai.com&sz=128",
+    "ftsJobUrl": ""
+  },
+  {
     "id": "005340c7",
     "title": "Devops Student @ Nice",
     "subtitle": "Nice - Israel - Raanana. 0 days ago via Greenhouse API (active listing).",
@@ -5888,296 +6046,6 @@ let ALL_JOBS = [
         "title": "Senior/Principal SRE Engineer"
       }
     ]
-  },
-  {
-    "id": "9e8de56e",
-    "title": "Senior DevOps Engineer (Cortex Agentix Endpoint Security)",
-    "subtitle": "תיאור משרה מלא · 4+ years operating production infrastructure in AWS. · Deep hands-on experience with Kubernetes, Helm, ArgoCD, Terraform, and CI/CD. · Strong ...",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk=90c516417a5591e5",
-    "category": "agentic",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "תיאור משרה מלא · 4+ years operating production infrastructure in AWS. · Deep hands-on experience with Kubernetes, Helm, ArgoCD, Terraform, and CI/CD. · Strong ...",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "30a5cbb5",
-    "title": "Principal/Senior ML Platform Engineer (Cortex)",
-    "subtitle": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv, Tel Aviv, Israel Product Engineering Ref ID: JR-018537.",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/viewjob?jk\\u003d41dbe56cf8b12f18",
-    "category": "platform",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Principal/Senior ML Platform Engineer (Cortex). Palo Alto Networks. ·. 3.8 ... תיאור משרה מלא. Tel Aviv, Tel Aviv, Israel Product Engineering Ref ID: JR-018537.",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05",
-    "altSources": [
-      {
-        "source": "indeed",
-        "sourceUrl": "https://il.indeed.com/viewjob?jk=41dbe56cf8b12f18",
-        "title": "Principal/Senior ML Platform Engineer (Cortex)"
-      }
-    ]
-  },
-  {
-    "id": "e10f47d0",
-    "title": "חיפוש משרה לפי תפקיד: F",
-    "subtitle": "Fintech Analyst · Fintech · בחירת מיקום · Finops · בחירת מיקום · Financial Planning Analyst · בחירת מיקום · Financial Operations Manager · Financial Controller.",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "indeed",
-    "sourceUrl": "https://il.indeed.com/browsejobs/Titles/F",
-    "category": "finops",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Fintech Analyst · Fintech · בחירת מיקום · Finops · בחירת מיקום · Financial Planning Analyst · בחירת מיקום · Financial Operations Manager · Financial Controller.",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "095f71e3",
-    "title": "AI Engineer @ Armis",
-    "subtitle": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
-    "company": "Armis",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/armissecurity/jobs/5994462004",
-    "category": "ai",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Armis - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Nadir Izrael",
-        "title": "CTO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/nadiriz/",
-        "source": "LinkedIn",
-        "email": ""
-      },
-      {
-        "name": "Yevgeny Dibrov",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/yevgenydibrov/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=armis.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "07c14f0b",
-    "title": "Staff Backend Engineer- Agent Experience (AX)",
-    "subtitle": "",
-    "company": "Cloudinary",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "lever",
-    "sourceUrl": "https://jobs.lever.co/cloudinary/5cd7d5b3-2577-4c50-89dd-d11e0448a752",
-    "category": "agentic",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Staff Backend Engineer- Agent Experience (AX)",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Tal Lev-Ami",
-        "title": "Co-Founder & CTO",
-        "linkedin": "https://il.linkedin.com/in/tallevami",
-        "source": "LinkedIn",
-        "email": "tal.levami@cloudinary.com"
-      },
-      {
-        "name": "Itai Lahan",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/itail/",
-        "source": "LinkedIn",
-        "email": "itai.lahan@cloudinary.com"
-      },
-      {
-        "name": "Nadav Soferman",
-        "title": "Co-Founder & CPO",
-        "linkedin": "https://www.linkedin.com/in/nadavsoferman/",
-        "source": "LinkedIn",
-        "email": "nadav.soferman@cloudinary.com"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "321cbd18",
-    "title": "Staff Data Engineer – Data Modeling",
-    "subtitle": "",
-    "company": "Cloudinary",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "lever",
-    "sourceUrl": "https://jobs.lever.co/cloudinary/9c07c819-725b-4491-94b2-f5bacc9dc86a",
-    "category": "data",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Staff Data Engineer – Data Modeling",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Tal Lev-Ami",
-        "title": "Co-Founder & CTO",
-        "linkedin": "https://il.linkedin.com/in/tallevami",
-        "source": "LinkedIn",
-        "email": "tal.levami@cloudinary.com"
-      },
-      {
-        "name": "Itai Lahan",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://www.linkedin.com/in/itail/",
-        "source": "LinkedIn",
-        "email": "itai.lahan@cloudinary.com"
-      },
-      {
-        "name": "Nadav Soferman",
-        "title": "Co-Founder & CPO",
-        "linkedin": "https://www.linkedin.com/in/nadavsoferman/",
-        "source": "LinkedIn",
-        "email": "nadav.soferman@cloudinary.com"
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "18ced2f0",
-    "title": "Full Stack Engineer - Big Data Platform",
-    "subtitle": "",
-    "company": "Walkme",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "lever",
-    "sourceUrl": "https://jobs.lever.co/walkme/78942015-2ffc-4cba-aab4-cfb51f1970ad",
-    "category": "data",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": true,
-    "description": "Full Stack Engineer - Big Data Platform",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=walkme.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "853f0a8f",
-    "title": "Data Engineer",
-    "subtitle": "We're #hiring a new Senior Data Engineer in Tel Aviv District. Apply today or share this post with your network. Prisma ",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/prisma-photonics_hiring-activity-7490728048229658624-5F3W",
-    "category": "data",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We're #hiring a new Senior Data Engineer in Tel Aviv District. Apply today or share this post with your network. Prisma ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/prisma-photonics/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "",
-        "connectMsg": "Hi there, I noticed Unknown is hiring a Data Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, there! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "",
-    "ftsJobUrl": "",
-    "altSources": [
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/shahar-polak_22-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%A9%D7%9E%D7%92%D7%99%D7%99%D7%A1%D7%95%D7%AA-%D7%A2%D7%9B%D7%A9%D7%99%D7%95-%D7%A0%D7%95%D7%A1%D7%A4%D7%95-%D7%9C%D7%A8%D7%A9%D7%99%D7%9E%D7%94-%D7%AA%D7%95%D7%9A-activity-7487198891357171712-jOi3",
-        "title": "Data Engineer"
-      }
-    ],
-    "_first_seen": "2026-08-05"
-  },
-  {
-    "id": "0bbdc1e7",
-    "title": "AI Engineer at Qualcomm",
-    "subtitle": "Qualcomm Israel is hiring! מחפש/ת את האתגר הבא? יש לנו מגוון משרות פתוחות בהוד השרון ובחיפה בתחומי: ✓ AI & DSP ✓ Firmwar",
-    "company": "Qualcomm",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/ronen-slobinsky-b43bb737_qualcomm-careers-engineering-jobs-and-more-activity-7490802383879589888-j69Z",
-    "category": "ai",
-    "posted": "2026-08-05",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Qualcomm Israel is hiring! מחפש/ת את האתגר הבא? יש לנו מגוון משרות פתוחות בהוד השרון ובחיפה בתחומי: ✓ AI & DSP ✓ Firmwar",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Ziv Binyamini",
-        "title": "VP & GM, Qualcomm Israel",
-        "linkedin": "https://il.linkedin.com/in/ziv-binyamini/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=qualcomm.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-08-05"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====

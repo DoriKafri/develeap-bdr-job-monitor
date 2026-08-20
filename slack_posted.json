@@ -232,6 +232,7 @@
     "unknown|||software engineer, gen ai",
     "unknown|||software engineer, data infrastructure & acquisition",
     "unknown|||software engineer iii, cloud security",
+    "unknown|||software engineer data platform ( cortex)",
     "unknown|||software engineer -ai backend",
     "unknown|||software engineer - analytics platform",
     "unknown|||software engineer (coralogix ai)",
@@ -544,6 +545,7 @@
     "the market|||cloud engineer at the market",
     "the landscaping company that|||crm at the landscaping company that",
     "the hybrid agentic workforce|||ai/agentic engineer at the hybrid agentic workforce",
+    "the ai bill is coming for you ai|||ai engineer at the ai bill is coming for you ai",
     "that|||ai engineer at that",
     "terasky||||finops & customer success manager at terasky - comeet",
     "terasky||||finops & customer success manager",
@@ -641,6 +643,7 @@
     "similarweb|||senior devops engineer @ similarweb",
     "similarweb|||senior data engineer ( data collection) @ similarweb",
     "similarweb|||senior cybersecurity engineer @ similarweb",
+    "similarweb|||ops data engineer @ similarweb",
     "similarweb|||job application for applied research engineer at similarweb|2026-03-04",
     "similarweb|||job application for applied research engineer at similarweb",
     "similarweb|||devops engineer @ similarweb",
@@ -1173,6 +1176,7 @@
     "imagen|||backend engineer | center district",
     "iltelhq petach tikva hq ...|||cloud engineer - iltelhq petach tikva hq",
     "iisc|||genai devops intern at iisc",
+    "if your team|||security engineer at if your team",
     "if your team|||ai/agentic engineer at if your team",
     "if your current partner|||ai engineer at if your current partner",
     "if your building|||cloud engineer at if your building",
@@ -1519,6 +1523,7 @@
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior devops engineer|2026-02-22",
     "check point software|||check point software \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd senior devops engineer",
     "check point software|||check point software senior finops engineer",
+    "check point software|||ai engineer at check point",
     "check point software|finops|senior finops engineer|2026-28-01",
     "check point software|finops|senior finops engineer|2026-03-01",
     "check point software|finops|senior finops engineer",
@@ -1731,6 +1736,7 @@
     "algosec|||devops team leader, israel",
     "algolight ltd|||algolight ltd agentic ai systems engineer",
     "akkodis|||infrastructure and security engineer",
+    "akamai|||ai engineer at akamai",
     "aigency|||head of ai",
     "ai-generated code slows down delivery with complex prs not every ai problem|||ai engineer at ai-generated code slows down delivery with complex prs not every ai problem",
     "ai still|||ai engineer at ai still",
@@ -3173,7 +3179,13 @@
     "unknown|||lead ai engineer 4c": "2026-08-18T09:46:28.562738+00:00",
     "about the role & team|||devops data infrastructure engineer": "2026-08-19T14:00:28.256067+00:00",
     "valletta.software|||ai engineer at valletta.software": "2026-08-19T14:00:28.256067+00:00",
-    "sentrycs|||devops engineer": "2026-08-19T17:42:01.769118+00:00"
+    "sentrycs|||devops engineer": "2026-08-19T17:42:01.769118+00:00",
+    "unknown|||software engineer data platform ( cortex)": "2026-08-20T09:49:07.277851+00:00",
+    "the ai bill is coming for you ai|||ai engineer at the ai bill is coming for you ai": "2026-08-20T09:49:07.277851+00:00",
+    "akamai|||ai engineer at akamai": "2026-08-20T09:49:07.277851+00:00",
+    "if your team|||security engineer at if your team": "2026-08-20T09:49:07.277851+00:00",
+    "check point software|||ai engineer at check point": "2026-08-20T09:49:07.277851+00:00",
+    "similarweb|||ops data engineer @ similarweb": "2026-08-20T09:49:07.277851+00:00"
   },
-  "updated": "2026-08-19T17:42:01.816834+00:00"
+  "updated": "2026-08-20T09:49:07.324994+00:00"
 }
