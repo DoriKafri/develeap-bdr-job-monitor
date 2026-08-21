@@ -7450,5 +7450,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-20T23:46:55Z"
+  },
+  {
+    "title": "DevOps Engineer at Every delivery practice",
+    "snippet": "Deep DevOps expertise, local delivery in Israel, and the ... Every delivery practice needs a deterministic pass or fail ",
+    "url": "https://www.linkedin.com/posts/develeap_ai-moves-fast-production-has-to-move-with-activity-7493300851646783490-b1TU",
+    "company": "Every delivery practice",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/develeap/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-21T03:27:12Z"
+  },
+  {
+    "title": "DevOps Engineer at Post Another module",
+    "snippet": "Another module needs a conditional field. A third system expects the same ... DevOps engineers debug 50GB server log fil",
+    "url": "https://www.linkedin.com/posts/israel-shedrack-b12197285_softwareengineering-datamigration-python-activity-7493434345970593792-d5DK",
+    "company": "Post Another module",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Shedrack",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-shedrack-b12197285/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-21T03:27:12Z"
   }
 ]
