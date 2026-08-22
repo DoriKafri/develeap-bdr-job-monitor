@@ -7558,5 +7558,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-22T08:53:40Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We are hiring: **Experienced BE Engineer** in Caesarea, Israel. This is not your typical CRUD backend job. At UNIT AI (w",
+    "url": "https://www.linkedin.com/posts/unitai_we-are-hiring-experienced-be-engineer-activity-7496212587433332736-L8dP",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/unitai/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-22T11:12:03Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "We're growing the team at Tenable! We are looking for a Engineering – Cloud Security to join us in Israel - Office - Tel",
+    "url": "https://www.linkedin.com/posts/omri-maman_engineering-cloud-security-activity-7493252447172411393-9wIb",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Omri Maman",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/omri-maman/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-22T11:12:03Z"
   }
 ]
