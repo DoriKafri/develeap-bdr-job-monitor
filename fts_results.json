@@ -7582,5 +7582,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-22T11:12:03Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... AI is splitting Israel's high-tech industry in two | CTech calcalistech.com ... needs a presence where the developer",
+    "url": "https://www.linkedin.com/posts/lararachelblacher_ai-is-splitting-israels-high-tech-industry-activity-7493259996902678528-A_8I",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/lararachelblacher/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-22T15:11:02Z"
+  },
+  {
+    "title": "AI Engineer at Not every powerful tool",
+    "snippet": "Paid vs Free AI Tools: Which One Should You Choose? Not every powerful tool needs a monthly subscription. From marketing",
+    "url": "https://www.linkedin.com/posts/peter-israel-founder_paid-vs-free-ai-tools-which-one-should-you-activity-7492961471094706176-c2-z",
+    "company": "Not every powerful tool",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Peter Israel",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/peter-israel-founder/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-22T15:11:02Z"
   }
 ]
