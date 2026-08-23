@@ -7654,5 +7654,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-23T08:18:01Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... cloud breaches stem from misconfigurations: resources left exposed ... we need to go and do this for each of them. T",
+    "url": "https://www.linkedin.com/posts/james-spiro_new-for-forbes-israel-the-week-gal-ordo-activity-7495003988120166403-C7YA",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "James Spiro",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/james-spiro/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-23T08:54:39Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "Field CTO @ Broadcom | Enterprise Cloud Executive. 1w. Must-watch for anyone ... Toward the end, they made a great case ",
+    "url": "https://www.linkedin.com/posts/israel-malowany-a82262_black-hat-usa-2026-the-breaking-news-activity-7493347174177697792-8ciJ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Malowany",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-malowany-a82262/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-23T08:54:39Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... Israel | Cloud | Microsoft | AI | Value Advisory | Builder. 3d. Report this post; Close menu. Great review of the sa",
+    "url": "https://www.linkedin.com/posts/lola-carrasco-santiago_great-review-of-the-sales-process-yes-we-activity-7493661205237096448-mWFa",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Lola Carrasco",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/lola-carrasco-santiago/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-23T08:54:39Z"
   }
 ]
