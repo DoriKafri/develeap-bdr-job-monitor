@@ -7750,5 +7750,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-24T10:08:26Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "We're hiring! My team at AWS Startups Israel is growing — we have 2 open positions for Solutions Architects who want to ",
+    "url": "https://www.linkedin.com/posts/yoav-fishman_were-hiring-my-team-at-aws-startups-activity-7497560354420572160-7SKJ",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/yoav-fishman/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-24T20:18:45Z"
+  },
+  {
+    "title": "Forward Deployed Engineer at Cloudflare",
+    "snippet": "Cloudflare is Growing! We're hiring a Forward Deployed Engineer to work inside the walls of one of Israel's (and the wor",
+    "url": "https://www.linkedin.com/posts/guyavidor_cloudflare-is-growing-were-hiring-activity-7495085637100937217-xgBe",
+    "company": "Cloudflare",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/guyavidor/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-24T20:18:45Z"
   }
 ]
