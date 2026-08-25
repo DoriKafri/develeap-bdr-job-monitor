@@ -7774,5 +7774,17 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-08-24T20:18:45Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... open role they're applying for, pulls their resume from Drive, scores it against that job's requirements, and drops ",
+    "url": "https://www.linkedin.com/posts/rumaisa-sheikh-41b855227_dotnet-techinterviews-airecruiting-activity-7496200708858474497-a5L2",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Rumaisa Sheikh",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/rumaisa-sheikh-41b855227/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-08-25T00:40:57Z"
   }
 ]
