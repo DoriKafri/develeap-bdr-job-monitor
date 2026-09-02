@@ -7954,5 +7954,41 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-09-01T22:41:45Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "... data platform in Singapore, scaling a cloud infrastructure team in Australia ... These are the companies driving the",
+    "url": "https://www.linkedin.com/posts/darren-foo-xuejun-828bbaa2_the-singapore-tech-job-market-paradox-activity-7498591471378432000-kRDw",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Darren Foo Xuejun",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/darren-foo-xuejun-828bbaa2/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-02T13:57:30Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... hiring a \"data scientist\" and hoping for the best. AI delivery isn't a ... data platform is an opportunity to create",
+    "url": "https://www.linkedin.com/posts/abdulrahman-baqais_aiproductmanagement-aileadership-datascience-activity-7497632145289527296-goat",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/abdulrahman-baqais/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-02T13:57:30Z"
+  },
+  {
+    "title": "Cloud Engineer",
+    "snippet": "These are the companies driving the next hiring wave in Israel. We ... data platform in Singapore, scaling a cloud infra",
+    "url": "https://www.linkedin.com/posts/annexionpartners_digitalinfrastructurewatch-cloudinfrastructure-activity-7497961718854242304-L60M",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/annexionpartners/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-02T13:57:30Z"
   }
 ]
