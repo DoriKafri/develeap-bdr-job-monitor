@@ -238,6 +238,7 @@
     "unknown|||software engineer data platform ( cortex)",
     "unknown|||software engineer -ai backend",
     "unknown|||software engineer - analytics platform",
+    "unknown|||software engineer (secure agentic ai) - petach tikva be'er",
     "unknown|||software engineer (coralogix ai)",
     "unknown|||software development engineer, ml systems integration",
     "unknown|||software ai engineer",
@@ -282,6 +283,7 @@
     "unknown|||senior java backend developer - data platform group",
     "unknown|||senior infrastructure sw engineer",
     "unknown|||senior infrastructure engineer",
+    "unknown|||senior full stack engineer, gen ai",
     "unknown|||senior embedded linux engineer cc++ infrastructure",
     "unknown|||senior devsecops manager",
     "unknown|||senior devops platform engineer",
@@ -322,6 +324,7 @@
     "unknown|||senior ai backend engineer",
     "unknown|||security engineer, endpoint and device security",
     "unknown|||security engineer",
+    "unknown|||security certifications & compliance engineer",
     "unknown|||secops engineer",
     "unknown|||saas site reliability engineer",
     "unknown|||qualcomm, hod hasharon, israel",
@@ -335,6 +338,7 @@
     "unknown|||principal software engineer data platform (cortex)",
     "unknown|||principal mlops engineer (cortex)",
     "unknown|||principal information security engineer",
+    "unknown|||principal engineer software access team (cortex platform)",
     "unknown|||principal devops engineer (prisma browser)",
     "unknown|||principal devops engineer (prisma access browser)",
     "unknown|||principal devops engineer (enterprise browser)",
@@ -407,6 +411,7 @@
     "unknown|||devops engineer (prisma access browser)",
     "unknown|||devops engineer (israel)",
     "unknown|||devops engineer (devops platform)",
+    "unknown|||devops engineer (cortex agentix endpoint security)",
     "unknown|||devops engineer (bigbrain)",
     "unknown|||devops engineer",
     "unknown|||devops delivery engineer",
@@ -436,6 +441,7 @@
     "unknown|||cloud & cyber security engineer",
     "unknown|||biotechnology \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc - 3 \u05de\u05d0\u05d9, 2026",
     "unknown|||big data engineer (java/scala)",
+    "unknown|||backend engineer \u2013 data pipeline",
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
     "unknown|||associate generative ai engineer",
@@ -3241,7 +3247,13 @@
     "unknown|||student devops engineer sap hiring student devops engineer": "2026-09-03T17:13:28.416024+00:00",
     "lower costs|||cloud economics: transform your business at lower costs": "2026-09-04T17:06:58.163891+00:00",
     "unknown|||devops data infrastructure engineer": "2026-09-05T19:02:17.205903+00:00",
-    "similarweb|||senior ops data engineer @ similarweb": "2026-09-05T19:02:17.205903+00:00"
+    "similarweb|||senior ops data engineer @ similarweb": "2026-09-05T19:02:17.205903+00:00",
+    "unknown|||devops engineer (cortex agentix endpoint security)": "2026-09-06T16:17:25.034324+00:00",
+    "unknown|||software engineer (secure agentic ai) - petach tikva be'er": "2026-09-06T16:17:25.034324+00:00",
+    "unknown|||principal engineer software access team (cortex platform)": "2026-09-06T16:17:25.034324+00:00",
+    "unknown|||security certifications & compliance engineer": "2026-09-06T16:17:25.034324+00:00",
+    "unknown|||backend engineer \u2013 data pipeline": "2026-09-06T16:17:25.034324+00:00",
+    "unknown|||senior full stack engineer, gen ai": "2026-09-06T16:17:25.034324+00:00"
   },
-  "updated": "2026-09-05T19:02:17.274687+00:00"
+  "updated": "2026-09-06T16:17:25.082019+00:00"
 }
