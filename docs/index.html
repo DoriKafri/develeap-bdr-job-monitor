@@ -2823,12 +2823,222 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-09-19T10:41:37Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 98, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 9, "latency_ms": 473, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 53, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 26676, "error": ""}];
+let LAST_UPDATED = "2026-09-19T16:44:29Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15062, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 9, "latency_ms": 765, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 34, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 30087, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
+  {
+    "id": "8cfcbca0",
+    "title": "Meta | Production Engineer(Network) | Rejected and ...",
+    "subtitle": "I recently gave my interview at Meta for the Network Production Engineer role—this role is for people with less than 2 years of experience.",
+    "company": "Meta",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://www.reddit.com/r/networking/comments/1di1nxw/meta_production_engineernetwork_rejected_and/",
+    "category": "sre",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "I recently gave my interview at Meta for the Network Production Engineer role—this role is for people with less than 2 years of experience.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Aviram Hassan",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/aviramhassan/",
+        "source": "LinkedIn",
+        "email": "aviram@metalbear.co"
+      },
+      {
+        "name": "Eyal Bukchin",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/eyal-bukchin/",
+        "source": "LinkedIn",
+        "email": "eyal@metalbear.co"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=meta.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19"
+  },
+  {
+    "id": "b986f5bf",
+    "title": "Unlock Dolby Atmos mixing for film with a post-production ...",
+    "subtitle": "Ryan Green, a dBs alumni and professional post-production engineer working at Shepperton Studios - part of Pinewood studios - joined our ...",
+    "company": "Shepperton Studios",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://www.youtube.com/watch?v=qbsq1YINfqI",
+    "category": "sre",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Ryan Green, a dBs alumni and professional post-production engineer working at Shepperton Studios - part of Pinewood studios - joined our ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=sheppertonstudios.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19"
+  },
+  {
+    "id": "19f0c1f3",
+    "title": "Opinion | I'm Begging You: Never Write With A.I.",
+    "subtitle": "Don't use artificial intelligence to help you write. Never let A.I. do your writing for you. Don't use it for school papers, work briefs, ...",
+    "company": "Opinion",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "other",
+    "sourceUrl": "https://www.nytimes.com/2026/08/04/opinion/artificial-intelligence-ai-writing.html",
+    "category": "ai",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "Don't use artificial intelligence to help you write. Never let A.I. do your writing for you. Don't use it for school papers, work briefs, ...",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=opinion.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19"
+  },
+  {
+    "id": "101afbcc",
+    "title": "Information Security Engineer @ Fireblocks",
+    "subtitle": "Fireblocks - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "company": "Fireblocks",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "other",
+    "sourceUrl": "https://www.fireblocks.com/careers/position?gh_jid=4701826006",
+    "category": "security",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Fireblocks - Tel Aviv-Yafo, Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Michael Shaulov",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/michaelsh/",
+        "source": "LinkedIn",
+        "email": "michael@fireblocks.com"
+      },
+      {
+        "name": "Pavel Berengoltz",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/pavelberengoltz/",
+        "source": "LinkedIn",
+        "email": "pavel@fireblocks.com"
+      },
+      {
+        "name": "Idan Ofrat",
+        "title": "Co-Founder & CPO",
+        "linkedin": "https://www.linkedin.com/in/idanofrat/",
+        "source": "LinkedIn",
+        "email": "idan@fireblocks.com"
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=fireblocks.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19"
+  },
+  {
+    "id": "ae7f5f0f",
+    "title": "DevOps Engineer",
+    "subtitle": "",
+    "company": "Natural Intelligence",
+    "companyIndustry": "",
+    "location": "Tel Aviv, Israel",
+    "locationSlug": "tel-aviv,-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
+    "category": "devops",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Greg Lavender",
+        "title": "CTO & SVP",
+        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=intel.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19",
+    "_manual": true
+  },
+  {
+    "id": "491196c3",
+    "title": "DevOps Engineer",
+    "subtitle": "",
+    "company": "Unilink Ltd.",
+    "companyIndustry": "",
+    "location": "Holon, Israel",
+    "locationSlug": "holon,-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
+    "category": "devops",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [],
+    "logo": "https://www.google.com/s2/favicons?domain=unilink.co.il&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19",
+    "_manual": true
+  },
+  {
+    "id": "790d603d",
+    "title": "Senior DevOps Engineer",
+    "subtitle": "",
+    "company": "AppCard",
+    "companyIndustry": "",
+    "location": "Hod HaSharon, Israel",
+    "locationSlug": "hod-hasharon,-israel",
+    "source": "linkedin",
+    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
+    "category": "devops",
+    "posted": "2026-09-19",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Yair Goldfinger",
+        "title": "CEO & Founder",
+        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-09-19",
+    "_manual": true
+  },
   {
     "id": "4ba70a09",
     "title": "Software Engineer, Data Infrastructure & Acquisition",
@@ -2841,7 +3051,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=e5c6253ad767ab83",
     "category": "data",
     "posted": "2026-09-18",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "Software Engineer, Data Infrastructure & Acquisition - Tel Aviv, Israel. Speechify. תל אביב -יפו, מחוז תל אביב. תיאור משרה מלא. The mission of Speechify is to ...",
@@ -3312,6 +3522,55 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=taboola.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-09-16"
+  },
+  {
+    "id": "ccc0994f",
+    "title": "AI Engineer",
+    "subtitle": "We're #hiring a new Senior AI Engineer in Herzliya, Tel Aviv District. Apply today or share this post with your network.",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/codevalue_hiring-activity-7505953701975638016-cGXX",
+    "category": "ai",
+    "posted": "2026-09-16",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We're #hiring a new Senior AI Engineer in Herzliya, Tel Aviv District. Apply today or share this post with your network.",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/codevalue/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi there, I noticed Unknown is hiring a AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, there! I wanted to share how Develeap helps companies like Unknown accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "",
+    "ftsJobUrl": "",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/getsolid_hiring-ai-data-activity-7503809131380744192-g7Z6",
+        "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/asafkuper_hiring-contractor-ai-activity-7503850645125496834-cDIN",
+        "title": "AI Engineer"
+      },
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/jennysotnik_jobfinderdata-techjobs-israeltech-activity-7502997911329435650-P9Vh",
+        "title": "AI Engineer"
+      }
+    ]
   },
   {
     "id": "3dddd6e5",
@@ -4049,50 +4308,6 @@ let ALL_JOBS = [
     "_first_seen": "2026-09-10"
   },
   {
-    "id": "863a69cd",
-    "title": "AI Engineer",
-    "subtitle": "We're growing at Solid and hiring an Applied AI Solutions Engineer to join our team in Israel This is a hybrid role and ",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Hybrid",
-    "locationSlug": "hybrid",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/getsolid_hiring-ai-data-activity-7503809131380744192-g7Z6",
-    "category": "ai",
-    "posted": "2026-09-10",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "We're growing at Solid and hiring an Applied AI Solutions Engineer to join our team in Israel This is a hybrid role and ",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/getsolid/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "",
-        "connectMsg": "Hi there, I noticed Unknown is hiring a AI Engineer — sounds like exciting growth! I lead Develeap, an Israeli AI/ML infrastructure and MLOps consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, there! I wanted to share how Develeap helps companies like Unknown accelerate their AI/ML infrastructure and MLOps initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "",
-    "ftsJobUrl": "",
-    "altSources": [
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/asafkuper_hiring-contractor-ai-activity-7503850645125496834-cDIN",
-        "title": "AI Engineer"
-      },
-      {
-        "source": "linkedin",
-        "sourceUrl": "https://www.linkedin.com/posts/roni-kalbo_its-happening-aikido-security-hiring-in-activity-7501522475365699584-QvLr",
-        "title": "AI Engineer"
-      }
-    ]
-  },
-  {
     "id": "3a5b3c0d",
     "title": "Senior DevOps Engineer - Data Platform (Cortex)",
     "subtitle": "Senior DevOps Engineer - Data Platform (Cortex) Palo Alto Networks. Tel Aviv-Yafo, Israel Product Engineering",
@@ -4229,7 +4444,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "",
     "ftsJobUrl": "",
-    "_first_seen": "2026-09-09"
+    "_first_seen": "2026-09-09",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/daniel-moskovich-3b135b2a4_were-hiring-a-senior-ai-engineer-to-join-activity-7502651859787018240-96R_",
+        "title": "Senior AI Engineer"
+      }
+    ]
   },
   {
     "id": "dc7faf0c",
@@ -4444,6 +4666,45 @@ let ALL_JOBS = [
         "source": "greenhouse",
         "sourceUrl": "https://job-boards.greenhouse.io/bluevineisrael/jobs/7738175003",
         "title": "Senior Machine Learning Engineer @ Bluevine"
+      }
+    ]
+  },
+  {
+    "id": "03030583",
+    "title": "Security Engineer",
+    "subtitle": "We're Hiring: Application Security Engineer If you're passionate about Application Security, Penetration Testing, ...",
+    "company": "Unknown",
+    "companyIndustry": "",
+    "location": "Israel",
+    "locationSlug": "israel",
+    "source": "linkedin_fts",
+    "sourceUrl": "https://www.linkedin.com/posts/michael-eru_application-security-engineer-activity-7503120229858779136-WHdc",
+    "category": "security",
+    "posted": "2026-09-08",
+    "isNew": false,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": false,
+    "description": "We're Hiring: Application Security Engineer If you're passionate about Application Security, Penetration Testing, ...",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Michael Eru",
+        "title": "Post Publisher",
+        "linkedin": "https://www.linkedin.com/in/michael-eru/",
+        "source": "Post Publisher",
+        "email": "",
+        "photo": "",
+        "connectMsg": "Hi Michael, I noticed Unknown is hiring a Security Engineer — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud engineering consultancy. Would love to connect and share how we help teams like yours move faster.",
+        "followUpMsg": "Thanks for connecting, Michael! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud engineering initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
+      }
+    ],
+    "logo": "",
+    "ftsJobUrl": "",
+    "altSources": [
+      {
+        "source": "linkedin",
+        "sourceUrl": "https://www.linkedin.com/posts/ofir-nayman_job-opportunity-senior-back-end-engineer-activity-7502288539854893057-XqMr",
+        "title": "Security Engineer"
       }
     ]
   },
@@ -5279,187 +5540,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=cloudinary.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-09-05"
-  },
-  {
-    "id": "e6c028ae",
-    "title": "Cloud Economics: Transform Your Business at Lower Costs",
-    "subtitle": "AWS provides a way to acquire and use infrastructure on-demand, so that you pay only for what you consume. Cloud Economics: Transform Your ...",
-    "company": "Lower Costs",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "other",
-    "sourceUrl": "https://www.youtube.com/watch?v\\u003dlJxeNGZrkVA",
-    "category": "finops",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "AWS provides a way to acquire and use infrastructure on-demand, so that you pay only for what you consume. Cloud Economics: Transform Your ...",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=lowercosts.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
-  },
-  {
-    "id": "43315326",
-    "title": "Senior Backend Engineer- Data Platform @ Transmit Security",
-    "subtitle": "Transmit Security - Tel Aviv-Yafo, Gush Dan, Israel. 0 days ago via Greenhouse API (active listing).",
-    "company": "Transmitsecurity",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "other",
-    "sourceUrl": "https://www.transmitsecurity.com/about/careers/job?gh_jid=8533933002",
-    "category": "data",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Transmit Security - Tel Aviv-Yafo, Gush Dan, Israel. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Mickey Boodaei",
-        "title": "Co-Founder & CEO",
-        "linkedin": "https://il.linkedin.com/in/mickeyboodaei",
-        "source": "LinkedIn",
-        "email": ""
-      },
-      {
-        "name": "Shmulik Regev",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/shmulik-regev-9085622/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=transmitsecurity.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
-  },
-  {
-    "id": "0ec15eda",
-    "title": "Senior DevEx/DevOps Engineer @ Axonius",
-    "subtitle": "Axonius - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
-    "company": "Axonius",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "other",
-    "sourceUrl": "https://www.axonius.com/company/careers/open-jobs?gh_jid=7824320003",
-    "category": "devops",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Axonius - Tel Aviv, Israel. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Ofri Shur",
-        "title": "CTO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/ofri-shur-3683a13b/",
-        "source": "LinkedIn",
-        "email": ""
-      },
-      {
-        "name": "Dean Sysman",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/deansysman/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://companieslogo.com/img/orig/AXON-b9d32d86.png",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
-  },
-  {
-    "id": "e9c2e20d",
-    "title": "Software & Data Engineer @ Via",
-    "subtitle": "Via - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "company": "Via",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/via/jobs/8557879002",
-    "category": "data",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Via - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=via.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
-  },
-  {
-    "id": "3a721c01",
-    "title": "AI Engineer at Israel",
-    "subtitle": "... AI initiatives, energy, innovation, and economic cooperation can create ... In the north, Israel needs a major natio",
-    "company": "Israel",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/erelmargalit_in-an-interview-with-keir-simmons-on-nbc-activity-7501561506426314752-1RDD",
-    "category": "ai",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "... AI initiatives, energy, innovation, and economic cooperation can create ... In the north, Israel needs a major natio",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Boaz Levy",
-        "title": "President & CEO",
-        "linkedin": "https://www.linkedin.com/in/boaz-levy-/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appliedmaterials.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
-  },
-  {
-    "id": "939dd458",
-    "title": "A simple way",
-    "subtitle": "... needs A simple way to think about it: History = detailed/raw monitoring data ... DevOps #Infrastructure #ITOperation",
-    "company": "Unknown",
-    "companyIndustry": "",
-    "location": "Israel",
-    "locationSlug": "israel",
-    "source": "linkedin_fts",
-    "sourceUrl": "https://www.linkedin.com/posts/prayshilen-luxy-07a648198_zabbix-monitoring-observability-activity-7501511928536592384-nLVC",
-    "category": "devops",
-    "posted": "2026-09-04",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "... needs A simple way to think about it: History = detailed/raw monitoring data ... DevOps #Infrastructure #ITOperation",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Prayshilen Luxy",
-        "title": "Post Publisher",
-        "linkedin": "https://www.linkedin.com/in/prayshilen-luxy-07a648198/",
-        "source": "Post Publisher",
-        "email": "",
-        "photo": "",
-        "connectMsg": "Hi Prayshilen, I noticed Unknown is hiring a A simple way — sounds like exciting growth! I lead Develeap, an Israeli DevOps & cloud-native transformation consultancy. Would love to connect and share how we help teams like yours move faster.",
-        "followUpMsg": "Thanks for connecting, Prayshilen! I wanted to share how Develeap helps companies like Unknown accelerate their DevOps & cloud-native transformation initiatives. We've worked with 50+ Israeli tech companies on similar challenges. Would you be open to a 15-min intro call this week?"
-      }
-    ],
-    "logo": "",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-09-04"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====
