@@ -191,6 +191,7 @@
     "upstream|devops|devops engineer at upstream security - comeet",
     "upstream|devops|devops engineer",
     "upstream security|||ai engineer at upstream security",
+    "unknown|||\u05ea\u05db\u05e0\u05d9\u05ea\u05e0.\u05d9\u05ea devops \u05dc\u05de\u05e9\u05e8\u05d3 \u05de\u05de\u05e9\u05dc\u05ea\u05d9 \u05d1\u05de\u05e8\u05db\u05d6 \u05d5\u05d1\u05d9\u05e8\u05d5\u05e9\u05dc\u05d9\u05dd",
     "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea senior devops engineer \u05d1",
     "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea security operation center \u05d1",
     "unknown|||\u05de\u05e9\u05e8\u05d5\u05ea nvidia \u05d1",
@@ -201,6 +202,7 @@
     "unknown|||\u05d7\u05d9\u05e4\u05d5\u05e9 \u05de\u05e9\u05e8\u05d4 \u05dc\u05e4\u05d9 \u05ea\u05e4\u05e7\u05d9\u05d3: f",
     "unknown|||\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea|2026-02-23",
     "unknown|||\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
+    "unknown|||\u05d0\u05e0\u05dc\u05d9\u05e1\u05d8 soc \u05ea\u05e4\u05e7\u05d9\u05d3 \u05db\u05e0\u05d9\u05e1\u05d4",
     "unknown||||\u05d3\u05e8\u05d5\u05e9\u05d9\u05dd infrastructure engineer \u05dc\u05de\u05d2\u05d5\u05d5\u05df \u05de\u05e9\u05e8\u05d5\u05ea \u05d1\u05e8\u05d7\u05d5\u05d1\u05d5\u05ea",
     "unknown||||soc test automation and infrastructure engineer, platforms",
     "unknown||||mlops engineer",
@@ -256,6 +258,7 @@
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior staff devops engineer - cloud security",
     "unknown|||senior staff devops engineer (secure cloud access)",
+    "unknown|||senior staff devops engineer",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
     "unknown|||senior solutions engineer | israel",
@@ -673,6 +676,7 @@
     "similarweb|||senior ops data engineer @ similarweb",
     "similarweb|||senior devops engineer @ similarweb",
     "similarweb|||senior data infrastructure engineer @ similarweb",
+    "similarweb|||senior data engineer @ similarweb",
     "similarweb|||senior data engineer ( data collection) @ similarweb",
     "similarweb|||senior cybersecurity engineer @ similarweb",
     "similarweb|||ops data engineer @ similarweb",
@@ -3317,7 +3321,11 @@
     "shepperton studios|||unlock dolby atmos mixing for film with a post-production": "2026-09-19T16:43:19.036327+00:00",
     "opinion|||opinion | i'm begging you: never write with a.i": "2026-09-19T16:43:19.036327+00:00",
     "giphy|||inferring creativity // nick hasty // mlops podcast #198": "2026-09-20T12:04:03.818708+00:00",
-    "ep 1|||mlops - introduction | learn mlops in simple way | ep 1": "2026-09-20T12:04:03.818708+00:00"
+    "ep 1|||mlops - introduction | learn mlops in simple way | ep 1": "2026-09-20T12:04:03.818708+00:00",
+    "unknown|||senior staff devops engineer": "2026-09-20T16:51:08.264613+00:00",
+    "unknown|||\u05ea\u05db\u05e0\u05d9\u05ea\u05e0.\u05d9\u05ea devops \u05dc\u05de\u05e9\u05e8\u05d3 \u05de\u05de\u05e9\u05dc\u05ea\u05d9 \u05d1\u05de\u05e8\u05db\u05d6 \u05d5\u05d1\u05d9\u05e8\u05d5\u05e9\u05dc\u05d9\u05dd": "2026-09-20T16:51:08.264613+00:00",
+    "unknown|||\u05d0\u05e0\u05dc\u05d9\u05e1\u05d8 soc \u05ea\u05e4\u05e7\u05d9\u05d3 \u05db\u05e0\u05d9\u05e1\u05d4": "2026-09-20T16:51:08.264613+00:00",
+    "similarweb|||senior data engineer @ similarweb": "2026-09-20T16:51:08.264613+00:00"
   },
-  "updated": "2026-09-20T12:04:03.865618+00:00"
+  "updated": "2026-09-20T16:51:08.315355+00:00"
 }
