@@ -8434,5 +8434,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-09-21T20:42:07Z"
+  },
+  {
+    "title": "AI Engineer at More from this author. Why Agentic AI",
+    "snippet": "Staff Software Engineer, Filestore, Google Cloud. Google, Tel Aviv-Yafo, Tel ... More from this author. Why Agentic AI N",
+    "url": "https://www.linkedin.com/posts/ronenschwartz_come-join-our-amazing-team-reshaping-infrastructure-activity-7506371842597740545-qQvf",
+    "company": "More from this author. Why Agentic AI",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ronenschwartz/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-22T02:26:43Z"
+  },
+  {
+    "title": "AI Engineer at Enterprise AI",
+    "snippet": "Happy to see that our team's work on Automatic Enterprise Ontology Generation made it into Oracle's Q1 earnings announce",
+    "url": "https://www.linkedin.com/posts/katrin-kirchhoff-19388049_oracle-announces-q1-results-driven-by-triple-activity-7503950732727885824-5LJC",
+    "company": "Enterprise AI",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Katrin Kirchhoff",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/katrin-kirchhoff-19388049/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-22T02:26:43Z"
+  },
+  {
+    "title": "AI Engineer at It",
+    "snippet": "It needs a business case. A story published today caught my attention ... cloud, or managed infrastructure . Key impacts",
+    "url": "https://www.linkedin.com/posts/swaati-h-76075a5_32m-raised-an-ai-first-pivot-and-now-activity-7503703847341621248-ef6_",
+    "company": "It",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/swaati-h-76075a5/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-22T02:26:43Z"
+  },
+  {
+    "title": "Cloud Engineer at only",
+    "snippet": "... Cloud security becomes much stronger when identity telemetry is treated as ... Sometimes B only needs A's service id",
+    "url": "https://www.linkedin.com/posts/israel-edobor-uyi_cybersecurity-cloudsecurity-aws-activity-7503829762054991872-1u3o",
+    "company": "only",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Israel Edobor Uyi",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/israel-edobor-uyi/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-09-22T02:26:43Z"
   }
 ]
