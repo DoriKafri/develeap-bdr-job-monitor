@@ -227,6 +227,7 @@
     "unknown|||staff data platform engineer",
     "unknown|||staff backend engineer- core platform",
     "unknown|||staff architect, data & ai infra",
+    "unknown|||sre tech lead",
     "unknown|||sr. data engineer - cloud security (hybrid, isr)",
     "unknown|||sr. data engineer - cloud security",
     "unknown|||sr staff site reliability engineer",
@@ -1208,6 +1209,9 @@
     "jobgether|ai|jobgether - senior ai engineer (remote from israel)|2026-03-04",
     "jobgether|ai|jobgether - senior ai engineer (remote from israel)",
     "jit|||ai engineer",
+    "jfrog|||r&d team lead, data engineering- jfrog security @ jfrog",
+    "jfrog|||cloud architect @ jfrog",
+    "jfrog|||application security engineer @ jfrog",
     "it says so. the system|||ai engineer at it says so. the system",
     "israel|||cloud engineer at israel",
     "israel|||ai engineer at israel",
@@ -3341,7 +3345,11 @@
     "only|||cloud engineer at only": "2026-09-22T12:20:14.482399+00:00",
     "\ud83e\udd16 what an mlops engineer does \ud83d\udcbb|||\ud83e\udd16 what an mlops engineer does \ud83d\udcbb | by mikiko bazeley": "2026-09-23T12:13:38.392059+00:00",
     "what it is, why you need it and how ...|||mlops explained - what it is, why you need it and how": "2026-09-23T12:13:38.392059+00:00",
-    "unknown|||cloud, identity protection (hybrid, isr)": "2026-09-23T12:13:38.392059+00:00"
+    "unknown|||cloud, identity protection (hybrid, isr)": "2026-09-23T12:13:38.392059+00:00",
+    "unknown|||sre tech lead": "2026-09-24T12:29:13.148536+00:00",
+    "jfrog|||application security engineer @ jfrog": "2026-09-24T12:29:13.148536+00:00",
+    "jfrog|||cloud architect @ jfrog": "2026-09-24T12:29:13.148536+00:00",
+    "jfrog|||r&d team lead, data engineering- jfrog security @ jfrog": "2026-09-24T12:29:13.148536+00:00"
   },
-  "updated": "2026-09-23T17:35:52.966333+00:00"
+  "updated": "2026-09-24T12:29:13.206192+00:00"
 }
