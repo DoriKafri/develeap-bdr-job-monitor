@@ -357,6 +357,7 @@
     "unknown|||principal devops engineer (prisma browser)",
     "unknown|||principal devops engineer (prisma access browser)",
     "unknown|||principal devops engineer (enterprise browser)",
+    "unknown|||principal devops engineer",
     "unknown|||principal consultant, ai engineer!",
     "unknown|||principal backend engineer - data security (cortex cloud)",
     "unknown|||principal backend & cloud engineer agentless (cortex",
@@ -463,6 +464,7 @@
     "unknown|||cloud & cyber security engineer",
     "unknown|||biotechnology \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc - 3 \u05de\u05d0\u05d9, 2026",
     "unknown|||big data engineer (java/scala)",
+    "unknown|||backend infrastructure team (cortex)",
     "unknown|||backend engineer \u2013 data pipeline",
     "unknown|||azure red hat openshift (raanana office, israel)",
     "unknown|||automation & cloud systems engineer",
@@ -1508,6 +1510,7 @@
     "conifers.ai|||senior software engineer - agentic ai",
     "conifers.ai|||conifers.ai senior software engineer - agentic ai",
     "confidential|||site reliability engineer",
+    "community|||google cloud security community | community",
     "commit||||finops engineer - petah tikva",
     "commit||||finops engineer",
     "commit||||commit \u05d2\u05d9\u05d5\u05e1 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd finops engineer - petah tikva",
@@ -3377,7 +3380,10 @@
     "nice|||devops group leader @ nice": "2026-09-28T21:27:33.935108+00:00",
     "nice|||devops team lead @ nice": "2026-09-28T21:27:33.935108+00:00",
     "nice|||platform engineering group leader @ nice": "2026-09-28T21:27:33.935108+00:00",
-    "meta|||failed meta's production engineer (sre) interview": "2026-09-29T13:32:54.678345+00:00"
+    "meta|||failed meta's production engineer (sre) interview": "2026-09-29T13:32:54.678345+00:00",
+    "community|||google cloud security community | community": "2026-09-29T20:13:43.681710+00:00",
+    "unknown|||backend infrastructure team (cortex)": "2026-09-29T20:13:43.681710+00:00",
+    "unknown|||principal devops engineer": "2026-09-29T20:13:43.681710+00:00"
   },
-  "updated": "2026-09-29T13:32:54.730790+00:00"
+  "updated": "2026-09-29T20:13:43.719960+00:00"
 }
