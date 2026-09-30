@@ -259,6 +259,7 @@
     "unknown|||site reliability engineer",
     "unknown|||site relaibility engineer",
     "unknown|||senior/principal sre engineer",
+    "unknown|||senior/principal site reliability engineer",
     "unknown|||senior strategic fp&a",
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior staff devops engineer - cloud security",
@@ -354,6 +355,7 @@
     "unknown|||principal mlops engineer (cortex)",
     "unknown|||principal information security engineer",
     "unknown|||principal engineer software access team (cortex platform)",
+    "unknown|||principal devops engineer - ai platforms",
     "unknown|||principal devops engineer (prisma browser)",
     "unknown|||principal devops engineer (prisma access browser)",
     "unknown|||principal devops engineer (enterprise browser)",
@@ -685,6 +687,7 @@
     "software engineer -new college grad|||400+ data center \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc 4 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
     "snapland|||data engineer",
     "skyers|||artificial intelligence engineer",
+    "site reliability engineering|||google sre - site reliability engineering",
     "similarweb||||job application for applied research engineer at similarweb",
     "similarweb|||senior ops data engineer @ similarweb",
     "similarweb|||senior devops engineer @ similarweb",
@@ -697,6 +700,7 @@
     "similarweb|||job application for applied research engineer at similarweb",
     "similarweb|||devops engineer @ similarweb",
     "similarweb|||data engineering team lead @ similarweb",
+    "similarweb|||data engineer \u2013 applied ml @ similarweb",
     "similarweb|||data engineer @ similarweb",
     "similarweb|||core data - big data engineer @ similarweb",
     "similarweb|||ai engineer @ similarweb",
@@ -890,6 +894,7 @@
     "pentera|devops|ctf infrastructure engineer",
     "peak innovation|||peak innovation devops cloud architect",
     "patient-level accuracy is why charting still|||ai engineer at patient-level accuracy is why charting still",
+    "parallel wireless|||ai engineer at parallel wireless",
     "paragon|||site reliability engineer (sre)",
     "paragon|||paragon site reliability engineer (sre)",
     "paradox|||senior backend engineer - ai team - paradox",
@@ -3383,7 +3388,12 @@
     "meta|||failed meta's production engineer (sre) interview": "2026-09-29T13:32:54.678345+00:00",
     "community|||google cloud security community | community": "2026-09-29T20:13:43.681710+00:00",
     "unknown|||backend infrastructure team (cortex)": "2026-09-29T20:13:43.681710+00:00",
-    "unknown|||principal devops engineer": "2026-09-29T20:13:43.681710+00:00"
+    "unknown|||principal devops engineer": "2026-09-29T20:13:43.681710+00:00",
+    "site reliability engineering|||google sre - site reliability engineering": "2026-09-30T13:16:42.583129+00:00",
+    "unknown|||senior/principal site reliability engineer": "2026-09-30T13:16:42.583129+00:00",
+    "unknown|||principal devops engineer - ai platforms": "2026-09-30T13:16:42.583129+00:00",
+    "parallel wireless|||ai engineer at parallel wireless": "2026-09-30T13:16:42.583129+00:00",
+    "similarweb|||data engineer \u2013 applied ml @ similarweb": "2026-09-30T13:16:42.583129+00:00"
   },
-  "updated": "2026-09-29T20:13:43.719960+00:00"
+  "updated": "2026-09-30T13:16:42.659470+00:00"
 }
