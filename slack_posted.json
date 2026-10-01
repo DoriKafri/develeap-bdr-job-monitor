@@ -224,6 +224,7 @@
     "unknown|||staff software engineer (data & ai platform)",
     "unknown|||staff researcher, security infra developer",
     "unknown|||staff product manager, data platform",
+    "unknown|||staff ml hw modelling engineer",
     "unknown|||staff devops engineer (cortex research)",
     "unknown|||staff data platform engineer",
     "unknown|||staff backend engineer- core platform",
@@ -1800,6 +1801,7 @@
     "aqua security|devops|senior devops engineer at aqua security - comeet",
     "aqua security|devops|senior devops engineer",
     "appsflyer|||senior finops analyst @ appsflyer",
+    "appsflyer|||senior data engineer @ appsflyer",
     "appsflyer|||senior application security engineer @ appsflyer",
     "appsflyer|||devops platform engineer @ appsflyer",
     "appsflyer|||data engineer @ appsflyer",
@@ -3395,7 +3397,9 @@
     "unknown|||principal devops engineer - ai platforms": "2026-09-30T13:16:42.583129+00:00",
     "parallel wireless|||ai engineer at parallel wireless": "2026-09-30T13:16:42.583129+00:00",
     "similarweb|||data engineer \u2013 applied ml @ similarweb": "2026-09-30T13:16:42.583129+00:00",
-    "unknown|||senior backend engineer - il": "2026-09-30T20:01:27.402876+00:00"
+    "unknown|||senior backend engineer - il": "2026-09-30T20:01:27.402876+00:00",
+    "unknown|||staff ml hw modelling engineer": "2026-10-01T13:51:44.737067+00:00",
+    "appsflyer|||senior data engineer @ appsflyer": "2026-10-01T13:51:44.737067+00:00"
   },
-  "updated": "2026-09-30T20:01:27.441808+00:00"
+  "updated": "2026-10-01T13:51:44.790926+00:00"
 }
