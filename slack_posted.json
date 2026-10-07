@@ -112,6 +112,7 @@
     "via|||site reliability engineer (sre)",
     "via|||senior platform engineer @ via",
     "via|||senior devops engineer @ via",
+    "via|||senior application security engineer @ via",
     "via|||devsecops engineer @ via",
     "vertexventures|||senior devops engineer - finops @ yotpo",
     "vertexventures|||cloud engineer",
@@ -1357,6 +1358,7 @@
     "finubit|||site reliability engineer (sre)",
     "finops|||finops | aws cloud financial management",
     "finops specialist, ai & cloud|||50+ cloud support specialist \u05de\u05e9\u05e8\u05d5\u05ea, \u05ea\u05e2\u05e1\u05d5\u05e7\u05d4 9 \u05d0\u05e4\u05e8\u05d9\u05dc, 2026",
+    "finops practitioner certification|||finops practitioner certification - ibm community - apptio",
     "finops certified practitioner|||finops certified practitioner - finops certification and training",
     "finops certification & training|||finops certification & training - training catalog",
     "fetcherr||||head of devops",
@@ -3415,7 +3417,9 @@
     "unknown|||devops and data engineer": "2026-10-05T23:26:26.421592+00:00",
     "unknown|||macos platform engineer (cortex xdr)": "2026-10-05T23:26:26.421592+00:00",
     "unknown|||devops engineer (junior / early career)": "2026-10-07T14:01:35.078531+00:00",
-    "jfrog|||senior offensive security engineer @ jfrog": "2026-10-07T14:01:35.078531+00:00"
+    "jfrog|||senior offensive security engineer @ jfrog": "2026-10-07T14:01:35.078531+00:00",
+    "finops practitioner certification|||finops practitioner certification - ibm community - apptio": "2026-10-07T20:49:48.714363+00:00",
+    "via|||senior application security engineer @ via": "2026-10-07T20:49:48.714363+00:00"
   },
-  "updated": "2026-10-07T14:01:35.130905+00:00"
+  "updated": "2026-10-07T20:49:48.753422+00:00"
 }
