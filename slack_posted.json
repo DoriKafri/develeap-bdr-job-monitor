@@ -228,6 +228,7 @@
     "unknown|||staff ml hw modelling engineer",
     "unknown|||staff devops engineer (cortex research)",
     "unknown|||staff data platform engineer",
+    "unknown|||staff data engineer (data & ai solutions)",
     "unknown|||staff backend engineer- core platform",
     "unknown|||staff architect, data & ai infra",
     "unknown|||sre tech lead",
@@ -262,11 +263,13 @@
     "unknown|||site relaibility engineer",
     "unknown|||senior/principal sre engineer",
     "unknown|||senior/principal site reliability engineer",
+    "unknown|||senior/principal backend ai engineer (cortex xsiam)",
     "unknown|||senior strategic fp&a",
     "unknown|||senior staff site reliability engineer",
     "unknown|||senior staff devops engineer - cloud security",
     "unknown|||senior staff devops engineer (secure cloud access)",
     "unknown|||senior staff devops engineer",
+    "unknown|||senior staff data engineer (data & ai solutions)",
     "unknown|||senior sre (it infrastructure)",
     "unknown|||senior sre (cortex)",
     "unknown|||senior solutions engineer | israel",
@@ -278,6 +281,7 @@
     "unknown|||senior software engineer - sovereign cloud",
     "unknown|||senior software engineer - data platform group",
     "unknown|||senior software engineer - data platform",
+    "unknown|||senior software engineer (secure agentic ai)",
     "unknown|||senior software engineer (secure agentic ai - be'er sheva)",
     "unknown|||senior software engineer (cortex cloud)",
     "unknown|||senior software development engineer (aws ml)",
@@ -711,6 +715,7 @@
     "similarweb|||data engineer @ similarweb",
     "similarweb|||core data - big data engineer @ similarweb",
     "similarweb|||ai engineer @ similarweb",
+    "similarweb|||agent platform engineer @ similarweb",
     "similarweb|devops|job application for applied research engineer at similarweb|2026-03-04",
     "similarweb|devops|job application for applied research engineer at similarweb",
     "silverfort||||infrastructure security engineer at silverfort - comeet",
@@ -3419,7 +3424,12 @@
     "unknown|||devops engineer (junior / early career)": "2026-10-07T14:01:35.078531+00:00",
     "jfrog|||senior offensive security engineer @ jfrog": "2026-10-07T14:01:35.078531+00:00",
     "finops practitioner certification|||finops practitioner certification - ibm community - apptio": "2026-10-07T20:49:48.714363+00:00",
-    "via|||senior application security engineer @ via": "2026-10-07T20:49:48.714363+00:00"
+    "via|||senior application security engineer @ via": "2026-10-07T20:49:48.714363+00:00",
+    "unknown|||senior/principal backend ai engineer (cortex xsiam)": "2026-10-08T14:12:00.653711+00:00",
+    "unknown|||senior software engineer (secure agentic ai)": "2026-10-08T14:12:00.653711+00:00",
+    "unknown|||staff data engineer (data & ai solutions)": "2026-10-08T14:12:00.653711+00:00",
+    "unknown|||senior staff data engineer (data & ai solutions)": "2026-10-08T14:12:00.653711+00:00",
+    "similarweb|||agent platform engineer @ similarweb": "2026-10-08T14:12:00.653711+00:00"
   },
-  "updated": "2026-10-07T20:49:48.753422+00:00"
+  "updated": "2026-10-08T14:12:00.732269+00:00"
 }
