@@ -32,6 +32,7 @@
     "zenity|agentic|ai agent security | devops engineer",
     "your data residency strategy|||cloud engineer at your data residency strategy",
     "your company|||ai engineer at your company",
+    "your ai employee needs a job description. before an ai employee joins an organization|||ai engineer at your ai employee needs a job description. before an ai employee j",
     "yotpo|||senior data engineer @ yotpo",
     "yafo ...|||ai engineer",
     "yael group|||yael group devsecops",
@@ -281,6 +282,7 @@
     "unknown|||senior software engineer - sovereign cloud",
     "unknown|||senior software engineer - data platform group",
     "unknown|||senior software engineer - data platform",
+    "unknown|||senior software engineer - ai compiler",
     "unknown|||senior software engineer (secure agentic ai)",
     "unknown|||senior software engineer (secure agentic ai - be'er sheva)",
     "unknown|||senior software engineer (cortex cloud)",
@@ -389,6 +391,7 @@
     "unknown|||machine learning software engineer",
     "unknown|||machine learning platform engineer - \u05e0\u05ea\u05e0\u05d9\u05d4, \u05de\u05d7\u05d5\u05d6 \u05d4\u05de\u05e8\u05db\u05d6",
     "unknown|||machine learning engineer student for ai solutions group",
+    "unknown|||machine learning engineer - ai security team",
     "unknown|||machine learning engineer",
     "unknown|||llm engineer",
     "unknown|||lendbuzz",
@@ -493,6 +496,7 @@
     "unknown|||ai/ml engineer",
     "unknown|||ai/agentic engineer",
     "unknown|||ai tech lead",
+    "unknown|||ai security team",
     "unknown|||ai security engineer",
     "unknown|||ai platform engineer",
     "unknown|||ai engineer (backend, genai)",
@@ -735,6 +739,7 @@
     "silverfort|security|infrastructure security engineer at silverfort - comeet",
     "silverfort|security|infrastructure security engineer",
     "siemens|||ai and genai software engineer student \u2013 airport city",
+    "shutdown waiting to happen. sla-backed continuity|||ai engineer at shutdown waiting to happen. sla-backed continuity",
     "shi||||finops consultant - careers - myworkdayjobs.com",
     "shi||||finops consultant - careers",
     "shi||||finops analyst - myworkdayjobs.com",
@@ -3441,7 +3446,12 @@
     "unknown|||senior devops engineer - ai for security team": "2026-10-12T23:49:00.263328+00:00",
     "similarweb|||senior data engineer (infrastructure) @ similarweb": "2026-10-12T23:49:00.263328+00:00",
     "glassdoor|||13 vagas de cloud devops engineer": "2026-10-13T21:09:04.172762+00:00",
-    "unknown|||devops engineer - ai security team": "2026-10-13T21:09:04.172762+00:00"
+    "unknown|||devops engineer - ai security team": "2026-10-13T21:09:04.172762+00:00",
+    "unknown|||machine learning engineer - ai security team": "2026-10-14T12:33:00.783141+00:00",
+    "unknown|||senior software engineer - ai compiler": "2026-10-14T12:33:00.783141+00:00",
+    "unknown|||ai security team": "2026-10-14T12:33:00.783141+00:00",
+    "shutdown waiting to happen. sla-backed continuity|||ai engineer at shutdown waiting to happen. sla-backed continuity": "2026-10-14T12:33:00.783141+00:00",
+    "your ai employee needs a job description. before an ai employee joins an organization|||ai engineer at your ai employee needs a job description. before an ai employee j": "2026-10-14T12:33:00.783141+00:00"
   },
-  "updated": "2026-10-13T21:09:04.231368+00:00"
+  "updated": "2026-10-14T12:33:00.861157+00:00"
 }
