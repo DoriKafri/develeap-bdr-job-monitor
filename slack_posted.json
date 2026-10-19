@@ -1534,6 +1534,7 @@
     "cygnostic|||devsecops",
     "cyera|||mlops engineer",
     "cyberark|||senior devops platform engineer",
+    "cve|||cve-2026-0322 pan-os: authenticated remote code",
     "cross platform agent (cortex xdr)|||engineering manager - cross platform agent (cortex xdr)",
     "crawljobs|||principal cloud engineer israel jobs, 3 job offers",
     "cpa (cortex xdr)|||infrastructure engineer- cpa (cortex xdr)",
@@ -3467,7 +3468,8 @@
     "signs your integration strategy|||cloud engineer at signs your integration strategy": "2026-10-17T19:18:26.577863+00:00",
     "sla-backed continuity|||ai engineer at sla-backed continuity": "2026-10-17T19:18:26.577863+00:00",
     "riskified|||security engineer @ riskified": "2026-10-17T19:18:26.577863+00:00",
-    "workflow that|||ai engineer at workflow that": "2026-10-18T16:40:36.712160+00:00"
+    "workflow that|||ai engineer at workflow that": "2026-10-18T16:40:36.712160+00:00",
+    "cve|||cve-2026-0322 pan-os: authenticated remote code": "2026-10-19T20:41:33.513375+00:00"
   },
-  "updated": "2026-10-19T13:44:16.841002+00:00"
+  "updated": "2026-10-19T20:41:33.541204+00:00"
 }
