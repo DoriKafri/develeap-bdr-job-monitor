@@ -2823,12 +2823,49 @@ function toggleUserDropdown(e){e.stopPropagation();var d=document.getElementById
 document.addEventListener('click',function(){var d=document.getElementById('userDropdown');if(d)d.classList.remove('open');});
 
 // ===== DATA =====
-let LAST_UPDATED = "2026-11-06T14:01:50Z";
-let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 10, "latency_ms": 777, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 9, "latency_ms": 963, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 51, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 562, "error": ""}];
+let LAST_UPDATED = "2026-11-06T22:13:04Z";
+let SOURCE_HEALTH = [{"name": "DuckDuckGo", "status": "ok", "results": 0, "latency_ms": 15159, "error": ""}, {"name": "SerpAPI", "status": "ok", "results": 9, "latency_ms": 406, "error": ""}, {"name": "Google CSE", "status": "ok", "results": 0, "latency_ms": 66, "error": ""}, {"name": "Bing", "status": "no_key", "results": 0, "latency_ms": 0, "error": "BING_SEARCH_KEY not set"}, {"name": "Google Jobs", "status": "ok", "results": 0, "latency_ms": 2881, "error": ""}];
 let DEVELEAP_CUSTOMERS = ["Akamai","Alzai","Amsalem Tours","Apester","Aqua","Armo","Automarky","Beacon Security","Bluespine","Bond","BYON","Cal","Cellebrite","Cellosign","Checkin Travels","Checkpoint","Cibus","CitrusX","Cloudzone","Ctera","Curated-ai","CyberArk","CyberRidge","Cylus","DriveTech","Edwards","eXLGx","Ezbob","Flexor","Foretellix","Grain Finance","Hyp","Imagry","Infinpoint","Inuitive","Isracard","Jedify","Legion","Linx security","Matrix","Megureit","Mobileye","Monday.com","N2WS","Ness","NetNut","Networx","Nuvo cares","Odysight","OwlDuet","Per-me","Philips","Planet9","Plus500","PrettyDamnQuick","Proceed","ProofPoint","Puzzlesoft","R.R Systems","Redis","Redwood","RSI","Scytale","Sightec","Simplex3d","SkyCash","Solidus","Tactile","TailorMed","Transmit Security","Tufin","Vcita","Verifood","Vorlon","XMCyber","Zafran","Zerto","Zimark"];
 let DEVELEAP_PAST_CUSTOMERS = ["AppsFlyer","Autodesk","Blink Aid","BridgeOver","Carebox","Checkmarx","Civ Robotics","CurveTech","Elmodis","Empathy","Evogene","Fireblocks","Gloat","Harmonic","Hexagon","Honeywell","InfluenceAI","JFrog","Knostic","LedderTech","mPrest","NeoTech","Nintex","NSO","OwnPlay","Pillar Security","RapidAPI","Rapyd","Revelator","Sentrycs","Verbit","WalkMe"];
 
 let ALL_JOBS = [
+  {
+    "id": "a0a27575",
+    "title": "Product Manager - Agentic AI @ Torq",
+    "subtitle": "Torq - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "company": "Torq",
+    "companyIndustry": "",
+    "location": "Tel Aviv",
+    "locationSlug": "tel-aviv",
+    "source": "greenhouse",
+    "sourceUrl": "https://job-boards.greenhouse.io/torq/jobs/6147498004",
+    "category": "agentic",
+    "posted": "2026-11-06",
+    "isNew": true,
+    "isDeveleapCustomer": false,
+    "isPastCustomer": true,
+    "description": "Torq - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
+    "skills": [],
+    "stakeholders": [
+      {
+        "name": "Leonid Belkind",
+        "title": "CTO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/leonidbelkind/",
+        "source": "LinkedIn",
+        "email": ""
+      },
+      {
+        "name": "Ofer Smadari",
+        "title": "CEO & Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/ofersmadari/",
+        "source": "LinkedIn",
+        "email": ""
+      }
+    ],
+    "logo": "https://www.google.com/s2/favicons?domain=torq.io&sz=128",
+    "ftsJobUrl": "",
+    "_first_seen": "2026-11-06"
+  },
   {
     "id": "1c1f402d",
     "title": "DevOps Data Infrastructure Team Leader",
@@ -2841,7 +2878,7 @@ let ALL_JOBS = [
     "sourceUrl": "https://il.indeed.com/viewjob?jk=426cfee1c37e308e",
     "category": "data",
     "posted": "2026-11-05",
-    "isNew": true,
+    "isNew": false,
     "isDeveleapCustomer": false,
     "isPastCustomer": false,
     "description": "DevOps Data Infrastructure Team Leader ... Our DevOps team builds and operates the production streaming infrastructure that powers the company's real-time data ...",
@@ -2850,91 +2887,6 @@ let ALL_JOBS = [
     "logo": "",
     "ftsJobUrl": "",
     "_first_seen": "2026-11-05"
-  },
-  {
-    "id": "ae7f5f0f",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Natural Intelligence",
-    "companyIndustry": "",
-    "location": "Tel Aviv, Israel",
-    "locationSlug": "tel-aviv,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4342809696/",
-    "category": "devops",
-    "posted": "2026-11-05",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Greg Lavender",
-        "title": "CTO & SVP",
-        "linkedin": "https://www.linkedin.com/in/greg-lavender-9539724/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=intel.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-11-05",
-    "_manual": true
-  },
-  {
-    "id": "491196c3",
-    "title": "DevOps Engineer",
-    "subtitle": "",
-    "company": "Unilink Ltd.",
-    "companyIndustry": "",
-    "location": "Holon, Israel",
-    "locationSlug": "holon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4384850189/",
-    "category": "devops",
-    "posted": "2026-11-05",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=unilink.co.il&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-11-05",
-    "_manual": true
-  },
-  {
-    "id": "790d603d",
-    "title": "Senior DevOps Engineer",
-    "subtitle": "",
-    "company": "AppCard",
-    "companyIndustry": "",
-    "location": "Hod HaSharon, Israel",
-    "locationSlug": "hod-hasharon,-israel",
-    "source": "linkedin",
-    "sourceUrl": "https://www.linkedin.com/jobs/view/4379860956/",
-    "category": "devops",
-    "posted": "2026-11-05",
-    "isNew": true,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Yair Goldfinger",
-        "title": "CEO & Founder",
-        "linkedin": "https://www.linkedin.com/in/yairgoldfinger/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=appcard.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-11-05",
-    "_manual": true
   },
   {
     "id": "3dddd6e5",
@@ -3213,7 +3165,14 @@ let ALL_JOBS = [
     "stakeholders": [],
     "logo": "https://www.google.com/s2/favicons?domain=israelglassdoor.com&sz=128",
     "ftsJobUrl": "",
-    "_first_seen": "2026-11-02"
+    "_first_seen": "2026-11-02",
+    "altSources": [
+      {
+        "source": "other",
+        "sourceUrl": "https://www.google.com/goto?url=CAESngEBxCJF19-4cEee3_lcM5u5TDlfNQcvLmktGphmr9xq0jztyW8CsHDr8jNyzwd60Qpymh5_kInI1zkKclQiTJmUQjwq_HAq1O3uQcITHMpUFD4Th7l4F-sQwBlqnwhWLe6fjPjlTdGxLBqma_mbWjna7hBEYYfQP7YHLaaslV0KAi4UThZg282Z5ffjqi027T17EWsW5qsd5gAwvfwtGQ",
+        "title": "13 vagas de cloud devops engineer – Israel - Glassdoor"
+      }
+    ]
   },
   {
     "id": "0467ea18",
@@ -4315,87 +4274,6 @@ let ALL_JOBS = [
     "logo": "https://www.google.com/s2/favicons?domain=similarweb.com&sz=128",
     "ftsJobUrl": "",
     "_first_seen": "2026-10-23"
-  },
-  {
-    "id": "ca0c34f6",
-    "title": "Senior Application Security Engineer @ Via",
-    "subtitle": "Via - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "company": "Via",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "greenhouse",
-    "sourceUrl": "https://job-boards.greenhouse.io/via/jobs/8875777002",
-    "category": "security",
-    "posted": "2026-10-22",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Via - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=via.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-10-22"
-  },
-  {
-    "id": "79195aac",
-    "title": "Agentic AI Engineer - Product Support @ Cato Networks",
-    "subtitle": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
-    "company": "Catonetworks",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "other",
-    "sourceUrl": "https://www.catonetworks.com/careers/careers-post/4951235101?gh_jid=4951235101",
-    "category": "agentic",
-    "posted": "2026-10-22",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Cato Networks - Tel Aviv District, Israel. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [
-      {
-        "name": "Shlomo Kramer",
-        "title": "CEO & Co-Founder",
-        "linkedin": "https://www.linkedin.com/in/shlomokramer/",
-        "source": "Globes",
-        "email": ""
-      },
-      {
-        "name": "Eyal Heiman",
-        "title": "CTO",
-        "linkedin": "https://www.linkedin.com/in/eyal-heiman-99233a98/",
-        "source": "LinkedIn",
-        "email": ""
-      }
-    ],
-    "logo": "https://www.google.com/s2/favicons?domain=catonetworks.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-10-22"
-  },
-  {
-    "id": "8ae6abb3",
-    "title": "Platform Engineer- Edge Team @ Salt Security",
-    "subtitle": "Salt Security - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "company": "Edge Team @ Salt Security",
-    "companyIndustry": "",
-    "location": "Tel Aviv",
-    "locationSlug": "tel-aviv",
-    "source": "other",
-    "sourceUrl": "https://salt.security/job-board?gh_jid=5208152007",
-    "category": "platform",
-    "posted": "2026-10-22",
-    "isNew": false,
-    "isDeveleapCustomer": false,
-    "isPastCustomer": false,
-    "description": "Salt Security - Tel Aviv. 0 days ago via Greenhouse API (active listing).",
-    "skills": [],
-    "stakeholders": [],
-    "logo": "https://www.google.com/s2/favicons?domain=edgeteamsaltsecurity.com&sz=128",
-    "ftsJobUrl": "",
-    "_first_seen": "2026-10-22"
   }
 ];
 // ===== SORTING & COLUMN FILTERING STATE =====
