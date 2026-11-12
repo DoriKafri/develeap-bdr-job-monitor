@@ -9118,5 +9118,53 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-11-12T03:57:31Z"
+  },
+  {
+    "title": "DevOps Engineer at ISRAEL",
+    "snippet": "BREAKING NEWS: ISRAEL IS HIRING MORE TECH WORKERS THAN IT'S FIRING. And our ... We see this exact shift on the Cloud Inf",
+    "url": "https://www.linkedin.com/posts/yigal-sharon-624a7253_ai-israel-futureofwork-activity-7524124637530714112-pXzQ",
+    "company": "ISRAEL",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Yigal Sharon",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/yigal-sharon-624a7253/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T12:08:02Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "... cloud and AI environments, and the momentum here is real. If you want to ... Come work with @Bryan Whorton Max Barre",
+    "url": "https://www.linkedin.com/posts/max-barrett-454941b0_careers-at-sweet-security-activity-7523049496143118336-FRPU",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "Max Barrett",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/max-barrett-454941b0/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T12:08:02Z"
+  },
+  {
+    "title": "Cloud Engineer at CloudEndure",
+    "snippet": "... Cloud‏ Israel. Watch the video below. Read the full case study: https://lnkd ... CloudEndure is hiring! Ofir Ehrlich",
+    "url": "https://www.linkedin.com/posts/ofirehrlich_thanks-chen-shalit-and-thanks-to-the-whole-activity-7525606000775606272-lFQb",
+    "company": "CloudEndure",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/ofirehrlich/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T12:08:02Z"
+  },
+  {
+    "title": "Senior Backend Engineer at Senior Backend Engineer building AI cloud infrastruct",
+    "snippet": "Senior Backend Engineer building AI cloud infrastructure at a Nasdaq-listed platform in Amsterdam. Nebius is hiring a Se",
+    "url": "https://www.linkedin.com/posts/abroadium_backendengineering-cloudinfrastructure-activity-7521775513481363457-WGit",
+    "company": "Senior Backend Engineer building AI cloud infrastructure at a Nasdaq-listed platform in Amsterdam. Nebius",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/abroadium/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T12:08:02Z"
   }
 ]
