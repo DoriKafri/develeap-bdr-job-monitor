@@ -9094,5 +9094,29 @@
     "_fts_author_title": "",
     "_fts_job_url": "",
     "_discovered_at": "2026-11-10T21:35:49Z"
+  },
+  {
+    "title": "AI Engineer at Israel",
+    "snippet": ": Israel needs a new chapter, and the business and high-tech community is ... AI and agriculture to new lines of communi",
+    "url": "https://www.linkedin.com/posts/erelmargalit_were-heading-into-the-weekend-after-a-wild-activity-7521903066414125056-RUVW",
+    "company": "Israel",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/erelmargalit/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T03:57:31Z"
+  },
+  {
+    "title": "AI Engineer",
+    "snippet": "We run social media for Agentic Israel, and that includes a weekly roundup of Israeli AI news. ... needs a second source",
+    "url": "https://www.linkedin.com/posts/tjfeifel_a-look-at-how-we-use-ai-agents-at-vectis-activity-7523027160022794241-MQXa",
+    "company": "Unknown",
+    "_source_override": "linkedin_fts",
+    "_fts_author": "",
+    "_fts_author_linkedin": "https://www.linkedin.com/in/tjfeifel/",
+    "_fts_author_title": "",
+    "_fts_job_url": "",
+    "_discovered_at": "2026-11-12T03:57:31Z"
   }
 ]
